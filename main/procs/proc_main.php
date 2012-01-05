@@ -120,6 +120,10 @@ try {
 				$h <= imagesy($img) &&
 				$w > 0 && $h > 0);
 
+			global $LOG;
+
+			@$LOG->info("new miniatures by user creation started");
+
 			$small_img = imagecreatetruecolor(100, 100);
 			imagecopyresampled($small_img, $img, 0, 0, $x, $y, 100, 100, $w, $h);
 
@@ -140,6 +144,8 @@ try {
 				'small' => $user->getImageURL(User::IMAGE_SQUARE),
 				'supersmall' => $user->getImageURL(User::IMAGE_SQUARE_SMALL)
 			));
+
+			@$LOG->info("new miniatures by user creation finished");
 
 			exit(0);
 
