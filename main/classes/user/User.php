@@ -271,9 +271,16 @@ class User {
 
 		if ($type == self::IMAGE_NORMAL) {
 			return file_exists($base_filename);
-		} elseif (!file_exists($base_filename)) {
+		}
+		if (file_exists($filename)) {
+			return true;
+		}
+		if (!file_exists($base_filename)) {
 			return false;
 		}
+
+		global $LOG;
+		@$LOG->info("new miniature creation started");
 
 		$am = DummyAvatarsMinifier::getInstance();
 		$dst_w = 1;
@@ -286,11 +293,17 @@ class User {
 			$dst_h = 20;
 		}
 		$am->minify($base_filename, $filename, $dst_w, $dst_h);
+
+		@$LOG->info("new miniature creation finished");
+
 		return true;
 	}
 
 	public function getImageURL($type = self::IMAGE_NORMAL) {
-		return $this->hasImage($type) ?
+		$hasImage = $this->hasImage($type);
+		global $LOG;
+		@$LOG->info($this->uid() . " user " . ($hasImage ? "has" : "has not") . " image of type " . $type);
+		return $hasImage ?
 				sprintf(self::IMAGES_DIR .'%s%s', $this->getImagePrefix(), $type) :
                 self::getDefaultImageUrl($type);
 	}
