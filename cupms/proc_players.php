@@ -16,7 +16,7 @@ require_once '../'.MAINSITE.'/classes/user/User.php';
 require_once '../'.MAINSITE.'/includes/security.php';
 require_once '../'.MAINSITE.'/includes/common.php';
 
-Header('Content-type: text/html; charset="windows-1251"', true);
+Header('Content-type: text/html; charset="UTF-8"', true);
 
 if (!isset($_REQUEST['method'])) {
 	json_echo_error_code(ERROR_NOMETHOD);
