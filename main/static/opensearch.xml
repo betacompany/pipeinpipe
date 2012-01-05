@@ -8,7 +8,7 @@
 	<Attribution>Copyright, betacompany.</Attribution>
 	<Contact>info@pipeinpipe.info</Contact>
 	<Developer>betacompany</Developer>
-	<InputEncoding>windows-1251</InputEncoding>
+	<InputEncoding>UTF-8</InputEncoding>
 	<Language>ru_RU</Language>
-	<OutputEncoding>windows-1251</OutputEncoding>
+	<OutputEncoding>UTF-8</OutputEncoding>
 </OpenSearchDescription>

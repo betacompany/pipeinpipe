@@ -22,7 +22,7 @@ try {
 	$auth = new Auth();
 	$user = $auth->getCurrentUser();
 
-	Header('Content-type: text/html; charset="windows-1251"', true);
+	Header('Content-type: text/html; charset="UTF-8"', true);
 
 	if (!isset($_REQUEST['method'])) {
 		echo_error_code(ERROR_NOMETHOD);
