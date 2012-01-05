@@ -41,7 +41,7 @@ class PieChart {
 		$result .= '&chl=';
 		if (!empty($this->labels)) {
 			foreach ($this->labels as $i => $label) {
-				$result .= iconv('windows-1251', 'UTF-8', $label);
+				$result .= $label;
 				if ($i < count($this->labels) - 1) $result .= '|';
 			}
 		}
@@ -70,7 +70,7 @@ class PieChart {
 		$percentage[2] = '5:2+(';
 		$percentage[3] = '5:3+(';
 		$percentage[4] = '6:4+(';
-		$percentage[5] = iconv('windows-1251', 'UTF-8', 'бал.+(');
+		$percentage[5] = 'бал.+(';
 		$sum = 0;
 		foreach ($this->data as $value) {
 			$sum += $value;

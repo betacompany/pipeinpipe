@@ -89,7 +89,7 @@ try {
 			 */
 			case 'set_name':
 				assertIsset($_REQUEST['name']);
-				$name = iconv('UTF-8', 'windows-1251', $_REQUEST['name']);
+				$name = $_REQUEST['name'];
 
 				if ($user->hasPermission($league, 'edit')) {
 					if (!$league->setName($name)) {
@@ -111,7 +111,7 @@ try {
 			case 'set_description':
 				assertIsset($_REQUEST['description']);
 
-				$description = iconv('UTF-8', 'windows-1251', $_REQUEST['description']);
+				$description = $_REQUEST['description'];
 				$description = string_process($description, SECURITY_DESCRIPTION);
 
 				if ($user->hasPermission($league, 'edit')) {

@@ -60,7 +60,7 @@ try {
 					
 				case 'set_name_and_mult':
 					if (isset($_REQUEST['name'])) {
-						$name = iconv('UTF-8', 'windows-1251', $_REQUEST['name']);
+						$name = $_REQUEST['name'];
 
 						if (!$cup->setName($name)) {
 							json_echo_error_code(ERROR_DB);

@@ -37,7 +37,7 @@ class BarChart {
 		$result .= '&chl=';
 		if (!empty($this->labels)) {
 			foreach ($this->labels as $i => $label) {
-				$result .= iconv('windows-1251', 'UTF-8', $label);
+				$result .= $label;
 				if ($i < count($this->labels) - 1) $result .= '|';
 			}
 		}
@@ -76,7 +76,7 @@ class BarChart {
 			if (!empty($this->labels)) {
 				foreach ($this->labels as $i => $label) {
 					$label .= '+(' . $this->data[$i] . ')';
-					$result .= iconv('windows-1251', 'UTF-8', $label);
+					$result .= $label;
 					if ($i < count($this->labels) - 1) $result .= '|';
 				}
 			}

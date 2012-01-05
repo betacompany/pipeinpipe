@@ -141,7 +141,7 @@ try {
 					 */
 					case 'set_name':
 						assertIsset($_REQUEST['name']);
-						$name = iconv('UTF-8', 'windows-1251', $_REQUEST['name']);
+						$name = $_REQUEST['name'];
 
 						if (!$competition->setName($name)) {
 							echo_error_code(ERROR_DB);
@@ -170,7 +170,7 @@ try {
 					 */
 					case 'set_date':
 						assertIsset($_REQUEST['date']);
-						$date = iconv('UTF-8', 'windows-1251', $_REQUEST['date']);
+						$date = $_REQUEST['date'];
 						if (!$competition->setDate($date, true)) {
 							json_echo_error_code(ERROR_DB);
 							exit(0);
@@ -207,7 +207,7 @@ try {
 					 */
 					case 'set_description':
 						assertIsset($_REQUEST['description']);
-						$description = iconv('UTF-8', 'windows-1251', $_REQUEST['description']);
+						$description = $_REQUEST['description'];
 						$description = string_process($description, SECURITY_DESCRIPTION);
 
 						if (!$competition->setDescription($description, true))
@@ -229,7 +229,7 @@ try {
 			case 'add_tournament':
 				if ($user->hasPermission('tournament', 'add')) {
 					assertIsset($_REQUEST['tour_name']);
-					$name = iconv('UTF-8', 'windows-1251', $_REQUEST['tour_name']);
+					$name = $_REQUEST['tour_name'];
 
 					$tour = Tournament::create($name);
 					if ($tour == null || !$competition->setTournamentId($tour->getId(), true))
@@ -325,7 +325,7 @@ try {
 						assertIsset($_REQUEST['use_current_date'], 'use_current_date');
 						if ($_REQUEST['use_current_date']) {
 							assertIsset($_REQUEST['date'], 'date');
-							$competition->finish(iconv('UTF-8', 'windows-1251', $_REQUEST['date']));
+							$competition->finish($_REQUEST['date']);
 						} else
 							$competition->finish();
 
