@@ -202,7 +202,8 @@ function datetoint($base, $date) {
 }
 
 function string_convert($str) {
-	return iconv('UTF-8', 'windows-1251', $str);
+	//return iconv('UTF-8', 'windows-1251', $str);
+	return $str;
 }
 
 function string_short($str, $length, $maxLength, $suffix = '...') {
