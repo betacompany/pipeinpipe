@@ -201,7 +201,7 @@ $title = document_title();
 	<head>
 		<title><?=$title?></title>
 
-		<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta name="author" content="betacompany" />
 		<meta name="description" content="Official web site of the pipe-in-pipe" />
 		<meta name="copyright" content="International Federation of Pipe-in-pipe" />

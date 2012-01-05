@@ -26,7 +26,7 @@ $PROPERTIES = array (
 	'mysql' => array (
 		// If MYSQL_DEBUG_MODE=true then logging and counting of queries are enabled
 		'debug_mode' => true,
-		'first_query' => 'SET NAMES cp1251'
+		'first_query' => 'SET NAMES utf8'
 	),
 	
 	// Trace exceptions in JSON answers

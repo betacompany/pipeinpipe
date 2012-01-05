@@ -87,9 +87,9 @@ define('CURRENT_TITLE', $title);
 <!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-		<meta http-equiv="content-type" content="application/xhtml+xml; charset=windows-1251"/>
+		<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8"/>
 		<title><?=CURRENT_TITLE?></title>
-		<link rel="stylesheet" type="text/css" href="/css/main.css" charset="windows-1251"/>
+		<link rel="stylesheet" type="text/css" href="/css/main.css" charset="UTF-8"/>
 
 		<script src="http://<?=MAIN_SITE_URL?>/js/jquery-1.5.1.min.js" type="text/javascript"></script>
 <? if (param('part') == ''): ?>
