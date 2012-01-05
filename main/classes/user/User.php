@@ -8,6 +8,8 @@ require_once dirname(__FILE__).'/../cupms/Player.php';
 
 require_once dirname(__FILE__) . '/../content/Connection.php';
 
+require_once dirname(__FILE__) . '/../image/DummyAvatarsMinifier.php';
+
 require_once dirname(__FILE__).'/../db/UserDBClient.php';
 require_once dirname(__FILE__).'/../db/UserDataDBClient.php';
 require_once dirname(__FILE__).'/../db/UserPermissionDBClient.php';
@@ -264,7 +266,27 @@ class User {
 
 	public function hasImage($type = self::IMAGE_NORMAL) {
 		$photo = $this->getImagePrefix();
-		return file_exists(dirname(__FILE__) . '/../../images/users/' . $photo . $type);
+		$filename = dirname(__FILE__) . '/../../images/users/' . $photo . $type;
+		$base_filename = dirname(__FILE__) . '/../../images/users/' . $photo . self::IMAGE_NORMAL;
+
+		if ($type == self::IMAGE_NORMAL) {
+			return file_exists($base_filename);
+		} elseif (!file_exists($base_filename)) {
+			return false;
+		}
+
+		$am = DummyAvatarsMinifier::getInstance();
+		$dst_w = 1;
+		$dst_h = 1;
+		if ($type == self::IMAGE_SQUARE) {
+			$dst_w = 100;
+			$dst_h = 100;
+		} elseif ($type == self::IMAGE_SQUARE_SMALL) {
+			$dst_w = 20;
+			$dst_h = 20;
+		}
+		$am->minify($base_filename, $filename, $dst_w, $dst_h);
+		return true;
 	}
 
 	public function getImageURL($type = self::IMAGE_NORMAL) {
