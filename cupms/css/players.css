@@ -1,0 +1,13 @@
+#new_player_button {
+	margin-top: 1px;
+	margin-left: 20px;
+	float: left;
+}
+
+#player_selector {
+	float: left;
+}
+
+#user_selector {
+	margin-top: 5px;
+}

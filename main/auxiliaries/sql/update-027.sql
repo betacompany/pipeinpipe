@@ -1,0 +1,2 @@
+ALTER TABLE `p_league` CHANGE `formula` `formula` VARCHAR( 64 ) CHARACTER SET cp1251 COLLATE cp1251_general_ci DEFAULT 'Григорьев';
+UPDATE `p_league` SET `formula` = 'Григорьев' WHERE `id` =1 LIMIT 1;

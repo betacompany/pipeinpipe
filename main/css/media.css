@@ -1,0 +1,298 @@
+img {
+	border: 0;
+}
+
+div {
+	text-align: left;
+}
+
+#media_container {
+	clear: both;
+}
+
+.media_album {
+	float: left;
+	width: 50%;
+	text-align: left;
+	margin-bottom: 20px;
+}
+
+.media_album .title {
+	padding: 5px;
+	font-size: 1.5em;
+	font-weight: bold;
+	margin-right: 20px;
+}
+
+.media_album .description,
+.media_album .preview {
+	padding: 5px;
+	margin-right: 20px;
+}
+
+.media_album .preview img.photo {
+	width: 50px;
+}
+
+.preview .video {
+	background-color: #c7dce3;
+	background-repeat: no-repeat;
+	width: 69px;
+	height: 69px;
+	float: left;
+	margin: 2px;
+}
+
+.preview .video > div {
+	background-image: url('/content/videos/play.png');
+	width: 69px;
+	height: 69px;
+	background-repeat: no-repeat;
+/*	z-index: 2;*/
+}
+
+.photo_preview {
+	float: left;
+	width: 25%;
+	height: 200px;
+	position: relative;
+}
+
+.photo_preview img {
+	max-height: 150px;
+	max-width: 150px;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-opera-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-khtml-border-radius: 2px;
+}
+
+.photo_preview > div {
+	position: absolute;
+	width: auto;
+	height: auto;
+}
+
+.video_preview {
+	float: left;
+	width: 50%;
+	height: 69px;
+	position: relative;
+	margin-bottom: 10px;
+}
+
+.video_preview .left {
+	width: 69px;
+	float: left;
+}
+
+.video_preview .right_wrapper {
+	margin-left: -69px;
+	width: 100%;
+}
+
+.video_preview .right_content {
+	margin-left: 79px;
+	padding: 5px 15px 0px 0px;
+}
+
+.video_preview .title {
+	font-size: 1.2em;
+}
+
+.video_preview .author {
+	margin-top: 5px;
+	font-size: 0.7em;
+}
+
+.media_album_preview .preview .body:after {
+	clear: both;
+    content: '.';
+    display: block;
+    height: 0px;
+    visibility: hidden;
+}
+
+div.zoom {
+	width: 20px;
+	height: 20px;
+	background-image: url('/images/icons/zoom.png');
+	background-repeat: no-repeat;
+	background-position: center center;
+	position: absolute;
+	top: 3px;
+	left: 3px;
+	z-index: 2;
+	display: none;
+	opacity: 0.7;
+}
+
+div.zoom:hover {
+	background-color: #007ca7;
+	padding: 3px;
+	top: 0px;
+	left: 0px;
+	cursor: pointer;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-opera-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-khtml-border-radius: 2px;
+}
+
+.photo_preview:hover div.zoom {
+	display: block;
+}
+
+.paging_wrapper {
+	height: 30px;
+}
+
+.item_wrapper .comments {
+	width: 600px;
+	position: relative;
+	left: 50%;
+	margin-left: -300px;
+	margin-top: 20px;
+}
+
+.item_left {
+	margin-bottom: 20px;
+}
+
+.item_left > div {
+	width: 600px;
+	text-align: center;
+	position: relative;
+	left: 50%;
+	margin-left: -300px;
+}
+
+.item_left img {
+	max-width: 600px;
+	max-height: 600px;
+}
+
+.item_right {
+	overflow: hidden;
+}
+
+.item_right > div {
+	text-align: center;
+}
+
+.item_right img {
+	padding: 5px;
+	max-width: 50px;
+	max-height: 50px;
+	margin: 0 1px;
+	cursor: pointer;
+}
+
+.item_right img:hover {
+	padding: 0;
+	border: 5px #007ca7 solid;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-opera-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-khtml-border-radius: 2px;
+}
+
+.item_right img.selected {
+	padding: 0;
+	border: 5px #8fbc13 solid;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-opera-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-khtml-border-radius: 2px;
+}
+
+.item_wrapper:after {
+	clear: both;
+    content: '.';
+    display: block;
+    height: 0px;
+    visibility: hidden;
+}
+
+.item_left .title {
+	margin-top: 2px;
+	color: #007ca7;
+}
+
+.item_left .author {
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	font-size: 0.7em;
+}
+
+.item_wrapper .tools {
+	position: relative;
+	height: 26px;
+	margin-top: 5px;
+	background-color: #c7dce3;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-opera-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-khtml-border-radius: 2px;
+}
+
+.item_wrapper .tools .zoom {
+	display: block;
+	opacity: 1;
+}
+
+.item_wrapper .tools .evaluation {
+	position: absolute;
+	right: 3px;
+	top: 3px;
+}
+
+#slideshow {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	background-color: #000;
+	z-index: 68;
+	display: none;
+}
+
+#slideshow_bar {
+	margin-top: 7px;
+	height: 63px;
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
+	width: 100%;
+}
+
+#slideshow_bar > div {
+	width: auto;
+}
+
+#slideshow_content {
+	padding: 5px;
+}
+
+#slideshow_close {
+	width: 30px;
+	height: 30px;
+	z-index: 3;
+	position: fixed;
+	right: 5px;
+	top: 5px;
+	background-image: url('/images/icons/cross.png');
+	background-position: center center;
+	background-repeat: no-repeat;
+	opacity: 0.7;
+	cursor: pointer;
+}
+
+#slideshow_close:hover {
+	opacity: 1;
+}

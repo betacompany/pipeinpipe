@@ -1,0 +1,12 @@
+RewriteEngine On
+
+RewriteRule ^(sport|forum)$ /index.php?part=$1 [L]
+
+RewriteRule ^(forum_part|forum_topic)/([0-9]+)$ /index.php?part=$1&id=$2 [L]
+RewriteRule ^(forum_part|forum_topic|sport_rating)/([0-9]+)/page([0-9]+)$ /index.php?part=$1&id=$2&page=$3 [L]
+
+RewriteRule ^(sport_rating|sport_league|sport_competition|sport_cup)/([0-9]+)$ /index.php?part=$1&id=$2 [L]
+RewriteRule ^(sport_league)/([0-9]+)/unlimited$ /index.php?part=$1&id=$2&unlimited=yes [L]
+RewriteRule ^(sport_cup)/([0-9]+)/stage([0-9]+)$ /index.php?part=$1&id=$2&stage=$3 [L]
+
+RewriteRule ^procs/proc_main.php$ /mobile_proc_proxy.php?proxy_proc=proc_main&mobile=1 [QSA,L]

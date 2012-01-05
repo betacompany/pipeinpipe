@@ -1,0 +1,13 @@
+#old_browser {
+	width: 900px;
+	height: 350px;
+	margin-left: -450px;
+	position: relative;
+	left: 50%;
+	top: 20px;
+	overflow: hidden;
+}
+
+#layout {
+	display: none !important;
+}

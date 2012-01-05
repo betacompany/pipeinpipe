@@ -1,0 +1,79 @@
+div.fb_icon,
+div.tw_icon,
+div.vk_icon {
+	width: 20px;
+	height: 20px;
+	background-repeat: no-repeat;
+	float: left;
+	margin: 2px;
+	cursor: pointer;
+	opacity: 0.5;
+}
+
+div.sign_in {
+	width: 20px;
+	height: 20px;
+	background-repeat: no-repeat;
+	float: left;
+	margin: 2px;
+	cursor: pointer;
+}
+
+div.fb_icon {
+	background-image: url('/images/social/fb20.png');
+}
+
+div.tw_icon {
+	background-image: url('/images/social/tw20.png');
+}
+
+div.vk_icon {
+	background-image: url('/images/social/vk20.png');
+}
+
+div.sign_in {
+	background-image: url('/images/icons/sign_in.png');
+}
+
+div.msg_edit,
+div.msg_remove {
+	width: 15px;
+	height: 15px;
+
+	float: left;
+	cursor: pointer;
+	margin: 2px;
+	opacity: 0.5;
+
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+    -khtml-border-radius: 2px;
+    -opera-border-radius: 2px;
+    -moz-border-radius: 2px;
+}
+
+div.msg_edit {
+	background-color: #f7ab57;
+}
+
+div.msg_remove {
+	background-color: #bb1245;
+}
+
+div.msg_edit:hover,
+div.msg_remove:hover {
+	opacity: 1.0;
+}
+
+div.star_empty,
+div.star_solid {
+	width: 20px;
+	height: 20px;
+	float: left;
+	background-image: url('/images/icons/star_empty.png');
+}
+
+div.star_solid {
+	background-image: url('/images/icons/star_solid.png');
+}
+

@@ -1,0 +1,9 @@
+.formula_selector_button {
+	float: left;
+	margin-left: 5px;
+	margin-top: 1px;
+}
+
+#formula_selector {
+	float: left;
+}

@@ -1,0 +1,13 @@
+.bg_img {
+    background-repeat: no-repeat;
+	width: 209px;
+	height: 300px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	z-index: -1;
+}
+
+#bg_002 {
+	background-image: url('002.png');
+}

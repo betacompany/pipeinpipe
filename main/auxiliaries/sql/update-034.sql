@@ -1,0 +1,1 @@
+CREATE VIEW `pv_content_group` AS SELECT * FROM `p_content_group` WHERE `removed`=0;

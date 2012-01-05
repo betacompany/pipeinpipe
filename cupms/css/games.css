@@ -1,0 +1,136 @@
+div.playoff {
+	width: 100%;
+	height: 500px;
+	position: relative;
+	float: left;
+	overflow: auto;
+}
+
+div.game {
+	position: absolute;
+	width: 150px;
+	height: 30px;
+	background-color: #eee;
+	padding: 2px;
+	cursor: pointer;
+}
+
+div.game:hover {
+	background-color: #ddd;
+}
+
+div.game > div {
+	width: 100%;
+	height: 15px;
+	float: left;
+}
+
+div.game > div > div {
+	float: left;
+	width: 20px;
+	height: inherit;
+	text-align: right;
+}
+
+div.game > div > div:first-child {
+	width: 130px;
+	overflow: hidden;
+	text-align: left;
+}
+
+div.game_add {
+	background-image: url('../images/list_pale_add.png');
+	width: 10px;
+	height: 10px;
+	position: absolute;
+	cursor: pointer;
+}
+
+div.game_add:hover {
+	background-image: url('../images/list_add.png');
+}
+
+div.non_editable {
+	cursor: auto;
+}
+
+div.non_editable:hover {
+	background-color: #eee;
+}
+
+div.grid {
+	margin-top: 10px;
+	float: left;
+	width: 100%;
+}
+
+table.grid {
+	border-spacing: 0;
+}
+
+table.grid td, th {
+	text-align: center;
+	border: 0;
+	border-right: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	font-weight: normal;
+}
+
+table.grid td {
+	width: 50px;
+	height: 31px;
+}
+
+table.grid td:first-child {
+	width: auto;
+	text-align: left;
+}
+
+table.grid td.game:hover {
+	background-color: #ddd;
+}
+
+#edit_match_panel {
+	float: left;
+	width: 650px;
+	height: 35px;
+	background-image: url('../images/blue_panel.png');
+	display: none;
+	margin-left:  20px;
+}
+
+#edit_match_panel_content {
+	margin-left: 10px;
+	margin-top: 6px;
+}
+
+.player_selector_play_off {
+	width: 206px;
+	float: left;
+}
+
+.score_play_off {
+	margin-left: 3px;
+	width: 69px;
+	float: left;
+}
+
+.option_buttons {
+	float: left;
+	margin-left: 5px;
+}
+
+.player_selector_regularity {
+	width: 160px;
+	display: none;
+}
+
+.score_regularity input{
+	width: 15px;
+	border: none;
+	height: 14px;
+}
+
+.score_regularity input:first-child{
+	text-align: right;
+}

@@ -1,0 +1,400 @@
+#profile_container {
+	text-align: left;
+	position: relative;
+}
+
+.info_wrapper {
+	width: 100%;
+	margin-left: -200px;
+	float: right;
+}
+
+.info_container {
+	margin-left: 220px;
+}
+
+.main_info {
+	margin: 10px 0px 10px 7px;
+}
+
+.left_column {
+	float: left;
+	margin-top: 10px;
+	width: 200px;
+}
+
+.left_column img.photo {
+	width: 200px;
+
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+    -khtml-border-radius: 2px;
+    -opera-border-radius: 2px;
+    -moz-border-radius: 2px;
+}
+
+h1 {
+	margin-left: 3px;
+	margin-bottom: 0px;
+}
+
+.info_wrapper .place {
+	margin-left: 3px;
+	font-size: 0.9em;
+	color: #007ca7;
+	padding-right: 3px;
+}
+
+.leagues .league {
+	position: relative;
+	height: 60px;
+}
+
+.leagues .league.large {
+	height: 100px;
+}
+
+.leagues .league .legend {
+	position: absolute;
+	bottom: 20px;
+	left: 0;
+	width: 190px;
+	background-color: #c7dce3;
+	padding: 2px 5px;
+	font-weight: bold;
+	
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+    -khtml-border-radius: 2px;
+    -opera-border-radius: 2px;
+    -moz-border-radius: 2px;
+}
+
+.leagues .league .place {
+	position: absolute;
+	z-index: 2;
+	right: 5px;
+	bottom: 8px;
+	font-size: 2.5em;
+	color: #007ca7;
+}
+
+.leagues .league .points {
+	position: absolute;
+	z-index: 3;
+	bottom: 0;
+	right: 5px;
+	font-size: 0.8em;
+	color: #007ca7;
+}
+
+.leagues .league .trophies {
+	position: absolute;
+	bottom: 43px;
+	left: 0px;
+	width: 200px;
+	height: 50px;
+	overflow: hidden;
+}
+
+.leagues .league .trophy {
+	width: 25px;
+	float: left;
+	padding: 5px 5px 0px 5px;
+	text-align: center;
+}
+
+.leagues .league .trophy img {
+	max-height: 45px;
+	max-width: 25px;
+}
+
+.leagues .league .trophy:hover {
+	padding: 0px 5px;
+}
+
+.leagues .league .trophy:hover img {
+	max-height: 50px;
+	max-width: 30px;
+}
+
+.slide_block .title {
+	font-size: 1em;
+}
+
+.competitions {
+	overflow: hidden;
+}
+
+.competitions .competition {
+	float: left;
+	height: 120px;
+	width: 150px;
+	position: relative;
+}
+
+.competitions a {
+	text-decoration: none;
+}
+
+.competitions .competition:hover {
+	background: #c7dce3;
+	border-radius: 3px;
+	-khtml-border-radius: 3px;
+	-opera-border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+
+.competitions .competition img {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	max-height: 80px;
+	max-width: 30px;
+}
+
+.competitions .competition .title {
+	position: absolute;
+	left: 45px;
+	top: 20px;
+	font-size: 0.8em;
+}
+
+.competitions .competition .place {
+	position: absolute;
+	right: 0;
+	bottom: 10px;
+}
+
+.competitions .competition .place .total {
+	font-size: 0.7em;
+	line-height: 1em;
+}
+
+.competitions .competition .place .pl {
+	font-size: 1.7em;
+}
+
+table.stats {
+	border: 0;
+	margin: 5px 5px 20px 5px;
+	padding: 0;
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+
+table.stats th,
+table.stats td {
+	width: 80px;
+	text-align: center;
+	border: 1px solid #007ca7;
+}
+
+table.stats th {
+	font-size: 0.8em;
+	border-top: 0;
+}
+
+table.stats td {
+	font-size: 2em;
+}
+
+table.stats td:first-child,
+table.stats th:first-child {
+	width: 100px;
+	font-size: 1em;
+	text-align: left;
+	border-left: 0;
+}
+
+table.stats .zero {
+	color: #c7dce3;
+}
+
+#person .contacts_wrapper {
+	margin: 10px 10px 0px 10px;
+	overflow: hidden;
+}
+
+#person .contacts {
+	height: 80px;
+}
+
+#person .contact {
+	float: left;
+	width: 60px;
+	margin-right: 10px;
+}
+
+#person .contacts a {
+	text-decoration: none;
+}
+
+#person .contact .value {
+	display: none;
+	width: 200px;
+}
+
+div.stats {
+	width: 100%;
+}
+
+div.stats:after {
+	clear: both;
+	content: '.';
+	display: block;
+	height: 0px;
+	visibility: hidden;
+}
+
+div.stats > div {
+	width: 20%;
+	float: left;
+}
+
+div.stats .stat {	
+	background-color: #c7dce3;
+	height: 120px;
+	margin: 5px;
+	
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+    -khtml-border-radius: 2px;
+    -opera-border-radius: 2px;
+    -moz-border-radius: 2px;
+}
+
+div.stats .stat div {
+	text-align: center;
+	padding: 3px;
+}
+
+div.stats .stat .title {
+	font-weight: bold;
+	font-size: 0.8em;
+	height: 30px;
+	padding: 5px;
+}
+
+div.stats .stat .abs {
+	font-size: 2.1em;
+}
+
+div.stats .stat .rel {
+	font-size: 1.2em;
+}
+
+#edit .properties {
+	margin: 0;
+	padding: 0;
+	margin-top: 10px;
+}
+
+#edit h2 {
+	font-size: 1.2em;
+	margin-left: 10px;
+}
+
+#edit .property {
+	height: 35px;
+	list-style: none;
+	margin-left: 20px;
+}
+
+#edit .label,
+#edit .input {
+	width: 150px;
+	display: block;
+	float: left;
+}
+
+#edit .input {
+	width: auto;
+}
+
+#edit .input input {
+	padding: 1px;
+	margin: 0;
+	font-family: inherit;
+	width: 200px;
+}
+
+#edit .button {
+	display: none;
+	font-size: 0.8em;
+	width: 60px;
+	float: left;
+	margin: 2px 0px 0px 5px;
+}
+
+#photo_editor {
+	margin: 10px 0px 10px 20px;
+}
+
+img {
+	border: 0;
+}
+
+#photo_mini {
+	margin: 5px 0px 5px 15px;
+	padding: 5px;
+	width: 125px;
+	
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+    -khtml-border-radius: 2px;
+    -opera-border-radius: 2px;
+    -moz-border-radius: 2px;
+}
+
+#photo_mini:hover {
+	background-color: #c7dce3;
+}
+
+#photo_mini.checked {
+	background-color: #007ca7;
+}
+
+#photo_container {
+	position: relative;
+	width: 204px;
+	margin-top: -2px;
+	margin-left: -2px;
+}
+
+#photo_container img {
+	position: absolute;
+	left: 2px;
+	top: 2px;
+}
+
+#photo_container #photo_border {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100px;
+	height: 100px;
+	border: 2px #007ca7 solid;
+	z-index: 69;
+	display: none;
+}
+
+#photo_save {
+	display: none;
+	z-index: 69;
+	position: relative;
+}
+
+#person .data_wrapper {
+	margin: 10px 0px 15px 10px;
+}
+
+#person .data_wrapper div {
+	font-size: 0.9em;
+	color: #007ca7;
+}
+
+#person .data_wrapper div span {
+	font-weight: bold;
+}

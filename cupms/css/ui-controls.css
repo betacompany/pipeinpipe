@@ -1,0 +1,113 @@
+div.ui-selector {
+	width: 300px;
+	font-weight: normal;
+	border: 1px solid #666;
+	height: 20px;
+	position: relative;
+	background-color: #fff;
+	margin: 0;
+	margin-top: 1px;
+}
+
+div.ui-selector > div {
+	float: left;
+	width: 20px;
+	height: 20px;
+	background-image: url('../images/list_gray_r.png');
+	background-repeat: no-repeat;
+	background-position: center;
+	cursor: pointer;
+}
+
+div.ui-selector > div:hover {
+	background-image: url('../images/list_black_r.png');
+}
+
+div.ui-selector > div:first-child:hover {
+	background-image: none;
+}
+
+div.ui-selector > div:first-child {
+	width: 280px;
+	padding: 0;
+	background-image: none;
+}
+
+div.ui-selector > div:first-child > input {
+	border: 0;
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	height: 20px;
+}
+
+div.ui-selector > div:first-child > div {
+	padding: 2px;
+	width: 100%;
+	height: 20px;
+	cursor: pointer;
+}
+
+
+div.ui-options {
+	position: absolute;
+	z-index: 1000;
+	border-left: 1px solid #666;
+	border-right: 1px solid #666;
+	border-bottom: 1px solid #666;
+	background-color: #fff;
+	opacity: 0.9;
+	width: 300px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+div.ui-options > div {
+	padding: 2px;
+	cursor: pointer;
+}
+
+div.ui-options > div:hover {
+	background-color: #bbb;
+}
+
+div.ui-options > div + div {
+	border-top: 1px solid #eee;
+}
+
+.default_button {
+	background-image: url('/images/button1.png');
+	background-repeat: no-repeat;
+	height: 20px;
+	width: auto;
+	float: left;
+	cursor: pointer;
+	opacity: 0.8
+}
+
+.default_button .button_inner {
+	background-image: url('/images/button1_r.png');
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-position: right;
+	height: 16px;
+	padding: 2px 4px;
+}
+
+.default_button:hover {
+	opacity: 1;
+}
+
+.default_button:hover .button_inner {
+
+}
+
+.default_fading_button {
+	width: 100px;
+	color: white;
+	background-color: #447;
+	font-size: 1.3em;
+	font-weight: 600;
+	padding: 10px;
+	margin: 5px;
+}

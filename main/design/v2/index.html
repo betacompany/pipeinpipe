@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Вариант дизайна #2</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
+    <link rel="stylesheet" href="main.css" type="text/css" />
+	<script type="text/javascript" src="../../js/jquery-1.4.2.min.js"></script>
+    <script src="http://vkontakte.ru/js/api/openapi.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		// save normal document resolution
+		$(window).resize(function () {
+			var w = $(window).width();
+			if (w < 1000) {
+				$('#layout').width(1000);
+			} else {
+				$('#layout').css('width', '100%');
+			}
+		});
+	</script>
+  </head>
+  <body>
+    <div id="layout">
+      <div id="header">
+        <div id="top_bar">
+		  <div id="login_button" onclick="VK.Auth.login(authInfo);"></div>
+		</div>
+        <div id="menu_body">
+          <div class="menu_empty"></div>
+          <div id="menu_container">
+            <div id="menu__index" class="menu_item selected">
+              <div class="item_text">главная</div>
+              <div class="corner_lt"></div>
+              <div class="corner_rt"></div>
+            </div>
+            <div id="menu__sport" class="menu_item">
+              <div class="item_text">спорт</div>
+              <div class="corner_lt"></div>
+              <div class="corner_rt"></div>
+            </div>
+            <div id="menu__life" class="menu_item">
+              <div class="item_text">жизнь</div>
+              <div class="corner_lt"></div>
+              <div class="corner_rt"></div>
+            </div>
+            <div id="menu__media" class="menu_item">
+              <div class="item_text">медиа</div>
+              <div class="corner_lt"></div>
+              <div class="corner_rt"></div>
+            </div>
+			<div id="menu__forum" class="menu_item" onclick="$('.submenu_item').slideToggle();">
+              <div class="item_text">форум</div>
+              <div class="corner_lt"></div>
+              <div class="corner_rt"></div>
+            </div>
+          </div>
+          <div class="menu_empty"></div>
+        </div>
+        <div id="menu_subbody"></div>
+	    <div id="submenu">
+          <div class="submenu_item">
+            <div class="submenu_item_text">самая главная</div>
+		    <div class="corner_lb"></div>
+		    <div class="corner_rb"></div>
+		  </div>
+		  <div class="submenu_item">
+            <div class="submenu_item_text">регистрация</div>
+		    <div class="corner_lb"></div>
+		    <div class="corner_rb"></div>
+		  </div>
+		  <div class="submenu_item">
+            <div class="submenu_item_text">текст</div>
+		    <div class="corner_lb"></div>
+		    <div class="corner_rb"></div>
+		  </div>
+		  <div class="submenu_item">
+            <div class="submenu_item_text">текст</div>
+		    <div class="corner_lb"></div>
+		    <div class="corner_rb"></div>
+		  </div>
+		  <div class="submenu_item">
+            <div class="submenu_item_text">текст</div>
+		    <div class="corner_lb"></div>
+		    <div class="corner_rb"></div>
+		  </div>
+	    </div>
+      </div>
+      <div id="body">
+
+		  
+
+<script type="text/javascript">
+  /*VK.init({
+    apiId: 1969436
+  });
+
+function authInfo(response) {
+  if (response.session) {
+    alert('user: '+response.session.mid);
+  } else {
+    alert('not auth');
+  }
+}
+VK.Auth.getLoginStatus(authInfo);
+VK.UI.button('login_button');*/
+</script>
+
+
+	  </div>
+      <div id="footer"></div>
+    </div>
+  </body>
+</html>

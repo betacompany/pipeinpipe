@@ -1,0 +1,250 @@
+div.ui-selector {
+	width: 300px;
+	font-weight: normal;
+	border: 1px solid #007ca7;
+	height: 20px;
+	position: relative;
+	background-color: #fff;
+	margin: 0;
+	margin-top: 1px;
+
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+    -khtml-border-radius: 2px;
+    -opera-border-radius: 2px;
+    -moz-border-radius: 2px;
+}
+
+div.ui-selector > div {
+	float: left;
+	width: 20px;
+	height: 20px;
+	background-image: url('/images/icons/arrows_small.png');
+	background-repeat: no-repeat;
+	background-position: 0px 0px;
+	cursor: pointer;
+}
+
+div.ui-selector > div:hover {
+	background-image: url('/images/icons/arrows_small.png');
+	background-position: 0px -20px;
+}
+
+div.ui-selector > div:first-child:hover {
+	background-image: none;
+}
+
+div.ui-selector > div:first-child {
+	width: 280px;
+	padding: 0;
+	background-image: none;
+}
+
+div.ui-selector > div:first-child > input {
+	border: 0 !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	width: 100% !important;
+	height: 20px !important;
+}
+
+div.ui-selector > div:first-child > div {
+	padding: 2px !important;
+	width: 100% !important;
+	height: 20px !important;
+	cursor: pointer;
+	font-size: 0.8em;
+}
+
+
+div.ui-options {
+	position: absolute;
+	z-index: 1000;
+	border-left: 1px solid #c7dce3;
+	border-right: 1px solid #c7dce3;
+	border-bottom: 1px solid #c7dce3;
+	background-color: #fff;
+	opacity: 0.9;
+	width: 300px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+div.ui-options > div {
+	padding: 2px;
+	cursor: pointer;
+	font-size: 0.9em;
+	color: #007ca7;
+}
+
+div.ui-options > div:hover {
+	background-color: #c7dce3;
+}
+
+div.ui-options > div + div {
+	border-top: 1px solid #c7dce3;
+}
+
+.default_button {
+	background-image: url('/images/button1.png');
+	background-repeat: no-repeat;
+	height: 20px;
+	width: auto;
+	float: left;
+	cursor: pointer;
+	opacity: 0.8
+}
+
+.default_button .button_inner {
+	background-image: url('/images/button1_r.png');
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-position: right;
+	height: 16px;
+	padding: 2px 4px;
+}
+
+.default_button:hover {
+	opacity: 1;
+}
+
+.default_button:hover .button_inner {
+
+}
+
+.default_fading_button {
+	width: 100px;
+	color: white;
+	background-color: #447;
+	font-size: 1.3em;
+	font-weight: 600;
+	padding: 10px;
+	margin: 5px;
+}
+
+div.checkbox {
+	width: 16px;
+	height: 16px;
+	border: 2px solid #c7dce3;
+	cursor: pointer;
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+    -khtml-border-radius: 2px;
+    -opera-border-radius: 2px;
+    -moz-border-radius: 2px;
+}
+
+div.checkbox:hover {
+	border-color: #007ca7;
+}
+
+div.checkbox.on {
+	/* FIXME */
+	background-image: url('/images/icons/checkbox.png');
+	border-color: #007ca7;
+}
+
+div.ui-date-selector {
+	position: relative;
+	float: left;
+	width: 150px;
+}
+
+div.ui-date-selector .date:hover {
+	cursor: pointer;
+}
+
+div.ui-date-selector .grid {
+	position: absolute;
+	top: 25px;
+	left: 0;
+	background-color: #fff;
+	border: #007ca7 solid 1px;
+	z-index: 69;
+	
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+    -khtml-border-radius: 2px;
+    -opera-border-radius: 2px;
+    -moz-border-radius: 2px;
+}
+
+div.ui-date-selector .grid table {
+	border: #c7dce3 1px solid;
+	padding: 2px;
+	width: 205px;
+	height: 172px;
+}
+
+div.ui-date-selector .grid td,
+div.ui-date-selector .grid th {
+	font-size: 0.8em;
+	padding: 5px;
+	vertical-align: middle;
+	text-align: center;
+}
+
+div.ui-date-selector .grid th {
+	height: 15px;
+}
+
+div.ui-date-selector .grid td.d.checked {
+	font-weight: bold;
+	color: #007ca7;
+}
+
+div.ui-date-selector .grid td.d:hover,
+div.ui-date-selector .grid td.m:hover,
+div.ui-date-selector .grid td.y:hover,
+div.ui-date-selector .grid td.y20:hover {
+	background-color: #007ca7;
+	color: #fff;
+	cursor: pointer;
+	
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+    -khtml-border-radius: 2px;
+    -opera-border-radius: 2px;
+    -moz-border-radius: 2px;
+}
+
+div.ui-date-selector .grid td.off {
+	color: #999;
+}
+
+div.ui-date-selector .grid td.d.selected {
+	background-color: #8fbc13;
+	color: #fff;
+
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+    -khtml-border-radius: 2px;
+    -opera-border-radius: 2px;
+    -moz-border-radius: 2px;
+}
+
+div.ui-date-selector .grid td.d.selected:hover {
+	background-color: #b3d45a;
+}
+
+div.ui-date-selector .grid td.off:hover {
+	background-color: #fff;
+	cursor: default;
+	color: #999;
+}
+
+div.ui-date-selector .grid th:hover {
+	background-color: #c7dce3;
+	cursor: pointer;
+	
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+    -khtml-border-radius: 2px;
+    -opera-border-radius: 2px;
+    -moz-border-radius: 2px;
+}
+
+div.ui-date-selector .grid th.off:hover {
+	background-color: #fff;
+	cursor: default;
+}

@@ -1,0 +1,141 @@
+#sign_up_container .left_column {
+	width: 100%;
+	margin-right: -300px;
+	float: left;
+}
+
+#sign_up_container .left_column > form {
+	margin-right: 350px;
+}
+
+#sign_up_container .right_column {
+	float: right;
+	width: 300px;
+}
+
+#sign_up_container .block {
+	margin-bottom: 20px;
+}
+
+#sign_up_container .block > div {
+	height: 2em;
+}
+
+#sign_up_container .block > div:after {
+	clear: both;
+	content: '.';
+	display: block;
+	height: 0px;
+	visibility: hidden;
+}
+
+#sign_up_container .block .elem {
+	width: 100%;
+	margin-left: -50%;
+	float: right;
+	position: relative;
+}
+
+#sign_up_container .block .elem > div {
+	margin-left: 50%;
+}
+
+#sign_up_container .block .elem > .notify {
+	margin: 0;
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	right: -30px;
+	top: 3px;
+
+	background-image: url('../images/loading/bg_loading.gif');
+
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-opera-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-khtml-border-radius: 2px;
+}
+
+#sign_up_container .block .elem input {
+	width: 100%;
+	border: #007ca7 1px solid;
+	padding: 2px;
+
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-opera-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	-khtml-border-radius: 2px;
+}
+
+#sign_up_container .block .elem input.ok {
+	padding: 1px;
+	border-color: #8fbc13;
+	border-width: 2px;
+}
+
+#sign_up_container .block .elem input.wrong {
+	padding: 1px;
+	border-color: #bb1245;
+	border-width: 2px;
+}
+
+#sign_up_container .block .label {
+	width: 50%;
+	margin-left: 0;
+	float: left;
+}
+
+#sign_up_container .block .label > div {
+	text-align: right;
+	padding-right: 20px;
+	margin-top: 2px;
+}
+
+#social_icons {
+	height: 60px;
+}
+
+.vk_icon_large {
+	width: 60px;
+	height: 60px;
+	background-image: url('/images/social/vkontakte.png');
+	background-repeat: no-repeat;
+	opacity: 0.5;
+	cursor: pointer;
+	position: relative;
+}
+
+#social_icons .social_id {
+	position: absolute;
+	bottom: 0px;
+	margin-left: -50%;
+	left: 30px;
+	color: #007ca7;
+	font-weight: bold;
+}
+
+#sign_up_button {
+	background-color: #c7dce3;
+	border: 0 !important;
+	padding: 5px !important;
+	font-size: 1.2em;
+	color: #007ca7;
+	cursor: pointer;
+}
+
+#sign_up_button:hover {
+	background-color: #c4a1bf;
+	color: #7c1e6f;
+}
+
+#sign_up_button[disabled]:hover {
+	background-color: #c7dce3;
+	color: #fff;
+}
+
+#sign_up_button[disabled] {
+	background-color: #c7dce3;
+	color: #fff;
+}

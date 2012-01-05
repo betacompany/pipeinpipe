@@ -1,0 +1,1 @@
+ALTER TABLE  `p_man` DROP  `is_approved`;

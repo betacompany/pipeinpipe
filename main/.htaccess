@@ -1,0 +1,107 @@
+# Displaying PHP errors
+# php_flag display_errors off
+
+RewriteEngine On
+
+# short URLs for pipemen and users
+RewriteRule ^id([0-9]+)$ /profile.php?user_id=$1 [L]
+RewriteRule ^pm([0-9]+)$ /profile.php?player_id=$1 [L]
+
+RewriteRule ^profile$ /profile.php [L]
+RewriteRule ^profile/edit$ /profile.php?edit=1 [L]
+
+# sport
+RewriteRule ^sport$ /sport.php [L]
+RewriteRule ^sport/$ /sport.php [L]
+RewriteRule ^sport/rules$ /sport.php?part=rules [L]
+RewriteRule ^sport/rules/$ /sport.php?part=rules [L]
+RewriteRule ^sport/faq$ /sport.php?part=faq [L]
+RewriteRule ^sport/faq/$ /sport.php?part=faq [L]
+RewriteRule ^sport/league$ /sport.php?part=league [L]
+RewriteRule ^sport/league/$ /sport.php?part=league [L]
+RewriteRule ^sport/league/([0-9]+)$ /sport.php?part=league&league_id=$1 [L]
+RewriteRule ^sport/league/([0-9]+)/$ /sport.php?part=league&league_id=$1 [L]
+RewriteRule ^sport/league/([0-9]+)/competition$ /sport.php?part=competition&league_id=$1 [L]
+RewriteRule ^sport/league/([0-9]+)/competition/$ /sport.php?part=competition&league_id=$1 [L]
+RewriteRule ^sport/league/([0-9]+)/competition/([0-9]+)$ /sport.php?part=competition&league_id=$1&comp_id=$2 [L]
+RewriteRule ^sport/league/([0-9]+)/competition/([0-9]+)/$ /sport.php?part=competition&league_id=$1&comp_id=$2 [L]
+RewriteRule ^sport/rating$ /sport.php?part=rating [L]
+RewriteRule ^sport/rating/$ /sport.php?part=rating [L]
+RewriteRule ^sport/rating/formula$ /sport.php?part=formula [L]
+RewriteRule ^sport/rating/formula/$ /sport.php?part=formula [L]
+RewriteRule ^sport/rating/formula/([^/]*)$ /sport.php?part=formula&formula=$1 [L]
+RewriteRule ^sport/rating/formula/([^/]*)/$ /sport.php?part=formula&formula=$1 [L]
+RewriteRule ^sport/statistics$ /sport.php?part=statistics [L]
+RewriteRule ^sport/statistics/$ /sport.php?part=statistics [L]
+RewriteRule ^sport/pipemen$ /sport.php?part=pipemen [L]
+RewriteRule ^sport/pipemen/$ /sport.php?part=pipemen [L]
+
+# life
+RewriteRule ^life$ /life.php [L]
+RewriteRule ^life/$ /life.php [L]
+RewriteRule ^life/blog$ /life.php?part=blog [L]
+RewriteRule ^life/blog/$ /life.php?part=blog [L]
+RewriteRule ^life/blog/([0-9]+)$ /life.php?part=blog&post_id=$1 [L]
+RewriteRule ^life/blog/([0-9]+)/$ /life.php?part=blog&post_id=$1 [L]
+RewriteRule ^life/blog/([0-9]+)/edit$ /life.php?part=blog_editor&post_id=$1 [L]
+RewriteRule ^life/blog/([0-9]+)/edit/$ /life.php?part=blog_editor&post_id=$1 [L]
+RewriteRule ^life/blog/new /life.php?part=blog_editor [L]
+RewriteRule ^life/comments$ /life.php?part=comments [L]
+RewriteRule ^life/comments/$ /life.php?part=comments [L]
+RewriteRule ^life/people$ /life.php?part=people [L]
+RewriteRule ^life/people/$ /life.php?part=people [L]
+
+# media
+RewriteRule ^media$ /media.php [L]
+RewriteRule ^media/$ /media.php [L]
+RewriteRule ^media/photo$ /media.php?part=photo [L]
+RewriteRule ^media/photo/$ /media.php?part=photo [L]
+RewriteRule ^media/video$ /media.php?part=video [L]
+RewriteRule ^media/video/$ /media.php?part=video [L]
+RewriteRule ^media/(photo|video)/album([0-9]+)$ /media.php?part=$1&group_id=$2 [L]
+RewriteRule ^media/(photo|video)/album([0-9]+)/$ /media.php?part=$1&group_id=$2 [L]
+RewriteRule ^media/(photo|video)/album([0-9]+)/([0-9]+)$ /media.php?part=$1&group_id=$2&item_id=$3 [L]
+RewriteRule ^media/download$ /media.php?part=download [L]
+
+# forum
+RewriteRule ^forum$ /forum.php [L]
+RewriteRule ^forum/$ /forum.php [L]
+RewriteRule ^forum/part([0-9]+)$ /forum.php?forum_action=part&part_id=$1 [L]
+RewriteRule ^forum/part([0-9]+)/$ /forum.php?forum_action=part&part_id=$1 [L]
+RewriteRule ^forum/part([0-9]+)/topic([0-9]+)$ /forum.php?forum_action=topic&part_id=$1&topic_id=$2 [L]
+RewriteRule ^forum/part([0-9]+)/topic([0-9]+)/$ /forum.php?forum_action=topic&part_id=$1&topic_id=$2 [L]
+
+# about
+RewriteRule ^about$ /page.php?part=about [L]
+RewriteRule ^about/$ /page.php?part=about [L]
+
+# signing out
+RewriteRule ^sign_out$ /procs/proc_main.php?method=sign_out [L]
+RewriteRule ^sign_out/$ /procs/proc_main.php?method=sign_out [L]
+
+# signing up
+RewriteRule ^sign_up$ /sign_up.php [L]
+RewriteRule ^sign_up/$ /sign_up.php [L]
+
+# JS closure compiling
+# RewriteRule ^js/([^\.]*.js)$ /js_compiled/$1.js [L]
+# RewriteRule ^js/(jquery[^\.].js)$ /js/$1 [L]
+
+ErrorDocument 404 http://main.pipev4.ru/error_docs/404.html
+ErrorDocument 403 http://main.pipev4.ru/error_docs/403.html
+ErrorDocument 500 http://main.pipev4.ru/error_docs/500.html
+
+# ErrorDocument 404 http://pipeinpipe.info/error_docs/404.html
+# ErrorDocument 403 http://pipeinpipe.info/error_docs/403.html
+# ErrorDocument 500 http://pipeinpipe.info/error_docs/500.html
+
+# Redirects from old URLs
+RedirectMatch 301 /sport/wpr/([0-9]+)$ /pm$1
+RedirectMatch 301 /people/([0-9]+)$ /id$1
+RedirectMatch 301 /sport/cups/([0-9]+)$ /sport/league/1
+
+# Some mistakes correction
+RedirectMatch /sport/league/([0-9]+)/competition$ /sport/league/$1
+RedirectMatch /sport/league/([0-9]+)/competition/$ /sport/league/$1
+
+RewriteRule ^sport/rating/([0-9]+)-([0-9|-]+).csv$ /procs/proc_sport_rating.php?method=get_rating_csv&league_id=$1&date=$2 [L]

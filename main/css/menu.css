@@ -1,0 +1,187 @@
+#menu {
+	height: 100px;
+	font-family: Corbel, Verdana;
+	font-size: 12pt;
+}
+
+#menu_body {
+	width: 100%;
+	height: 50px;
+}
+
+#submenu_body {
+	width: 100%;
+	height: 30px;
+}
+
+/* isn't used now
+.menu_space {
+	float: left;
+	width: 10%;
+	height: inherit;
+}*/
+
+#menu_container, #submenu_container {
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+	min-width: 755px; /* 80% of 944px, which is min-width of #layout */
+	max-width: 1000px; /* could be adjusted by heart */
+	height: inherit;
+}
+
+#menu_container .opened {
+	background-color: #8fbc13;
+}
+
+#menu_container a {
+	text-decoration: none;
+}
+
+#submenu_container a {
+	text-decoration: none;
+}
+
+.menu_item {
+	position: relative;
+	float: left;
+	width: 20%;
+	height: inherit;
+	background-color: #007ca7;
+}
+
+.item_text_wrapper {
+	background-image: url('../images/corners/fff/rt.png');
+	background-repeat: no-repeat;
+	background-position: top right;
+	padding-top: 10px;
+	padding-left: 15px;
+	height: 40px;
+}
+
+.item_text {
+	border-color: #fff;
+	border-style: solid;
+	border-top: 0;
+	border-bottom: 0;
+	border-left-width: 2px;
+	border-right-width: 2px;
+	color: #fff;
+	font-size: 1.8em;
+	font-weight: normal;
+	background-image: url('../images/corners/fff/lt.png');
+	background-repeat: no-repeat;
+	background-position: top left;
+}
+
+#menu_index > .item_text {
+	border-left-width: 0px;
+	border-right-width: 4px;
+}
+
+#menu_sport > .item_text {
+	border-left-width: 1px;
+	border-right-width: 3px;
+}
+
+#menu_media > .item_text {
+	border-left-width: 3px;
+	border-right-width: 1px;
+}
+
+#menu_forum > .item_text {
+	border-left-width: 4px;
+	border-right-width: 0px;
+}
+
+#menu_detach_bar {
+	width: 100%;
+	height: 10px;
+	background-color: #8fbc13;
+}
+
+#submenu_container .submenu_item {
+	position: relative;
+	width: auto;
+	background-color: #007ca7;
+	height: inherit;
+	float: left;
+	background-image: url('../images/corners/fff_small/lb.png');
+	background-repeat: no-repeat;
+	background-position: left bottom;
+}
+
+#submenu_container .opened {
+	background-color: #8fbc13;
+}
+
+#submenu_container .white {
+	background-color: #fff;
+	padding: 5px;
+}
+
+#submenu_container .white:hover {
+	background-color: #fff;
+}
+
+.submenu_item_text {
+	padding: 5px;
+	padding-left: 15px;
+	padding-right: 15px;
+	color: #fff;
+	border-right: 2px solid #fff;
+	height: 20px;
+	background-image: url('../images/corners/fff_small/rb.png');
+	background-repeat: no-repeat;
+	background-position: right bottom;
+}
+
+
+#submenu_index,
+#submenu_sport,
+#submenu_life,
+#submenu_media,
+#submenu_forum {
+	width: auto;
+	float: left;
+}
+
+#submenu_index {
+	position: relative;
+	left: 0;
+}
+
+#submenu_sport {
+	position: relative;
+	left: 10%;
+}
+
+#submenu_life {
+	position: relative;
+	left: 40%;
+}
+
+#submenu_media {
+	position: relative;
+	left: 50%;
+}
+
+#forum_new, #life_new {
+	display: none;
+	position: absolute;
+	top: -10px;
+	right: 15px;
+	height: 14px;
+	color: #fff;
+	background-color: #8fbc13;
+	padding: 3px;
+	font-weight: bold;
+	font-family: Tahoma;
+	font-size: 9pt;
+
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+    -khtml-border-radius: 2px;
+    -opera-border-radius: 2px;
+    -moz-border-radius: 2px;
+}

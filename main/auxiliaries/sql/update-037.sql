@@ -1,0 +1,1 @@
+UPDATE  `ortemij`.`p_cup` SET  `type` =  'playoff' WHERE  `p_cup`.`id` =11 LIMIT 1 ;

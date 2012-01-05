@@ -1,0 +1,158 @@
+#content {
+    padding: 5px;
+}
+
+#content_header {
+	font-size: 1.5em;
+}
+
+#content_menu {
+	background-color: #ddd;
+	float: left;
+	border-top: 2px solid #000;
+	margin-top: 5px;
+	width: 100%;
+}
+
+#content_menu > ul {
+	margin: 0;
+	padding: 0;
+}
+
+#content_menu > ul > li {
+	padding: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	float: left;
+}
+
+#content_menu > ul > li.selected {
+	font-weight: bold;
+}
+
+#content_submenu {
+	background-color: #eee;
+	float: left;
+	width: 100%;
+}
+
+#content_submenu > ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#content_submenu > ul > li {
+	padding: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	float: left;
+}
+
+#content_submenu > ul > li.selected {
+	font-weight: bold;
+}
+
+#content_body {
+	float: left;
+	width: 100%;
+}
+
+.content_properties {
+	margin-top: 10px;
+	padding: 10px;
+	background-color: #ddd;
+	width: 670px;
+	float: left;
+}
+
+.content_properties > div {
+	padding-bottom: 30px;
+}
+
+.content_properties > div > div {
+	float: left;
+	width: 450px;
+}
+
+.content_properties > div > div:first-child {
+	font-weight: bold;
+	width: 200px;
+}
+
+.content_properties > div > div > input[type=text] {
+	width: 320px;
+	margin-right: 5px;
+}
+
+.content_properties > div > div > input[type=button] {
+	width: 50px;
+	margin-left: 2px;
+}
+
+input[type=text] {
+    padding: 2px;
+    border: 1px #666 solid;
+	margin: 0;
+	margin-top: 1px;
+}
+
+input[type=text].loading {
+    background-image: url('../images/bg_loading.gif');
+	border-color: #ddd;
+}
+
+input[type=text].loaded {
+    background-color: #0c0;
+}
+
+input[type=button] {
+	border: 1px #666 solid;
+	padding: 1px;
+	background-color: #ccc;
+}
+
+input[type=button]:hover {
+	background-color: #eee;
+}
+
+input[type=button].disabled {
+	border: 1px #ccc solid;
+	padding: 1px;
+	background-color: #ddd;
+}
+
+textarea {
+	font-size: 0.9em;
+    padding: 1px;
+	margin: 0px;
+    border: 1px #666 solid;
+	font-family: inherit;
+	width: 100%;
+	height: 70px;
+	margin-top: 1px;
+}
+
+textarea.loading {
+    background-image: url('../images/bg_loading.gif');
+	border-color: #ddd;
+}
+
+textarea.loaded {
+	background-color: #0c0;
+}
+
+select {
+    font-size: 0.9em;
+    padding: 1px;
+    border: 1px #666 solid;
+}
+
+select.loading {
+    background-image: url('../images/bg_loading.gif');
+	border-color: #ddd;
+}
+
+select.loaded {
+    background-color: #0c0;
+}

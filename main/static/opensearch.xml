@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+	<ShortName>Pipeinpipe.info</ShortName>
+	<Description>Search this website.</Description>
+	<Image>favicon.ico</Image>
+	<Url type="text/html" template="http://www.google.com/search?sitesearch=http%3A%2F%2Fpipeinpipe.info%2F&as_q={searchTerms}"/>
+	<AdultContent>false</AdultContent>
+	<Attribution>Copyright, betacompany.</Attribution>
+	<Contact>info@pipeinpipe.info</Contact>
+	<Developer>betacompany</Developer>
+	<InputEncoding>windows-1251</InputEncoding>
+	<Language>ru_RU</Language>
+	<OutputEncoding>windows-1251</OutputEncoding>
+</OpenSearchDescription>

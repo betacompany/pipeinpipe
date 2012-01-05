@@ -1,0 +1,273 @@
+body {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	color: #000;
+	font-size: 10pt;
+
+	background: #eee;
+}
+
+#loginForm {
+	margin-left: -160px;
+	width: 320px;
+	position: absolute;
+	left: 50%;
+	top: 100px;
+}
+
+#loginForm img {
+	margin-bottom: 50px;
+}
+
+#loginForm form {
+	width: 300px;
+	padding: 10px;
+}
+
+#loginForm input[type=text], #loginForm input[type=password] {
+	width: 290px;
+	padding: 5px;
+	font-size: 1.5em;
+	text-align: center;
+  background-repeat: no-repeat;
+  border: 1px solid #ddd;
+  margin-bottom: 5px;
+}
+
+#loginForm input[type=text] {
+    background-image: url('../images/login.png');
+}
+
+#loginForm input[type=password] {
+    background-image: url('../images/password.png');
+}
+
+#loginForm input[type=submit] {
+	width: 303px;
+	padding: 5px;
+	font-size: 1.5em;
+	text-align: center;
+}
+
+ul {
+	list-style-type: none;
+	padding-left: 5px;
+	margin-left: 5px;
+	margin-top: 5px;
+}
+
+ul li {
+	color: #666;
+	background-repeat: no-repeat;
+	background-position: 0px 3px;
+	padding: 0px 0px 5px 15px;
+}
+
+ul li a {
+	padding-bottom: 5px;
+}
+
+ul li a.selected {
+	font-weight: bold;
+}
+
+ul li.add {
+	background-image: url('../images/list_pale_add.png');
+}
+
+ul li.add:hover {
+	background-image: url('../images/list_add.png');
+}
+
+ul li.folded {
+	background-image: url('../images/list_gray.png');
+}
+
+ul li.folded:hover {
+	background-image: url('../images/list_black.png');
+}
+
+ul li.unfolded {
+	background-image: url('../images/list_gray_r.png');
+}
+
+ul li.unfolded:hover {
+	background-image: url('../images/list_black_r.png');
+}
+
+ul li.leaf {
+	background-image: url('../images/list_pale_leaf.png');
+}
+
+ul li.leaf:hover {
+	background-image: url('../images/list_leaf.png');
+}
+
+ul li.folded ul {
+	display: none;
+}
+
+#layout {
+	width: 950px;
+	position: absolute;
+	left: 50%;
+	margin-left: -475px;
+	border-left: 1px #ddd solid;
+	border-right: 1px #ddd solid;
+
+	background: #fff;
+}
+
+	#header {
+		width: 930px;
+		border-bottom: 1px #c00 solid;
+        text-align: right;
+		float: left;
+		padding: 10px;
+
+		background: url('../images/logo160.png') no-repeat 20px -2px;
+		height: 18px;
+    }
+
+	#body {
+		width: 100%;
+		float: left;
+	}
+
+		#left_column {
+			float: left;
+			width: 240px;
+            padding-right: 4px;
+            padding-top: 5px;
+            margin-right: 5px;
+            border-right: 1px #ddd dashed;
+		}
+
+		#main {
+			float: left;
+            width: 700px;
+		}
+
+	#footer {
+		width: 930px;
+		border-top: 1px #c00 solid;
+		float: left;
+		font-size: 0.7em;
+		padding: 2px 10px;
+	}
+
+a {
+	color: #003;
+	text-decoration: none;
+	
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+#loading {
+
+}
+
+#error_panel {    
+    position: fixed;
+    z-index: 10000;
+    top: 0;
+    left: 50%;
+    display: none;
+	margin-left: -200px;
+	width: 400px;
+}
+
+#error_panel .text {    
+    height: auto;
+    padding: 5px 5px;
+    text-align: center;
+    color: white;
+    background: red;
+}
+
+.clear {
+	clear: both;
+}
+
+div.person_to_html img {
+	width: 50px;
+	float: left;
+}
+
+div.person_to_html > div {
+	margin-left: 55px;
+	font-size: 1.1em;
+}
+
+div.person_to_html > div > div:first-child {
+	font-weight: bold;
+}
+
+div.person_to_html > div > div:last-child {
+	font-size: 0.9em;
+	color: gray;
+}
+
+div.person_to_html > div > div:last-child > div {
+	float: left;
+	margin-left: 15px;
+}
+
+div.person_to_html > div > div:last-child > div:first-child {
+	margin-left: 0;
+}
+
+div.person_to_html > div > div:last-child > div:last-child {
+	float: none;
+}
+
+table.full {
+	border-spacing: 0;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+table.full td, table.full th {
+	border: 1px solid #ddd;
+	padding: 5px;
+	vertical-align: top;
+}
+
+table.full th:first-child {
+	width: 230px;
+}
+
+span.r, span.g, span.y, span.b, span.v, span.gr {
+	padding: 2px 5px;
+	border-radius: 3px;
+}
+
+span.gr {
+	background-color: #ddd;
+}
+
+span.r {
+	background-color: #f55;
+}
+
+span.g {
+	background-color: #9e9;
+}
+
+span.y {
+	background-color: #ee9;
+}
+
+span.b {
+	background-color: #99e;
+}
+
+span.v {
+	background-color: #e9e;
+}
+

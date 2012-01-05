@@ -1,0 +1,323 @@
+body {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	background-color: #26124a;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+}
+
+#layout {
+	position: relative;
+}
+
+#header {
+    width: 80%;
+    float: left;
+	margin: 0 10%;
+}
+
+#top_bar {
+	height: 40px;
+    width: 100%;
+    float: left;
+    position: relative;
+}
+
+#user_container {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 200px;
+    background-color: #bbb;
+}
+
+#user_inner {
+    position: relative;
+    height: 30px;
+}
+
+.userpic {
+    position: relative;
+    float: left;
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+}
+
+
+#user_inner div.left-bottom_corner {
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    z-index: 2;
+}
+
+#user_inner div.right-bottom_corner {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    z-index: 2;
+}
+
+.userpic img {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+}
+
+#userdata {
+    float: left;
+    margin-left: 5px;
+}
+
+#userdata a {
+    color: #333;
+    text-decoration: none;
+}
+
+#userdata ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 0.7em;
+}
+
+#userdata ul li {
+    float: left;
+    margin-right: 3px;
+}
+
+#userdata ul li + li:before {
+    content: "|";
+	margin-right: 3px;
+}
+
+#userdata a:hover {
+    text-decoration: underline;
+}
+
+#menu_top {
+    width: 100%;
+    float: left;
+	margin: 0;
+}
+
+#item_top {
+	position: relative;
+	width: 20%;
+	background-color: #999;
+	height: 7px;
+}
+
+#item_top div.left_corner {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+}
+
+#item_top div.right_corner {
+	position: absolute;
+	right: 0px;
+	top: 0px;
+}
+
+#menu_body {
+	width: 100%;
+	padding: 0;
+	margin: 0;
+    border: 0;
+	list-style: none;
+    float: left;
+}
+
+#menu_body li {
+    background-color: #bbb;
+	height: 40px;
+	width: 20%;
+	float: left;
+    display: block;
+}
+
+/*
+FIXME temporary until jQuery menu will done
+*/
+#menu_body li:hover {
+    background-color: #f90;
+}
+
+#menu_body li div {
+	position: relative;
+	font-size: 1.7em;
+    font-weight: bold;
+    /*text-align: center;*/
+    padding-left: 10px;
+	padding-top: 5px;
+	width: 100%;
+    height: 35px;
+
+    border-left: 2px #ddd solid;
+}
+
+#menu_body li div a {
+	color: #fff;
+	text-decoration: none;
+}
+
+#menu_body li div div.left_corner {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+    width: 7px;
+    border: 0;
+}
+
+#menu_body li div div.right_corner {
+	position: absolute;
+	right: 2px;
+	top: 0px;
+    width: 7px;
+    border: 0;
+}
+
+#menu_body li.current {
+	background-color: #999;
+    border: 0;
+}
+
+#menu_body li.current div {
+    border: 0;
+}
+
+#menu_subbody {
+	position: relative;
+	height: 25px;
+	background-color: #999;
+	width: 100%;
+    float: left;
+    padding: 0;
+    padding-top: 10px;
+    border: 0;
+	margin: 0;
+	list-style: none;
+}
+
+#menu_subbody li {
+    float: left;
+    margin-left: 10px;
+    color: #fff;
+}
+
+#menu_subbody li.-index + li.-index:before,
+#menu_subbody li.-sport + li.-sport:before,
+#menu_subbody li.-life + li.-life:before,
+#menu_subbody li.-media + li.-media:before,
+#menu_subbody li.-forum + li.-forum:before {
+    content: "|";
+	margin-right: 10px;
+	font-weight: bold;
+}
+
+#menu_subbody li a {
+    color: #fff;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+#menu_body a.current, #menu_subbody a.current {
+    border-bottom: 2px solid #fff;
+}
+
+#menu_subbody a:hover {
+    border-bottom: 2px solid #f90;
+}
+
+
+#body {
+    background-color: #fff;
+    width: 80%;
+    margin: 0 10%;
+    float: left;
+}
+
+#content {
+    border-left: 1px #999 solid;
+    border-right: 1px #999 solid;
+
+    height: 1000px;
+}
+
+#footer {
+    position: relative;
+    height: 30px;
+    background-color: #999;
+    float: left;
+    width: 80%;
+    margin: 0 10%;
+}
+
+#footer div.left-bottom_corner {
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+}
+
+#footer div.right-bottom_corner {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+}
+
+#subfooter {
+    height: 20px;
+    width: 100%;
+    float: left;
+}
+
+
+
+div.left_corner {
+	width: 7px;
+	height: 7px;
+	background-image: url('../../images/corners/ddd/lt.png');
+	background-repeat: no-repeat;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src=img.png,sizingMethod=crop);
+
+    border: 0;
+}
+
+div.right_corner {
+	width: 7px;
+	height: 7px;
+	background-image: url('../../images/corners/ddd/rt.png');
+	background-repeat: no-repeat;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src=img.png,sizingMethod=crop);
+
+    border: 0;
+}
+
+div.left-bottom_corner {
+	width: 7px;
+	height: 7px;
+	background-image: url('../../images/corners/ddd/lb.png');
+	background-repeat: no-repeat;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src=img.png,sizingMethod=crop);
+
+    border: 0;
+}
+
+div.right-bottom_corner {
+	width: 7px;
+	height: 7px;
+	background-image: url('../../images/corners/ddd/rb.png');
+	background-repeat: no-repeat;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src=img.png,sizingMethod=crop);
+
+    border: 0;
+}
+
+a.user:before {
+    content: url('user.png');
+}
+

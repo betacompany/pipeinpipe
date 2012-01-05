@@ -1,0 +1,1 @@
+ALTER TABLE  `p_competition` CHANGE  `coef`  `coef` DOUBLE NOT NULL;

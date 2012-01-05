@@ -1,0 +1,1 @@
+ALTER TABLE  `p_man_cup_table` ADD  `place` INT NOT NULL DEFAULT  '0' AFTER  `cup_id`;
