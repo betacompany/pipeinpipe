@@ -39,20 +39,23 @@ class OpenCVFaceDetector {
 		$output = array();
 		exec($binary . " " . $pathToImage, $output);
 		global $LOG;
-		@$LOG->info("Result: " . var_export($output, true));
+		@$LOG->info("Result string: " . var_export($output, true));
 
 		if (count($output) == 0) {
 			return false;
 		}
 
 		$result = json_decode($output[0], true);
+		@$LOG->info("Result JSON: " . var_export($result, true));
 		if (!isset($result['status']) || $result['status'] == 'failed') {
 			self::$last_error_message = $result['message'];
+			@$LOG->info("Error: " . self::$last_error_message);
 			return false;
 		}
 
 		if ($result['status'] != 'ok') {
 			self::$last_error_message = "Unknown status";
+			@$LOG->info("Error: " . self::$last_error_message);
 			return false;
 		}
 
