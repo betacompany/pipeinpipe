@@ -6,6 +6,7 @@
  */
 
 require_once dirname(__FILE__) . '/../../main/classes/image/OpenCVAvatarsMinifier.php';
+require_once dirname(__FILE__) . '/../../main/classes/utils/Logger.php';
 
 $LOG = new Logger('../../../junk/ortemij/log.log');
 $am = OpenCVAvatarsMinifier::getInstance();
