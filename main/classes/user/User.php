@@ -320,8 +320,8 @@ class User {
 
 	public function getImageURL($type = self::IMAGE_NORMAL) {
 		$hasImage = $this->hasImage($type);
-		global $LOG;
-		@$LOG->info($this->uid() . " user " . ($hasImage ? "has" : "has not") . " image of type " . $type);
+		//global $LOG;
+		//@$LOG->info($this->uid() . " user " . ($hasImage ? "has" : "has not") . " image of type " . $type);
 		return $hasImage ?
 				sprintf(self::IMAGES_DIR .'%s%s', $this->getImagePrefix(), $type) :
                 self::getDefaultImageUrl($type);
