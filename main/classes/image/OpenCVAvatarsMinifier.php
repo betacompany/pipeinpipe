@@ -92,24 +92,33 @@ class OpenCVAvatarsMinifier implements IAvatarsMinifier {
 
 	private static function adjustSize($rect, $srcWidht, $srcHeight, $needWidth, $needHeight) {
 
-		$dw = $rect['w'] - $needWidth;
-		$dh = $rect['h'] - $needHeight;
-		if (abs($dw) > abs($dh)) {
-			$result = self::resizeRect($rect, $rect['w'] - $rect['h'] * $needWidth / $needHeight, 0);
-		} elseif (abs($dw) < abs($dh)) {
-			$result = self::resizeRect($rect, 0, $rect['h'] - $rect['w'] * $needHeight / $needWidth);
+		$ratio = $needWidth / $needHeight;
+		if ($needWidth > $srcWidht) {
+			$needWidth = $srcWidht;
+			$needHeight = round($needWidth / $ratio);
+		}
+		if ($needHeight > $srcHeight) {
+			$needHeight = $srcHeight;
+			$needWidth = round($needHeight * $ratio);
+		}
+
+		if ($rect['w'] > $rect['h']) {
+			$rh = round($rect['w'] / $ratio);
+			$dh = $rh - $rect['h'];
+			$rect = self::resizeRect($rect, 0, $dh);
 		} else {
-			$result = self::resizeRect($rect, 0, -$dw, -$dh);
+			$rw = round($rect['h'] * $ratio);
+			$dw = $rw - $rect['w'];
+			$rect = self::resizeRect($rect, $dw, 0);
 		}
 
-		if ($result['x'] + $result['w'] > $srcWidht) {
-			$result = self::moveRect($result, $srcWidht - ($result['x'] + $result['w']), 0);
-		}
-		if ($result['y'] + $result['h'] > $srcHeight) {
-			$result = self::moveRect($result, 0, $srcHeight - ($result['y'] + $result['h']));
+		if ($rect['w'] > $needWidth && $rect['h'] > $needHeight) {
+			return $rect;
 		}
 
-		return $result;
+		// todo
+
+		return $rect;
 	}
 
 	private static function resizeRect($rect, $dw, $dh) {
