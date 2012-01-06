@@ -61,7 +61,7 @@ int main( int argc, char** argv ) {
 
                     for (int i = 0; i < faces->total; i++ ){
 				        CvRect* r = (CvRect*)cvGetSeqElem( faces, i );
-				        cout << "{\"x\":" << r->x << ",\"y\"" << r->y << ",\"w\":" << r->width << ",\"h\":" << r->height << "}";
+				        cout << "{\"x\":" << r->x << ",\"y\":" << r->y << ",\"w\":" << r->width << ",\"h\":" << r->height << "}";
 				        if (i < faces->total - 1) cout << ",";
 				    }
 
