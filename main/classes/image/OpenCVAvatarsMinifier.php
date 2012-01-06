@@ -29,7 +29,7 @@ class OpenCVAvatarsMinifier implements IAvatarsMinifier {
 
 		global $LOG;
 
-		if (count($faces) == 0) {
+		if (!$faces || count($faces) == 0) {
 			@$LOG->info("No faces detected on $pathToSourceImage, dummy minifier called");
 			$dummyAvatarsMinifier->minify($pathToSourceImage, $pathToDestinationImage, $destinationWidth, $destinationHeight);
 			return;

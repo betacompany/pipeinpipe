@@ -27,10 +27,11 @@ class OpenCVFaceDetector {
 	}
 
 	private static function execute($pathToImage) {
-		$binary = dirname(__FILE__) . "/opencv-facedetect " . dirname(__FILE__) . "/" . self::PATH_TO_CLASSIFIER;
+		$binary = dirname(__FILE__) . "/opencv-facedetect";
 		if (!file_exists($binary)) {
 			return false;
 		}
+		$binary .= " " . dirname(__FILE__) . "/" . self::PATH_TO_CLASSIFIER;
 		if (!file_exists($pathToImage)) {
 			return false;
 		}
