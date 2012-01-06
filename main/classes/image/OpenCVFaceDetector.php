@@ -9,6 +9,8 @@ class OpenCVFaceDetector {
 
 	private static $last_error_message = false;
 
+	const PATH_TO_CLASSIFIER = "haarcascade_frontalface_alt.xml";
+
 	public static function detectFaces($pathToImage) {
 		$result = self::execute($pathToImage);
 		if (!$result) {
@@ -25,7 +27,7 @@ class OpenCVFaceDetector {
 	}
 
 	private static function execute($pathToImage) {
-		$binary = dirname(__FILE__) . "/opencv-facedetect";
+		$binary = dirname(__FILE__) . "/opencv-facedetect " . dirname(__FILE__) . "/" . self::PATH_TO_CLASSIFIER;
 		if (!file_exists($binary)) {
 			return false;
 		}

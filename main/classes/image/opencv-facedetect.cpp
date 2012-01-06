@@ -38,19 +38,19 @@ CvSeq* detect( IplImage* img, CvMemStorage* storage, CvHaarClassifierCascade* ca
 
 int main( int argc, char** argv ) {
 
-    if ( argc > 1 ) {
+    if ( argc > 2 ) {
 
         IplImage * image = 0;
-        if (strlen(argv[1]) > 0) {
+        if (strlen(argv[2]) > 0) {
 
-            CvHaarClassifierCascade * cascade = (CvHaarClassifierCascade*) cvLoad("haarcascade_frontalface_alt.xml", 0, 0, 0);
+            CvHaarClassifierCascade * cascade = (CvHaarClassifierCascade*) cvLoad(argv[1], 0, 0, 0);
             if ( !cascade ) {
                 cout << "{\"status\":\"failed\",\"message\":\"Could not load classifier cascade\"}" <<endl;
                 return -1;
             }
 
             CvMemStorage * storage = cvCreateMemStorage(0);
-            image = cvLoadImage(argv[1], CV_LOAD_IMAGE_COLOR);
+            image = cvLoadImage(argv[2], CV_LOAD_IMAGE_COLOR);
             if (image == NULL) {
                 cout << "{\"status\":\"failed\",\"message\":\"Could not load image: NULL\"}" << endl;
             }
