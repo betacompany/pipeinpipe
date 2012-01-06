@@ -10,6 +10,6 @@ require_once dirname(__FILE__) . '/../../main/classes/utils/Logger.php';
 
 $LOG = new Logger();
 $am = OpenCVAvatarsMinifier::getInstance();
-$am->minify($argv[0], $argv[1], 100, 100);
+$am->minify(dirname(__FILE__) . '/' . $argv[0], dirname(__FILE__) . '/' . $argv[1], 100, 100);
 
 ?>

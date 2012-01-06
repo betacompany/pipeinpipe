@@ -35,6 +35,8 @@ class OpenCVFaceDetector {
 
 		$output = array();
 		exec($binary . " " . $pathToImage, $output);
+		global $LOG;
+		@$LOG->info("Result: " . var_export($output, true));
 
 		if (count($output) == 0) {
 			return false;
