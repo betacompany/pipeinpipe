@@ -153,6 +153,25 @@ try {
 
 			exit(0);
 
+		case 'unlink_miniatures':
+
+			$user = $auth->getCurrentUser();
+			$photo_prefix = $user->get(User::KEY_PHOTO);
+
+			if ($photo_prefix) {
+				$sq_file = dirname(__FILE__) . '/../images/users/' . $photo_prefix . User::IMAGE_SQUARE;
+				$sq_sm_file = dirname(__FILE__) . '/../images/users/' . $photo_prefix . User::IMAGE_SQUARE_SMALL;
+				if (file_exists($sq_file)) {
+					@unlink($sq_file);
+				}
+				if (file_exists($sq_sm_file)) {
+					@unlink($sq_sm_file);
+				}
+			}
+
+			Header('Location: /profile/edit');
+			exit(0);
+
 		case 'fave':
 
 			assertParam('target');
