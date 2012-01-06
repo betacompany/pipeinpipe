@@ -159,6 +159,13 @@ try {
 			$photo_prefix = $user->get(User::KEY_PHOTO);
 
 			if ($photo_prefix) {
+				$photo = $user->getImageURL(User::IMAGE_NORMAL);
+				$photo_file = dirname(__FILE__) . '/..' . $photo;
+
+				$random = $user->getId() . '_' . substr(md5(mt_rand(0, 1000) * time()), 10, 10);
+				rename($photo_file, dirname(__FILE__) . '/../images/users/' . $random . User::IMAGE_NORMAL);
+				$user->put(User::KEY_PHOTO, $random);
+
 				$sq_file = dirname(__FILE__) . '/../images/users/' . $photo_prefix . User::IMAGE_SQUARE;
 				$sq_sm_file = dirname(__FILE__) . '/../images/users/' . $photo_prefix . User::IMAGE_SQUARE_SMALL;
 				if (file_exists($sq_file)) {
