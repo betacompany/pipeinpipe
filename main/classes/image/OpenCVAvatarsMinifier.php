@@ -35,13 +35,26 @@ class OpenCVAvatarsMinifier implements IAvatarsMinifier {
 			return;
 		}
 
+		$srcImage = imagecreatefromjpeg($pathToSourceImage);
+		$dstImage = imagecreatetruecolor($destinationWidth, $destinationHeight);
+		$srcWidth = imagesx($srcImage);
+		$srcHeight = imagesy($srcImage);
+
 		$ratio = $destinationWidth / $destinationHeight;
 		$best_face = $faces[0];
 		$best_measure = self::measure($best_face, $ratio);
 		@$LOG->info("Faces: " . var_export($faces, true));
 		foreach ($faces as $face) {
 			// Enlarging rectangle
-			$face = self::resizeRect($face, $face['w'] / 2, $face['h'] / 2);
+			$dw = min($face['x'], $srcWidth - $face['x'] - $face['w']);
+			$dh = min($face['y'], $srcHeight - $face['y'] - $face['h']);
+
+			$face = self::resizeRect(
+				$face,
+				min($face['w'] / 2, $dw),
+				min($face['h'] / 2, $dh)
+			);
+
 			$measure = self::measure($face, $ratio);
 			if ($measure > $best_measure) {
 				$best_face = $face;
@@ -49,11 +62,6 @@ class OpenCVAvatarsMinifier implements IAvatarsMinifier {
 			}
 			@$LOG->info("Face: " . var_export($face, true) . "; measure=" . $measure);
 		}
-
-		$srcImage = imagecreatefromjpeg($pathToSourceImage);
-		$dstImage = imagecreatetruecolor($destinationWidth, $destinationHeight);
-		$srcWidth = imagesx($srcImage);
-		$srcHeight = imagesy($srcImage);
 
 		$adjusted = self::adjustSize($best_face, $srcWidth, $srcHeight, $destinationWidth, $destinationHeight);
 		@$LOG->info("Adjusted: " . var_export($adjusted, true));
