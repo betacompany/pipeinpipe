@@ -96,8 +96,10 @@ class OpenCVAvatarsMinifier implements IAvatarsMinifier {
 		$dh = $rect['h'] - $needHeight;
 		if (abs($dw) > abs($dh)) {
 			$result = self::resizeRect($rect, $rect['w'] - $rect['h'] * $needWidth / $needHeight, 0);
-		} else {
+		} elseif (abs($dw) < abs($dh)) {
 			$result = self::resizeRect($rect, 0, $rect['h'] - $rect['w'] * $needHeight / $needWidth);
+		} else {
+			$result = self::resizeRect($rect, 0, -$dw, -$dh);
 		}
 
 		if ($result['x'] + $result['w'] > $srcWidht) {
