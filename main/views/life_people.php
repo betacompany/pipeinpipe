@@ -28,7 +28,7 @@ function show_user(User $user) {
 }
 
 $cache = new ResponseCache('life/people', array());
-if ($cache->getAge() < 60 * 60) {
+if ($cache->getAge() < 60) {
 	echo $cache->get();
 } else {
 	$cache->start();
