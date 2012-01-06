@@ -755,7 +755,7 @@ function profile_show_edit(User $person, $player, $tabs) {
 						</script>
 
 						<h2 class="other">Изменение миниатюр</h2>
-						<small style="padding-left: 10px;"><a href="/procs/proc_main.php?method=unlink_miniatures">Сбросить миниатюры</a></small>
+						<small style="padding-left: 12px;"><a href="/procs/proc_main.php?method=unlink_miniatures">Сбросить миниатюры</a></small>
 						<div id="photo_mini" onclick="javascript: profile.photo.init();">
 							<img id="img_supersmall" src="<?=$person->getImageURL(User::IMAGE_SQUARE_SMALL)?>" />
 							<img id="img_small" src="<?=$person->getImageURL(User::IMAGE_SQUARE)?>" />
