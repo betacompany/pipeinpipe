@@ -38,12 +38,14 @@ class OpenCVAvatarsMinifier implements IAvatarsMinifier {
 		$ratio = $destinationWidth / $destinationHeight;
 		$best_face = $faces[0];
 		$best_measure = self::measure($best_face, $ratio);
+		@$LOG->info("Faces: " . var_export($faces, true));
 		foreach ($faces as $face) {
 			$measure = self::measure($face, $ratio);
 			if ($measure > $best_measure) {
 				$best_face = $face;
 				$best_measure = $measure;
 			}
+			@$LOG->info("Face: " . var_export($face, true) . "; measure=" . $measure);
 		}
 
 		$srcImage = imagecreatefromjpeg($pathToSourceImage);
