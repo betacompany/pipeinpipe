@@ -54,6 +54,7 @@ class OpenCVAvatarsMinifier implements IAvatarsMinifier {
 		$srcHeight = imagesy($srcImage);
 
 		$adjusted = self::adjustSize($best_face, $srcWidth, $srcHeight, $destinationWidth, $destinationHeight);
+		@$LOG->info("Adjusted: " . var_export($adjusted, true));
 
 		imagecopyresampled(
 			$dstImage,
