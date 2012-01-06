@@ -123,8 +123,8 @@ class OpenCVAvatarsMinifier implements IAvatarsMinifier {
 
 	private static function resizeRect($rect, $dw, $dh) {
 		return array (
-			'x' => $rect['x'] - $dw / 2,
-			'y' => $rect['y'] - $dh / 2,
+			'x' => round($rect['x'] - $dw / 2),
+			'y' => round($rect['y'] - $dh / 2),
 			'w' => $rect['w'] + $dw,
 			'h' => $rect['h'] + $dh
 		);
