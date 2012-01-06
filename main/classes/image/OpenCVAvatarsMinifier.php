@@ -40,6 +40,8 @@ class OpenCVAvatarsMinifier implements IAvatarsMinifier {
 		$best_measure = self::measure($best_face, $ratio);
 		@$LOG->info("Faces: " . var_export($faces, true));
 		foreach ($faces as $face) {
+			// Enlarging rectangle
+			$face = self::resizeRect($face, $face['w'] / 2, $face['h'] / 2);
 			$measure = self::measure($face, $ratio);
 			if ($measure > $best_measure) {
 				$best_face = $face;
