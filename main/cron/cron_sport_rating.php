@@ -36,7 +36,7 @@ for ($i = -5; $i <= 5; $i++) {
 			'date' => $date
 		)
 	);
-	$ratingCache->remove(true);
+	//$ratingCache->remove(true);
 
 	$chartsCache = new ResponseCache(
 		'api/charts/rating_all',
