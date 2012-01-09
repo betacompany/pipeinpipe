@@ -44,7 +44,7 @@ for ($i = -5; $i <= 5; $i++) {
 			'date' => $date
 		)
 	);
-	$chartsCache->remove(true);
+	//$chartsCache->remove(true);
 
 	foreach (League::getAll() as $league) {
 		$leagueId = $league->getId();
