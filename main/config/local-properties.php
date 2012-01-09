@@ -14,4 +14,6 @@ $PROPERTIES['mobile_site_url'] = "m.pipeinpipe.info";
 
 $PROPERTIES['error_debug_mode'] = false;
 
+$PROPERTIES['mysql']['debug_mode'] = false;
+
 ?>
