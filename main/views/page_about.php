@@ -101,7 +101,7 @@ foreach ($team as $member) {
 							<div class="role"><?=$team_ids[$member->getId()]?></div>
 						</td>
 						<td class="photo">
-							<img src="<?=$member->getImageUrl(User::IMAGE_SQUARE)?>" alt="<?=$member->getFullName()?>" />
+							<a href="/id<?=$member->getId()?>"><img src="<?=$member->getImageUrl(User::IMAGE_SQUARE)?>" alt="<?=$member->getFullName()?>" /></a>
 						</td>
 					</tr>
 <?
@@ -123,7 +123,7 @@ foreach ($helpers as $member) {
 							<div class="role"><?=$helper_ids[$member->getId()]?></div>
 						</td>
 						<td class="photo">
-							<img src="<?=$member->getImageUrl(User::IMAGE_SQUARE)?>" alt="<?=$member->getFullName()?>" />
+							<a href="/id<?=$member->getId()?>"><img src="<?=$member->getImageUrl(User::IMAGE_SQUARE)?>" alt="<?=$member->getFullName()?>" /></a>
 						</td>
 					</tr>
 <?
