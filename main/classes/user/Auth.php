@@ -1,6 +1,7 @@
 <?php
 
 require_once dirname(__FILE__).'/User.php';
+require_once dirname(__FILE__).'/Mobile_Detect.php';
 
 require_once dirname(__FILE__).'/../db/UserDataDBClient.php';
 
@@ -20,9 +21,12 @@ class Auth {
 
 	private $vk;
 
+	private $mobileDetector;
+
     public function __construct() {
         @session_start();
         if (!isset($_SESSION['uid'])) $this->loginCookie();
+		$this->mobileDetector = new Mobile_Detect();
     }
 
     public function uid() {
@@ -31,6 +35,10 @@ class Auth {
 
 	public function isAuth() {
 		return ($this->uid() > 0);
+	}
+
+	public function isMobile() {
+		return $this->mobileDetector->isMobile();
 	}
 
 	public function isVkontakteAuth() {
