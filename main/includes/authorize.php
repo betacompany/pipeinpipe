@@ -9,7 +9,45 @@ $auth = new Auth();
 $user = $auth->getCurrentUser();
 
 if ($auth->isMobile()) {
-	Header('Location: http://' . MOBILE_SITE_URL);
+
+	$mobile_paths = array(
+		'/sport.php' => array(
+			'league' => array('league_id', '/sport_league/'),
+			'competition' => array('comp_id', '/sport_competition/'),
+			'rating' => array('', '/sport_rating/1'),
+
+			'default' => '/sport'
+		),
+
+		'/forum.php' => array(
+			'part' => array('part_id', '/forum_part/'),
+			'topic' => array('topic_id', '/forum_topic/'),
+
+			'default' => '/forum'
+		)
+	);
+
+	$path = "/";
+
+	$parts = $mobile_paths[$_SERVER['SCRIPT_NAME']];
+	if ($parts) {
+		$path = $parts['default'];
+
+		$a = $parts[param('part')];
+		if (!$a) {
+			$a = $parts[param('forum_action')];
+		}
+		if ($a) {
+			$id = intParam($a[0]);
+			if ($a[0] === '') {
+				$path = $a[1];
+			} elseif ($id > 0) {
+				$path = $a[1] . $id;
+			}
+		}
+	}
+
+	Header('Location: http://' . MOBILE_SITE_URL . $path);
 	exit(0);
 }
 
