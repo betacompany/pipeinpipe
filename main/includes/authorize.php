@@ -9,7 +9,7 @@ $auth = new Auth();
 $user = $auth->getCurrentUser();
 
 if ($auth->isMobile()) {
-	Header('Location: ' . MOBILE_SITE_URL);
+	Header('Location: http://' . MOBILE_SITE_URL);
 	exit(0);
 }
 
