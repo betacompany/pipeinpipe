@@ -8,7 +8,7 @@ require_once dirname(__FILE__) . '/config-local.php';
 $auth = new Auth();
 $user = $auth->getCurrentUser();
 
-if ($auth->isMobile()) {
+if ($_SERVER['HTTP_HOST'] != MOBILE_SITE_URL && $auth->isMobile()) {
 
 	$mobile_paths = array(
 		'/sport.php' => array(
