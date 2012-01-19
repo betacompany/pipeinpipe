@@ -16,6 +16,9 @@ require_once dirname(__FILE__) . '/../../includes/config-local.php';
  */
 class Auth {
 
+	const KEY_USE_MOBILE = 'use_mobile';
+	const KEY_USE_MOBILE_SESSION = 'use_mobile_session';
+
 	private $currentUser;
 	private $currentUserLoaded = false;
 
@@ -143,6 +146,14 @@ class Auth {
 
 	public function sessionGet($key) {
 		return $_SESSION[$key];
+	}
+
+	public function cookiePut($key, $value) {
+		setcookie($key, $value, time() + COOKIES_EXPIRE, '/', COOKIES_DOMAIN, COOKIES_SECURE, COOKIES_HTTP);
+	}
+
+	public function cookieGet($key) {
+		return $_COOKIE[$key];
 	}
 
 	private function destroy() {
