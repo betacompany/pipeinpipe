@@ -18,7 +18,7 @@ case 'main':
 	Header('Location: ' . $url);
 	exit(0);
 case 'mobile':
-	$auth->cookieGet(Auth::KEY_USE_MOBILE, 1);
+	$auth->cookiePut(Auth::KEY_USE_MOBILE, 1);
 	//$auth->sessionPut(Auth::KEY_USE_MOBILE_SESSION, 1);
 	$url = issetParam('url') ? urldecode(param('url')) : 'http://' . MOBILE_SITE_URL;
 	Header('Location: ' . $url);
