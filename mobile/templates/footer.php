@@ -3,12 +3,14 @@ global $PATH;
 global $auth;
 
 define('END_TIME', microtime(true));
+
+$urldecoded = urldecode('http://' . MAIN_SITE_URL . $PATH);
 ?>
 
 	<div id="footer">
 		<span>&copy; betacompany,</span>
 		<span><? $y = date("Y"); if ($y > 2011): ?>2011 &ndash; <?=$y?><? else: ?>2011<? endif; ?>.</span>
-		<a target="_blank" href="http://<?=MAIN_SITE_URL?><?=$PATH?>">Полная версия</a>
+		<a target="_blank" href="http://<?=MAIN_SITE_URL?>/procs/proc_mobile_redirect.php?decision=main&url=<?=$urldecoded?>">Полная версия</a>
 <? if ($auth->isAuth()): ?>
 		| <a href="http://<?=MOBILE_SITE_URL?>/procs/proc_main.php?method=sign_out">Выйти</a>
 <? endif; ?>
