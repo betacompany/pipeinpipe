@@ -8,6 +8,8 @@ require_once dirname(__FILE__) . '/config-local.php';
 $auth = new Auth();
 $user = $auth->getCurrentUser();
 
+$use_mobile = $auth->cookieGet(Auth::KEY_USE_MOBILE);
+
 if ($_SERVER['HTTP_HOST'] != MOBILE_SITE_URL && $auth->isMobile()) {
 
 	$mobile_paths = array(
@@ -48,9 +50,16 @@ if ($_SERVER['HTTP_HOST'] != MOBILE_SITE_URL && $auth->isMobile()) {
 	}
 
 	$mobile_url = 'http://' . MOBILE_SITE_URL . $path;
-	include dirname(__FILE__) . '/../views/mobile_redirect.php';
+	if (isset($use_mobile)) {
+		if ($use_mobile == '1') {
+			Header('Location: ' . $mobile_url);
+			exit(0);
+		}
+	} else {
+		include dirname(__FILE__) . '/../views/mobile_redirect.php';
+		exit(0);
+	}
 
-	exit(0);
 }
 
 ?>
