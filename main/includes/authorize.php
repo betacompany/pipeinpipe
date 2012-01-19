@@ -47,7 +47,9 @@ if ($_SERVER['HTTP_HOST'] != MOBILE_SITE_URL && $auth->isMobile()) {
 		}
 	}
 
-	Header('Location: http://' . MOBILE_SITE_URL . $path);
+	$mobile_url = 'http://' . MOBILE_SITE_URL . $path;
+	include dirname(__FILE__) . '/../views/mobile_redirect.php';
+
 	exit(0);
 }
 

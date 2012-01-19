@@ -145,6 +145,14 @@ class Auth {
 		return $_SESSION[$key];
 	}
 
+	public function cookiePut($key, $value) {
+		setcookie($key, $value, time() + COOKIES_EXPIRE, '/', COOKIES_DOMAIN, COOKIES_SECURE, COOKIES_HTTP);
+	}
+
+	public function cookieGet($key) {
+		return $_COOKIE[$key];
+	}
+
 	private function destroy() {
 		$_SESSION['uid'] = 0;
 		unset($_SESSION['uid']);
