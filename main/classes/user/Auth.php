@@ -16,6 +16,9 @@ require_once dirname(__FILE__) . '/../../includes/config-local.php';
  */
 class Auth {
 
+	const KEY_USE_MOBILE = 'use_mobile';
+	const KEY_USE_MOBILE_SESSION = 'use_mobile_session';
+
 	private $currentUser;
 	private $currentUserLoaded = false;
 
