@@ -41,7 +41,7 @@ class Auth {
 	}
 
 	public function isMobile() {
-		return $this->mobileDetector->isMobile();
+		return $this->mobileDetector->isMobile() || isset($_COOKIE['i_am_a_mobile_hacker']);
 	}
 
 	public function isVkontakteAuth() {
