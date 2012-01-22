@@ -195,6 +195,20 @@ global $auth;
 global $user;
 
 $title = document_title();
+$meta_title = "Official web site of the pipe-in-pipe";
+$meta_desc = "Pipe-in-pipe is a new cool sport game with two players and very simple rules";
+
+if ($_SERVER['SCRIPT_NAME'] == '/life.php') {
+	if (param('part') == 'blog') {
+		if (issetParam('post_id')) {
+			$post = Item::getById(intparam('post_id'));
+			if ($post instanceof BlogPost) {
+				$meta_title = $post->getTitle();
+				$meta_desc = string_process($post->getShortHTML());
+			}
+		}
+	}
+}
 
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -203,7 +217,8 @@ $title = document_title();
 
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta name="author" content="betacompany" />
-		<meta name="description" content="Official web site of the pipe-in-pipe" />
+		<meta name="title" content="<?=$meta_title?>" />
+		<meta name="description" content="<?=$meta_desc?>" />
 		<meta name="copyright" content="International Federation of Pipe-in-pipe" />
 		<meta name="keywords" content="pipe-in-pipe, пайп, пайпмен, спорт, труба-в-трубе" />
 		<meta name="publisher-email" content="info@pipeinpipe.info" />
@@ -211,6 +226,8 @@ $title = document_title();
 
 		<link rel="search" type="application/opensearchdescription+xml" title="pipeinpipe.info" href="/static/opensearch.xml" />
 		<link rel="apple-touch-icon" type="image/png" href="/images/icons/apple-icon.png" />
+
+		<link rel="image_src" href="/images/logo/pipe200.jpg" />
 
 		<link rel="stylesheet" href="/css/main.css" type="text/css" />
 		<link rel="stylesheet" href="/css/menu.css" type="text/css" />

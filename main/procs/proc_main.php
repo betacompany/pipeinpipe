@@ -120,6 +120,10 @@ try {
 				$h <= imagesy($img) &&
 				$w > 0 && $h > 0);
 
+			global $LOG;
+
+			@$LOG->info("new miniatures by user creation started");
+
 			$small_img = imagecreatetruecolor(100, 100);
 			imagecopyresampled($small_img, $img, 0, 0, $x, $y, 100, 100, $w, $h);
 
@@ -141,6 +145,38 @@ try {
 				'supersmall' => $user->getImageURL(User::IMAGE_SQUARE_SMALL)
 			));
 
+			@$LOG->info("new miniatures by user creation finished");
+
+			imagedestroy($img);
+			imagedestroy($small_img);
+			imagedestroy($supersmall_img);
+
+			exit(0);
+
+		case 'unlink_miniatures':
+
+			$user = $auth->getCurrentUser();
+			$photo_prefix = $user->get(User::KEY_PHOTO);
+
+			if ($photo_prefix) {
+				$photo = $user->getImageURL(User::IMAGE_NORMAL);
+				$photo_file = dirname(__FILE__) . '/..' . $photo;
+
+				$random = $user->getId() . '_' . substr(md5(mt_rand(0, 1000) * time()), 10, 10);
+				rename($photo_file, dirname(__FILE__) . '/../images/users/' . $random . User::IMAGE_NORMAL);
+				$user->put(User::KEY_PHOTO, $random);
+
+				$sq_file = dirname(__FILE__) . '/../images/users/' . $photo_prefix . User::IMAGE_SQUARE;
+				$sq_sm_file = dirname(__FILE__) . '/../images/users/' . $photo_prefix . User::IMAGE_SQUARE_SMALL;
+				if (file_exists($sq_file)) {
+					@unlink($sq_file);
+				}
+				if (file_exists($sq_sm_file)) {
+					@unlink($sq_sm_file);
+				}
+			}
+
+			Header('Location: /profile/edit');
 			exit(0);
 
 		case 'fave':

@@ -1,6 +1,7 @@
 <?php
 
 require_once dirname(__FILE__).'/User.php';
+require_once dirname(__FILE__).'/Mobile_Detect.php';
 
 require_once dirname(__FILE__).'/../db/UserDataDBClient.php';
 
@@ -15,14 +16,20 @@ require_once dirname(__FILE__) . '/../../includes/config-local.php';
  */
 class Auth {
 
+	const KEY_USE_MOBILE = 'use_mobile';
+	const KEY_USE_MOBILE_SESSION = 'use_mobile_session';
+
 	private $currentUser;
 	private $currentUserLoaded = false;
 
 	private $vk;
 
+	private $mobileDetector;
+
     public function __construct() {
         @session_start();
         if (!isset($_SESSION['uid'])) $this->loginCookie();
+		$this->mobileDetector = new Mobile_Detect();
     }
 
     public function uid() {
@@ -31,6 +38,10 @@ class Auth {
 
 	public function isAuth() {
 		return ($this->uid() > 0);
+	}
+
+	public function isMobile() {
+		return $this->mobileDetector->isMobile() || isset($_COOKIE['i_am_a_mobile_hacker']);
 	}
 
 	public function isVkontakteAuth() {
@@ -135,6 +146,14 @@ class Auth {
 
 	public function sessionGet($key) {
 		return $_SESSION[$key];
+	}
+
+	public function cookiePut($key, $value) {
+		setcookie($key, $value, time() + COOKIES_EXPIRE, '/', COOKIES_DOMAIN, COOKIES_SECURE, COOKIES_HTTP);
+	}
+
+	public function cookieGet($key) {
+		return $_COOKIE[$key];
 	}
 
 	private function destroy() {
