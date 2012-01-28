@@ -1,5 +1,7 @@
 <?php
 
+require_once dirname(__FILE__) . '/../../includes/common.php';
+
 require_once dirname(__FILE__) . '/../content/Group.php';
 require_once dirname(__FILE__) . '/../content/Item.php';
 require_once dirname(__FILE__) . '/../content/Parser.php';
@@ -62,7 +64,7 @@ class BlogPost extends Item {
 	}
 
 	public function hasFullVersion() {
-		return strlen($this->getFullHTML()) > 0;
+		return strlength($this->getFullHTML()) > 0;
 	}
 
 	public static function getAll($from = 0, $limit = 0, $descendive = false) {
