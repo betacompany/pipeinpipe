@@ -201,6 +201,26 @@ function datetoint($base, $date) {
 	return intval($dateint - $baseint);
 }
 
+/**
+ * UTF-8 version of substr
+ * @param $str
+ * @param $start
+ * @param $length
+ * @return string
+ */
+function substring($str, $start, $length) {
+	return mb_substr($str, $start, $length, "UTF-8");
+}
+
+/**
+ * UTF-8 version of strlen
+ * @param $str
+ * @return int
+ */
+function strlength($str) {
+	return mb_strlen($str, "UTF-8");
+}
+
 function string_convert($str) {
 	//return iconv('UTF-8', 'windows-1251', $str);
 	return $str;
@@ -208,14 +228,14 @@ function string_convert($str) {
 
 function string_short($str, $length, $maxLength, $suffix = '...') {
 	if ($length > $maxLength) return $str;
-	if (strlen($str) <= $maxLength) return $str;
+	if (strlength($str) <= $maxLength) return $str;
 	for ($i = $maxLength; $i >= 0; $i--) {
 		if ($str[$i] == ' ' || $str[$i] == "\n" || $str[$i] == "\t") break;
 	}
 
-	if ($i < $length / 2) return substr($str, 0, $length) . $suffix;
+	if ($i < $length / 2) return substring($str, 0, $length) . $suffix;
 
-	return substr($str, 0, $i) . $suffix;
+	return substring($str, 0, $i) . $suffix;
 }
 
 function string_insert_spaces($str) {
@@ -232,13 +252,13 @@ function string_split_into_lines($string, $max_line_length = 30, $min_word_lengt
 	$words = explode(' ', $string);
 	$currentLine = '';
 	foreach($words as $word) {
-		if (strlen($word) > $min_word_length_to_hyphenate && strlen($word) > $max_line_length) {
+		if (strlength($word) > $min_word_length_to_hyphenate && strlength($word) > $max_line_length) {
 			$result[] = $currentLine;
 			$result[] = $word;
 			$currentLine = '';
-		} else if (strlen($currentLine) + strlen($word) > $max_line_length) {
-			if (strlen($word) >= $min_word_length_to_hyphenate) {
-				$hiphenated = hyphenate($word, $max_line_length - strlen($currentLine));
+		} else if (strlength($currentLine) + strlength($word) > $max_line_length) {
+			if (strlength($word) >= $min_word_length_to_hyphenate) {
+				$hiphenated = hyphenate($word, $max_line_length - strlength($currentLine));
 				$result[] = $currentLine . ($hiphenated[0] == '' ? '' : $hiphenated[0] . '-');
 				$currentLine = $hiphenated[1];
 			} else {
@@ -261,9 +281,9 @@ function hyphenate($word, $max_prefix_length) {
 
 	$jotAdded = false;// a flag that means that we added й to the vowels set
 	for ($i = $max_prefix_length - 1; $i >= 1; $i--) {
-		$char = substr($word, $i, 1);
-		$next = substr($word, $i + 1, 1);
-		$afterOne = substr($word, $i + 2, 1);
+		$char = substring($word, $i, 1);
+		$next = substring($word, $i + 1, 1);
+		$afterOne = substring($word, $i + 2, 1);
 
 		if (in_array($char, $vowels)) {
 			if ($next == 'й') {
@@ -273,10 +293,10 @@ function hyphenate($word, $max_prefix_length) {
 			}
 
 			if (in_array($next, $vowels) || in_array($afterOne, $vowels)) {
-				return array(substr($word, 0, $i + 1), substr($word, $i + 1, strlen($word)));
+				return array(substring($word, 0, $i + 1), substring($word, $i + 1, strlength($word)));
 			} else if (!in_array($next, $vowels) && !in_array($afterOne, $vowels)) {
 				if ($i + 2 <= $max_prefix_length)
-					return array(substr($word, 0, $i + 2), substr($word, $i + 2, strlen($word)));
+					return array(substring($word, 0, $i + 2), substring($word, $i + 2, strlength($word)));
 			}
 		}
 		$jotAdded = false;
