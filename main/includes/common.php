@@ -201,10 +201,22 @@ function datetoint($base, $date) {
 	return intval($dateint - $baseint);
 }
 
+/**
+ * UTF-8 version of substr
+ * @param $str
+ * @param $start
+ * @param $length
+ * @return string
+ */
 function substring($str, $start, $length) {
 	return mb_substr($str, $start, $length, "UTF-8");
 }
 
+/**
+ * UTF-8 version of strlen
+ * @param $str
+ * @return int
+ */
 function strlength($str) {
 	return mb_strlen($str, "UTF-8");
 }
