@@ -15,12 +15,18 @@ class Line {
 	private $width = 1;
 	private $points = array();
 
-	public function getColor() { return $this->color; }
+	public function getColor() {
+        return $this->color;
+    }
+
 	public function setColor($color) {
 		$this->color = $color;
 	}
 
-	public function getWidth() { return $this->width; }
+	public function getWidth() {
+        return $this->width;
+    }
+
 	public function setWidth($width) {
 		$this->width = $width;
 	}

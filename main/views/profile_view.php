@@ -441,37 +441,149 @@ function profile_show_player($person, Player $player, $tabs) {
 					</div>
 				</div>
 
-				<div class="slide_block">
-					<div class="title">
-						<div class="left">
-							<div class="content">Рейтинг</div>
-						</div>
-						<div class="right"></div>
-						<div style="clear: both;"></div>
-					</div>
-					<div class="body chart"></div>
-					<script type="text/javascript">
-						var url = {
-								points: '<?=$urls['points']?>',
-								places: '<?=$urls['places']?>'
-							},
-							w = $('.chart').innerWidth(),
-							h = 200;
-//						$('.chart').append(
-//							$('<img/>')
-//								.attr('src', url.points + w + 'x' + h)
-//						);
-//						$('.chart').append(
-//							$('<img/>')
-//								.attr('src', url.places + w + 'x' + h)
-//						);
-					</script>
+
+                <div class="slide_block">
+                    <div class="title">
+                        <div class="left">
+                            <div class="content">Рейтинг</div>
+                        </div>
+                        <div class="right"></div>
+                        <div style="clear: both;"></div>
+                    </div>
+                    <div class="body chart" id="chart_div_pts"></div>
+                    <div class="body chart" id="chart_div_pls"></div>
+
+                    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+                    <script type="text/javascript">
+
+                        // Load the Visualization API and the piechart package.
+                        google.load('visualization', '1.0', {'packages':['corechart']});
+
+                        // Set a callback to run when the Google Visualization API is loaded.
+                        google.setOnLoadCallback(drawChart);
+
+                        // Callback that creates and populates a data table,
+                        // instantiates the pie chart, passes in the data and
+                        // draws it.
+                        function drawChart() {
+
+                            // Create the data table.
+                            var data = new google.visualization.DataTable();
+                            data.addColumn('date', 'День');
+                            data.addColumn('number', 'Рейтинг');
+                            data.addRows([
+                                <?
+                                $urls = profile_get_charts_urls($player);
+                                foreach($urls['dates'] as $dates){
+                                    foreach($urls['points'] as $points) {
+                                        list($year, $month, $day) = explode("-", $dates);
+                                        print_r ("[new Date($year, $month, $day), $points],\n");
+                                        $urls['points'] = array_slice($urls['points'], 1);
+                                        break;
+                                    }
+                                }
+                                ?>
+                            ]);
+                            var dataView = new google.visualization.DataView(data);
+                            dataView.setColumns([{calc: function(data, row) { return data.getFormattedValue(row, 0); }, type:'string'}, 1]);
+                            // Set chart options from http://code.google.com/intl/ru-RU/apis/chart/interactive/docs/gallery/areachart.html
+                            var options = {
+                                'title':'Движение по рейтингу',
+                                'legend': "none",
+                                'chartArea': {left: 69, width: 666},
+                                'focusTarget': 'category',
+                                'hAxis': {
+                                    'format': 'd MMM y',
+                                    'textPosition': 'out',
+                                    'title': "Дата",
+                                    'slantedText': false,
+                                    'gridlines.count': 8,
+                                    'maxAlternation': 2
+                                },
+                                'vAxis': {
+                                    'gridlines.count': 8
+                                },
+                                'width': 750,
+                                'height': 300
+                            };
+                            // Instantiate and draw our chart, passing in some options.
+                            var chart = new google.visualization.AreaChart(document.getElementById('chart_div_pts'));
+                            chart.draw(data, options);
+
+                        }
+                    </script>
+
+                    <script type="text/javascript">
+
+                        // Load the Visualization API and the piechart package.
+                        google.load('visualization', '1.0', {'packages':['corechart']});
+
+                        // Set a callback to run when the Google Visualization API is loaded.
+                        google.setOnLoadCallback(drawChart);
+
+                        // Callback that creates and populates a data table,
+                        // instantiates the pie chart, passes in the data and
+                        // draws it.
+                        function drawChart() {
+
+                            // Create the data table.
+                            var data = new google.visualization.DataTable();
+                            data.addColumn('date', 'День');
+                            data.addColumn('number', 'Место');
+                            data.addRows([
+                                <?
+                                $urls = profile_get_charts_urls($player);
+                                foreach($urls['dates'] as $dates){
+                                    foreach($urls['places'] as $places) {
+                                        list($year, $month, $day) = explode("-", $dates);
+                                        print_r ("[new Date($year, $month, $day), $places],\n");
+                                        $urls['places'] = array_slice($urls['places'], 1);
+                                        break;
+                                    }
+                                }
+                                ?>
+                            ]);
+                            var dataView = new google.visualization.DataView(data);
+                            dataView.setColumns([{calc: function(data, row) { return data.getFormattedValue(row, 0); }, type:'string'}, 1]);
+                            // Set chart options from http://code.google.com/intl/ru-RU/apis/chart/interactive/docs/gallery/areachart.html
+                            var options = {
+                                'title':'Движение по местам рейтинга',
+                                'legend': "none",
+                                'chartArea': {left: 69, width: 666},
+                                'focusTarget': 'category',
+                                'hAxis': {
+                                    'format': 'd MMM y',
+                                    'textPosition': 'out',
+                                    'title': "Дата",
+                                    'slantedText': false,
+                                    'gridlines.count': 8,
+                                    'maxAlternation': 2
+                                },
+                                'vAxis': {
+                                    'direction': -1,
+                                    'viewWindowMode': 'explicit',
+                                    'viewWindow':{
+                                        'min': 1,
+                                        'max': <?=$urls['maxPlaces'] * 1.5?>
+                                    },
+                                    'gridlines.count': 8
+                                },
+                                'width': 750,
+                                'height': 300
+                            };
+                            // Instantiate and draw our chart, passing in some options.
+                            var chart = new google.visualization.AreaChart(document.getElementById('chart_div_pls'));
+                            chart.draw(data, options);
+
+                        }
+                    </script>
 				</div>
 			</div>
 		</div>
 
 		<div style="clear: both;"></div>
 	</div>
+
 <?
 }
 
@@ -491,29 +603,41 @@ function profile_get_charts_urls(Player $player) {
 		$today = date("Y-m-d");
 		$yearAgo = (date("Y") - 1) . date("-m-d");
 
-		$movement = RatingTable::getRatingMovementInterval($yearAgo, $today, $leagueInfo['league_id'], $player->getId());
+        $dates = array();
+        $points = array();
+        $places = array();
+
+        $movement = RatingTable::getRatingMovementInterval($yearAgo, $today, $leagueInfo['league_id'], $player->getId());
 		foreach ($movement as $step) {
-			$pointsLine->addPoint(2 * datetoint($yearAgo, $step['date']), round($step['points']));
-			$placesLine->addPoint(2 * datetoint($yearAgo, $step['date']), -$step['place']);
+            $dates[] = $step['date'];
+            $points[] = round($step['points']);
+            $places[] = $step['place'];
+//			$pointsLine->addPoint(2 * datetoin1t($yearAgo, $step['date']), round($step['points']));
+//			$placesLine->addPoint(2 * datetoint($yearAgo, $step['date']), -$step['place']);
 		}
 
-		$pointsLine->setWidth(1);
-		$pointsLineSet->add($pointsLine);
-
-		$placesLine->setWidth(1);
-		$placesLineSet->add($placesLine);
-	}
-
-	$pointsChart->setLineSet($pointsLineSet);
-	$pointsChart->setYs(0, null);
-
-	$placesChart->setLineSet($placesLineSet);
-	$placesChart->setYs(null, 0);
-
+//		$pointsLine->setWidth(1);
+//		$pointsLineSet->add($pointsLine);
+//
+//		$placesLine->setWidth(1);
+//		$placesLineSet->add($placesLine);
+//	}
+//
+//	$pointsChart->setLineSet($pointsLineSet);
+//	$pointsChart->setYs(0, null);
+//
+//	$placesChart->setLineSet($placesLineSet);
+//	$placesChart->setYs(null, 0);
+    $maxPoints = max($points);
+    $maxPlaces = max($places);
 	return array (
-		'points' => $pointsChart->url(null, null),
-		'places' => $placesChart->url(null, null)
-	);
+        'dates' => $dates,
+        'points' => $points,
+        'places' => $places,
+        'maxPoints' => $maxPoints,
+        'maxPlaces' => $maxPlaces,
+    );
+}
 }
 
 function profile_show_game_stats(Player $player) {
@@ -862,5 +986,4 @@ function profile_show_date_edit($key, $name, $value) {
 								</script>
 <?
 }
-
 ?>
