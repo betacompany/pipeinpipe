@@ -322,7 +322,7 @@ function profile_show_person(User $person, $player, $tabs) {
 function profile_show_player($person, Player $player, $tabs) {
 	$leaguesInfo = $player->getLeaguesInfo();
 	$trophies = $player->getTrophiesInfo();
-	$urls = profile_get_charts_urls($player);
+	$data = profile_get_charts_urls($player);
 ?>
 
 	<div id="player">
@@ -473,12 +473,12 @@ function profile_show_player($person, Player $player, $tabs) {
                             data.addColumn('number', 'Рейтинг');
                             data.addRows([
                                 <?
-                                $urls = profile_get_charts_urls($player);
-                                foreach($urls['dates'] as $dates){
-                                    foreach($urls['points'] as $points) {
+                                $data = profile_get_charts_urls($player);
+                                foreach($data['dates'] as $dates){
+                                    foreach($data['points'] as $points) {
                                         list($year, $month, $day) = explode("-", $dates);
                                         print_r ("[new Date($year, $month, $day), $points],\n");
-                                        $urls['points'] = array_slice($urls['points'], 1);
+                                        $data['points'] = array_slice($data['points'], 1);
                                         break;
                                     }
                                 }
@@ -532,12 +532,12 @@ function profile_show_player($person, Player $player, $tabs) {
                             data.addColumn('number', 'Место');
                             data.addRows([
                                 <?
-                                $urls = profile_get_charts_urls($player);
-                                foreach($urls['dates'] as $dates){
-                                    foreach($urls['places'] as $places) {
+                                $data = profile_get_charts_data($player);
+                                foreach($data['dates'] as $dates){
+                                    foreach($data['places'] as $places) {
                                         list($year, $month, $day) = explode("-", $dates);
                                         print_r ("[new Date($year, $month, $day), $places],\n");
-                                        $urls['places'] = array_slice($urls['places'], 1);
+                                        $data['places'] = array_slice($data['places'], 1);
                                         break;
                                     }
                                 }
@@ -564,7 +564,7 @@ function profile_show_player($person, Player $player, $tabs) {
                                     'viewWindowMode': 'explicit',
                                     'viewWindow':{
                                         'min': 1,
-                                        'max': <?=$urls['maxPlaces'] * 1.5?>
+                                        'max': <?=$data['maxPlaces'] * 1.5?>
                                     },
                                     'gridlines.count': 8
                                 },
@@ -587,19 +587,15 @@ function profile_show_player($person, Player $player, $tabs) {
 <?
 }
 
-function profile_get_charts_urls(Player $player) {
-	require_once dirname(__FILE__) . '/../classes/charts/Chart.php';
+function profile_get_charts_data(Player $player) {
 	require_once dirname(__FILE__) . '/../classes/cupms/RatingTable.php';
 
-	$pointsChart = new Chart();
-	$pointsLineSet = new LineSet();
-	$placesChart = new Chart();
-	$placesLineSet = new LineSet();
+	$points = array();
+	$places = array();
+	$dates = array();
 
 	$leaguesInfo = $player->getLeaguesInfo();
 	foreach ($leaguesInfo as $leagueInfo) {
-		$pointsLine = new Line();
-		$placesLine = new Line();
 		$today = date("Y-m-d");
 		$yearAgo = (date("Y") - 1) . date("-m-d");
 
@@ -612,22 +608,9 @@ function profile_get_charts_urls(Player $player) {
             $dates[] = $step['date'];
             $points[] = round($step['points']);
             $places[] = $step['place'];
-//			$pointsLine->addPoint(2 * datetoin1t($yearAgo, $step['date']), round($step['points']));
-//			$placesLine->addPoint(2 * datetoint($yearAgo, $step['date']), -$step['place']);
 		}
+	}
 
-//		$pointsLine->setWidth(1);
-//		$pointsLineSet->add($pointsLine);
-//
-//		$placesLine->setWidth(1);
-//		$placesLineSet->add($placesLine);
-//	}
-//
-//	$pointsChart->setLineSet($pointsLineSet);
-//	$pointsChart->setYs(0, null);
-//
-//	$placesChart->setLineSet($placesLineSet);
-//	$placesChart->setYs(null, 0);
     $maxPoints = max($points);
     $maxPlaces = max($places);
 	return array (
@@ -637,7 +620,6 @@ function profile_get_charts_urls(Player $player) {
         'maxPoints' => $maxPoints,
         'maxPlaces' => $maxPlaces,
     );
-}
 }
 
 function profile_show_game_stats(Player $player) {
