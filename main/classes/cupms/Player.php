@@ -232,7 +232,7 @@ class Player {
 	}
 
 	public function getShortName() {
-		return $this->surname . ' ' . $this->name[0] . '.';
+		return $this->surname . ' ' . substring($this->name, 0, 1) . '.';
 	}
 
 	public function getGender() {

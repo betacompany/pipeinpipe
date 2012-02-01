@@ -472,7 +472,7 @@ function profile_show_player($person, Player $player, $tabs) {
                             data.addColumn('number', 'Рейтинг');
                             data.addRows([
                                 <?
-                                $data = profile_get_charts_urls($player);
+                                $data = profile_get_charts_data($player);
                                 foreach($data['dates'] as $dates){
                                     foreach($data['points'] as $points) {
                                         list($year, $month, $day) = explode("-", $dates);
