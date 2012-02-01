@@ -322,7 +322,6 @@ function profile_show_person(User $person, $player, $tabs) {
 function profile_show_player($person, Player $player, $tabs) {
 	$leaguesInfo = $player->getLeaguesInfo();
 	$trophies = $player->getTrophiesInfo();
-	$data = profile_get_charts_urls($player);
 ?>
 
 	<div id="player">
