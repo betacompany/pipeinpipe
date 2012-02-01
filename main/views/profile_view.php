@@ -487,7 +487,7 @@ function profile_show_player($person, Player $player, $tabs) {
                             dataView.setColumns([{calc: function(data, row) { return data.getFormattedValue(row, 0); }, type:'string'}, 1]);
                             // Set chart options from http://code.google.com/intl/ru-RU/apis/chart/interactive/docs/gallery/areachart.html
                             var options = {
-                                'title':'Движение по рейтингу',
+                                'title':'Движение по WPR',
                                 'legend': "none",
                                 'chartArea': {left: 69, width: 666},
                                 'focusTarget': 'category',
@@ -546,7 +546,7 @@ function profile_show_player($person, Player $player, $tabs) {
                             dataView.setColumns([{calc: function(data, row) { return data.getFormattedValue(row, 0); }, type:'string'}, 1]);
                             // Set chart options from http://code.google.com/intl/ru-RU/apis/chart/interactive/docs/gallery/areachart.html
                             var options = {
-                                'title':'Движение по местам рейтинга',
+                                'title':'Движение по местам WPR',
                                 'legend': "none",
                                 'chartArea': {left: 69, width: 666},
                                 'focusTarget': 'category',
@@ -602,7 +602,7 @@ function profile_get_charts_data(Player $player) {
         $points = array();
         $places = array();
 
-        $movement = RatingTable::getRatingMovementInterval($yearAgo, $today, $leagueInfo['league_id'], $player->getId());
+        $movement = RatingTable::getRatingMovementInterval($yearAgo, $today, 1, $player->getId());
 		foreach ($movement as $step) {
             $dates[] = $step['date'];
             $points[] = round($step['points']);
