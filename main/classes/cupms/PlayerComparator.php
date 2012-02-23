@@ -45,7 +45,8 @@ class PlayerComparator {
 
 	private $stages = array();
 	private $cups = array();
-    
+
+
     public function __construct(Player $player1, Player $player2) {
         $this->pm1 = $player1;
         $this->pm2 = $player2;
@@ -54,38 +55,47 @@ class PlayerComparator {
     }
 
     private function init($maxStage = 0) {
-		if ($maxStage == 3)
-			$maxStage = 4;
+        if ($maxStage == 3)
+            $maxStage = 4;
 
-		$array[PlayerComparator::TOTAL] = 0;
-		$array[PlayerComparator::SCORE_FIVE] = 0;
-		$array[PlayerComparator::SCORE_SIX] = 0;
-		$array[PlayerComparator::BALANCE] = 0;
-		$array[PlayerComparator::FATALITY] = 0;
-		$array[PlayerComparator::TECHNICAL] = 0;
-		
-		$this->firstRegularity = $array;
+        $array[PlayerComparator::TOTAL] = 0;
+        $array[PlayerComparator::SCORE_FIVE] = 0;
+        $array[PlayerComparator::SCORE_SIX] = 0;
+        $array[PlayerComparator::BALANCE] = 0;
+        $array[PlayerComparator::FATALITY] = 0;
+        $array[PlayerComparator::TECHNICAL] = 0;
+
+        $this->firstRegularity = $array;
         $this->secondRegularity = $array;
 
-		for ($i = $maxStage; $i >= 1; $i /= 2) {
-			$arrayPlayOff["$i"] = 0;
-		}
-		$arrayPlayOff["3"] = 0;
+        for ($i = $maxStage; $i >= 1; $i /= 2) {
+            $arrayPlayOff["$i"] = 0;
+        }
+        $arrayPlayOff["3"] = 0;
 
-		$this->stages = $arrayPlayOff;
-		$this->stages["0"] = 0;
+        $this->stages = $arrayPlayOff;
+        $this->stages["0"] = 0;
 
-		$arrayPlayOff[PlayerComparator::TOTAL] = 0;
-		
+        $arrayPlayOff[PlayerComparator::TOTAL] = 0;
+
         $this->firstPlayOffs = $arrayPlayOff;
-		$this->firstPlayOffsFatality = $arrayPlayOff;
-		$this->firstPlayOffsTechnical = $arrayPlayOff;
-		$this->secondPlayOffs = $arrayPlayOff;
-		$this->secondPlayOffsFatality = $arrayPlayOff;
-		$this->secondPlayOffsTechnical = $arrayPlayOff;
-		
-		$this->draws = $arrayPlayOff;
-		$this->draws["0"] = 0;
+        $this->firstPlayOffsFatality = $arrayPlayOff;
+        $this->firstPlayOffsTechnical = $arrayPlayOff;
+        $this->secondPlayOffs = $arrayPlayOff;
+        $this->secondPlayOffsFatality = $arrayPlayOff;
+        $this->secondPlayOffsTechnical = $arrayPlayOff;
+
+        $this->draws = $arrayPlayOff;
+        $this->draws["0"] = 0;
+    }
+
+    private function getTwoPlayersMovement($pmId1, $pmId2){
+        $today = date("Y-m-d");
+        $start = "2007-10-23";
+        return array(
+            1 => RatingTable::getRatingMovementInterval($start, $today, 1, $pmId1),
+            2 => RatingTable::getRatingMovementInterval($start, $today, 1, $pmId2),
+        );
     }
 
     public function loadGames($reload = false) {
@@ -493,7 +503,8 @@ class PlayerComparator {
 						)
 					)
 				)
-			)
+			),
+            'movement' => $this->getTwoPlayersMovement($this->pmId1, $this->pmId2)
 		);
 	}
 

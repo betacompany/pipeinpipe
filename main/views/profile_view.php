@@ -562,11 +562,12 @@ function profile_show_player($person, Player $player, $tabs) {
                                     'direction': -1,
                                     'viewWindowMode': 'explicit',
                                     'viewWindow':{
-                                        'min': 1,
+                                        'min': 0.00001,
                                         'max': <?=$data['maxPlaces'] * 1.5?>
                                     },
                                     'gridlines.count': 8
                                 },
+                                'colors': ['#afe410'],
                                 'width': 750,
                                 'height': 300
                             };
@@ -596,13 +597,13 @@ function profile_get_charts_data(Player $player) {
 	$leaguesInfo = $player->getLeaguesInfo();
 	foreach ($leaguesInfo as $leagueInfo) {
 		$today = date("Y-m-d");
-		$yearAgo = (date("Y") - 1) . date("-m-d");
+		$start = "2007-10-23";
 
         $dates = array();
         $points = array();
         $places = array();
 
-        $movement = RatingTable::getRatingMovementInterval($yearAgo, $today, 1, $player->getId());
+        $movement = RatingTable::getRatingMovementInterval($start, $today, 1, $player->getId());
 		foreach ($movement as $step) {
             $dates[] = $step['date'];
             $points[] = round($step['points']);
