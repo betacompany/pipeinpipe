@@ -202,82 +202,76 @@ LABEL;
     <thead>
     <th colspan="3">Движение по рейтингу</th>
     </thead>
-        <tbody>
-            <div id="comparison_chart">
+        <tbody id="comparison_chart">
 LABEL;
-    ?>
 
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script type="text/javascript">
+    $result .= "<script type=\"text/javascript\" src=\"https://www.google.com/jsapi\"></script>\n";
+    $result .= "<script type=\"text/javascript\">\n";
 
     // Load the Visualization API and the piechart package.
-    google.load('visualization', '1.0', {'packages':['corechart']});
+    $result .= "google.load(\'visualization\', \'1.0\', {\'packages\':[\'corechart\']});\n";
 
     // Set a callback to run when the Google Visualization API is loaded.
-    google.setOnLoadCallback(drawChart);
+    $result .= "google.setOnLoadCallback(drawChart);\n";
 
         // Callback that creates and populates a data table,
     // instantiates the pie chart, passes in the data and
     // draws it.
-    function drawChart() {
+    $result .= "function drawChart() {\n";
 
     // Create the data table.
-    var data = new google.visualization.DataTable();
-        <?
+    $result .= "var data = new google.visualization.DataTable();\n";
+
             $chartData = $data['movement'];
             $pm1 = Player::getById($data['pmid1']);
             $pm2 = Player::getById($data['pmid2']);
             $numberOfDates = max($data['movement'][1], $data['movement'][2]);
-        ?>
 
-        var players = ['<?$pm1->getFullName()?>','<?$pm2->getFullName()?>'];
-        data.addColumn('date', 'День');
-        for (var i = 0; i < players.length; i++) {
-            data.addColumn('number', players[i]);
-        }
+    $result .= "var players = [\'" . $pm1->getFullName() . "\', \'" . $pm2->getFullName() . "\'];\n";
+    $result .= "data.addColumn(\'date\', \'День\');\n";
+    $result .= "for (var i = 0; i < players.length; i++) {\n
+        data.addColumn(\'number\', players[i]);\n
+    }\n";
 
-        data.addRows(<?=$numberOfDates?>);
-        <?
+    $result .= "data.addRows(" . $numberOfDates . ");\n";
             foreach($chartData as $number => $playerMovement){
                 foreach ($playerMovement as $movement) {
                     list($year, $month, $day) = explode("-", $movement['date']);
                     $points = $movement['points'];
-                    print_r("data.setCell(new Date($year, $month, $day), $number, $points);\n");
+                    $result .= "data.setCell(new Date($year, $month, $day), $number, $points);\n";
                 }
             }
-        ?>
 
-    var dataView = new google.visualization.DataView(data);
-    dataView.setColumns([{calc: function(data, row) { return data.getFormattedValue(row, 0); }, type:'string'}, 1]);
+    $result .= "var dataView = new google.visualization.DataView(data);\n";
+    $result .= "dataView.setColumns([{calc: function(data, row) { return data.getFormattedValue(row, 0); }, type:'string'}, 1]);\n";
 
     // Chart options may be found on http://code.google.com/intl/ru-RU/apis/chart/interactive/docs/gallery/areachart.html
-    var options = {
-        'title':'Движение по WPR',
-        'legend': "none",
-        'chartArea': {left: 69, width: 666},
-        'focusTarget': 'category',
-        'legend.position': 'right',
-        'hAxis': {
-            'format': 'd MMM y',
-            'textPosition': 'out',
-            'title': "Дата",
-            'slantedText': false,
-            'gridlines.count': 8,
-            'maxAlternation': 2
-         },
-        'vAxis': {
-            'gridlines.count': 8
-         },
-        'width': 750,
-        'height': 300
-    };
+    $result .= "var options = {\n
+        \'title\':\'Движение по WPR\',\n
+        \'legend\': \"none\",\n
+        \'chartArea\': {left: 69, width: 666},\n
+        \'focusTarget\': \'category\',\n
+        \'legend.position\': \'right\',\n
+        \'hAxis\': {\n
+            \'format\': \'d MMM y\',\n
+            \'textPosition\': \'out\',\n
+            \'title\': \"Дата\",\n
+            \'slantedText\': false,\n
+            \'gridlines.count\': 8,\n
+            \'maxAlternation\': 2\n
+         },\n
+        \'vAxis\': {\n
+            \'gridlines.count\': 8\n
+         },\n
+        \'width\': 750,\n
+        \'height\': 300\n
+    };\n";
 
-        var chart = new google.visualization.AreaChart(document.getElementById('comparison_chart'));
-        chart.draw(data, options);}
-</script>
-<?
-$result .= <<<LABEL
-                </div>
+        $result .= "var chart = new google.visualization.AreaChart(document.getElementById(\'comparison_chart\'));\n";
+    $result .= "chart.draw(data, options);}\n";
+$result .= "</script>\n";
+
+    $result .= <<<LABEL
 		    </tbody>
         </table>
 LABEL;
