@@ -199,84 +199,88 @@ LABEL;
 
     $result .= <<<LABEL
             <table class="comparator">
-                    <thead>
-                    <th colspan="3">Движение по рейтингу</th>
-                    </thead>
-                    <tbody>
-                    <div class="body chart" id="comparison_chart"></div>
-                    <!--    <script type="text/javascript" src="https://www.google.com/jsapi"></script>-->
+    <thead>
+    <th colspan="3">Движение по рейтингу</th>
+    </thead>
+        <tbody>
+            <div id="comparison_chart">
+LABEL;
+    ?>
+
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
 
-    // Load the Visualization API and the piechart package.-->
-    google.load('visualization', '1.0', {'packages':['corechart']});-->
+    // Load the Visualization API and the piechart package.
+    google.load('visualization', '1.0', {'packages':['corechart']});
 
-    // Set a callback to run when the Google Visualization API is loaded.-->
-    google.setOnLoadCallback(drawChart);-->
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.setOnLoadCallback(drawChart);
 
-<!--    // Callback that creates and populates a data table,-->
-    // instantiates the pie chart, passes in the data and-->
-    // draws it.-->
-    function drawChart() {-->
+        // Callback that creates and populates a data table,
+    // instantiates the pie chart, passes in the data and
+    // draws it.
+    function drawChart() {
 
-        // Create the data table.-->
-        var data = new google.visualization.DataTable();-->
-        --><?//
-//            $chartData = $data['movement'];
-//            $pm1 = Player::getById($data['pmid1']);
-//            $pm2 = Player::getById($data['pmid2']);
-//            $numberOfDates = max($data['movement'][1], $data['movement'][2]);
-//        ?>
-<!---->
-<!--        var players = ['--><?//=$pm1->getFullName()?><!--','--><?//=$pm2->getFullName()?><!--'];-->
-<!--        data.addColumn('date', 'День');-->
-<!--        for (var i = 0; i < players.length; i++) {-->
-<!--            data.addColumn('number', players[i]);-->
-<!--        }-->
-<!---->
-<!--        data.addRows(--><?//=$numberOfDates?><!--);-->
-<!--        --><?//
-//        foreach($chartData as $number => $playerMovement){
-//            foreach ($playerMovement as $movement) {
-//                list($year, $month, $day) = explode("-", $movement['date']);
-//                $points = $movement['points'];
-//                print_r("data.setCell(new Date($year, $month, $day), $number, $points);\n");
-//            }
-//        }
-//        ?>
-<!---->
-<!--    var dataView = new google.visualization.DataView(data);-->
-<!--    dataView.setColumns([{calc: function(data, row) { return data.getFormattedValue(row, 0); }, type:'string'}, 1]);-->
-<!--    // Set chart options from http://code.google.com/intl/ru-RU/apis/chart/interactive/docs/gallery/areachart.html-->
-<!--    var options = {-->
-<!--        'title':'Движение по WPR',-->
-<!--        'legend': "none",-->
-<!--        'chartArea': {left: 69, width: 666},-->
-<!--        'focusTarget': 'category',-->
-<!--        'legend.position': 'right',-->
-<!--        'hAxis': {-->
-<!--        'format': 'd MMM y',-->
-<!--        'textPosition': 'out',-->
-<!--        'title': "Дата",-->
-<!--        'slantedText': false,-->
-<!--        'gridlines.count': 8,-->
-<!--        'maxAlternation': 2-->
-<!--                },-->
-<!--                'vAxis': {-->
-<!--                    'gridlines.count': 8-->
-<!--                },-->
-<!--                'width': 750,-->
-<!--                'height': 300-->
-<!--            };-->
-<!--            // Instantiate and draw our chart, passing in some options.-->
-<!--            var chart = new google.visualization.AreaChart(document.getElementById('comparison_chart'));-->
-<!--            chart.draw(data, options);-->
-<!--    }-->
-<!--</script>-->
+    // Create the data table.
+    var data = new google.visualization.DataTable();
+        <?
+            $chartData = $data['movement'];
+            $pm1 = Player::getById($data['pmid1']);
+            $pm2 = Player::getById($data['pmid2']);
+            $numberOfDates = max($data['movement'][1], $data['movement'][2]);
+        ?>
 
-			</tbody>
-		</table>
+        var players = ['<?$pm1->getFullName()?>','<?$pm2->getFullName()?>'];
+        data.addColumn('date', 'День');
+        for (var i = 0; i < players.length; i++) {
+            data.addColumn('number', players[i]);
+        }
+
+        data.addRows(<?=$numberOfDates?>);
+        <?
+            foreach($chartData as $number => $playerMovement){
+                foreach ($playerMovement as $movement) {
+                    list($year, $month, $day) = explode("-", $movement['date']);
+                    $points = $movement['points'];
+                    print_r("data.setCell(new Date($year, $month, $day), $number, $points);\n");
+                }
+            }
+        ?>
+
+    var dataView = new google.visualization.DataView(data);
+    dataView.setColumns([{calc: function(data, row) { return data.getFormattedValue(row, 0); }, type:'string'}, 1]);
+
+    // Chart options may be found on http://code.google.com/intl/ru-RU/apis/chart/interactive/docs/gallery/areachart.html
+    var options = {
+        'title':'Движение по WPR',
+        'legend': "none",
+        'chartArea': {left: 69, width: 666},
+        'focusTarget': 'category',
+        'legend.position': 'right',
+        'hAxis': {
+            'format': 'd MMM y',
+            'textPosition': 'out',
+            'title': "Дата",
+            'slantedText': false,
+            'gridlines.count': 8,
+            'maxAlternation': 2
+         },
+        'vAxis': {
+            'gridlines.count': 8
+         },
+        'width': 750,
+        'height': 300
+    };
+
+        var chart = new google.visualization.AreaChart(document.getElementById('comparison_chart'));
+        chart.draw(data, options);}
+</script>
+<?
+$result .= <<<LABEL
+                </div>
+		    </tbody>
+        </table>
 LABEL;
-$result .= '</div>';
 
 	return $result;
 }
