@@ -74,10 +74,12 @@ class Chart {
 		return ($min == INF && $max == -INF) ? 0 : ceil($max - $min);
 	}
 
+
 	public function url($width, $height, $transparency = 0) {
-		
+
+
 		$this->lineSet->minimize();
-		
+
 		$lines = $this->lineSet->getLines();
 
 		$post_data = array();
@@ -140,7 +142,7 @@ class Chart {
 				}
 				$j++;
 			}
-			
+
 
 			if ($i < count($lines) - 1) {
 				$result .= '|';
