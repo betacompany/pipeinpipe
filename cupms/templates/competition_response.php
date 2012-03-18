@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '/../includes/config.php';
-require_once dirname(__FILE__) . '/../../' . MAINSITE . '/classes/cupms/Competition.php';
+require_once dirname(__FILE__) . '/../../main/classes/cupms/Competition.php';
 
 function competition_response_id(Competition $competition) {
 	if ($competition == null) {

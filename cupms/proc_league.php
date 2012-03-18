@@ -11,13 +11,13 @@ require_once 'views/league_view.php';
 require_once 'templates/league_response.php';
 require_once 'templates/competition_response.php';
 
-require_once '../' . MAINSITE . '/classes/cupms/League.php';
+require_once '../main/classes/cupms/League.php';
 
-require_once '../' . MAINSITE . '/classes/user/Auth.php';
-require_once '../' . MAINSITE . '/classes/user/User.php';
+require_once '../main/classes/user/Auth.php';
+require_once '../main/classes/user/User.php';
 
-require_once '../' . MAINSITE . '/includes/security.php';
-require_once '../' . MAINSITE . '/includes/common.php';
+require_once '../main/includes/security.php';
+require_once '../main/includes/common.php';
 
 try {
 
