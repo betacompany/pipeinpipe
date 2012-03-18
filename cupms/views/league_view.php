@@ -1,9 +1,9 @@
 <?php
 require_once dirname(__FILE__) . '/../includes/config.php';
 
-require_once dirname(__FILE__) . '/../../' . MAINSITE . '/classes/cupms/League.php';
+require_once dirname(__FILE__) . '/../../main/classes/cupms/League.php';
 
-require_once dirname(__FILE__) . '/../../' . MAINSITE . '/classes/user/User.php';
+require_once dirname(__FILE__) . '/../../main/classes/user/User.php';
 
 require_once dirname(__FILE__) . '/../templates/response.php';
 

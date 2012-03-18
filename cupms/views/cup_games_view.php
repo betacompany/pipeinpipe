@@ -4,12 +4,12 @@ require_once dirname(__FILE__) . '/../includes/config.php';
 
 require_once dirname(__FILE__) . '/../templates/response.php';
 
-require_once dirname(__FILE__) . '/../../' . MAINSITE . '/classes/cupms/Cup.php';
-require_once dirname(__FILE__) . '/../../' . MAINSITE . '/classes/cupms/CupOneLap.php';
-require_once dirname(__FILE__) . '/../../' . MAINSITE . '/classes/cupms/CupTwoLaps.php';
-require_once dirname(__FILE__) . '/../../' . MAINSITE . '/classes/cupms/CupPlayoff.php';
+require_once dirname(__FILE__) . '/../../main/classes/cupms/Cup.php';
+require_once dirname(__FILE__) . '/../../main/classes/cupms/CupOneLap.php';
+require_once dirname(__FILE__) . '/../../main/classes/cupms/CupTwoLaps.php';
+require_once dirname(__FILE__) . '/../../main/classes/cupms/CupPlayoff.php';
 
-require_once dirname(__FILE__) . '/../../' . MAINSITE . '/classes/user/User.php';
+require_once dirname(__FILE__) . '/../../main/classes/user/User.php';
 
 // remember that CupTwoLaps extends CupOneLap
 

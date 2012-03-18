@@ -8,13 +8,13 @@ require_once 'includes/error.php';
 require_once 'includes/config.php';
 require_once 'views/players_view.php';
 
-require_once '../'.MAINSITE.'/classes/cupms/Player.php';
+require_once '../main/classes/cupms/Player.php';
 
-require_once '../'.MAINSITE.'/classes/user/Auth.php';
-require_once '../'.MAINSITE.'/classes/user/User.php';
+require_once '../main/classes/user/Auth.php';
+require_once '../main/classes/user/User.php';
 
-require_once '../'.MAINSITE.'/includes/security.php';
-require_once '../'.MAINSITE.'/includes/common.php';
+require_once '../main/includes/security.php';
+require_once '../main/includes/common.php';
 
 Header('Content-type: text/html; charset="UTF-8"', true);
 

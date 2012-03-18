@@ -1,14 +1,12 @@
 <?php
 
-//define('MAINSITE', 'pipeinpipe.info');
-define('MAINSITE', 'main');
 
-//define('CUPMSSITE', 'cupms.pipeinpipe.info');
-define('CUPMSSITE', 'cupms');
+require_once dirname(__FILE__) . '/../../main/includes/assertion.php';
+require_once dirname(__FILE__) . '/error.php';
 
-require_once dirname(__FILE__).'/../../'.MAINSITE.'/includes/assertion.php';
-require_once dirname(__FILE__).'/error.php';
+require_once dirname(__FILE__) . '/../../main/includes/config-local.php';
 
-include dirname(__FILE__) . '/config-local.php';
+define('CUPMS_URL', 'http://' . CUPMS_SITE_URL);
+define('MAIN_URL', 'http://' . MAIN_SITE_URL);
 
 ?>

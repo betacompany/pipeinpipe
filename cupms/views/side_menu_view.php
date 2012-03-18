@@ -2,8 +2,8 @@
 /**
  * @author Andrew Solozobov
  */
-require_once '../'.MAINSITE.'/classes/cupms/League.php';
-require_once '../'.MAINSITE.'/classes/user/User.php';
+require_once '../main/classes/cupms/League.php';
+require_once '../main/classes/user/User.php';
 
 require_once dirname(__FILE__) . '/../templates/response.php';
 
