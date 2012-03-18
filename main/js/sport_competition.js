@@ -311,6 +311,7 @@ var competition = {
 
 	initRegistration: function(isRegistered) {
 		competition._isRegistered = isRegistered;
+        !isRegistered ? $('#reg_comment_p').show() : $('#reg_comment_p').hide();
 	},
 
 	_registeredText: 'Отменить заявку на турнир',
@@ -322,32 +323,30 @@ var competition = {
 			url: '/procs/proc_sport_competition.php',
 			data: {
 				method: 'registration',
-				comp_id: compId
+				comp_id: compId,
+                text: $('#reg_comment').val()
 			},
 
-			dataType: 'json',
+			dataType: 'html',
 
-			success: function(json) {
-				if (json.status != 'ok') {
-					debug(json);
-				} else {
-					competition._isRegistered = !competition._isRegistered;
-					$('#reg' + json.uid).fadeOut('slow', function() {
-						$(this).remove();
-					});
-					if (json.html != '') {
-						$('<div/>', {
-							id: 'reg' + json.uid,
-							html: json.html
-						})
-						.addClass('round_border')
-						.hide()
-						.appendTo($('#competition_registered'))
-						.fadeIn('slow');
-					}
-				}
+			success: function(html) {
+                competition._isRegistered = !competition._isRegistered;
+                $('#reg' + getCookie('uid')).fadeOut('slow', function() {
+                    $(this).remove();
+                });
+                if (html != '') {
+                    $('<div/>', {
+                        id: 'reg' + getCookie('uid'),
+                        html: html
+                    })
+                    .addClass('round_border')
+                    .hide()
+                    .appendTo($('#competition_registered'))
+                    .fadeIn('slow');
+                }
 
-                registerButton.content(competition._isRegistered ? competition._unregisteredText : competition._registeredText);
+                !competition._isRegistered ? $('#reg_comment_p').show() : $('#reg_comment_p').hide();
+                registerButton.content(!competition._isRegistered ? competition._unregisteredText : competition._registeredText);
 			},
 
 			error: debug

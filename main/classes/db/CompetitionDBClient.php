@@ -126,11 +126,12 @@ class CompetitionDBClient {
 		);
 	}
 
-	public static function insertRegistration($compId, $uid, $pmid) {
-		return mysql_qw('INSERT INTO `p_competition_register` SET `comp_id`=?, `uid`=?, `pmid`=?',
+	public static function insertRegistration($compId, $uid, $pmid, $comment) {
+		return mysql_qw('INSERT INTO `p_competition_register` SET `comp_id`=?, `uid`=?, `pmid`=?, `comment`=?',
 						$compId,
 						$uid,
-						$pmid);
+						$pmid,
+						$comment);
 	}
 
 	public static function deleteRegistration($compId, $uid) {
