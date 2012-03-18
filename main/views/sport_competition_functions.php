@@ -43,7 +43,9 @@ function sport_show_competition_body(Competition $competition) {
 <div id="competition_body">
 <?
     sport_show_competition_body_left_column($competition);
-    sport_show_competition_body_right_column($competition);
+    if (!$competition->isRegistering()) {
+        sport_show_competition_body_right_column($competition);
+    }
 ?>
     <div style="clear: both"></div>
 <?
@@ -123,12 +125,19 @@ function sport_show_competition_info(Competition $competition) {
 function sport_show_competition_registration(Competition $competition) {
 ?>
 <div id="competition_registration">
+	<div id="reg_comment_p" style="width: 410px;">
+		<p>Если у вас есть пожелания по поводу времени своих матчей, а также по совместному
+		участию в группе со знакомыми, укажите их, пожалуйста ниже. Мы обязательно
+		постараемся их учесть при жеребьёвке.</p>
+		<p><textarea  style="width: 410px;" id="reg_comment" rows="3"></textarea></p>
+	</div>
 <?
     $auth = new Auth();
     $user = $auth->getCurrentUser();
     $isRegistered = sport_competition_is_user_registered($user, $competition);
     sport_show_competition_register_button($competition, $user, $isRegistered);
 ?>
+	
     <div id="login_or_register_panel"></div>
     <div id="competition_registered">
 <?
@@ -136,6 +145,7 @@ function sport_show_competition_registration(Competition $competition) {
 			sport_show_registered_user($currentUser);
 		}
 ?>
+		
     </div>
 </div>
 <?

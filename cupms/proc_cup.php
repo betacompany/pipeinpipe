@@ -8,15 +8,15 @@ require_once dirname(__FILE__) . '/includes/config.php';
 require_once dirname(__FILE__) . '/views/competition_view.php';
 require_once dirname(__FILE__) . '/templates/cup_response.php';
 
-require_once '../'.MAINSITE.'/classes/cupms/Competition.php';
-require_once '../'.MAINSITE.'/classes/cupms/CupFactory.php';
-require_once '../'.MAINSITE.'/classes/cupms/ResultTable.php';
+require_once '../main/classes/cupms/Competition.php';
+require_once '../main/classes/cupms/CupFactory.php';
+require_once '../main/classes/cupms/ResultTable.php';
 
-require_once '../'.MAINSITE.'/classes/user/Auth.php';
-require_once '../'.MAINSITE.'/classes/user/User.php';
+require_once '../main/classes/user/Auth.php';
+require_once '../main/classes/user/User.php';
 
-require_once '../' . MAINSITE . '/includes/security.php';
-require_once '../' . MAINSITE . '/includes/common.php';
+require_once '../main/includes/security.php';
+require_once '../main/includes/common.php';
 
 try {
 	$auth = new Auth();

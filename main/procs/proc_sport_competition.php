@@ -35,9 +35,10 @@ try {
 		switch ($method) {
 			case 'registration':
 				assertIsset($_REQUEST['comp_id'], 'comp_id');
-				
+
 				$uid = $user->getId();
 				$competition = Competition::getById($_REQUEST['comp_id']);
+				$comment = string_process(param('text'));
 				
 				$isRegistered = false;
 				foreach ($competition->getRegisteredUsers() as $currentUser) {
@@ -48,12 +49,8 @@ try {
 				}
 
 				if (($isRegistered && $competition->unregister($uid, $user->getPmid())) ||
-					(!$isRegistered && $competition->register($uid, $user->getPmid()))) {
-					echo json(array(
-						'status' => 'ok',
-						'uid' => $user->getId(),
-						'html' => $isRegistered ? '' : sport_html_registered_user($user)
-					));
+					(!$isRegistered && $competition->register($uid, $user->getPmid(), $comment))) {
+					echo $isRegistered ? '' : sport_html_registered_user($user);
 				} else {
 					echo json(array('status' => 'failed'));
 				}

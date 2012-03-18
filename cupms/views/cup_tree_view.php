@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__).'/../includes/config.php';
 
-require_once dirname(__FILE__).'/../../'.MAINSITE.'/classes/cupms/Cup.php';
+require_once dirname(__FILE__).'/../../main/classes/cupms/Cup.php';
 
 function draw_cup(Cup $cup){
 	$childCups = $cup->getChildren();

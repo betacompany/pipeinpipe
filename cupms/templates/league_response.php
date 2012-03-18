@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '/../includes/config.php';
-require_once dirname(__FILE__) . '/../../' . MAINSITE . '/classes/cupms/League.php';
+require_once dirname(__FILE__) . '/../../main/classes/cupms/League.php';
 
 /**
  * Echos JSON with league id and name

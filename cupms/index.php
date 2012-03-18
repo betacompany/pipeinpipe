@@ -6,7 +6,7 @@
 
 require_once dirname(__FILE__) . '/includes/config.php';
 
-require_once dirname(__FILE__) . '/../' . MAINSITE . '/classes/user/Auth.php';
+require_once dirname(__FILE__) . '/../main/classes/user/Auth.php';
 
 $auth = new Auth();
 

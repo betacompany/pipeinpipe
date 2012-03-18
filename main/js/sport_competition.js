@@ -311,43 +311,42 @@ var competition = {
 
 	initRegistration: function(isRegistered) {
 		competition._isRegistered = isRegistered;
+        !isRegistered ? $('#reg_comment_p').show() : $('#reg_comment_p').hide();
 	},
 
-	_registeredText: 'Отменить заяву на турнир',
+	_registeredText: 'Отменить заявку на турнир',
 	_unregisteredText: 'Зарегистрироваться на турнир',
-	_isRegistered: 0,
+	_isRegistered: false,
 
 	registration: function(compId) {
 		$.ajax({
 			url: '/procs/proc_sport_competition.php',
 			data: {
 				method: 'registration',
-				comp_id: compId
+				comp_id: compId,
+                text: $('#reg_comment').val()
 			},
 
-			dataType: 'json',
+			dataType: 'html',
 
-			success: function(json) {
-				registerButton.content(competition._isRegistered ? competition._unregisteredText : competition._registeredText);
+			success: function(html) {
+                competition._isRegistered = !competition._isRegistered;
+                $('#reg' + getCookie('uid')).fadeOut('slow', function() {
+                    $(this).remove();
+                });
+                if (html != '') {
+                    $('<div/>', {
+                        id: 'reg' + getCookie('uid'),
+                        html: html
+                    })
+                    .addClass('round_border')
+                    .hide()
+                    .appendTo($('#competition_registered'))
+                    .fadeIn('slow');
+                }
 
-				if (json.status != 'ok') {
-					debug(json);
-				} else {
-					competition._isRegistered = !competition._isRegistered;
-					$('#reg' + json.uid).fadeOut('slow', function() {
-						$(this).remove();
-					});
-					if (json.html != '') {
-						$('<div/>', {
-							id: 'reg' + json.uid,
-							html: json.html
-						})
-						.addClass('round_border')
-						.hide()
-						.appendTo($('#competition_registered'))
-						.fadeIn('slow');
-					}
-				}
+                !competition._isRegistered ? $('#reg_comment_p').show() : $('#reg_comment_p').hide();
+                registerButton.content(!competition._isRegistered ? competition._unregisteredText : competition._registeredText);
 			},
 
 			error: debug
@@ -359,7 +358,8 @@ var competition = {
 
 		loginOrRegisterPanel = $('#login_or_register_panel')
 			.html('<p>Чтобы зарегистрироваться на турнир, необходимо</p>')
-			.hide(),
+			.hide()
+            .css('width', '100%'),
 
 		options = {
 			CSSClass: 'round_border',
@@ -373,18 +373,28 @@ var competition = {
 				'padding-top': 7,
 				'text-align': 'center',
 				'float': 'left',
-				'margin-left': margin
+				'margin-left': 0
 			}
 		},
 
 		loginOptions = {
 			html: 'Войти на сайт',
-			href: ''
+			onclick: function () {
+                $('body').scrollTop();
+                $('#sign_in_form input')
+                    .css({
+                        backgroundColor: COLOR.SECOND_LIGHT
+                    })
+                    .animate({
+                        backgroundColor: '#ffffff'
+                    }, 'slow');
+                $('#sign_in_login').focus();
+            }
 		},
 
 		signUpOptions = {
 			html: 'Зарегистрироваться',
-			href: '/sign_up'
+			href: '/sign_up?ret=' + encodeURI(window.location.pathname)
 		};
 
 		$.extend(loginOptions, options);
@@ -395,12 +405,14 @@ var competition = {
 		$('<div/>', {
 			html: 'или'
 		}).css({
-			'margin-left': margin,
+			'margin': margin,
 			'padding-top': 6,
 			'float': 'left'
 		}).appendTo(loginOrRegisterPanel);
 
 		new FadingButton(signUpOptions).appendTo(loginOrRegisterPanel);
+
+        loginOrRegisterPanel.append('<div style="clear: both;"/>');
 
 		loginOrRegisterPanel.slideDown('slow');
 	},

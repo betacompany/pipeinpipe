@@ -491,7 +491,12 @@ function FadingButton(options) {
 		cursor: 'pointer'
 	})
 	.css(options.css)
-	.click(options.onclick);
+	.click(
+        options.href ?
+            function () {
+                window.location = options.href
+            } : options.onclick
+    );
 
 	var bindHover = function() {
 		jButton.hover(

@@ -12,17 +12,17 @@ require_once 'views/cup_games_view.php';
 require_once 'templates/cup_response.php';
 require_once 'templates/competition_response.php';
 
-require_once '../' . MAINSITE . '/classes/cupms/Competition.php';
-require_once '../' . MAINSITE . '/classes/cupms/Cup.php';
-require_once '../' . MAINSITE . '/classes/cupms/Game.php';
+require_once '../main/classes/cupms/Competition.php';
+require_once '../main/classes/cupms/Cup.php';
+require_once '../main/classes/cupms/Game.php';
 
-require_once '../' . MAINSITE . '/classes/user/Auth.php';
-require_once '../' . MAINSITE . '/classes/user/User.php';
+require_once '../main/classes/user/Auth.php';
+require_once '../main/classes/user/User.php';
 
-require_once '../' . MAINSITE . '/classes/exceptions/cupms_exception_set.php';
+require_once '../main/classes/exceptions/cupms_exception_set.php';
 
-require_once '../' . MAINSITE . '/includes/security.php';
-require_once '../' . MAINSITE . '/includes/common.php';
+require_once '../main/includes/security.php';
+require_once '../main/includes/common.php';
 
 try {
 

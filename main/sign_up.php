@@ -24,6 +24,9 @@ try {
 	<h1>Регистрация</h1>
 	<div class="left_column">
 		<form id="sign_up" action="/procs/proc_sign_up.php" method="post">
+			<? if (issetParam('ret')): ?>
+			<input type="hidden" name="ret" value="<?=urlencode(param('ret'))?>"/>
+			<? endif; ?>
 			<input type="hidden" name="method" value="sign_up" />
 			
 			<div class="block">

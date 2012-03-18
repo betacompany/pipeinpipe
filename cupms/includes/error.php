@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '/config.php';
-require_once dirname(__FILE__) . '/../../' . MAINSITE . '/classes/utils/Logger.php';
+require_once dirname(__FILE__) . '/../../main/classes/utils/Logger.php';
 
 $LOG = new Logger(Logger::CUPMS_LOG);
 
@@ -58,6 +58,7 @@ define('ERROR_INCORRECT_STATUS', 103);
 define('ERROR_NO_MAIN_CUP', 104);
 define('ERROR_NULL_DATE', 105);
 define('ERROR_INVALID_DATE', 106);
+define('ERROR_REGULARCUP', 107);
 
 // League Errors: 200 - 299
 define('ERROR_NOLEAGUE', 200);
