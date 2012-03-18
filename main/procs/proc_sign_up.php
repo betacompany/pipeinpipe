@@ -144,7 +144,14 @@ try {
 			}
 
 			$auth->login($d['login'], md5($d['password1']), true);
-			Header('Location: /id' . $u->getId());
+			if (issetParam('ret')) {
+				$location = urldecode(param('ret'));
+				if (substr($location, 0, 6) === '/sport') {
+					Header('Location: ' . $location);
+				}
+			} else {
+				Header('Location: /id' . $u->getId());
+			}
 			exit(0);
 		} else {
 			sign_up_error_redirect('userCreationFailed');

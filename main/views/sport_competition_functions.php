@@ -43,7 +43,9 @@ function sport_show_competition_body(Competition $competition) {
 <div id="competition_body">
 <?
     sport_show_competition_body_left_column($competition);
-    sport_show_competition_body_right_column($competition);
+    if (!$competition->isRegistering()) {
+        sport_show_competition_body_right_column($competition);
+    }
 ?>
     <div style="clear: both"></div>
 <?
