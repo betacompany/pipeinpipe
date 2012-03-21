@@ -86,7 +86,14 @@ function debug(text) {
 		for (var i = 0; i < 8 - time.length; i++) {
 			time = ' ' + time;
 		}
-		if (CONFIG.DEBUG) console.debug(''+time+': ' + text);
+        if (CONFIG.DEBUG) {
+            if (text instanceof String) {
+                console && console.debug(''+time+': ' + text);
+            } else {
+                console && console.debug(''+time+': ');
+                console && console.debug(text);
+            }
+        }
 	} catch (e) {}
 }
 
@@ -162,7 +169,7 @@ function getTrueKeys(obj) {
 function loading(domElement, enable, x, y, inline) {
 	if (!(domElement instanceof jQuery))
 		domElement = $(domElement);
-	
+
 	if (enable) {
 		var w = domElement.innerWidth(),
 			h = domElement.innerHeight(),

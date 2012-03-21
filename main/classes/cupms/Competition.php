@@ -678,8 +678,8 @@ class Competition implements IComparable {
 		return self::$pmCount;
 	}
 
-	public function register($uid, $pmid) {
-		return CompetitionDBClient::insertRegistration($this->getId(), $uid, $pmid);
+	public function register($uid, $pmid, $comment = "") {
+		return CompetitionDBClient::insertRegistration($this->getId(), $uid, $pmid, $comment);
 	}
 
 	public function unregister($uid) {

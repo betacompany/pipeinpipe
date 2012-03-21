@@ -80,7 +80,7 @@ RewriteRule ^sign_out$ /procs/proc_main.php?method=sign_out [L]
 RewriteRule ^sign_out/$ /procs/proc_main.php?method=sign_out [L]
 
 # signing up
-RewriteRule ^sign_up$ /sign_up.php [L]
+RewriteRule ^sign_up$ /sign_up.php [QSA,L]
 RewriteRule ^sign_up/$ /sign_up.php [L]
 
 # JS closure compiling

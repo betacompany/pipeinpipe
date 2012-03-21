@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '/../config/global-properties.php';
-require_once dirname(__FILE__) . '/../config/local-properties.php';
+require_once dirname(__FILE__) . '/../config/my-properties.php';
 
 function recursive_go ($prefix, $element) {
 	if (is_array($element)) {

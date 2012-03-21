@@ -7,9 +7,9 @@
 
 require_once 'includes/config.php';
 require_once 'views/side_menu_view.php';
-//require_once '../'.MAINSITE.'/classes/cupms/League.php';
-require_once '../'.MAINSITE.'/classes/user/User.php';
-require_once '../'.MAINSITE.'/classes/user/Auth.php';
+
+require_once '../main/classes/user/User.php';
+require_once '../main/classes/user/Auth.php';
 
 $auth = new Auth();
 if (!$auth->isAuth()) {

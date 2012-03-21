@@ -1,9 +1,9 @@
 <?php
 require_once dirname(__FILE__) . '/../includes/config.php';
 
-require_once dirname(__FILE__) . '/../../' . MAINSITE . '/classes/cupms/Player.php';
+require_once dirname(__FILE__) . '/../../main/classes/cupms/Player.php';
 
-require_once dirname(__FILE__) . '/../../' . MAINSITE . '/classes/user/User.php';
+require_once dirname(__FILE__) . '/../../main/classes/user/User.php';
 
 require_once dirname(__FILE__) . '/cup_tree_view.php';
 require_once dirname(__FILE__) . '/cup_players_view.php';

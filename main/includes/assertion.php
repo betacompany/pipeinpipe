@@ -103,7 +103,7 @@ function assertDate($date) {
 
 	if ($date > 28) {
 		if ($month == 2) {
-			if ($year % 4)
+			if ($year % 4 == 0 && ($year % 100 != 0 || $year % 400 == 0))
 				$daysInMonth = 29;
 			else
 				$daysInMonth = 28;
