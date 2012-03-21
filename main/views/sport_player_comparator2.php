@@ -52,10 +52,10 @@ function show_player_comparator($data) {
 	<table class="comparator_head">
 		<thead>
 			<th>
-				<a href="$url1">$f1</a>
+				<a href="$url1">$name1</a>
 			</th>
 			<th>
-				<a href="$url2">$f2</a>
+				<a href="$url2">$name2</a>
 			</th>
 		</thead>
 		<tbody>
@@ -209,7 +209,7 @@ LABEL;
     $result .= "<script type=\"text/javascript\">\n";
 
     // Load the Visualization API and the piechart package.
-    $result .= "google.load(\'visualization\', \'1.0\', {\'packages\':[\'corechart\']});\n";
+    $result .= "google.load('visualization', '1.0', {'packages':['corechart']});\n";
 
     // Set a callback to run when the Google Visualization API is loaded.
     $result .= "google.setOnLoadCallback(drawChart);\n";
@@ -227,10 +227,10 @@ LABEL;
             $pm2 = Player::getById($data['pmid2']);
             $numberOfDates = max($data['movement'][1], $data['movement'][2]);
 
-    $result .= "var players = [\'" . $pm1->getFullName() . "\', \'" . $pm2->getFullName() . "\'];\n";
-    $result .= "data.addColumn(\'date\', \'День\');\n";
+    $result .= "var players = ['" . $pm1->getFullName() . "', '" . $pm2->getFullName() . "'];\n";
+    $result .= "data.addColumn('date', 'День');\n";
     $result .= "for (var i = 0; i < players.length; i++) {\n
-        data.addColumn(\'number\', players[i]);\n
+        data.addColumn('number', players[i]);\n
     }\n";
 
     $result .= "data.addRows(" . $numberOfDates . ");\n";
@@ -247,27 +247,27 @@ LABEL;
 
     // Chart options may be found on http://code.google.com/intl/ru-RU/apis/chart/interactive/docs/gallery/areachart.html
     $result .= "var options = {\n
-        \'title\':\'Движение по WPR\',\n
-        \'legend\': \"none\",\n
-        \'chartArea\': {left: 69, width: 666},\n
-        \'focusTarget\': \'category\',\n
-        \'legend.position\': \'right\',\n
-        \'hAxis\': {\n
-            \'format\': \'d MMM y\',\n
-            \'textPosition\': \'out\',\n
-            \'title\': \"Дата\",\n
-            \'slantedText\': false,\n
-            \'gridlines.count\': 8,\n
-            \'maxAlternation\': 2\n
+        'title':'Движение по WPR',\n
+        'legend': \"none\",\n
+        'chartArea': {left: 69, width: 666},\n
+        'focusTarget': 'category',\n
+        'legend.position': 'right',\n
+        'hAxis': {\n
+            'format': 'd MMM y',\n
+            'textPosition': 'out',\n
+            'title': \"Дата\",\n
+            'slantedText': false,\n
+            'gridlines.count': 8,\n
+            'maxAlternation': 2\n
          },\n
-        \'vAxis\': {\n
-            \'gridlines.count\': 8\n
+        'vAxis': {\n
+            'gridlines.count': 8\n
          },\n
-        \'width\': 750,\n
-        \'height\': 300\n
+        'width': 750,\n
+        'height': 300\n
     };\n";
 
-        $result .= "var chart = new google.visualization.AreaChart(document.getElementById(\'comparison_chart\'));\n";
+        $result .= "var chart = new google.visualization.AreaChart(document.getElementById('comparison_chart'));\n";
     $result .= "chart.draw(data, options);}\n";
 $result .= "</script>\n";
 
