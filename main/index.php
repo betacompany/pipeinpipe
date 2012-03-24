@@ -353,7 +353,7 @@ try {
 ?>
 
 						Вам очень повезло! Сейчас идёт регистрация на
-						<a href="/sport/league/<?=$comp->getLeagueId()?>/<?=$comp->getId()?>"><?=$comp->getName()?></a>.
+						<a href="/sport/league/<?=$comp->getLeagueId()?>/competition/<?=$comp->getId()?>"><?=$comp->getName()?></a>.
 						Перейдите по <a href="/sport/league/<?=$comp->getLeagueId()?>/<?=$comp->getId()?>">ссылке</a>,
 						чтобы оставить свою заявку на этот турнир.
 <?
@@ -364,7 +364,7 @@ try {
 						В данный момент <?=($count > 1) ? 'идут следующие турниры' : 'идёт турнир'?>
 						<?if($count >= 1):?>
 							<?foreach($runningCompetitions as $i => $comp):?>
-						<a href="/sport/league/<?=$comp->getLeagueId()?>/competitions/<?=$comp->getId()?>"><?=$comp->getName()?></a><?if($i < $count - 2):?>, <?elseif($i == $count - 2):?> и <?else:?>.<?endif;?>
+						<a href="/sport/league/<?=$comp->getLeagueId()?>/competition/<?=$comp->getId()?>"><?=$comp->getName()?></a><?if($i < $count - 2):?>, <?elseif($i == $count - 2):?> и <?else:?>.<?endif;?>
 							<?endforeach;?>
 						<?endif;?>
 <?
