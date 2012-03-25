@@ -87,7 +87,7 @@ function debug(text) {
 			time = ' ' + time;
 		}
         if (CONFIG.DEBUG) {
-            if (text instanceof String) {
+            if (typeof text === 'string') {
                 console && console.debug(''+time+': ' + text);
             } else {
                 console && console.debug(''+time+': ');

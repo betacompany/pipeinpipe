@@ -267,42 +267,14 @@ if (isset ($_REQUEST['part']) && $_SERVER['SCRIPT_NAME'] == '/sport.php' && isse
 		<link rel="icon" type="image/png" href="/favicon.png" />
 		<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="/favicon.ico" />
 
-		<script type="text/javascript" src="/js/lib-structures.js"></script>
 		<script type="text/javascript" src="/js/jquery-1.5.1.min.js"></script>
-		<script type="text/javascript" src="/js/api.js?2"></script>
-		<script type="text/javascript" src="/js/jquery-ui-1.8.4.custom.min.js"></script>
-		<script type="text/javascript" src="/js/common.js?2"></script>
-		<script type="text/javascript" src="/js/error-handler.js"></script>
-		<script type="text/javascript" src="/js/ui-controls.js"></script>
-		<script type="text/javascript" src="/js/ui-boxes.js"></script>
-		<script type="text/javascript" src="/js/content.js"></script>
-		<script type="text/javascript" src="/js/menu.js"></script>
-		<script type="text/javascript" src="/js/error.js"></script>
-		<script type="text/javascript" src="/js/main.js"></script>
 
-		<script type="text/javascript" src="/js/fullajax.js"></script>
-
-		<script src="http://vkontakte.ru/js/api/openapi.js" type="text/javascript" charset="windows-1251"></script>
-		<!--<script src="http://connect.facebook.net/en_US/all.js" type="text/javascript"></script>-->
-		<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
-
-<?
-if (file_exists(dirname(__FILE__).'/../js/'.$script_name.'.js')) {
-?>
-
-		<script type="text/javascript" src="/js/<?=$script_name?>.js"></script>
-<?
-}
-
-if (isset ($_REQUEST['part']) && file_exists(dirname(__FILE__).'/../js/'.$script_name.'_'.$_REQUEST['part'].'.js')) {
-?>
-
-		<script type="text/javascript" src="/js/<?=$script_name.'_'.$_REQUEST['part']?>.js"></script>
-<?
-}
-
-?>
-
+		<script type="text/javascript">
+			var ui_handlers = [];
+			function $$(callback) {
+				ui_handlers.push(callback);
+			}
+		</script>
 	</head>
 	<body>
 		<!--[if lte IE 7]>
