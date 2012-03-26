@@ -86,6 +86,7 @@ function show_search_block() {
 						<div id="yasearch_top_form">
 							<form action="/search" method="get">
 								<input type="hidden" name="searchid" value="1877425"/>
+								<label for="text">Поиск: </label>
 								<input name="text" value="<?=string_process(param('text'))?>"/>
 							</form>
 							<script type="text/javascript">
