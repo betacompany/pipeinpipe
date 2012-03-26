@@ -733,3 +733,8 @@ hr {
     border: 1px #c7dce3 solid;
     border-radius: 2px;
 }
+
+#yasearch_top_form label {
+    color: #007ca7;
+    font-size: 0.8em;
+}
