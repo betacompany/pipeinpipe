@@ -1,4 +1,7 @@
 <?
+
+require_once dirname(__FILE__) . '/../includes/config-local.php';
+
 global $auth;
 global $user;
 $ya_params = array();
@@ -48,9 +51,13 @@ $script_name = substr($script_name, 1);
 
 ?>
 
+<script type="text/javascript" src="/js/jquery-ui-1.8.4.custom.min.js"></script>
+
+<? if (CLOSURE_COMPILE_ENABLED): ?>
+<script type="text/javascript" src="/js/all.js"></script>
+<? else: ?>
 <script type="text/javascript" src="/js/lib-structures.js"></script>
 <script type="text/javascript" src="/js/api.js?2"></script>
-<script type="text/javascript" src="/js/jquery-ui-1.8.4.custom.min.js"></script>
 <script type="text/javascript" src="/js/common.js?2"></script>
 <script type="text/javascript" src="/js/error-handler.js"></script>
 <script type="text/javascript" src="/js/ui-controls.js"></script>
@@ -59,6 +66,7 @@ $script_name = substr($script_name, 1);
 <script type="text/javascript" src="/js/menu.js"></script>
 <script type="text/javascript" src="/js/error.js"></script>
 <script type="text/javascript" src="/js/main.js"></script>
+<? endif; ?>
 
 <script type="text/javascript" src="/js/fullajax.js"></script>
 
