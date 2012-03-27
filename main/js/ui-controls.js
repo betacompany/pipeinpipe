@@ -348,8 +348,6 @@ function DynamicSelector(options) {
 
 		val: function () {
 			return selector.val();
-
-			return this;
 		},
 
 		select: function (id) {
