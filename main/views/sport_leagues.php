@@ -50,7 +50,7 @@ foreach (League::getTopLeagues($user) as $league) {
 }
 ?>
 <script type="text/javascript">
-	$(function () {
+	$$(function () {
 		$('.league_preview_competitions').draggable({
 			axis: 'x',
 			cursor: 'e-resize',

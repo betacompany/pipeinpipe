@@ -149,13 +149,15 @@ function media_show_photo($uid, Photo $photo) {
 					<div class="zoom" style="display: block;" onclick="javascript: media.enableSlideShow(<?=$photo->getGroupId()?>, <?=$photo->getId()?>);"></div>
 					<div class="evaluation"></div>
 					<script type="text/javascript">
-						content.showEvaluation(
-							$('.evaluation'),
-							<?=$photo->getId()?>,
-							<?=$photo->getEvaluation()?>,
-							<?=($uid != 0 && !$photo->isActedBy(User::getById($uid), Action::EVALUATION) && Action::isActive(Action::EVALUATION, $photo) ? 'true' : 'false')?>
-								
-						);
+						$$(function () {
+							content.showEvaluation(
+								$('.evaluation'),
+								<?=$photo->getId()?>,
+								<?=$photo->getEvaluation()?>,
+								<?=($uid != 0 && !$photo->isActedBy(User::getById($uid), Action::EVALUATION) && Action::isActive(Action::EVALUATION, $photo) ? 'true' : 'false')?>
+
+							);
+						});
 					</script>
 				</div>
 			</div>
@@ -174,26 +176,29 @@ function media_show_photo($uid, Photo $photo) {
 		</div>
 
 		<script type="text/javascript">
-			$('.item_right > div').draggable({
-				axis: 'x',
-				cursor: 'e-resize',
-				drag: function(e, ui) {}
-			});
-
-			$(document).ready(function () {
-				var x = $('.item_right img.selected').offset().left,
-					w = $('.item_right img.selected').outerWidth(),
-					ww = $('.item_right').innerWidth(),
-					d = $('body').innerWidth() - ww;
-				d /= 2;
-				$('.item_right > div').animate({
-					left: '-=' + (x - ww/2 + w/2 - d)
+			$$(function () {
+				$('.item_right > div').draggable({
+					axis:'x',
+					cursor:'e-resize',
+					drag:function (e, ui) {
+					}
 				});
-			});
 
-			media.onClose = function (itemId) {
-				window.location = ''+itemId;
-			};
+				$(document).ready(function () {
+					var x = $('.item_right img.selected').offset().left,
+						w = $('.item_right img.selected').outerWidth(),
+						ww = $('.item_right').innerWidth(),
+						d = $('body').innerWidth() - ww;
+					d /= 2;
+					$('.item_right > div').animate({
+						left:'-=' + (x - ww / 2 + w / 2 - d)
+					});
+				});
+
+				media.onClose = function (itemId) {
+					window.location = '' + itemId;
+				};
+			});
 		</script>
 <?
 }
@@ -221,12 +226,14 @@ function media_show_video($uid, Video $video) {
 function media_slideshow_block() {
 ?>
 	<script type="text/javascript">
-		$(window).keyup(function () {
-			media.slideShowKey(event);
-		});
+		$$(function () {
+			$(window).keyup(function () {
+				media.slideShowKey(event);
+			});
 
-		$(window).resize(function () {
-			media.disableSlideShow();
+			$(window).resize(function () {
+				media.disableSlideShow();
+			});
 		});
 	</script>
 
@@ -242,33 +249,34 @@ function media_script_album() {
 ?>
 
 		<script type="text/javascript">
-			var make_position = function () {
-				var h = $(this).outerHeight(),
-					w = $(this).outerWidth(),
-					t = $(this).parents('.photo_preview').innerHeight() / 2 - h / 2,
-					l = $(this).parents('.photo_preview').innerWidth() / 2 - w / 2;
+			$$(function () {
+				var make_position = function () {
+					var h = $(this).outerHeight(),
+						w = $(this).outerWidth(),
+						t = $(this).parents('.photo_preview').innerHeight() / 2 - h / 2,
+						l = $(this).parents('.photo_preview').innerWidth() / 2 - w / 2;
 
-				$(this).parent().parent().animate({top: t, left: l});
-			};
+					$(this).parent().parent().animate({top:t, left:l});
+				};
 
-			var make_grid = function () {
-				if (window.innerWidth > 1200) {
-					var wp = Math.floor(100 / Math.floor(0.8 * window.innerWidth / 200));
-					$('.photo_preview').css('width', wp + '%');
-					$('.video_preview').css('width', '33%');
-				} else {
-					$('.photo_preview').css('width', '25%');
-				}
-			};
+				var make_grid = function () {
+					if (window.innerWidth > 1200) {
+						var wp = Math.floor(100 / Math.floor(0.8 * window.innerWidth / 200));
+						$('.photo_preview').css('width', wp + '%');
+						$('.video_preview').css('width', '33%');
+					} else {
+						$('.photo_preview').css('width', '25%');
+					}
+				};
 
-			$('img.ph').load(make_position);
-			$(document).ready(make_grid);
+				$('img.ph').load(make_position);
+				$(document).ready(make_grid);
 
-			$(window).resize(function () {
-				make_grid();
-				$('img.ph').each(make_position);
+				$(window).resize(function () {
+					make_grid();
+					$('img.ph').each(make_position);
+				});
 			});
-
 		</script>
 <?
 }

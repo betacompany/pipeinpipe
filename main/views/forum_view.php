@@ -486,18 +486,19 @@ function forum_show_stats($tab = '') {
 
 	<div id="stats_body"></div>
 	<script type="text/javascript">
-		var statSelector = new Selector({
-			content: <?=json($tabs)?>,
-			onSelect: forum.showStats,
-			maxOptionsCount: <?=count($tabs)?>,
-			onSelect: forum.loadStats
-		});
+		$$(function () {
+			var statSelector = new Selector({
+				content: <?=json($tabs)?>,
+				maxOptionsCount: <?=count($tabs)?>,
+				onSelect: forum.loadStats
+			});
 
-		statSelector
-			.onSelect('<?=$tab['id']?>')
-			.select('<?=$tab['id']?>')
-			.appendTo($('#stats_selector'))
-			.setWidth(400);
+			statSelector
+				.onSelect('<?=$tab['id']?>')
+				.select('<?=$tab['id']?>')
+				.appendTo($('#stats_selector'))
+				.setWidth(400);
+		});
 	</script>
 
 <?

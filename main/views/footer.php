@@ -1,4 +1,7 @@
 <?
+
+require_once dirname(__FILE__) . '/../includes/config-local.php';
+
 global $auth;
 global $user;
 $ya_params = array();
@@ -40,6 +43,61 @@ define('END_TIME', microtime(true));
 				</div>
 			</div>
 		</div>
+
+<?
+
+list($script_name, $ext) = explode(".", $_SERVER['SCRIPT_NAME'], 2);
+$script_name = substr($script_name, 1);
+
+?>
+
+<script type="text/javascript" src="/js/jquery-ui-1.8.4.custom.min.js"></script>
+
+<? if (CLOSURE_COMPILE_ENABLED): ?>
+<script type="text/javascript" src="/js/all.js"></script>
+<? else: ?>
+<script type="text/javascript" src="/js/lib-structures.js"></script>
+<script type="text/javascript" src="/js/api.js?2"></script>
+<script type="text/javascript" src="/js/common.js?2"></script>
+<script type="text/javascript" src="/js/error-handler.js"></script>
+<script type="text/javascript" src="/js/ui-controls.js"></script>
+<script type="text/javascript" src="/js/ui-boxes.js"></script>
+<script type="text/javascript" src="/js/content.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+<script type="text/javascript" src="/js/error.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+<? endif; ?>
+
+<script type="text/javascript" src="/js/fullajax.js"></script>
+
+<script src="http://vkontakte.ru/js/api/openapi.js" type="text/javascript" charset="windows-1251"></script>
+<!--<script src="http://connect.facebook.net/en_US/all.js" type="text/javascript"></script>-->
+<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+
+<?
+if (file_exists(dirname(__FILE__).'/../js/'.$script_name.'.js')) {
+	?>
+
+<script type="text/javascript" src="/js/<?=$script_name?>.js"></script>
+<?
+}
+
+if (isset ($_REQUEST['part']) && file_exists(dirname(__FILE__).'/../js/'.$script_name.'_'.$_REQUEST['part'].'.js')) {
+	?>
+
+<script type="text/javascript" src="/js/<?=$script_name.'_'.$_REQUEST['part']?>.js"></script>
+<?
+}
+
+?>
+
+<script type="text/javascript">
+	for (var i = 0; i < ui_handlers.length; ++i) {
+		debug('[ui] Handler-' + i + ' started');
+		ui_handlers[i]();
+		debug('[ui] Handler-' + i + ' finished');
+	}
+</script>
 
 <!-- Yandex.Metrika counter -->
 <div style="display:none;"><script type="text/javascript">

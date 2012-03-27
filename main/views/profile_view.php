@@ -817,29 +817,31 @@ function profile_show_edit(User $person, $player, $tabs) {
 
 						</ul>
 						<script type="text/javascript">
-							$('.properties .button')
-								.click(function () {
-									var id = $(this).attr('id'),
-										a = id.split('_'),
-										key = a[1];
-									if (disabled[key]) return;
-									profile.save(key, $('#input_'+key).val());
-								});
-							$('.properties .input > input')
-								.focusin(function () {
-									var id = $(this).attr('id'),
-										a = id.split('_'),
-										key = a[1];
-									$('#button_'+key).fadeIn();
-								})
-								.focusout(function () {
-									var id = $(this).attr('id'),
-										a = id.split('_'),
-										key = a[1];
-									if (values[key] == $('#input_'+key).val()) {
-										$('#button_'+key).fadeOut();
-									}
-								});
+							$$(function () {
+								$('.properties .button')
+									.click(function () {
+										var id = $(this).attr('id'),
+											a = id.split('_'),
+											key = a[1];
+										if (disabled[key]) return;
+										profile.save(key, $('#input_' + key).val());
+									});
+								$('.properties .input > input')
+									.focusin(function () {
+										var id = $(this).attr('id'),
+											a = id.split('_'),
+											key = a[1];
+										$('#button_' + key).fadeIn();
+									})
+									.focusout(function () {
+										var id = $(this).attr('id'),
+											a = id.split('_'),
+											key = a[1];
+										if (values[key] == $('#input_' + key).val()) {
+											$('#button_' + key).fadeOut();
+										}
+									});
+							});
 						</script>
 
 						<h2 class="other">Изменение фотографии</h2>
@@ -950,7 +952,7 @@ function profile_show_date_edit($key, $name, $value) {
 								<div class="label"><?=$name?>:</div>
 								<div class="input" id="input_<?=$key?>"></div>
 								<script type="text/javascript">
-									$(function () {
+									$$(function () {
 										var <?=$key?> = new DateSelector({
 											<?if ($value != null) {?>date: '<?=$value?>',<?}?>
 

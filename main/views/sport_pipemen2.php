@@ -77,21 +77,21 @@ if ($cache->getAge() <= 60 * 60) {
 			return -1;
 		}
 		return -(vic1 / total1 - vic2 / total2);
-	}
+	};
 
 	//by total games
 	comparators[3] = function(a, b) {
 		t1 = parseInt(a.games);
 		t2 = parseInt(b.games);
 		return t2 - t1;
-	}
+	};
 
 	//by play-off games
 	comparators[4] = function(a, b) {
 		p1 = parseInt(a['play_off']);
 		p2 = parseInt(b['play_off']);
 		return p2 - p1;
-	}
+	};
 
 	var sortSelector = new Selector({
 		content: [
@@ -106,8 +106,6 @@ if ($cache->getAge() <= 60 * 60) {
 			render(pipemen);
 		}
 	});
-
-
 
 	function render(pipemenInfo) {
 		debug('start');

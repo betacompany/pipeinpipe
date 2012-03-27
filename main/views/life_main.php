@@ -25,19 +25,23 @@ require_once dirname(__FILE__) . '/life_view.php';
 		</div>
 		<div id="calendar"></div>
 		<script type="text/javascript">
-			var date = getAnchorParam('date');
-			var ds = new DateSelector({
-				date: date ? date : '<?=date('Y-m-d')?>',
-				minDate: {y: 2008, m: 9, d: 23},
-				maxDate: {y: <?=date('Y')+1?>, m: <?=date('n')?>, d: <?=date('j')?>},
-				onSelect: life.feed.selectHandler,
-				anchor: true,
-				select: true,
-				dateChecked: life.feed.dateChecked
-			});
-			$(function () {
-				ds.appendTo($('#calendar'));
-				if (date) life.feed.selectHandler(date);
+			$$(function () {
+				var date = getAnchorParam('date');
+
+				window.ds = new DateSelector({
+					date:date ? date : '<?=date('Y-m-d')?>',
+					minDate:{y:2008, m:9, d:23},
+					maxDate:{y: <?=date('Y')+1?>, m: <?=date('n')?>, d: <?=date('j')?>},
+					onSelect:life.feed.selectHandler,
+					anchor:true,
+					select:true,
+					dateChecked:life.feed.dateChecked
+				});
+
+				$(function () {
+					ds.appendTo($('#calendar'));
+					if (date) life.feed.selectHandler(date);
+				});
 			});
 		</script>
 	</div>

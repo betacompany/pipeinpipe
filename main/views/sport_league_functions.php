@@ -269,7 +269,7 @@ function league_show_photos(League $league) {
 
 						</div>
 						<script type="text/javascript">
-							$(function () {
+							$$(function () {
 								$('#league_photos .photos').draggable({
 									axis: 'x',
 									cursor: 'e-resize',
@@ -319,7 +319,7 @@ function league_show_videos(League $league) {
 
 						</div>
 						<script type="text/javascript">
-							$(function () {
+							$$(function () {
 								$('#league_videos .videos').draggable({
 									axis: 'x',
 									cursor: 'e-resize',

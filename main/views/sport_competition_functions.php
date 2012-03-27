@@ -154,30 +154,34 @@ function sport_show_competition_registration(Competition $competition) {
 function sport_show_competition_register_button(Competition $competition, $user, $isRegistered) {
 ?>
 <script type="text/javascript">
-    competition.initRegistration(<?=$isRegistered ? 'true' : 'false'?>);
-    var registerButton = (new FadingButton({
-        html: <?=$isRegistered ? 'competition._registeredText' : 'competition._unregisteredText'?>,
-        CSSClass: 'round_border',
-        minOpacity: 0.7,
-        css: {
-            'width': 410,
-            'height': 33,
-            'background-color': '#007ca7',
-            'color': 'white',
-            'font-size': '1.8em',
-            'padding-bottom': 15,
-            'padding-top': 12,
-            'text-align': 'center'
-        }
-    }))
-        .appendTo('competition_registration')
-        .click(function () {<?
-    if ($user) {?>
-                competition.registration(<?=$competition->getId()?>);<?
-    } else {?>
-                competition.loginOrRegisterPanel();<?
-    }?>
-        });
+    $$(function () {
+		competition.initRegistration(<?=$isRegistered ? 'true' : 'false'?>);
+		window.registerButton = (new FadingButton({
+			html: <?=$isRegistered ? 'competition._registeredText' : 'competition._unregisteredText'?>,
+			CSSClass:'round_border',
+			minOpacity:0.7,
+			css:{
+				'width':410,
+				'height':33,
+				'background-color':'#007ca7',
+				'color':'white',
+				'font-size':'1.8em',
+				'padding-bottom':15,
+				'padding-top':12,
+				'text-align':'center'
+			}
+		}))
+			.appendTo('competition_registration')
+			.click(function () {<?
+		if ($user) {?>
+			competition.registration(<?=$competition->getId()?>);
+			<?
+		} else {?>
+			competition.loginOrRegisterPanel();
+			<?
+		}?>
+			});
+	});
 </script>
 <?
 }
@@ -211,7 +215,7 @@ function sport_show_competition_photos(Competition $competition) {
 ?>
     </div>
     <script type="text/javascript">
-        $(function () {
+        $$(function () {
             $('#competition_photos .photos').draggable({
                 axis: 'x',
                 cursor: 'e-resize',
@@ -246,7 +250,7 @@ function sport_show_competition_videos(Competition $competition) {
 ?>
     </div>
     <script type="text/javascript">
-        $(function () {
+        $$(function () {
             $('#competition_videos .videos').draggable({
                 axis: 'x',
                 cursor: 'e-resize',
@@ -327,7 +331,9 @@ function sport_competition_show_structure_slide_block(Competition $competition, 
 	<div style="clear: both"></div>
 </div>
 <script type="text/javascript">
-	competition.selectedCupId = <?=$competition->getMainCupId()?>;
+	$$(function () {
+		competition.selectedCupId = <?=$competition->getMainCupId()?>;
+	});
 </script>
 <?
 }
@@ -393,7 +399,7 @@ function sport_show_cup_playoff(CupPlayoff $cup) {
 	}
 ?>
 <script type="text/javascript">
-	$(function () {
+	$$(function () {
 		competition.showPlayOff(
 			<?=json($games)?>,
 			<?=$playoffHeight?>,
@@ -471,7 +477,7 @@ function sport_show_cup_one_lap(CupOneLap $cup) {
 		sport_show_matches_table($cup);
 ?>
 <script type="text/javascript">
-	competition.bindGridEvents(<?=count($grid)?>);
+	$$(function () { competition.bindGridEvents(<?=count($grid)?>); });
 </script>
 <?
 	} elseif (!$cup->getCompetition()->isRegistering()) {
@@ -609,7 +615,7 @@ function sport_show_matches_table(CupOneLap $cup, $mobile = false) {
                         $gameTypeExplanations[$type] = true;
 ?>
             <script type="text/javascript">
-                competition.showGameTypeExplanation('<?=$type?>');
+                $$(function () { competition.showGameTypeExplanation('<?=$type?>'); });
             </script>
 <?
                     }
@@ -666,7 +672,7 @@ function sport_competition_show_cup_children_preview($childCups) {
 	<div class="clear"></div>
 </div>
 <script type="text/javascript">
-	competition.bindGridEvents();
+	$$(function () { competition.bindGridEvents(); });
 </script>
 <?
 	}
