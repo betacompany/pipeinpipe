@@ -13,6 +13,9 @@ try {
 	case 'about':
 		include 'views/page_about.php';
 		break;
+	case 'search':
+		include 'views/page_search.php';
+		break;
 	}
 
 	include 'views/footer.php';

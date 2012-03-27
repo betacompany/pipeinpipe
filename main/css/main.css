@@ -723,3 +723,18 @@ hr {
 	margin: 10px 0;
 	border: 1px solid #c7dce3;
 }
+
+#yasearch_top_form {
+    float: right;
+    margin: 2px 10px 0 0;
+}
+
+#yasearch_top_form input {
+    border: 1px #c7dce3 solid;
+    border-radius: 2px;
+}
+
+#yasearch_top_form label {
+    color: #007ca7;
+    font-size: 0.8em;
+}

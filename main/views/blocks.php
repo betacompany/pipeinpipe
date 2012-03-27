@@ -46,6 +46,10 @@ function show_block_sign_in() {
 							<div id="vk_login" class="vk_icon"></div>
 							<!--<div id="fb_login" class="fb_icon"></div>
 							<div id="tw_login" class="tw_icon"></div>-->
+<?
+							show_search_block();
+?>
+
 						</div>
 
 <?
@@ -67,9 +71,46 @@ function show_block_user($user) {
 									(<a href="/sign_out">выйти</a>)
 								</small>
 							</div>
-						</div>							
+<?
+							show_search_block();
+?>
+
+						</div>
 <?
 	}
+}
+
+function show_search_block() {
+?>
+
+						<div id="yasearch_top_form">
+							<form action="/search" method="get">
+								<input type="hidden" name="searchid" value="1877425"/>
+								<label for="text">Поиск: </label>
+								<input name="text" value="<?=string_process(param('text'))?>"/>
+							</form>
+							<script type="text/javascript">
+								$(function () {
+									var smb = function(e) {
+										$(e).parent().submit();
+									};
+									var timeoutId = -1;
+									$('#yasearch_top_form input[name=text]').keydown(function (e) {
+										debug(timeoutId);
+										clearTimeout(timeoutId);
+										if (e.keyCode == 13) {
+											smb(this);
+										} else {
+											var t = this;
+											timeoutId = setTimeout(function () {
+												smb(t);
+											}, 60000);
+										}
+									});
+								});
+							</script>
+						</div>
+<?
 }
 
 function return_sport_rating_popup($text) {
