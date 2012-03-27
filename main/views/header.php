@@ -2,6 +2,8 @@
 
 define('BEGIN_TIME', microtime(true));
 
+require_once dirname(__FILE__) . '/../includes/config-local.php';
+
 require_once dirname(__FILE__) . '/blocks.php';
 
 require_once dirname(__FILE__) . '/../includes/lang.php';
@@ -229,10 +231,15 @@ if ($_SERVER['SCRIPT_NAME'] == '/life.php') {
 
 		<link rel="image_src" href="/images/logo/pipe200.jpg" />
 
+		<? if (YUI_COMPILER_ENABLED): ?>
+		<link rel="stylesheet" href="/css/all.css" type="text/css" />
+		<? else: ?>
 		<link rel="stylesheet" href="/css/main.css" type="text/css" />
 		<link rel="stylesheet" href="/css/menu.css" type="text/css" />
 		<link rel="stylesheet" href="/css/icons.css" type="text/css" />
 		<link rel="stylesheet" href="/css/ui-controls.css" type="text/css" />
+		<? endif; ?>
+
 <?
 
 list($script_name, $ext) = explode(".", $_SERVER['SCRIPT_NAME'], 2);
@@ -259,7 +266,7 @@ if (isset ($_REQUEST['part']) && $_SERVER['SCRIPT_NAME'] == '/sport.php' && isse
 <?
 }
 ?>
-		
+
 		<!--[if lte IE 7]>
 		<link rel="stylesheet" href="/css/ieisapieceofshit.css" />
 		<![endif]-->
