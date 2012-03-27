@@ -353,14 +353,18 @@ function show_block_sharing($url, $title) {
 
 <!--- VKontakte share -->
 <script type="text/javascript">
-	VK.init({
-		apiId: <?=Vkontakte::VK_APP_ID?>,
-		onlyWidgets: true
+	$$(function () {
+		VK.init({
+			apiId: <?=Vkontakte::VK_APP_ID?>,
+			onlyWidgets:true
+		});
 	});
 </script>
 <div id="vk_like" style="float: left;"></div>
 <script type="text/javascript">
-	VK.Widgets.Like("vk_like", {type: "mini"});
+	$$(function () {
+		VK.Widgets.Like("vk_like", {type:"mini"});
+	});
 </script>
 <!-- Facebook share -->
 <!--<fb:like href="<?=MAIN_SITE_URL.$url?>" layout="button_count" show_faces="true" width="200" font="trebuchet ms"></fb:like>
