@@ -224,9 +224,11 @@ function sport_show_timeline($leagues, $settings) {
 	$startDate = '2007-10-23';
 ?>
 <script type="text/javascript">
-	sportTimeline.startDate = '<?=$startDate?>';
-	sportTimeline.dateInterval = <?=(datetoint($startDate, date('Y-m-d')) / 30 + 1)?>;
-	sportTimeline.show(<?=json($competitionsToJson)?>);
+	$$(function () {
+		sportTimeline.startDate = '<?=$startDate?>';
+		sportTimeline.dateInterval = <?=(datetoint($startDate, date('Y-m-d')) / 30 + 1)?>;
+		sportTimeline.show(<?=json($competitionsToJson)?>);
+	});
 </script>
 <?
 }

@@ -489,7 +489,6 @@ function forum_show_stats($tab = '') {
 		$$(function () {
 			var statSelector = new Selector({
 				content: <?=json($tabs)?>,
-				onSelect: forum.showStats,
 				maxOptionsCount: <?=count($tabs)?>,
 				onSelect: forum.loadStats
 			});

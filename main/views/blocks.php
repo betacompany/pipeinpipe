@@ -309,7 +309,7 @@ function show_block_comments($user, Item $item) {
 ?>
 
 <script type="text/javascript">
-$(document).ready(function () {
+$$(function () {
 	if (getAnchorParam('page') != null) {
 		content.loadComments(<?=$item->getId()?>, getAnchorParam('page'));
 	}
