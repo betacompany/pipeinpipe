@@ -44,7 +44,10 @@ $PROPERTIES = array (
 	),
 	
 	// Closure Compiler
-	'closure_compiler_enabled' => false
+	'closure_compiler_enabled' => true,
+
+	// YUI Compiler
+	'yui_compiler_enabled' => true
 );
 
 ?>
