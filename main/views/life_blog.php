@@ -94,15 +94,17 @@ if (!isset($_REQUEST['post_id'])) {
 
 	</div>
 	<script type="text/javascript">
-		if ($('#life_container').innerWidth() < 900) {
-			$('#right').css({
-				"margin-top": 20,
-				"float": "left"
-			});
-			$('#options_wrapper').width(200);
-			$('#stream_wrapper').css('margin-right', '-200px');
-			$('#stream_container').css('margin-right', '230px');
-		}
+		$$(function () {
+			if ($('#life_container').innerWidth() < 900) {
+				$('#right').css({
+					"margin-top":20,
+					"float":"left"
+				});
+				$('#options_wrapper').width(200);
+				$('#stream_wrapper').css('margin-right', '-200px');
+				$('#stream_container').css('margin-right', '230px');
+			}
+		});
 	</script>
 </div>
 
