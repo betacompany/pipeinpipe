@@ -1,0 +1,1 @@
+ALTER TABLE `p_competition_register` ADD COLUMN `comment` TEXT;
