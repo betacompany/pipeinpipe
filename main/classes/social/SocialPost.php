@@ -9,9 +9,12 @@ class SocialPost {
 	private $id;
 	private $socialWebType;
 	private $socialWebAuthorId;
+	private $timestamp;
 
 	private $title;
 	private $source;
+
+	private $handled;
 
 	private static $cache = array();
 
@@ -28,6 +31,8 @@ class SocialPost {
 		$this->socialWebAuthorId = $data['sw_author_id'];
 		$this->title			 = $data['title'];
 		$this->source			 = $data['source'];
+		$this->handled			 = $data['handled'];
+		$this->timestamp		 = $data['timestamp'];
 	}
 
 	public function getId() {
@@ -50,10 +55,30 @@ class SocialPost {
 		return $this->title;
 	}
 
+	public function getHandleTime() {
+		return $this->handled;
+	}
+
+	public function isHandled() {
+		return $this->handled > 0;
+	}
+
+	public function getTimestamp() {
+		return $this->timestamp;
+	}
+
+	public function makeHandled() {
+		$time = time();
+		if (SocialPostDBClient::setHandled($this->id, $time)) {
+			$this->handled = $time;
+		}
+	}
+
 	public static function getById($id) {
 		if (self::$cache[$id]) {
 			return self::$cache[$id];
 		}
 		return self::$cache[$id] = new SocialPost($id);
 	}
+
 }

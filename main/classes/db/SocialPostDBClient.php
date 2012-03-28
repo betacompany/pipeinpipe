@@ -14,4 +14,8 @@ class SocialPostDBClient {
 			'SELECT * FROM `p_social_post` WHERE `id`=?', $id
 		));
 	}
+
+	public static function setHandled($id, $time) {
+		return mysql_qw('UPDATE `p_social_post` SET `handled`=? WHERE `id`=?', $time, $id);
+	}
 }

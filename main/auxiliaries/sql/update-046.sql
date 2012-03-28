@@ -6,3 +6,7 @@ CREATE TABLE `p_social_post` (
   `source` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+ALTER TABLE `p_social_post` ADD `handled` INT(11)  NOT NULL  DEFAULT '0'  AFTER `source`;
+
+ALTER TABLE `p_social_post` ADD `timestamp` INT(11)  NOT NULL  DEFAULT '0'  AFTER `sw_author_id`;
