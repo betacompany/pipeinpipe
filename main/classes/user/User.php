@@ -23,7 +23,6 @@ require_once dirname(__FILE__).'/../db/LeagueDBClient.php';
  */
 class User {
 
-	const KEY_VKID = 'vkid';
 	const KEY_PMID = 'pmid';
 	const KEY_LOGIN = 'login';
 	const KEY_EMAIL = 'email';
@@ -35,6 +34,10 @@ class User {
 	const KEY_COUNTRY = 'country';
 	const KEY_CITY = 'city';
 	const KEY_PHOTO = 'photo';
+
+	const KEY_VKID = 'vkid';
+	const KEY_FBID = 'fbid';
+	const KEY_TWNAME = 'tw_name';
 
 	const FIELD_NAME = 'name';
 	const FIELD_SURNAME = 'surname';
@@ -675,6 +678,15 @@ class User {
 		}
 
 		return $users;
+	}
+
+	public static function keyBySocialWeb($swType) {
+		switch ($swType) {
+		case ISocialWeb::VKONTAKTE: return self::KEY_VKID;
+		case ISocialWeb::FACEBOOK: return self::KEY_FBID;
+		case ISocialWeb::TWITTER: return self::KEY_TWNAME;
+		}
+		return false;
 	}
 
 	private function getImagePrefix() {

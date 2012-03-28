@@ -15,6 +15,8 @@ require_once dirname(__FILE__) . '/../blog/BlogPost.php';
 
 require_once dirname(__FILE__) . '/../life/Event.php';
 
+require_once dirname(__FILE__) . '/../social/CrossPost.php';
+
 require_once dirname(__FILE__) . '/Action.php';
 require_once dirname(__FILE__) . '/Tag.php';
 
@@ -29,14 +31,21 @@ class Item {
 	const VIDEO = 'video';
 	const INTERVIEW_QUESTION = 'interview_question';
 	const EVENT = 'event';
+	const CROSS_POST = 'cross_post';
 
 	const ID = 'id';
 	const LAST_COMMENT = 'last_comment_timestamp';
 	const CREATION = 'creation_timestamp';
 
 	public static function isCorrectType($type) {
-		return $type == self::BLOG_POST || self::EVENT || self::FORUM_TOPIC
-				|| self::INTERVIEW_QUESTION || self::PHOTO || self::VIDEO;
+		return
+			$type == self::BLOG_POST ||
+			$type == self::EVENT ||
+			$type == self::FORUM_TOPIC ||
+			$type == self::INTERVIEW_QUESTION ||
+			$type == self::PHOTO ||
+			$type == self::VIDEO ||
+			$type == self::CROSS_POST;
 	}
 
 	protected $id;
@@ -540,10 +549,11 @@ class Item {
 		switch ($item->getType()) {
 		case self::BLOG_POST: $item = BlogPost::valueOf($item); break;
 		case self::FORUM_TOPIC: $item = ForumTopic::valueOf($item); break;
-		case self::INTERVIEW_QUESTION: $item = InterviewQuestion::valueOf($item); break;
+//		case self::INTERVIEW_QUESTION: $item = InterviewQuestion::valueOf($item); break;
 		case self::PHOTO: $item = Photo::valueOf($item); break;
 		case self::VIDEO: $item = Video::valueOf($item); break;
 		case self::EVENT: $item = Event::valueOf($item); break;
+		case self::CROSS_POST: $item = CrossPost::valueOf($item); break;
 		}
 
 		return $item;
@@ -562,10 +572,11 @@ class Item {
 		switch ($item->getType()) {
 		case self::BLOG_POST: $item = BlogPost::valueOf($item); break;
 		case self::FORUM_TOPIC: $item = ForumTopic::valueOf($item); break;
-		case self::INTERVIEW_QUESTION: $item = InterviewQuestion::valueOf($item); break;
+//		case self::INTERVIEW_QUESTION: $item = InterviewQuestion::valueOf($item); break;
 		case self::PHOTO: $item = Photo::valueOf($item); break;
 		case self::VIDEO: $item = Video::valueOf($item); break;
 		case self::EVENT: $item = Event::valueOf($item); break;
+		case self::CROSS_POST: $item = Event::valueOf($item); break;
 		}
 
 		return self::$items[$id] = $item;
