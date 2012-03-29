@@ -100,21 +100,30 @@ if (isset ($_REQUEST['part']) && file_exists(dirname(__FILE__).'/../js/'.$script
 </script>
 
 <!-- Yandex.Metrika counter -->
-<div style="display:none;"><script type="text/javascript">
-if (document.URL.match(/pipeinpipe.info/)) {
-	var yaParams = <?=json($ya_params)?>;
-	(function(w, c) {
+<script type="text/javascript">
+	var yaParams = {uid: "<?=$auth->uid()?>"};
+</script>
+
+<script type="text/javascript">
+	(function (d, w, c) {
 		(w[c] = w[c] || []).push(function() {
 			try {
-				w.yaCounter521134 = new Ya.Metrika(521134, yaParams);
-				 yaCounter521134.clickmap(true);
-
-			} catch(e) { }
+				w.yaCounter521134 = new Ya.Metrika({id:521134, enableAll: true, trackHash:true, webvisor:true,params:window.yaParams||{ }});
+			} catch(e) {}
 		});
-	})(window, 'yandex_metrika_callbacks');
-}
-</script></div>
-<script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript" defer="defer"></script>
+
+		var n = d.getElementsByTagName("script")[0],
+			s = d.createElement("script"),
+			f = function () { n.parentNode.insertBefore(s, n); };
+		s.type = "text/javascript";
+		s.async = true;
+		s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+		if (w.opera == "[object Opera]") {
+			d.addEventListener("DOMContentLoaded", f);
+		} else { f(); }
+	})(document, window, "yandex_metrika_callbacks");
+</script>
 <noscript><div><img src="//mc.yandex.ru/watch/521134" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
 
