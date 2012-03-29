@@ -101,7 +101,7 @@ if (isset ($_REQUEST['part']) && file_exists(dirname(__FILE__).'/../js/'.$script
 
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript">
-	var yaParams = {uid: "<?=$auth->uid()?>"};
+	var yaParams = <?=json($ya_params);?>;
 </script>
 
 <script type="text/javascript">
