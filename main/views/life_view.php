@@ -241,6 +241,14 @@ function life_show_feed_item(Item $item) {
 		<div class="body"><?=$item->getContentParsed()?></div>
 	</div>
 <?
+	} elseif ($item instanceof CrossPost) {
+?>
+
+	<div class="cross_post <?=mb_strtolower($item->getSocialWebType())?>">
+		<div class="title"><?=$item->getContentTitle()?></div>
+		<div class="body"><?=$item->getContentParsed()?></div>
+	</div>
+<?
 	} else {
 		global $LOG;
 		@$LOG->warn('item with id='.$item->getId().' has unhandled type');
@@ -267,6 +275,9 @@ function life_show_feed_item_title($uid, $type, $count) {
 		break;
 	case Item::VIDEO:
 		$types = array('видеозапись', 'видеозаписи', 'видеозаписей');
+		break;
+	case Item::CROSS_POST:
+		$types = array('пост', 'поста', 'постов');
 		break;
 	default:
 		$display = false;

@@ -81,4 +81,14 @@ class SocialPost {
 		return self::$cache[$id] = new SocialPost($id);
 	}
 
+	public static function getAllUnhandled() {
+		$result = array();
+		$it = SocialPostDBClient::getAllUnhandled();
+		while ($it->valid()) {
+			$data = $it->current();
+			$result[] = new SocialPost(-1, $data);
+			$it->next();
+		}
+		return $result;
+	}
 }
