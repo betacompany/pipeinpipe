@@ -12,18 +12,33 @@ require_once dirname(__FILE__) . '/SocialPost.php';
  */
 class CrossPost extends Item {
 
+	private $socialPost = false;
+
 	public function getSocialPostId() {
 		return $this->getContentValue();
 	}
 
 	public function getSocialPost() {
-		return SocialPost::getById($this->getSocialPostId());
+		if ($this->socialPost) {
+			return $this->socialPost;
+		}
+		return $this->socialPost = SocialPost::getById($this->getSocialPostId());
+	}
+
+	public function getSocialWebType() {
+
 	}
 
 	public static function valueOf(Item $item) {
 		return new CrossPost(-1, $item);
 	}
 
+	/**
+	 * @static
+	 * @param SocialPost $post
+	 * @return Item
+	 * @throws InvalidArgumentException|InvalidDataException
+	 */
 	public static function create(SocialPost $post) {
 		$spId = $post->getId();
 		$swAuthorId = $post->getSocialWebAuthorId();

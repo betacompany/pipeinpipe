@@ -59,7 +59,7 @@ class UserDBClient {
 	public static function getByKey($key, $value) {
 		return new MySQLResultIterator(
 			mysql_qw(
-				'SELECT * FROM (
+				'SELECT `p_user`.* FROM (
 					`p_user`
 					INNER JOIN
 						(

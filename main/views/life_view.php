@@ -286,10 +286,15 @@ function life_show_feed_item_title($uid, $type, $count) {
 	}
 
 	if ($display) {
+		if ($u) {
 ?>
 
 	<img src="<?=$u->getImageUrl(User::IMAGE_SQUARE_SMALL)?>" alt="<?=$u->getFullName()?>" />
 	<a href="/id<?=$uid?>"><?=$u->getFullName()?></a>
+<?
+		}
+?>
+
 	<span><?=lang_number_sclon($count, $types[0], $types[1], $types[2])?></span>
 <?
 	}

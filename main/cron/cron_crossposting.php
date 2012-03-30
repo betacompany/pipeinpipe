@@ -7,12 +7,28 @@
 
 require_once dirname(__FILE__) . '/../includes/common.php';
 
-if (param('password') != 'yreutywerUIUihkhsdjahsduhweuUUUUU')
+if (param('password') != 'yreutywerUIUihkhsdjahsduhweuUUUUU') {
+	echo 'ACCESS DENIED!';
+	exit(0);
+}
+
+require_once dirname(__FILE__) . '/../classes/utils/Logger.php';
 
 require_once dirname(__FILE__) . '/../classes/social/SocialPost.php';
 require_once dirname(__FILE__) . '/../classes/social/CrossPost.php';
 
-$allUnhandled = SocialPost::getAllUnhandled();
+$logger = new Logger('../../logs/cross_posting.log');
 
+try {
+	$allUnhandled = SocialPost::getAllUnhandled();
+
+	foreach ($allUnhandled as $socialPost) {
+		$crossPost = CrossPost::create($socialPost);
+		$logger->info("Cross post [id={$crossPost->getId()}] created from social post [id={$socialPost->getId()}]");
+	}
+} catch (Exception $e) {
+	$logger->exception($e);
+	echo 'ERROR!';
+}
 
 ?>

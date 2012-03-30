@@ -1,4 +1,7 @@
 <?php
+
+require_once dirname(__FILE__) . '/../db/SocialPostDBClient.php';
+
 /**
  * User: ortemij
  * Date: 28.03.12

@@ -1,0 +1,2 @@
+MAILTO=dev@pipeinpipe.info
+*/5 * * * * root php /var/www/pipeinpipe.info/main/cron/cron_crossposting.php

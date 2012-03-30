@@ -11,6 +11,8 @@ require_once dirname(__FILE__) . '/../content/Connection.php';
 require_once dirname(__FILE__) . '/../image/OpenCVAvatarsMinifier.php';
 require_once dirname(__FILE__) . '/../image/DummyAvatarsMinifier.php';
 
+require_once dirname(__FILE__) . '/../social/ISocialWeb.php';
+
 require_once dirname(__FILE__).'/../db/UserDBClient.php';
 require_once dirname(__FILE__).'/../db/UserDataDBClient.php';
 require_once dirname(__FILE__).'/../db/UserPermissionDBClient.php';
