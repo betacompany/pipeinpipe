@@ -18,6 +18,7 @@ require_once dirname(__FILE__) . '/../classes/social/SocialPost.php';
 require_once dirname(__FILE__) . '/../classes/social/CrossPost.php';
 
 $logger = new Logger('../../logs/cross_posting.log');
+$logger->info("Cross posting started");
 
 try {
 	$allUnhandled = SocialPost::getAllUnhandled();
@@ -30,5 +31,7 @@ try {
 	$logger->exception($e);
 	echo 'ERROR!';
 }
+
+$logger->info("Cross posting finished");
 
 ?>
