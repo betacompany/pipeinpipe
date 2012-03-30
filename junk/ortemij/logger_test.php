@@ -10,4 +10,10 @@ try {
 	$log->exception($e);
 }
 
+$log->info("Hello, world!");
+$log->error("Hello, world!");
+$log->warn("Hello, world!");
+$log->pizdets("Hello, world!");
+$log->info("Hello, world!");
+
 ?>
