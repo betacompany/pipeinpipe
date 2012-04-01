@@ -13,3 +13,7 @@ ALTER TABLE `p_social_post` ADD `timestamp` INT(11)  NOT NULL  DEFAULT '0'  AFTE
 
 ALTER TABLE `p_content_item` CHANGE `type` `type` ENUM('blog_post','forum_topic','photo','video','interview_question','event','cross_post')  NULL  DEFAULT NULL;
 
+ALTER TABLE `p_social_post` ADD `url` VARCHAR(1024)  NOT NULL DEFAULT 'http://pipeinpipe.info'  AFTER `timestamp`;
+
+ALTER TABLE `p_social_post` ADD `sw_author_name` VARCHAR(1024)  NOT NULL DEFAULT 'Некто'  AFTER `sw_author_id`;
+

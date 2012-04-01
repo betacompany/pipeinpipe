@@ -242,10 +242,15 @@ function life_show_feed_item(Item $item) {
 	</div>
 <?
 	} elseif ($item instanceof CrossPost) {
+
 ?>
 
 	<div class="cross_post <?=mb_strtolower($item->getSocialWebType())?>">
-		<div class="title"><?=$item->getContentTitle()?></div>
+		<div class="title">
+
+			<a href="<?=$item->getExternalUrl()?>" target="_blank"><?=$item->getSocialWebAuthorName()?></a>
+			<?=$item->getContentTitle()?>
+		</div>
 		<div class="body"><?=$item->getContentParsed()?></div>
 	</div>
 <?
@@ -277,7 +282,7 @@ function life_show_feed_item_title($uid, $type, $count) {
 		$types = array('видеозапись', 'видеозаписи', 'видеозаписей');
 		break;
 	case Item::CROSS_POST:
-		$types = array('пост', 'поста', 'постов');
+		$types = array('социальный пост', 'социальных поста', 'социальных постов');
 		break;
 	default:
 		$display = false;
@@ -287,16 +292,18 @@ function life_show_feed_item_title($uid, $type, $count) {
 
 	if ($display) {
 		if ($u) {
+			if ($type != Item::CROSS_POST) {
 ?>
 
 	<img src="<?=$u->getImageUrl(User::IMAGE_SQUARE_SMALL)?>" alt="<?=$u->getFullName()?>" />
 	<a href="/id<?=$uid?>"><?=$u->getFullName()?></a>
 <?
-		}
+			}
 ?>
 
 	<span><?=lang_number_sclon($count, $types[0], $types[1], $types[2])?></span>
 <?
+		}
 	}
 }
 

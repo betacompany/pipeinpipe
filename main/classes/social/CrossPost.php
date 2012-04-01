@@ -26,7 +26,15 @@ class CrossPost extends Item {
 	}
 
 	public function getSocialWebType() {
+		return $this->getSocialPost()->getSocialWebType();
+	}
 
+	public function getSocialWebAuthorName() {
+		return $this->getSocialPost()->getSocialWebAuthorName();
+	}
+
+	public function getExternalUrl() {
+		return $this->getSocialPost()->getUrl();
 	}
 
 	public static function valueOf(Item $item) {
