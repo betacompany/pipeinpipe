@@ -457,7 +457,7 @@ var competition = {
 		var competitionObject = {
 			name: jNameInput.val(),
 			description: jDescInput.val()
-		}
+		};
 
 		if (competitionObject.name.length == 0) {
 			showError('Имя турнира не может быть пустым!');
@@ -471,6 +471,7 @@ var competition = {
 
 		$.ajax({
 			url: 'proc_competition.php',
+            type: 'POST',
 			data: {
 				method: 'is_such_competition',
 				name: competitionObject.name
