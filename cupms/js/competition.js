@@ -417,6 +417,7 @@ var competition = {
 			if (previousValue != jInput.val()) {
 				$.ajax({
 					url: 'proc_competition.php',
+                    type: 'POST',
 					data: {
 						method: 'set_description',
 						comp_id: currentTargetId,
