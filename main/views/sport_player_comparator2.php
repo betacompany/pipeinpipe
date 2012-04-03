@@ -230,12 +230,29 @@ LABEL;
     $result .= "\tdataView.setColumns([{calc: function(data, row) { return data.getFormattedValue(row, 0); }, type:'string'}, 1]);\n";
 
     // Chart options may be found on http://code.google.com/intl/ru-RU/apis/chart/interactive/docs/gallery/areachart.html
-    $result .= "var options = {\n'title':'Движение по WPR',\n'legend': \"none\",\n'chartArea': {left: 69, width: 666},\n" .
-			   "'focusTarget': 'category',\n'legend.position': 'right',\n'hAxis': {\n" .
-			   "'format': 'd MMM y',\n'textPosition': 'out',\n'title': \"Дата\",\n'slantedText': false,\n'gridlines.count': 8,\n'maxAlternation': 2\n".
-			   "},\n'vAxis': {\n'gridlines.count': 8\n},\n'width': 750,\n'height': 300\n};\n";
+    $result .= "var options = {\n
+                    'title':'Движение по WPR',
+                    \n'legend': \"none\",
+                    \n'chartArea': {left: 69, width: 666},
+                    \n" . "'focusTarget': 'category',
+			        \n'legend.position': 'right',
+			        \n'hAxis': {
+                        \n" . "'format': 'd MMM y',
+                        \n'textPosition': 'out',
+                        \n'title': \"Дата\",
+                        \n'slantedText': false,
+                        \n'gridlines.count': 8,
+                        \n'maxAlternation': 2
+			        \n" . "},
+			        \n'vAxis': {
+			            \n'gridlines.count': 8
+			        \n},
+			        \n'width': 750,
+			        \n'height': 300
+			        \n};
+			    \n";
 
-	$result .= "\tvar chart = new google.visualization.AreaChart(document.getElementById('comparison_chart'));\n";
+	$result .= "\tvar chart = new google.visualization.AreaChart(document.getElementById('chart_compare'));\n";
 	$result .= "\tchart.draw(data, options);";
 	$result .= "})();\n";
 

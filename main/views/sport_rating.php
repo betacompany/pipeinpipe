@@ -107,7 +107,7 @@ if ($auth->isAuth()) {
 	</div>
 	<ul id="rating"></ul>
 	<div id="rating_right">
-		<div id="rating_compare">
+		<div id="chart_compare">
             <div id="rating_right_content">
 		    </div>
 	</div>
