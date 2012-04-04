@@ -19,7 +19,7 @@ try {
 
 <?
 	if (!issetParam('part')) {
-		include 'views/life_main.php';
+		include 'views/life_main2.php';
 	} else {
 		switch (param('part')) {
 		case 'comments':

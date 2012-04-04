@@ -308,6 +308,6 @@ if (document.URL.match(/blog/)) {
 	});
 } else if (document.URL.match(/life/)) {
 	$(function () {
-		life.feed.init();
+		//life.feed.init();
 	});
 }

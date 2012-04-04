@@ -188,10 +188,8 @@
 #stream_end,
 #stream_loading {
 	display: none;
-	background-image: url('../images/loading/squares_100x20.gif');
-	background-position: center center;
-	background-repeat: no-repeat;
-	height: 20px;
+    background: url('../images/loading/squares_100x20.gif') no-repeat center center;
+    height: 20px;
 }
 
 #stream_loading {
@@ -256,7 +254,7 @@
 	border-top: 0;
 }
 
-#stream_container tr.row.space td.item_shortcut{
+#stream_container tr.row.space td.item_shortcut {
 	border-top: #c7dce3 1px solid;
 }
 
@@ -426,17 +424,50 @@
 }
 
 #feed .cross_post.vk .title {
-    background: url('/images/social/vk16.png') no-repeat 0 2px;
+    background: url('/images/social/vk16.png') no-repeat;
     padding-left: 24px;
     margin-left: -24px;
-    margin-top: 10px;
 }
 
 #feed .cross_post.tw .title {
-    background: url('/images/social/tw16_blue.png') no-repeat 0 2px;
+    background: url('/images/social/tw16_blue.png') no-repeat;
     padding-left: 24px;
     margin-left: -24px;
-    margin-top: 10px;
+}
+
+#feed .content {
+    width: 100%;
+    margin-right: -250px;
+    float: left;
+}
+
+#feed .timeline_wrapper {
+    margin-right: 270px;
+}
+
+#feed .menu {
+    width: 250px;
+    float: right;
+}
+
+#feed .item {
+    border: 1px #c7dce3 solid;
+    border-radius: 3px;
+    margin-bottom: 10px;
+}
+
+#feed .item > div {
+    margin: 0 32px;
+    padding: 8px 0;
+}
+
+#feed .item .title {
+    font-size: 0.8em;
+    padding: 1px 0 10px 0;
+}
+
+#feed .item .body {
+    font-size: 1.2em;
 }
 
 #people_container {
