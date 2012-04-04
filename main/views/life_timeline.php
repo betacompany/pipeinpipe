@@ -56,7 +56,6 @@ function life_show_feed_item2(Item $item) {
 			<? if ($isCrossPost) { ?>
 			via <a href="<?=$item->getExternalUrl()?>"><?=$item->getSocialWebAuthorName()?></a>
 			<? } ?>
-
 		<? } elseif($isCrossPost) { ?>
 		<a href="<?=$item->getExternalUrl()?>"><?=$item->getSocialWebAuthorName()?></a>
 		<? } ?>
