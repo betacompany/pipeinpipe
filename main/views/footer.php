@@ -14,6 +14,9 @@ if ($auth->isAuth()) {
 }
 
 define('END_TIME', microtime(true));
+
+$ya_params['time'] = sprintf("%.4f", END_TIME-BEGIN_TIME);
+
 ?>
 
 			</div><!--//body-->
@@ -22,7 +25,7 @@ define('END_TIME', microtime(true));
 					<div id="footer_inner">
 						&copy; Сделано в <a href="http://betacompany.spb.ru" target="_blank">betacompany</a> /
 						2008 &ndash; <?=date("Y")?> /
-						<?printf("%.4f", END_TIME-BEGIN_TIME)?> сек.
+						<?=$ya_params['time']?> сек.
 						<?=(MYSQL_DEBUG_MODE ? ' / ' . mysql_qw() . ' ' . lang_sclon(mysql_qw(), 'запрос', 'запроса', 'запросов') : '')?>
 					</div>
 					<ul id="footer_menu">
