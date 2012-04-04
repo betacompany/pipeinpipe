@@ -2,23 +2,19 @@
 
 require_once dirname(__FILE__) . '/../../includes/assertion.php';
 require_once dirname(__FILE__) . '/../../includes/security.php';
+require_once dirname(__FILE__) . '/../../includes/import.php';
+require_once dirname(__FILE__) . '/../../includes/log.php';
 
-require_once dirname(__FILE__) . '/../db/ItemDBClient.php';
-require_once dirname(__FILE__) . '/../db/ItemDBClient.php';
-require_once dirname(__FILE__) . '/../db/ContentViewDBClient.php';
-
-require_once dirname(__FILE__) . '/../media/Photo.php';
-require_once dirname(__FILE__) . '/../media/Video.php';
-require_once dirname(__FILE__) . '/../forum/ForumTopic.php';
-
-require_once dirname(__FILE__) . '/../blog/BlogPost.php';
-
-require_once dirname(__FILE__) . '/../life/Event.php';
-
-require_once dirname(__FILE__) . '/../social/CrossPost.php';
-
-require_once dirname(__FILE__) . '/Action.php';
-require_once dirname(__FILE__) . '/Tag.php';
+import("db/ItemDBClient");
+import("db/ContentViewDBClient");
+import("media/Photo");
+import("media/Video");
+import("forum/ForumTopic");
+import("blog/BlogPost");
+import("life/Event");
+import("social/CrossPost");
+import("content/Action");
+import("content/Tag");
 
 /**
  * @author Artyom Grigoriev

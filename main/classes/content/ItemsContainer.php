@@ -1,6 +1,8 @@
 <?php
 
-require_once dirname(__FILE__) . '/Item.php';
+require_once dirname(__FILE__) . '/../../includes/import.php';
+
+import("content/Item");
 
 /**
  * User: ortemij
