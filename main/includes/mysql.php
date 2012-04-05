@@ -37,7 +37,7 @@ function mysql_make_qw() {
 			continue;
 		if (is_int($v))
 			continue;
-		$args[$i] = "'" . mysql_escape_string($v) . "'";
+		$args[$i] = "'" . mysql_real_escape_string($v) . "'";
 	}
 	for ($i = $c = count($args) - 1; $i < $c + 20; $i++)
 		$args[$i + 1] = "UNKNOWN_PLACEHOLDER_$i";
@@ -48,7 +48,7 @@ $user = DB_USERNAME;
 $pass = DB_PASSWORD;
 $db = DB_DATABASE;
 
-mysql_connect("localhost", $user, $pass)
+mysql_pconnect("localhost", $user, $pass)
 		or die("COULD NOT CONNECT: " . mysql_error());
 
 mysql_select_db($db)
