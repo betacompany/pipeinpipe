@@ -365,8 +365,8 @@ var rating = {
 							var lit = $('<li/>');
 							for (var i = 0; i < json.weights.length; i++) {
 								var obj = json.weights[i],
-									name = $('#' + obj.pmid + ' a > div:first-child').html(),
-									surname = $('#' + obj.pmid + ' a > div:last-child').html(),
+									name = $('#' + obj.pmid + ' .content div:first-child').html(),
+									surname = $('#' + obj.pmid + ' .content div:last-child').html(),
 									isF = lit.html().length == 0,
 									jA = $('<a/>').html(name + '&nbsp;' + surname)
 												  .attr({

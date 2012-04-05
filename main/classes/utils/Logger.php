@@ -47,23 +47,20 @@ class Logger {
 		global $auth;
 		$userid = (isset($auth) && $auth->isAuth()) ? 'user:' . $auth->uid() : 'unknown';
 
-		$this->writeln(
-			sprintf(
-				"[%s] %s:%s %s %s?%s",
-				$layer,
-				date("Y/m/d H:i:s", floor($tm)),
-				preg_replace("/ /", "0", sprintf("%3d", ($tm * 1000) % 1000)),
-				$userid,
-				$_SERVER['SCRIPT_NAME'],
-				$_SERVER['QUERY_STRING']
-			)
+		return sprintf(
+			"%s:%s\t[%s]\t%s\t%s?%s",
+			date("Y/m/d H:i:s", floor($tm)),
+			preg_replace("/ /", "0", sprintf("%3d", ($tm * 1000) % 1000)),
+			$layer,
+			$userid,
+			$_SERVER['SCRIPT_NAME'],
+			$_SERVER['QUERY_STRING']
 		);
 	}
 
 	private function log($layer, $message) {
-		$this->header($layer);
-		$this->writeln($message);
-		$this->writeln();
+		$header = $this->header($layer);
+		$this->writeln("$header\t$message");
 	}
 
 	/**

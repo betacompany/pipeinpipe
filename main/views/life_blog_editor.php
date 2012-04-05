@@ -123,7 +123,7 @@ if ($auth->isAuth()) {
 			<div id="tag_panel_selector"></div>			
 		</div>
 		<script type="text/javascript">
-			$(function () {
+			$$(function () {
 				var tags = <?=Tag::getAllJSON()?>;
 				var tagById = {};
 				for (var i = 0; i < tags.length; i++) {

@@ -8,40 +8,41 @@ global $auth;
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 <script type="text/javascript">
+	$$(function () {
+		google.load('visualization', '1.0', {'packages':['corechart']});
+		
+		if (getAnchorParam('date') != null) {
+			var dt = getAnchorParam('date').split('-');
+			window.y = dt[0];
+			window.m = dt[1];
+			window.d = dt[2];
+		} else {
+			var jdate = new Date();
+			window.y = jdate.getFullYear();
+			window.m = jdate.getMonth() + 1;
+			window.d = jdate.getDate();
+			if (m < 10) m = '0' + m;
+			if (d < 10) d = '0' + d;
+		}
 
-google.load('visualization', '1.0', {'packages':['corechart']});
+		window.date = window.y + '-' + window.m + '-' + window.d;
+		window.leagueId = getAnchorParam('league') == null ? 1 : getAnchorParam('league');
+		window.reloadFunc = function () {
+			$('#here').attr('href', document.URL.substr(0, document.URL.indexOf('#')) + '#league=' + leagueId + '&date=' + date);
+			$('#csv').attr('href', '/sport/rating/' + leagueId + '-' + date + '.csv');
 
-var y, m, d;
-if (getAnchorParam('date') != null) {
-	var dt = getAnchorParam('date').split('-');
-	y = dt[0]; m = dt[1]; d = dt[2];
-} else {
-	var jdate = new Date();
-	y = jdate.getFullYear();
-	m = jdate.getMonth() + 1;
-	d = jdate.getDate();
-	if (m < 10) m = '0' + m;
-	if (d < 10) d = '0' + d;
-}
+			rating.__pmids_all = new Array();
+			rating.__pmids = {
+				length:0
+			};
+			rating.__info_loaded = {};
+			rating.__movement = null;
 
-var date = y + '-' + m + '-' + d;
-var leagueId = getAnchorParam('league') == null ? 1 : getAnchorParam('league');
-var reload = function () {
-	$('#here').attr('href', document.URL.substr(0, document.URL.indexOf('#')) + '#league=' + leagueId + '&date=' + date);
-	$('#csv').attr('href', '/sport/rating/' + leagueId + '-' + date + '.csv');
-
-	rating.__pmids_all = new Array();
-	rating.__pmids = {
-		length: 0
-	};
-	rating.__info_loaded = {};
-	rating.__movement = null;
-
-	rating.load(function () {
-		rating.state('initial');
+			rating.load(function () {
+				rating.state('initial');
+			});
+		}
 	});
-}
-
 </script>
 
 <div id="rating_selector_container">
@@ -62,19 +63,21 @@ foreach (League::getAll() as $league) {
 
 		<div style="float: left; padding-left: 10px;" id="date_selector"></div>
 		<script type="text/javascript">
-			var ds = new DateSelector({
-				date: date,
-				onSelect: function (dt) {
-					leagueId = $('select[name=league_id]').val();
-					date = dt;
-					reload();
-				},
-				hideOnSelect: true,
-				minDate: {d: 23, m: 9, y: 2009},
-				maxDate: {d: <?=date('j')?>, m: <?=date('n')?>, y: <?=date('Y') + 1?>}
-			});
-			$(function () {
-				ds.appendTo($('#date_selector'));
+			$$(function () {
+				var ds = new DateSelector({
+					date:date,
+					onSelect:function (dt) {
+						leagueId = $('select[name=league_id]').val();
+						date = dt;
+						reloadFunc();
+					},
+					hideOnSelect:true,
+					minDate:{d:23, m:9, y:2009},
+					maxDate:{d: <?=date('j')?>, m: <?=date('n')?>, y: <?=date('Y') + 1?>}
+				});
+				$(function () {
+					ds.appendTo($('#date_selector'));
+				});
 			});
 		</script>
 
@@ -107,18 +110,21 @@ if ($auth->isAuth()) {
 	</div>
 	<ul id="rating"></ul>
 	<div id="rating_right">
-		<div id="chart_compare">
-            <div id="rating_right_content">
-		    </div>
+		<div id="rating_compare">
+
+		</div>
+		<div id="rating_right_content">
+			
+		</div>
 	</div>
 </div>
 
 <script type="text/javascript">
-$(function () {
+$$(function () {
 	$('select[name=league_id]').val(leagueId);
-	$('input[name=day]').val(d);
-	$('select[name=month]').val(m);
-	$('input[name=year]').val(y);
+	$('input[name=day]').val(window.d);
+	$('select[name=month]').val(window.m);
+	$('input[name=year]').val(window.y);
 	$('#here').attr('href', document.URL.substr(0, document.URL.indexOf('#')) + '#league=' + leagueId + '&date=' + date);
 	$('#csv').attr('href', '/sport/rating/' + leagueId + '-' + date + '.csv');
 

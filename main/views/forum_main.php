@@ -89,7 +89,7 @@ foreach(Forum::getForums() as $forum) {
 	</div>
 
 	<script type="text/javascript">
-		$(document).ready(function () {
+		$$(function () {
 			var partIds = slideBlock.getOpenedParts();
 			for (var i = 0; i < partIds.length; i++) {
 				forum.openPart(partIds[i]);

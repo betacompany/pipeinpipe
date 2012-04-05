@@ -346,7 +346,7 @@ var competition = {
                 }
 
                 !competition._isRegistered ? $('#reg_comment_p').show() : $('#reg_comment_p').hide();
-                registerButton.content(!competition._isRegistered ? competition._unregisteredText : competition._registeredText);
+                window.registerButton.content(!competition._isRegistered ? competition._unregisteredText : competition._registeredText);
 			},
 
 			error: debug

@@ -46,9 +46,11 @@ try {
 ?>
 
 <script type="text/javascript">
-media.onClose = function () {
-	media.clearSlideShow();
-};
+	$$(function () {
+		media.onClose = function () {
+			media.clearSlideShow();
+		};
+	})
 </script>
 
 <?
