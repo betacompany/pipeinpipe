@@ -1263,10 +1263,12 @@ function Timeline(options) {
 	};
 
 	for (var i = -options.delta; i <= options.delta; ++i) {
-		var j = dateContainers[options.delta + i] =
+		var date = convert(options.centerDate, i),
+			j = dateContainers[options.delta + i] =
 					$('<div/>')
 						.addClass('date day-' + i)
-						.html(convert(options.centerDate, i).getDate())
+						.html(date.getDate())
+						.data('ms', date.getTime())
 						.appendTo(jContainer);
 		if (i == 0) {
 			j.addClass('center');
@@ -1275,8 +1277,15 @@ function Timeline(options) {
 
 	var setCenterDay = function (day) {
 		for (var i = -options.delta; i <= options.delta; ++i) {
-			dateContainers[options.delta + i].html(convert(day, i).getDate());
+			var date = convert(day, i);
+			dateContainers[options.delta + i]
+				.html(date.getDate())
+				.data('ms', date.getTime());
 		}
+	};
+
+	var setCenterDayMs = function (ms) {
+		setCenterDay(Math.floor(ms / DAY_IN_MS));
 	};
 
 	return {
@@ -1284,14 +1293,24 @@ function Timeline(options) {
 			var w = container.width(),
 				dw = w / (2 * options.delta + 1);
 
-			jContainer.children('.date').width(dw - options.commonW).each(function (i) {
-				$(this).css({left: i * dw});
-			});
+			jContainer.children('.date')
+				.width(dw - options.commonW)
+				.each(function (i) {
+					var x = (i - options.delta) / options.delta * 2;
+					$(this).css({
+						left: i * dw,
+						opacity: Math.exp(-x * x / 2)
+					});
+				})
+				.click(function () {
+					var ms = $(this).data('ms');
+					setCenterDayMs(ms);
+				});
 			container.append(jContainer);
 		},
 
-		scrollTo: function (ts) {
-			 setCenterDay(ts / DAY_IN_MS);
+		scrollTo: function (ms) {
+			setCenterDayMs(ms);
 		}
 	};
 }

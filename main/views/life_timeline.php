@@ -13,33 +13,33 @@ global $items;
 
 ?>
 
-<div id="timeline_dates">
-
-</div>
+<div id="timeline_dates"></div>
 
 <script type="text/javascript">
 	$$(function () {
-		window.timeline = new Timeline({});
-		window.timeline.appendTo($('#timeline_dates'));
+		life.timeline = new Timeline({});
+		life.timeline.appendTo($('#timeline_dates'));
 	});
 </script>
 
-<div class="timeline_container">
-	<div class="top">
+<div id="feed">
+	<div class="timeline_container body_container">
+		<div class="top">
 
-	</div>
-	<div class="content">
-		<div class="timeline_wrapper">
-			<? foreach ($items as $item): ?>
-			<div class="item">
-				<? life_show_feed_item2($item) ?>
-			</div>
-			<? endforeach;?>
 		</div>
+		<div class="content">
+			<div class="timeline_wrapper">
+				<? foreach ($items as $item): ?>
+				<div class="item">
+					<? life_show_feed_item2($item) ?>
+				</div>
+				<? endforeach;?>
+			</div>
+		</div>
+		<div class="menu">
+		</div>
+		<div class="clear"></div>
 	</div>
-	<div class="menu">
-	</div>
-	<div class="clear"></div>
 </div>
 
 <?

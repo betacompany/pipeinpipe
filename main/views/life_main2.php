@@ -9,7 +9,5 @@ $items = Item::getAll(100, true);
 
 ?>
 
-<div id="feed">
 <? include dirname(__FILE__) . "/life_timeline.php"; ?>
-</div>
 
