@@ -248,3 +248,23 @@ div.ui-date-selector .grid th.off:hover {
 	background-color: #fff;
 	cursor: default;
 }
+
+div.ui-timeline {
+    position: relative;
+    width: 100%;
+    height: 70px;
+}
+
+div.ui-timeline .date {
+    position: absolute;
+    padding: 10px;
+    text-align: center;
+    font-size: 1.5em;
+    border-radius: 5px;
+    color: #007ca7;
+}
+
+div.ui-timeline .date.center {
+    background-color: #007ca7;
+    color: #fff;
+}

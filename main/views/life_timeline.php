@@ -13,9 +13,16 @@ global $items;
 
 ?>
 
-<div class="timeline_dates">
+<div id="timeline_dates">
 
 </div>
+
+<script type="text/javascript">
+	$$(function () {
+		window.timeline = new Timeline({});
+		window.timeline.appendTo($('#timeline_dates'));
+	});
+</script>
 
 <div class="timeline_container">
 	<div class="top">
