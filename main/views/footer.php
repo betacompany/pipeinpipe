@@ -56,7 +56,7 @@ $script_name = substr($script_name, 1);
 
 <script type="text/javascript" src="/js/jquery-ui-1.8.4.custom.min.js"></script>
 
-<? if (CLOSURE_COMPILE_ENABLED): ?>
+<? if (CLOSURE_COMPILER_ENABLED): ?>
 <script type="text/javascript" src="/js/all.js"></script>
 <? else: ?>
 <script type="text/javascript" src="/js/lib-structures.js"></script>
