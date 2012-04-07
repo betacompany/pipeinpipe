@@ -1,2 +1,5 @@
 main/config/my-properties.php
+main/logs
+main/temp
+pipev4.iml
 .idea/

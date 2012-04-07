@@ -63,7 +63,7 @@ class ResultTableDBClient {
      * @return resource
      */
     public static function selectPmidsForCup($cupId) {
-        return mysql_qw('SELECT `pmid` FROM `p_man_cup_table` WHERE `cup_id`=?', $cupId);
+        return mysql_qw('SELECT `pmid` FROM `p_man_cup_table` WHERE `cup_id`=? ORDER BY `place`, `pmid`', $cupId);
     }
 
     public static function selectPmidByPlaceInCup($place, $cupId) {
