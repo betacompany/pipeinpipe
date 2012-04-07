@@ -12,8 +12,8 @@ require_once dirname(__FILE__).'/../../includes/mysql.php';
  */
 class CupOneLap extends Cup {
 
-    private $gameGrid = array();
-    private $gameGridLoaded = false;
+    protected $gameGrid = array();
+    protected $gameGridLoaded = false;
 
     private $resultTable;
     private $resultTableLoaded = false;
