@@ -1284,8 +1284,13 @@ function Timeline(options) {
 		}
 	};
 
+	var listeners = [];
+
 	var setCenterDayMs = function (ms) {
 		setCenterDay(Math.floor(ms / DAY_IN_MS));
+		for (var i = 0; i < listeners.length; ++i) {
+			listeners[i](ms);
+		}
 	};
 
 	return {
@@ -1311,6 +1316,10 @@ function Timeline(options) {
 
 		scrollTo: function (ms) {
 			setCenterDayMs(ms);
+		},
+
+		onChange: function (f) {
+			listeners.push(f);
 		}
 	};
 }

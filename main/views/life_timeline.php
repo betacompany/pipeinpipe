@@ -13,12 +13,31 @@ global $items;
 
 ?>
 
-<div id="timeline_dates"></div>
+<div id="timeline_dates" style="width: 100%; background-color: #fff;"></div>
 
 <script type="text/javascript">
 	$$(function () {
+		var container = $('#timeline_dates'),
+			offset = container.offset()
+			;
+
 		life.timeline = new Timeline({});
-		life.timeline.appendTo($('#timeline_dates'));
+		life.timeline.appendTo(container);
+
+		$(window).scroll(function (e) {
+			var x = offset.top - $(window).scrollTop();
+			if (x <= 0) {
+				container.css({
+					position: 'fixed',
+					top: 0
+				});
+			} else {
+				container.css({
+					position: 'static',
+					top: 0
+				});
+			}
+		});
 	});
 </script>
 
@@ -36,9 +55,6 @@ global $items;
 				<? endforeach;?>
 			</div>
 		</div>
-		<div class="menu">
-		</div>
-		<div class="clear"></div>
 	</div>
 </div>
 
