@@ -192,7 +192,7 @@ var competition = {
 			width: options.gameDivWidth + 'px',
 			height: options.gameDivHeight + 'px',
 			'border-width': options.borderWidth,
-			'font-size': (game.victor && game.surnames[game.victor].length >= 13 ? options.goshaFontSize : options.fontSize) + 'px',
+			'font-size': (game.surnames[game.victor] && game.surnames[game.victor].length >= 13 ? options.goshaFontSize : options.fontSize) + 'px',
 			'padding-left': options.padding,
 			'padding-top': options.padding
 		})
@@ -241,7 +241,7 @@ var competition = {
             .addClass(game.victor == which ? 'victor' : '');
 
         $('<div/>', {
-            html: game.surnames[which] + '&nbsp;' + game.names[which].substring(0, 1) + '.'
+            html: game.surnames[which] + (game.names[which] ? '&nbsp;' + game.names[which].substring(0, 1) + '.' : '')
         }).css({
             width: options.nameDivWidth + 'px'
         }).appendTo(pmDiv);
