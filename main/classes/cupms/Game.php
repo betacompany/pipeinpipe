@@ -708,7 +708,7 @@ class Game {
 	}
 	
 	private function isPrevGameForPlayer($game, $pmid) {
-		if ($game != null && ($game->getPmid1() == $pmid || $game->getPmid2() == $pmid))
+		if ($game != null && $pmid > 0 && ($game->getPmid1() == $pmid || $game->getPmid2() == $pmid))
 			return true;
 		return false;
 	}
