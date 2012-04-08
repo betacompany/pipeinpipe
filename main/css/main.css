@@ -738,3 +738,7 @@ hr {
     color: #007ca7;
     font-size: 0.8em;
 }
+
+.clear {
+	clear: both;
+}

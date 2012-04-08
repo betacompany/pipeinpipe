@@ -191,7 +191,7 @@ a:hover {
 }
 
 .clear {
-	clear: both;
+	clear: both !important;
 }
 
 div.person_to_html img {
