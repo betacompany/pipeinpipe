@@ -52,10 +52,10 @@ function show_player_comparator($data) {
 	<table class="comparator_head">
 		<thead>
 			<th>
-				<a href="$url1">$f1</a>
+				<a href="$url1">$name1</a>
 			</th>
 			<th>
-				<a href="$url2">$f2</a>
+				<a href="$url2">$name2</a>
 			</th>
 		</thead>
 		<tbody>
@@ -191,19 +191,78 @@ LABEL;
 		appendTableRow($result, "Игры в плей-офф", $pg1, $pg2);
 		appendTableRow($result, "Победы в плей-офф", $pv1, $pv2);
 		appendTableRow($result, "Поражения в плей-офф", $pd1, $pd2);
-
 		$result .= <<<LABEL
 				</tbody>
 			</table>
 LABEL;
-	}
+    }
 
-//=======конец таблицы общей статистики==================
+    $result .= <<<LABEL
+            <table class="comparator">
+				<thead>
+					<th colspan="3">Движение по рейтингу</th>
+				</thead>
+				<tbody id="comparison_chart">
 
-	$result .= '</div>';
+LABEL;
+
+    $result .= "<script type=\"text/javascript\">\n";
+
+    // Callback that creates and populates a data table,
+    // instantiates the pie chart, passes in the data and
+    // draws it.
+    $result .= "(function() {\n";
+
+    // Create the data table.
+    $result .= "\tvar data = new google.visualization.DataTable();\n";
+
+	$chartData = $data['movement'];
+	$pm1 = Player::getById($data['pmid1']);
+	$pm2 = Player::getById($data['pmid2']);
+
+    $result .= "\tvar players = ['" . $pm1->getFullName() . "', '" . $pm2->getFullName() . "'];\n";
+    $result .= "\tdata.addColumn('date', 'День');\n";
+    $result .= "\tfor (var i = 0; i < players.length; i++) {\n\t\tdata.addColumn('number', players[i]);\n\t}\n";
+
+	/* ADD DATA HERE */
+
+    $result .= "\tvar dataView = new google.visualization.DataView(data);\n";
+    $result .= "\tdataView.setColumns([{calc: function(data, row) { return data.getFormattedValue(row, 0); }, type:'string'}, 1]);\n";
+
+    // Chart options may be found on http://code.google.com/intl/ru-RU/apis/chart/interactive/docs/gallery/areachart.html
+    $result .= "var options = {\n
+                    'title':'Движение по WPR',
+                    \n'legend': \"none\",
+                    \n'chartArea': {left: 69, width: 666},
+                    \n" . "'focusTarget': 'category',
+			        \n'legend.position': 'right',
+			        \n'hAxis': {
+                        \n" . "'format': 'd MMM y',
+                        \n'textPosition': 'out',
+                        \n'title': \"Дата\",
+                        \n'slantedText': false,
+                        \n'gridlines.count': 8,
+                        \n'maxAlternation': 2
+			        \n" . "},
+			        \n'vAxis': {
+			            \n'gridlines.count': 8
+			        \n},
+			        \n'width': 750,
+			        \n'height': 300
+			        \n};
+			    \n";
+
+	$result .= "\tvar chart = new google.visualization.AreaChart(document.getElementById('chart_compare'));\n";
+	$result .= "\tchart.draw(data, options);";
+	$result .= "})();\n";
+
+	$result .= "</script>\n";
+
+	$result .= <<<LABEL
+		</tbody>
+	</table>
+LABEL;
 
 	return $result;
 }
 ?>
-
-
