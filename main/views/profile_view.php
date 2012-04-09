@@ -450,22 +450,13 @@ function profile_show_player($person, Player $player, $tabs) {
                         <div style="clear: both;"></div>
                     </div>
 
-					<div id="chart_vk_place">
+					<div class="body">
+						<div id="chart_vk_place"></div>
+
+						<div id="chart_vk_rating" style="margin: 20px;">
 <?
 	require_once dirname(__FILE__) . '/../classes/charts/VkontakteLineChart.php';
 	$movement = $player->getRatingMovement();
-	$line = new Line();
-	foreach ($movement as $d) {
-		$line->addPoint(strtotime($d['date']), $d['place']);
-	}
-	$chart = new VkontakteLineChart("chart_vk_place_graph");
-	$chart->addLine("Место в WPR", "007ca7", $line);
-	echo $chart->toHTML(time());
-?>
-					</div>
-
-					<div id="chart_vk_rating">
-<?
 	$line = new Line();
 	foreach ($movement as $d) {
 		$line->addPoint(strtotime($d['date']), $d['points']);
@@ -474,6 +465,7 @@ function profile_show_player($person, Player $player, $tabs) {
 	$chart->addLine("Очков в WPR", "8fbc13", $line);
 	echo $chart->toHTML(time());
 ?>
+						</div>
 					</div>
 				</div>
 			</div>
