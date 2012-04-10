@@ -100,7 +100,7 @@ if ($cache->getAge() <= 60 * 60) {
 				{id: 2, value: "по количеству побед"},
 				{id: 3, value: "по проценту побед"},
 				{id: 4, value: "по количеству сыгранных матчей"},
-				{id: 5, value: "по количеству матчей в плей-офф"},
+				{id: 5, value: "по количеству матчей в плей-офф"}
 			],
 			onSelect: function(id) {
 				pipemen.sort(comparators[id - 1]);
@@ -152,7 +152,7 @@ if ($cache->getAge() <= 60 * 60) {
 									.append(
 										$('<div/>')
 											.addClass('city')
-											.html(pm.city)
+											.html('999')
 									)
 									.append(leaguesContainer)
 							)
