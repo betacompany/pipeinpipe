@@ -24,7 +24,7 @@ try {
 			<div><?=$league->getDescription()?></div>
 		</div>
 		<div style="clear: both;"></div>
-	</div>	
+	</div>
 
 	<div id="league_body">
 		<div id="left_column">

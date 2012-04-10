@@ -2,6 +2,7 @@
 
 /**
  * @author Artyom Grigoriev
+ * @author Innokenty Shuvalov
  */
 require_once dirname(__FILE__) . '/includes/error.php';
 require_once dirname(__FILE__) . '/includes/config.php';
@@ -43,7 +44,7 @@ try {
 			assertCup($_REQUEST['cup_id']);
 			$cup = CupFactory::getCupById($_REQUEST['cup_id']);
 
-			// theese methods do not require permission
+			// these methods do not require permission
 			switch ($_REQUEST['method']) {
 				case 'recalc_result_table':
 					if (!ResultTable::recalculateForCup($cup)) {
@@ -54,7 +55,7 @@ try {
 					exit(0);
 			}
 
-			//cheking whether the current user is allowed to make changes
+			//checking whether the current user is allowed to make changes
 			if ($user->hasPermission($cup->getCompetition(), 'edit')) {
 				switch ($_REQUEST['method']) {
 					
@@ -138,8 +139,10 @@ try {
 					while ($currentStage < $maxStage) {
 						$nextStageGames = array();
 						foreach ($games as $game) {
-							foreach ($game->getPrevGames() as $which => $prevGame) {
-								if ($prevGame === null) {
+                            $prevGames = $game->getPrevGames();
+                            foreach (array(1, 2) as $which) {
+                                $prevGame = $prevGames[$which];
+                                if ($prevGame === null) {
 									$prevGame = Game::create($cupId, 2 * $currentStage);
 									$game->setPrevGame($which, $prevGame);
 								}
