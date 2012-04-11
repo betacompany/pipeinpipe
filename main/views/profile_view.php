@@ -459,12 +459,12 @@ function profile_show_player($person, Player $player, $tabs) {
 <?
 	require_once dirname(__FILE__) . '/../classes/charts/VkontakteLineChart.php';
 	$movement = $player->getRatingMovement();
-        $line = new Line();
-	    foreach ($movement as $d) {
-            $line->addPoint(strtotime($d['date']), $d['points']);
-        }
-        $chart = new VkontakteLineChart("chart_vk_place_graph");
-        $chart->addLine("Очков в WPR", "8fbc13", $line);
+    $line = new Line();
+	foreach ($movement as $d) {
+        $line->addPoint(strtotime($d['date']), $d['points']);
+    }
+    $chart = new VkontakteLineChart("chart_vk_place_graph");
+    $chart->addLine("Очков в WPR", "8fbc13", $line);
     echo $chart->toHTML(time());
 ?>
                             <div id="chart_place">
@@ -480,19 +480,18 @@ function profile_show_player($person, Player $player, $tabs) {
                                         dataTable.addRows([
                                             <?
                                                 $movement = profile_get_charts_data($player);
-                                                    $date = array();
-                                                    $isFirst = true;
-                                                    foreach($movement as $d){
-                                                        $date = explode('-', $d['date']);
-                                                        if(!$isFirst) echo ",\n";
-                                                        echo "[new Date(" . $date[0] . ', ' . $date[1] . ', ' . $date[2] . "), " . $d['place'] . "]";
-                                                        $isFirst = false;
-                                                    }
+                                                $date = array();
+                                                $isFirst = true;
+                                                foreach($movement as $d){
+                                                    $date = explode('-', $d['date']);
+                                                    if(!$isFirst) echo ",\n";
+                                                    echo "[new Date(" . $date[0] . ', ' . $date[1] . ', ' . $date[2] . "), " . $d['place'] . "]";
+                                                    $isFirst = false;
+                                                }
                                             ?>
                                         ]);
 
                                         var dataView = new google.visualization.DataView(dataTable);
-
                                         var chart = new google.visualization.AreaChart(document.getElementById('chart_place'));
                                         var options = {
                                             chartArea: {
@@ -513,7 +512,7 @@ function profile_show_player($person, Player $player, $tabs) {
                                                 baselineColor: '#2969FF',
                                                 direction: -1,
                                                 maxValue: <?=count_max_places($player) * 1.5?>,
-                                                minValue: 0.5
+                                                minValue: 0.8
                                             },
                                             focusTarget: 'category',
                                             height: 400,
@@ -523,7 +522,6 @@ function profile_show_player($person, Player $player, $tabs) {
                                     }
                                 </script>
                             </div>
-
 						</div>
 					</div>
 				</div>
@@ -553,7 +551,6 @@ function profile_get_charts_data(Player $player) {
             $places[] = $step['place'];
 		}
 	}
-
     return $movement;
 }
 
@@ -565,12 +562,12 @@ function count_max_places(Player $player) {
     foreach ($movement as $step) {
         $places[] = $step['place'];
     }
-    $res = 0;
+    $result = 0;
     try{
-        $res = max($places);
+        $result = max($places);
     } catch(Exception $e) {}
 
-    return $res;
+    return $result;
 }
 
 function profile_show_game_stats(Player $player) {
@@ -922,3 +919,4 @@ function profile_show_date_edit($key, $name, $value) {
 <?
 }
 ?>
+}
