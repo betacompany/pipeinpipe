@@ -1294,7 +1294,7 @@ function Timeline(options) {
 	};
 
 	return {
-		appendTo: function (container) {
+		getByContainer: function (container) {
 			var w = container.width(),
 				dw = w / (2 * options.delta + 1);
 
@@ -1311,7 +1311,7 @@ function Timeline(options) {
 					var ms = $(this).data('ms');
 					setCenterDayMs(ms);
 				});
-			container.append(jContainer);
+			return jContainer;
 		},
 
 		scrollTo: function (ms) {

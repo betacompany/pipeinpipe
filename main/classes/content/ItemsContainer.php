@@ -12,8 +12,8 @@ import("content/Item");
 class ItemsContainer extends Item {
 
 	private $items = array();
-	private $type;
-	private $user;
+	private $innerType;
+	private $innerUser;
 	private $timestamp;
 
 	public function  __construct($items) {
@@ -21,12 +21,12 @@ class ItemsContainer extends Item {
 			throw new InvalidArgumentException("array should not be empty!");
 		}
 		$first = $items[0];
-		$this->type = ItemsContainer::checkAndGetType($first);
-		$this->user = $first->getUser();
+		$this->innerType = ItemsContainer::checkAndGetType($first);
+		$this->innerUser = $first->getUser();
 		$this->timestamp = $first->getTimestamp();
 		foreach ($items as $item) {
 			$type = ItemsContainer::checkAndGetType($item);
-			if ($type != $this->type) {
+			if ($type != $this->innerType) {
 				throw new InvalidArgumentException("all items should be the same type");
 			}
 			$this->items[] = $item;
@@ -38,7 +38,7 @@ class ItemsContainer extends Item {
 	}
 
 	public function getType() {
-		return $this->type . "_container";
+		return $this->innerType . "_container";
 	}
 
 	public function getGroupId() {
@@ -50,11 +50,11 @@ class ItemsContainer extends Item {
 	}
 
 	public function getUID() {
-		return $this->user->getId();
+		return $this->innerUser->getId();
 	}
 
 	public function getUser() {
-		return $this->user;
+		return $this->innerUser;
 	}
 
 	public function getTimestamp() {
@@ -186,6 +186,10 @@ class ItemsContainer extends Item {
 
 	public function removeTags() {
 		throw new BadFunctionCallException();
+	}
+
+	public function getItems() {
+		return $this->items;
 	}
 
 	private static function checkAndGetType($o) {

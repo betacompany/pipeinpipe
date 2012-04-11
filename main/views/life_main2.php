@@ -5,7 +5,11 @@
  * Time: 9:55
  */
 
-$items = Item::getAll(100, true);
+require_once dirname(__FILE__) . '/../includes/import.php';
+
+import('content/Feed');
+
+$items = Feed::get();
 
 ?>
 

@@ -13,7 +13,7 @@ global $items;
 
 ?>
 
-<div id="timeline_dates" style="width: 100%; background-color: #fff;"></div>
+<div id="timeline_dates" style="background-color: #fff; width: 100%;"></div>
 
 <script type="text/javascript">
 	$$(function () {
@@ -22,7 +22,7 @@ global $items;
 			;
 
 		life.timeline = new Timeline({});
-		life.timeline.appendTo(container);
+		container.append(life.timeline.getByContainer(container));
 
 		$(window).scroll(function (e) {
 			var x = offset.top - $(window).scrollTop();
@@ -69,7 +69,6 @@ function life_show_feed_item2(Item $item) {
 	$u = $item->getUser();
 
 	$isCrossPost = $item instanceof CrossPost;
-	$isEvent = $item instanceof Event;
 ?>
 
 <div class="<?=$itemClass?>">
@@ -84,13 +83,29 @@ function life_show_feed_item2(Item $item) {
 		<? } ?>
 	</div>
 	<div class="body">
-		<? if ($isEvent || $isCrossPost) { ?>
-		<?=$item->getContentParsed()?>
-		<? } else { ?>
+<?
+	if ($item instanceof ItemsContainer) {
+		foreach ($item->getItems() as $i) {
+			life_show_item_content($i);
+		}
+	} else {
+		life_show_item_content($item);
+	}
+?>
 
-		<? } ?>
 	</div>
 </div>
 <?
+}
+
+function life_show_item_content(Item $item) {
+	$isCrossPost = $item instanceof CrossPost;
+	$isEvent = $item instanceof Event;
+
+	if ($isEvent || $isCrossPost) {
+		echo "<p>{$item->getContentParsed()}</p>";
+	} else {
+
+	}
 }
 ?>
