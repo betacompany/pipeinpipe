@@ -9,7 +9,7 @@ require_once dirname(__FILE__) . '/../includes/import.php';
 
 import('content/Feed');
 
-$items = Feed::get();
+$items = Feed::getBefore(2000);
 
 ?>
 

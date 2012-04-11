@@ -101,11 +101,22 @@ function life_show_feed_item2(Item $item) {
 function life_show_item_content(Item $item) {
 	$isCrossPost = $item instanceof CrossPost;
 	$isEvent = $item instanceof Event;
+	$isPhoto = $item instanceof Photo;
+	$isVideo = $item instanceof Video;
+	$isForumTopic = $item instanceof ForumTopic;
 
 	if ($isEvent || $isCrossPost) {
 		echo "<p>{$item->getContentParsed()}</p>";
-	} else {
+	} elseif ($isForumTopic) {
+		global $user;
+		$topicNew = $item->hasNewFor($user);
+		$topicClosed = $item->isClosed();
+?>
 
+		<div<?=($topicNew && $topicClosed ? ' class="topic new closed"' : ($topicClosed ? ' class="topic closed"' : ($topicNew ? ' class="topic new"' : ' class="topic"')))?>>
+			<a href="/forum/part<?=$item->getPartId()?>/topic<?=$item->getId()?>"><?=$item->getTitle()?></a>
+		</div>
+<?
 	}
 }
 ?>
