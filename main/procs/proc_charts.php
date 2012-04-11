@@ -61,33 +61,35 @@ try {
 				$line->addPoint($x, -$step['place']);
 			}
 
-			$r = rand(0, 192);
-			$g = rand(0, 192);
-			$b = rand(0, 192);
-			$i = 0;
-			while (distance($r, $g, $b, $prevR, $prevG, $prevB) < 100 && $i < 20) {
-				$r = rand(0, 192);
-				$g = rand(0, 192);
-				$b = rand(0, 192);
-				$i++;
-			}
+            $r = rand(0, 192);
+            $g = rand(0, 192);
+            $b = rand(0, 192);
+            $i = 0;
+            while (distance($r, $g, $b, $prevR, $prevG, $prevB) < 100 && $i < 20) {
+                $r = rand(0, 192);
+                $g = rand(0, 192);
+                $b = rand(0, 192);
+                $i++;
+            }
 
-			$prevR = $r; $prevG = $g; $prevB = $b;
+            $prevR = $r; $prevG = $g; $prevB = $b;
 
-			$r = dechex($r);
-			$g = dechex($g);
-			$b = dechex($b);
-			$r = (strlen($r) == 1) ? "0".strtoupper($r) : strtoupper($r);
-			$g = (strlen($g) == 1) ? "0".strtoupper($g) : strtoupper($g);
-			$b = (strlen($b) == 1) ? "0".strtoupper($b) : strtoupper($b);
-			
-			$line->setColor("$r$g$b");
-			if (!$line->isConstant()) {
-				$line->setWidth(5);
-			}
+            $r = dechex($r);
+            $g = dechex($g);
+            $b = dechex($b);
+            $r = (strlen($r) == 1) ? "0".strtoupper($r) : strtoupper($r);
+            $g = (strlen($g) == 1) ? "0".strtoupper($g) : strtoupper($g);
+            $b = (strlen($b) == 1) ? "0".strtoupper($b) : strtoupper($b);
 
-			$set->add($line);
-		}
+            $line->setColor("$r$g$b");
+            if (!$line->isConstant()) {
+                $line->setWidth(5);
+            }
+
+            $set->add($line);
+            $previousPmId = $pmid;
+            $firstTime = false;
+        }
 
 		$set->linearY(1, -0.5);
 
