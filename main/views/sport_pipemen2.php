@@ -100,19 +100,31 @@ if ($cache->getAge() <= 60 * 60) {
 				{id: 2, value: "по количеству побед"},
 				{id: 3, value: "по проценту побед"},
 				{id: 4, value: "по количеству сыгранных матчей"},
-				{id: 5, value: "по количеству матчей в плей-офф"},
+				{id: 5, value: "по количеству матчей в плей-офф"}
 			],
 			onSelect: function(id) {
 				pipemen.sort(comparators[id - 1]);
-				render(pipemen);
+				render(pipemen, id);
 			}
 		});
 
-		function render(pipemenInfo) {
+		function render(pipemenInfo, id) {
 			debug('start');
 			$('#pipemen_container').html('');
 			for (var i = 0; i < pipemenInfo.length; i++) {
 				var pm = pipemenInfo[i];
+
+                var valueContainer = $('<div/>').addClass('value');
+                switch(id){
+                    case 2: valueContainer.html(pm.victories);
+                        break;
+                    case 3: valueContainer.html(Math.round(pm.victories * 100 / pm.games) + "%");
+                        break;
+                    case 4: valueContainer.html(pm.games);
+                        break;
+                    case 5: valueContainer.html(pm.play_off);
+                        break;
+                }
 
 				var leaguesContainer = $('<div/>').addClass('leagues');
 				if (pm.leagues) {
@@ -154,9 +166,10 @@ if ($cache->getAge() <= 60 * 60) {
 											.addClass('city')
 											.html(pm.city)
 									)
-									.append(leaguesContainer)
 							)
-					);
+                            .append(leaguesContainer)
+					)
+                    .append(valueContainer);
 			}
 			debug('end');
 		}
