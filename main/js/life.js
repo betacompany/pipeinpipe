@@ -235,9 +235,13 @@ var life = {
 var feed = {
 
 	__items: [],
+	__minId: 1e100,
+	__maxId: -1,
+	__feedContainer: null,
 
 	init: function () {
 		this.recalc();
+		this.__feedContainer = $('#feed .timeline_wrapper');
 	},
 
 	recalc: function () {
@@ -247,6 +251,8 @@ var feed = {
 				ms = $(this).attr('pipe:time') * 1000,
 				top = $(this).offset().top;
 			feed.__items.push([lowBound, upBound, ms, top]);
+			feed.__minId = Math.min(feed.__minId, lowBound);
+			feed.__maxId = Math.max(feed.__maxId, upBound);
 		});
 	},
 
@@ -257,6 +263,29 @@ var feed = {
 			}
 		}
 		return false;
+	},
+
+	getMinId: function () {
+		return feed.__minId;
+	},
+
+	loadElderItems: function () {
+		$.ajax({
+			url: '/procs/proc_life.php',
+			data: {
+				method: 'load_before',
+				item_id: feed.getMinId()
+			},
+
+			success: function (html) {
+				feed.__feedContainer.append(html);
+				feed.recalc();
+			}
+		});
+	},
+
+	getMaxId: function () {
+		return feed.__maxId;
 	},
 
 	redrawTimeline: function () {

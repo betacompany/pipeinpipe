@@ -10,6 +10,7 @@ require_once dirname(__FILE__) . '/../classes/content/Action.php';
 require_once dirname(__FILE__) . '/../classes/content/Item.php';
 require_once dirname(__FILE__) . '/../classes/content/Comment.php';
 require_once dirname(__FILE__) . '/../classes/content/Group.php';
+require_once dirname(__FILE__) . '/../classes/content/Feed.php';
 
 require_once dirname(__FILE__) . '/../classes/utils/ResponseCache.php';
 require_once dirname(__FILE__) . '/../classes/utils/Logger.php';
@@ -89,6 +90,15 @@ try {
 		assertDate($date);
 
 		life_show_day_feed($date);
+
+		break;
+
+	case 'load_before':
+
+		assertIsset('item_id');
+
+		$items = Feed::getBefore(intparam('item_id'));
+		include dirname(__FILE__) . '/../views/life_timeline.php';
 
 		break;
 

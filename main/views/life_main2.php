@@ -32,7 +32,12 @@ $items = Feed::get();
 
 		$(window).scroll(function (e) {
 			var scrollTop = $(window).scrollTop(),
-				x = offset.top - scrollTop;
+				x = offset.top - scrollTop,
+				toBottom = $('#footer').offset().top - $(window).scrollTop() - window.innerHeight;
+
+			if (toBottom < 10) {
+				feed.loadElderItems();
+			}
 
 			if (x <= 0) {
 				container.css({
