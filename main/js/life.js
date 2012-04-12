@@ -270,12 +270,13 @@ var feed = {
 	},
 
 	loadElderItems: function () {
-		$.ajax({
-			url: '/procs/proc_life.php',
+		api.request({
+			handler: 'life',
+			method: 'load_before',
 			data: {
-				method: 'load_before',
 				item_id: feed.getMinId()
 			},
+			dataType: 'html',
 
 			success: function (html) {
 				feed.__feedContainer.append(html);
