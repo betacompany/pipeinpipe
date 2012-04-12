@@ -62,7 +62,7 @@ class ItemsContainer extends Item {
 	}
 
 	public function getCreationTimestamp() {
-		throw new BadFunctionCallException();
+		return $this->timestamp;
 	}
 
 	public function getLastCommentTimestamp() {

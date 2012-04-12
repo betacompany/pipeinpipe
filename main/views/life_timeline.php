@@ -11,54 +11,14 @@ require_once dirname(__FILE__) . "/life_view.php";
 
 global $items;
 
+foreach ($items as $item):
 ?>
 
-<div id="timeline_dates" style="background-color: #fff; width: 100%;"></div>
-
-<script type="text/javascript">
-	$$(function () {
-		var container = $('#timeline_dates'),
-			offset = container.offset()
-			;
-
-		life.timeline = new Timeline({});
-		container.append(life.timeline.getByContainer(container));
-
-		$(window).scroll(function (e) {
-			var x = offset.top - $(window).scrollTop();
-			if (x <= 0) {
-				container.css({
-					position: 'fixed',
-					top: 0
-				});
-			} else {
-				container.css({
-					position: 'static',
-					top: 0
-				});
-			}
-		});
-	});
-</script>
-
-<div id="feed">
-	<div class="timeline_container body_container">
-		<div class="top">
-
-		</div>
-		<div class="content">
-			<div class="timeline_wrapper">
-				<? foreach ($items as $item): ?>
-				<div class="item">
-					<? life_show_feed_item2($item) ?>
-				</div>
-				<? endforeach;?>
-			</div>
-		</div>
-	</div>
+<div class="item">
+	<? life_show_feed_item2($item) ?>
 </div>
-
 <?
+endforeach;
 
 function life_show_feed_item2(Item $item) {
 	$itemClass = $item->getType();
@@ -90,7 +50,7 @@ function life_show_feed_item2(Item $item) {
 	$isCrossPost = $item instanceof CrossPost;
 ?>
 
-<div class="<?=$itemClass?>" pipe:low-bound-id="<?=$itemId[0]?>" pipe:up-bound-id="<?=$itemId[count($itemId) - 1]?>">
+<div class="<?=$itemClass?>" pipe:low-bound-id="<?=$itemId[0]?>" pipe:up-bound-id="<?=$itemId[count($itemId) - 1]?>" pipe:time="<?=$item->getCreationTimestamp()?>">
 	<div class="title">
 		<? if ($u) { ?>
 		<a href="<?=$u->getURL()?>"><?=$u->getFullName()?></a>

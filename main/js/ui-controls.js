@@ -1286,10 +1286,12 @@ function Timeline(options) {
 
 	var listeners = [];
 
-	var setCenterDayMs = function (ms) {
+	var setCenterDayMs = function (ms, notify) {
 		setCenterDay(Math.floor(ms / DAY_IN_MS));
-		for (var i = 0; i < listeners.length; ++i) {
-			listeners[i](ms);
+		if (notify) {
+			for (var i = 0; i < listeners.length; ++i) {
+				listeners[i](ms);
+			}
 		}
 	};
 
@@ -1315,6 +1317,10 @@ function Timeline(options) {
 		},
 
 		scrollTo: function (ms) {
+			setCenterDayMs(ms, true);
+		},
+
+		silentScrollTo: function (ms) {
 			setCenterDayMs(ms);
 		},
 

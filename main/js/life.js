@@ -172,62 +172,6 @@ var life = {
 		}
 	},
 
-	feed: {
-		loading: null,
-		dates: {},
-
-		init: function () {
-			$('#feed .event .title').click(function () {
-				$('#feed .event .body').slideToggle();
-			});
-			$.ajax({
-				url: '/procs/proc_life.php',
-				data: {
-					method: 'get_dates'
-				},
-				dataType: 'json',
-				success: function (json) {
-					if (!json || !json.status || json.status != 'ok') return;
-					life.feed.dates = json.dates;
-					var dates = getKeys(life.feed.dates);
-					dates.sort();
-					var firstDate = dates[0],
-						lastDate = dates[dates.length - 1];
-					ds.setBounds(firstDate, lastDate);
-					ds.showGrid();
-				}
-			});
-		},
-
-		dateChecked: function (d, m, y) {
-			var date = '';
-			date += y + '-';
-			date += m < 10 ? '0'+m+'-' : m+'-';
-			date += d < 10 ? '0'+d : d;
-			debug(date);
-			if (life.feed.dates[date] > 0) return ' checked';
-			return '';
-		},
-		
-		selectHandler: function (date) {
-			life.feed.loading = loading(ge('stream_content'), true, undefined, 100);
-			debug('sel: ' + date);
-			$.ajax({
-				url: '/procs/proc_life.php',
-				data: {
-					method: 'load_date',
-					date: date
-				},
-				cache: false,
-
-				success: function (html) {
-					$('#stream_content').html(html);
-					life.feed.loading.hide();
-				}
-			});
-		}
-	},
-
 	blog: {
 		check: function () {
 			var title_len = $('input[name=post_title]').val().length;
@@ -283,8 +227,47 @@ var life = {
 				});
 			}
 		}
-	}
+	},
 
+	timeline: false
+};
+
+var feed = {
+
+	__items: [],
+
+	init: function () {
+		this.recalc();
+	},
+
+	recalc: function () {
+		$('.item > div').each(function () {
+			var lowBound = $(this).attr('pipe:low-bound-id'),
+				upBound = $(this).attr('pipe:up-bound-id'),
+				ms = $(this).attr('pipe:time') * 1000,
+				top = $(this).offset().top;
+			feed.__items.push([lowBound, upBound, ms, top]);
+		});
+	},
+
+	getFirstVisibleTime: function (windowOffset) {
+		for (var i = 0; i < feed.__items.length; ++i) {
+			if (windowOffset <= feed.__items[i][3]) {
+				return feed.__items[i][2];
+			}
+		}
+		return false;
+	},
+
+	redrawTimeline: function () {
+		var scrollTop = $(window).scrollTop(),
+			firstVisibleTime = feed.getFirstVisibleTime(scrollTop);
+
+		if (firstVisibleTime) {
+			//debug(firstVisibleTime);
+			life.timeline && life.timeline.silentScrollTo(firstVisibleTime);
+		}
+	}
 };
 
 if (document.URL.match(/blog/)) {
@@ -305,9 +288,5 @@ if (document.URL.match(/blog/)) {
 } else if (document.URL.match(/comments/)) {
 	$(function () {
 		life.showComments(getAnchorParam('type'));
-	});
-} else if (document.URL.match(/life/)) {
-	$(function () {
-		//life.feed.init();
 	});
 }
