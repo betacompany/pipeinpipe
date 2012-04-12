@@ -31,6 +31,10 @@ class Feed {
 		return self::fetchItems(self::selectBefore($id, $count));
 	}
 
+	public static function getAfter($id, $count = 20) {
+		return self::fetchItems(self::selectAfter($id, $count));
+	}
+
 	private static function selectByLimits($from, $to) {
 		return new MySQLResultIterator(
 			mysql_qw(
@@ -44,6 +48,15 @@ class Feed {
 		return new MySQLResultIterator(
 			mysql_qw(
 				self::SELECT . ' WHERE `id` < ? ' . self::GROUP .' LIMIT ?',
+				$id, $count
+			)
+		);
+	}
+
+	private static function selectAfter($id, $count) {
+		return new MySQLResultIterator(
+			mysql_qw(
+				self::SELECT . ' WHERE `id` > ? ' . self::GROUP .' LIMIT ?',
 				$id, $count
 			)
 		);
@@ -67,7 +80,21 @@ class Feed {
 				$itemsIterator->next();
 			}
 			if (count($itemsArray) > 1) {
-				$items[] = new ItemsContainer($itemsArray);
+				if ($itemsArray[0] instanceof CrossPost) {
+					$splitted = array();
+					foreach ($itemsArray as $item) {
+						$type = $item->getSocialWebType();
+						if (!$splitted[ $type ]) {
+							$splitted[ $type ] = array();
+						}
+						$splitted[ $type ][] = $item;
+					}
+					foreach ($splitted as $array) {
+						$items[] = new ItemsContainer($array);
+					}
+				} else {
+					$items[] = new ItemsContainer($itemsArray);
+				}
 			} elseif (count($itemsArray) == 1) {
 				$items[] = $itemsArray[0];
 			}

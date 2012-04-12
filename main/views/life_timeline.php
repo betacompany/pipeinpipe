@@ -65,6 +65,18 @@ function life_show_feed_item2(Item $item) {
 	if ($item instanceof CrossPost) {
 		$itemClass .= " {$item->getSocialWebType()}";
 	}
+	if ($item instanceof ItemsContainer) {
+		$items = $item->getItems();
+		if (count($items) && $items[0] instanceof CrossPost) {
+			$added = array();
+			foreach ($item->getItems() as $it) {
+				$added[ $it->getSocialWebType() ] = true;
+			}
+			foreach ($added as $type => $v) {
+				$itemClass .= " $type";
+			}
+		}
+	}
 	
 	$u = $item->getUser();
 
@@ -100,6 +112,7 @@ function life_show_feed_item2(Item $item) {
 
 function life_show_item_content(Item $item) {
 	$isCrossPost = $item instanceof CrossPost;
+	$isBlogPost = $item instanceof BlogPost;
 	$isEvent = $item instanceof Event;
 	$isPhoto = $item instanceof Photo;
 	$isVideo = $item instanceof Video;
@@ -116,6 +129,30 @@ function life_show_item_content(Item $item) {
 		<div<?=($topicNew && $topicClosed ? ' class="topic new closed"' : ($topicClosed ? ' class="topic closed"' : ($topicNew ? ' class="topic new"' : ' class="topic"')))?>>
 			<a href="/forum/part<?=$item->getPartId()?>/topic<?=$item->getId()?>"><?=$item->getTitle()?></a>
 		</div>
+<?
+	} elseif ($isPhoto) {
+?>
+
+		<a href="/media/photo/album<?=$item->getGroupId()?>/<?=$item->getId()?>"><img class="photo" src="<?=$item->getUrl(Photo::SIZE_MINI)?>" alt="<?=$item->getTitle()?>" /></a>
+<?
+	} elseif ($isVideo) {
+?>
+
+		<a href="/media/video/album<?=$item->getGroupId()?>/<?=$item->getId()?>" title="<?=$item->getTitle()?>">
+			<div class="video" style="background-image: url('<?=$item->getPreviewUrl()?>');">
+				<div></div>
+			</div>
+		</a>
+<?
+	} elseif ($isBlogPost) {
+?>
+		
+		<p>
+			<div>
+				<a href="/life/blog/<?=$item->getId()?>"><?=$item->getTitle()?></a>
+			</div>
+			<?=$item->getShortHTML()?>
+		</p>
 <?
 	}
 }
