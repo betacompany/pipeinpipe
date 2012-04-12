@@ -277,6 +277,7 @@ var feed = {
 				item_id: feed.getMinId()
 			},
 			dataType: 'html',
+			preventRepeating: true,
 
 			success: function (html) {
 				feed.__feedContainer.append(html);
