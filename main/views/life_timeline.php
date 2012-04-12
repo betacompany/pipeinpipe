@@ -69,13 +69,20 @@ function life_show_feed_item2(Item $item) {
 		$items = $item->getItems();
 		if (count($items) && $items[0] instanceof CrossPost) {
 			$added = array();
-			foreach ($item->getItems() as $it) {
+			foreach ($items as $it) {
 				$added[ $it->getSocialWebType() ] = true;
 			}
 			foreach ($added as $type => $v) {
 				$itemClass .= " $type";
 			}
 		}
+		$itemId = array();
+		foreach ($items as $it) {
+			$itemId[] = $it->getId();
+		}
+		sort($itemId);
+	} else {
+		$itemId = array($item->getId());
 	}
 	
 	$u = $item->getUser();
@@ -83,7 +90,7 @@ function life_show_feed_item2(Item $item) {
 	$isCrossPost = $item instanceof CrossPost;
 ?>
 
-<div class="<?=$itemClass?>">
+<div class="<?=$itemClass?>" pipe:low-bound-id="<?=$itemId[0]?>" pipe:up-bound-id="<?=$itemId[count($itemId) - 1]?>">
 	<div class="title">
 		<? if ($u) { ?>
 		<a href="<?=$u->getURL()?>"><?=$u->getFullName()?></a>
