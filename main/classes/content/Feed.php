@@ -17,7 +17,7 @@ class Feed {
 						DATE(FROM_UNIXTIME(`creation_timestamp`)) as `d`,
 					    IF(`uid`=0, UUID(), `uid`) as `uid`
 					FROM
-						`p_content_item`';
+						`pv_content_item`';
 
 	const GROUP =  'GROUP BY `type`, `uid`, `d`
 					ORDER BY `id` DESC, `creation_timestamp` DESC ';
@@ -33,6 +33,10 @@ class Feed {
 
 	public static function getAfter($id, $count = 20) {
 		return self::fetchItems(self::selectAfter($id, $count));
+	}
+
+	public static function getNear($ts, $count = 20) {
+		return self::fetchItems(self::selectNear($ts, $count));
 	}
 
 	private static function selectByLimits($from, $to) {
@@ -58,6 +62,15 @@ class Feed {
 			mysql_qw(
 				self::SELECT . ' WHERE `id` > ? ' . self::GROUP .' LIMIT ?',
 				$id, $count
+			)
+		);
+	}
+
+	private static function selectNear($ts, $count) {
+		return new MySQLResultIterator(
+			mysql_qw(
+				self::SELECT . ' WHERE `creation_timestamp` <= ? ' . self::GROUP .' LIMIT ?',
+				$ts, $count
 			)
 		);
 	}

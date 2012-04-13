@@ -461,6 +461,43 @@
     margin: 10px 0 0 0 !important;
 }
 
+#feed .item_inner {
+    position: relative;
+}
+
+#feed .item .date {
+    position: absolute;
+    left: -70px;
+    top: -5px;
+    height: 30px;
+    color: #007ca7;
+
+    display: none;
+}
+
+#feed .item.break .date {
+    display: block;
+}
+
+#feed .item .date .d {
+    font-size: 1.5em;
+    text-align: center;
+}
+
+#feed .item .date .m {
+    font-size: 0.8em;
+    text-align: center;
+}
+
+#feed .item .time {
+    position: absolute;
+    right: -70px;
+    height: 30px;
+    color: #007ca7;
+    font-size: 0.8em;
+    text-align: center;
+}
+
 #people_container {
 	clear: both;
 	margin-top: 20px;

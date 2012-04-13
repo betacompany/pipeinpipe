@@ -102,6 +102,24 @@ try {
 
 		break;
 
+	case 'load_after':
+
+		assertIsset('item_id');
+
+		$items = Feed::getAfter(intparam('item_id'));
+		include dirname(__FILE__) . '/../views/life_timeline.php';
+
+		break;
+
+	case 'load_near':
+
+		assertIsset('timestamp');
+
+		$items = Feed::getNear(intparam('timestamp'));
+		include dirname(__FILE__) . '/../views/life_timeline.php';
+
+		break;
+
 	case 'create_blog':
 
 		if (!$auth->isAuth()) {

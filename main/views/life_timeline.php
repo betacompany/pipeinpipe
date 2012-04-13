@@ -46,11 +46,17 @@ function life_show_feed_item2(Item $item) {
 	}
 	
 	$u = $item->getUser();
+	$ts = $item->getCreationTimestamp();
 
 	$isCrossPost = $item instanceof CrossPost;
 ?>
 
-<div class="<?=$itemClass?>" pipe:low-bound-id="<?=$itemId[0]?>" pipe:up-bound-id="<?=$itemId[count($itemId) - 1]?>" pipe:time="<?=$item->getCreationTimestamp()?>">
+<div class="item_inner <?=$itemClass?>" pipe:low-bound-id="<?=$itemId[0]?>" pipe:up-bound-id="<?=$itemId[count($itemId) - 1]?>" pipe:time="<?=$item->getCreationTimestamp()?>">
+	<div class="date">
+		<div class="d"><?=date("d", $ts)?></div>
+		<div class="m"><?=date_month_name(intval(date("m", $ts), 10), DATE_MONTH_NAME_SHORT)?></div>
+	</div>
+	<div class="time"><?=date("H:i", $ts)?></div>
 	<div class="title">
 		<? if ($u) { ?>
 		<a href="<?=$u->getURL()?>"><?=$u->getFullName()?></a>

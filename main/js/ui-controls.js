@@ -1311,7 +1311,7 @@ function Timeline(options) {
 				})
 				.click(function () {
 					var ms = $(this).data('ms');
-					setCenterDayMs(ms);
+					setCenterDayMs(ms, true);
 				});
 			return jContainer;
 		},

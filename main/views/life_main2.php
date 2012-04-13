@@ -13,23 +13,29 @@ $items = Feed::get();
 
 ?>
 
-<div id="timeline_dates" style="background-color: #fff; width: 100%;"></div>
+<div id="timeline_dates" style="background-color: #fff; width: 100%; z-index: 10;"></div>
+<div id="timeline_height"></div>
 
 <script type="text/javascript">
 	$$(function () {
 		var container = $('#timeline_dates'),
-			offset = container.offset()
+			offset = container.offset(),
+			heighter = $('#timeline_height')
 			;
 
 		life.timeline = new Timeline({
 			centerDate: Math.floor($('.item > div:first').attr('pipe:time') / (24 * 60 * 60))
 		});
 		container.append(life.timeline.getByContainer(container));
+
 		feed.init();
 		feed.redrawTimeline();
 
-		var counter = 0;
+		life.timeline.onChange(function (ms) {
+			feed.loadNearItems(ms);
+		});
 
+		var prevX = 1000;
 		$(window).scroll(function (e) {
 			var scrollTop = $(window).scrollTop(),
 				x = offset.top - scrollTop,
@@ -39,15 +45,26 @@ $items = Feed::get();
 				feed.loadElderItems();
 			}
 
+			if (x >= 0 && x > prevX) {
+				feed.loadNewerItems();
+			}
+			prevX = x;
+
 			if (x <= 0) {
 				container.css({
 					position: 'fixed',
 					top: 0
 				});
+				heighter.css({
+					height: 80
+				});
 			} else {
 				container.css({
 					position: 'static',
 					top: 0
+				});
+				heighter.css({
+					height: 0
 				});
 			}
 

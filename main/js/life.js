@@ -245,14 +245,27 @@ var feed = {
 	},
 
 	recalc: function () {
+		var prevDate = "";
 		$('.item > div').each(function () {
-			var lowBound = $(this).attr('pipe:low-bound-id'),
+			var th = $(this),
+				l = feed.__items.length,
+				lowBound = $(this).attr('pipe:low-bound-id'),
 				upBound = $(this).attr('pipe:up-bound-id'),
 				ms = $(this).attr('pipe:time') * 1000,
-				top = $(this).offset().top;
+				top = $(this).offset().top,
+				curDate = th.children('.date').text(),
+				eq = (curDate == prevDate)
+				;
+
+			if (!eq) {
+				th.parent().addClass('break');
+			}
+
 			feed.__items.push([lowBound, upBound, ms, top]);
 			feed.__minId = Math.min(feed.__minId, lowBound);
 			feed.__maxId = Math.max(feed.__maxId, upBound);
+
+			prevDate = curDate;
 		});
 	},
 
@@ -288,6 +301,62 @@ var feed = {
 
 	getMaxId: function () {
 		return feed.__maxId;
+	},
+
+	loadNewerItems: function () {
+		api.request({
+			handler: 'life',
+			method: 'load_after',
+			data: {
+				item_id: feed.getMaxId()
+			},
+			dataType: 'html',
+			preventRepeating: true,
+
+			success: function (html) {
+				feed.__feedContainer.prepend(html);
+				feed.recalc();
+			}
+		});
+	},
+
+	loadNearItems: function (ms) {
+		var upperMs = feed.__items[0][2],
+			lowerMs = feed.__items[feed.__items.length - 1][2]
+			;
+
+
+		if (upperMs >= ms && lowerMs <= ms) {
+			var best = Math.pow(upperMs - ms, 2),
+				index = 0;
+			for (var i = 0; i < feed.__items.length; ++i) {
+				var item = feed.__items[i],
+					cur = Math.pow(item[2] - ms, 2);
+				if (cur < best) {
+					best = true;
+					index = i;
+				}
+			}
+
+			$(window).scrollTop(feed.__items[index][3]);
+			return;
+		}
+
+		var ts = Math.floor(ms / 1000);
+		api.request({
+			handler: 'life',
+			method: 'load_near',
+			data: {
+				timestamp: ts
+			},
+			dataType: 'html',
+			preventRepeating: true,
+
+			success: function (html) {
+				feed.__feedContainer.html(html);
+				feed.recalc();
+			}
+		});
 	},
 
 	redrawTimeline: function () {
