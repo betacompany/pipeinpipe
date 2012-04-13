@@ -84,7 +84,7 @@ function debug(text) {
 	try {
 		var time = (tm() - common.startTime) / 1000 + '';
 		for (var i = 0; i < 8 - time.length; i++) {
-			time = ' ' + time;
+			time = (time[i] ? time[i] : '0') + time;
 		}
         if (CONFIG.DEBUG) {
             if (typeof text === 'string') {
