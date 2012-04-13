@@ -20,19 +20,19 @@ class Feed {
 						`pv_content_item`';
 
 	const GROUP =  'GROUP BY `type`, `uid`, `d`
-					ORDER BY `creation_timestamp` DESC, `id` DESC ';
+					ORDER BY `d` DESC, `id` DESC ';
 
 	public static function get($from = 0, $to = 19) {
 		$dbIterator = self::selectByLimits($from, $to);
 		return self::fetchItems($dbIterator);
 	}
 
-	public static function getBefore($id, $count = 20) {
-		return self::fetchItems(self::selectBefore($id, $count));
+	public static function getBefore($id, $ts, $count = 20) {
+		return self::fetchItems(self::selectBefore($id, $ts, $count));
 	}
 
-	public static function getAfter($id, $count = 20) {
-		return self::fetchItems(self::selectAfter($id, $count));
+	public static function getAfter($id, $ts, $count = 20) {
+		return self::fetchItems(self::selectAfter($id, $ts, $count));
 	}
 
 	public static function getNear($ts, $count = 20) {
@@ -48,20 +48,33 @@ class Feed {
 		);
 	}
 
-	private static function selectBefore($id, $count) {
+	private static function selectBefore($id, $ts, $count) {
 		return new MySQLResultIterator(
 			mysql_qw(
-				self::SELECT . ' WHERE `creation_timestamp` != 0 AND `id` < ? ' . self::GROUP .' LIMIT ?',
-				$id, $count
+				self::SELECT .
+					' WHERE `creation_timestamp` != 0
+						 AND (
+							   DATE(FROM_UNIXTIME(`creation_timestamp`)) < ?
+								OR
+							   DATE(FROM_UNIXTIME(`creation_timestamp`)) = ?
+								AND
+								`id` < ?
+							 )' .
+					self::GROUP .
+					' LIMIT ?',
+				date('Y-m-d', $ts), date('Y-m-d', $ts), $id, $count
 			)
 		);
 	}
 
-	private static function selectAfter($id, $count) {
+	private static function selectAfter($id, $ts, $count) {
 		return new MySQLResultIterator(
 			mysql_qw(
-				self::SELECT . ' WHERE `creation_timestamp` != 0 AND `id` > ? ' . self::GROUP .' LIMIT ?',
-				$id, $count
+				self::SELECT .
+					' WHERE `creation_timestamp` != 0 AND (DATE(FROM_UNIXTIME(`creation_timestamp`)) > ? OR DATE(FROM_UNIXTIME(`creation_timestamp`)) = ? AND `id` > ?)' .
+					self::GROUP .
+					' LIMIT ?',
+				date('Y-m-d', $ts), date('Y-m-d', $ts), $id, $count
 			)
 		);
 	}
@@ -92,7 +105,10 @@ class Feed {
 				$itemsArray[] = Item::getByData($data);
 				$itemsIterator->next();
 			}
-			if (count($itemsArray) > 1) {
+			if (count($itemsArray) > 5 && date('Y-m-d', $itemsArray[0]->getTimestamp()) == '2011-04-07' ||
+				count($itemsArray) == 1 && $itemsArray[0]->getId() == 1672) {
+				// nothing: hack for first site convertations made on the 7th of April
+			} elseif (count($itemsArray) > 1) {
 				if ($itemsArray[0] instanceof CrossPost) {
 					$splitted = array();
 					foreach ($itemsArray as $item) {

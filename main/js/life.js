@@ -237,6 +237,8 @@ var feed = {
 	__items: [],
 	__minId: 1e100,
 	__maxId: -1,
+	__minTs: 1e1000,
+	__maxTs: -1,
 	__feedContainer: null,
 
 	init: function () {
@@ -270,6 +272,9 @@ var feed = {
 			feed.__items.push([lowBound, upBound, ms, top, height]);
 			feed.__minId = Math.min(feed.__minId, lowBound);
 			feed.__maxId = Math.max(feed.__maxId, upBound);
+			feed.__minTs = Math.min(feed.__minTs, ms / 1000);
+			feed.__maxTs = Math.max(feed.__maxTs, ms / 1000);
+
 
 			prevDate = curDate;
 		});
@@ -296,7 +301,8 @@ var feed = {
 			handler: 'life',
 			method: 'load_before',
 			data: {
-				item_id: feed.getMinId()
+				item_id: feed.getMinId(),
+				timestamp: feed.__minTs
 			},
 			dataType: 'html',
 			preventRepeating: true,
@@ -318,7 +324,8 @@ var feed = {
 			handler: 'life',
 			method: 'load_after',
 			data: {
-				item_id: feed.getMaxId()
+				item_id: feed.getMaxId(),
+				timestamp: feed.__maxTs
 			},
 			dataType: 'html',
 			preventRepeating: true,

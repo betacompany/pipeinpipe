@@ -96,8 +96,9 @@ try {
 	case 'load_before':
 
 		assertIsset('item_id');
+		assertIsset('timestamp');
 
-		$items = Feed::getBefore(intparam('item_id'));
+		$items = Feed::getBefore(intparam('item_id'), intparam('timestamp'));
 		include dirname(__FILE__) . '/../views/life_timeline.php';
 
 		break;
@@ -105,8 +106,9 @@ try {
 	case 'load_after':
 
 		assertIsset('item_id');
+		assertIsset('timestamp');
 
-		$items = Feed::getAfter(intparam('item_id'));
+		$items = Feed::getAfter(intparam('item_id'), intparam('timestamp'));
 		include dirname(__FILE__) . '/../views/life_timeline.php';
 
 		break;
