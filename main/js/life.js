@@ -248,20 +248,26 @@ var feed = {
 		var prevDate = "";
 		$('.item > div').each(function () {
 			var th = $(this),
-				l = feed.__items.length,
-				lowBound = $(this).attr('pipe:low-bound-id'),
-				upBound = $(this).attr('pipe:up-bound-id'),
-				ms = $(this).attr('pipe:time') * 1000,
-				top = $(this).offset().top,
-				curDate = th.children('.date').text(),
+				parent = th.parent(),
+				lowBound = th.attr('pipe:low-bound-id'),
+				upBound = th.attr('pipe:up-bound-id'),
+				ms = th.attr('pipe:time') * 1000,
+				top = th.offset().top,
+				height = th.height(),
+				curDate = parent.find('.date').text(),
 				eq = (curDate == prevDate)
 				;
 
+//			debug(th);
+//			debug(prevDate + ',' + curDate + '; ms=' + ms);
+
 			if (!eq) {
-				th.parent().addClass('break');
+				parent.addClass('break');
+			} else {
+				parent.removeClass('break');
 			}
 
-			feed.__items.push([lowBound, upBound, ms, top]);
+			feed.__items.push([lowBound, upBound, ms, top, height]);
 			feed.__minId = Math.min(feed.__minId, lowBound);
 			feed.__maxId = Math.max(feed.__maxId, upBound);
 
@@ -270,8 +276,9 @@ var feed = {
 	},
 
 	getFirstVisibleTime: function (windowOffset) {
+		debug('window_offset=' + windowOffset);
 		for (var i = 0; i < feed.__items.length; ++i) {
-			if (windowOffset <= feed.__items[i][3]) {
+			if (windowOffset <= feed.__items[i][3] - feed.__items[i][4]) {
 				return feed.__items[i][2];
 			}
 		}
@@ -325,7 +332,7 @@ var feed = {
 			lowerMs = feed.__items[feed.__items.length - 1][2]
 			;
 
-
+		debug(ms + ', ' + lowerMs + ', ' + upperMs);
 		if (upperMs >= ms && lowerMs <= ms) {
 			var best = Math.pow(upperMs - ms, 2),
 				index = 0;
@@ -333,12 +340,14 @@ var feed = {
 				var item = feed.__items[i],
 					cur = Math.pow(item[2] - ms, 2);
 				if (cur < best) {
-					best = true;
+					best = cur;
 					index = i;
 				}
 			}
 
-			$(window).scrollTop(feed.__items[index][3]);
+			var top = feed.__items[index][3] - 10;
+			debug(top);
+			$(window).scrollTop(top - 80);
 			return;
 		}
 

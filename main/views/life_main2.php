@@ -35,7 +35,10 @@ $items = Feed::get();
 			feed.loadNearItems(ms);
 		});
 
-		var prevX = 1000;
+		var prevX = 1000,
+			prevPosition = 'static'
+			;
+
 		$(window).scroll(function (e) {
 			var scrollTop = $(window).scrollTop(),
 				x = offset.top - scrollTop,
@@ -50,7 +53,7 @@ $items = Feed::get();
 			}
 			prevX = x;
 
-			if (x <= 0) {
+			if (x <= 0 && prevPosition == 'static') {
 				container.css({
 					position: 'fixed',
 					top: 0
@@ -58,7 +61,9 @@ $items = Feed::get();
 				heighter.css({
 					height: 80
 				});
-			} else {
+				prevPosition = 'fixed';
+				feed.recalc();
+			} else if (x > 0 && prevPosition == 'fixed') {
 				container.css({
 					position: 'static',
 					top: 0
@@ -66,6 +71,8 @@ $items = Feed::get();
 				heighter.css({
 					height: 0
 				});
+				prevPosition = 'static';
+				feed.recalc();
 			}
 
 //			if (++counter % 10 != 0) {
