@@ -72,6 +72,12 @@ if (!API_DEBUG_MODE) {
 	$cache_store_policy['api/photobg/get'] = 3600 * 24;
 	if (!$auth->isAuth()) {
 		$cache_store_policy['api/life/load_before'] = 60;
+		$cache_store_policy['api/life/load_after'] = 60;
+		$cache_store_policy['api/life/load_near'] = 60;
+	} else {
+		$cache_store_policy['api/life/load_before'] = 0;
+		$cache_store_policy['api/life/load_after'] = 0;
+		$cache_store_policy['api/life/load_near'] = 0;
 	}
 } else {
 	$cache_store_policy['api/sport_rating/get_rating'] = 0;
@@ -82,7 +88,10 @@ if (!API_DEBUG_MODE) {
 	$cache_store_policy['api/charts/rating_all'] = 0;
 	$cache_store_policy['api/error_library/load_library'] = 0;
 	$cache_store_policy['api/photobg/get'] = 0;
+
 	$cache_store_policy['api/life/load_before'] = 0;
+	$cache_store_policy['api/life/load_after'] = 0;
+	$cache_store_policy['api/life/load_near'] = 0;
 }
 
 $cache_key = 'api/' . $_REQUEST['handler'] . '/' . $_REQUEST['method'];

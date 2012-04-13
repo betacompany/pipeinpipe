@@ -20,7 +20,7 @@ class Feed {
 						`pv_content_item`';
 
 	const GROUP =  'GROUP BY `type`, `uid`, `d`
-					ORDER BY `id` DESC, `creation_timestamp` DESC ';
+					ORDER BY `creation_timestamp` DESC, `id` DESC ';
 
 	public static function get($from = 0, $to = 19) {
 		$dbIterator = self::selectByLimits($from, $to);
@@ -51,7 +51,7 @@ class Feed {
 	private static function selectBefore($id, $count) {
 		return new MySQLResultIterator(
 			mysql_qw(
-				self::SELECT . ' WHERE `id` < ? ' . self::GROUP .' LIMIT ?',
+				self::SELECT . ' WHERE `creation_timestamp` != 0 AND `id` < ? ' . self::GROUP .' LIMIT ?',
 				$id, $count
 			)
 		);
@@ -60,7 +60,7 @@ class Feed {
 	private static function selectAfter($id, $count) {
 		return new MySQLResultIterator(
 			mysql_qw(
-				self::SELECT . ' WHERE `id` > ? ' . self::GROUP .' LIMIT ?',
+				self::SELECT . ' WHERE `creation_timestamp` != 0 AND `id` > ? ' . self::GROUP .' LIMIT ?',
 				$id, $count
 			)
 		);
@@ -69,7 +69,7 @@ class Feed {
 	private static function selectNear($ts, $count) {
 		return new MySQLResultIterator(
 			mysql_qw(
-				self::SELECT . ' WHERE `creation_timestamp` <= ? ' . self::GROUP .' LIMIT ?',
+				self::SELECT . ' WHERE `creation_timestamp` != 0 AND `creation_timestamp` <= ? ' . self::GROUP .' LIMIT ?',
 				$ts, $count
 			)
 		);

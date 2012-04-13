@@ -78,6 +78,7 @@ function life_show_feed_item2(Item $item) {
 	}
 ?>
 
+		<div class="clear"></div>
 	</div>
 </div>
 <?

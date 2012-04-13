@@ -273,6 +273,8 @@ var feed = {
 
 			prevDate = curDate;
 		});
+
+		life.timeline.silentScrollTo(feed.getFirstVisibleTime($(window).scrollTop()));
 	},
 
 	getFirstVisibleTime: function (windowOffset) {
@@ -304,6 +306,7 @@ var feed = {
 				feed.recalc();
 			}
 		});
+		feed.recalc();
 	},
 
 	getMaxId: function () {
@@ -332,8 +335,9 @@ var feed = {
 			lowerMs = feed.__items[feed.__items.length - 1][2]
 			;
 
-		debug(ms + ', ' + lowerMs + ', ' + upperMs);
 		if (upperMs >= ms && lowerMs <= ms) {
+			debug(ms + ', ' + lowerMs + ', ' + upperMs);
+
 			var best = Math.pow(upperMs - ms, 2),
 				index = 0;
 			for (var i = 0; i < feed.__items.length; ++i) {

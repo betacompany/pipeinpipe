@@ -1296,7 +1296,7 @@ function Timeline(options) {
 					.html(common.monthName(date));
 			}
 
-			if(d == 1) {
+			if(d == 1 && i > -options.delta) {
 				jContainer.children('.month_name.m2')
 					.show()
 					.css({
