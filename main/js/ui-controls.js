@@ -1264,10 +1264,11 @@ function Timeline(options) {
 
 	for (var i = -options.delta; i <= options.delta; ++i) {
 		var date = convert(options.centerDate, i),
+			d = date.getDate(),
 			j = dateContainers[options.delta + i] =
 					$('<div/>')
 						.addClass('date day-' + i)
-						.html(date.getDate())
+						.html(d)
 						.data('ms', date.getTime())
 						.appendTo(jContainer);
 		if (i == 0) {
@@ -1275,12 +1276,34 @@ function Timeline(options) {
 		}
 	}
 
+	jContainer.append($('<div class="month_name m1"></div>'));
+	jContainer.append($('<div class="month_name m2"></div>'));
+
 	var setCenterDay = function (day) {
+		jContainer.children('.month_name.m2').hide();
 		for (var i = -options.delta; i <= options.delta; ++i) {
-			var date = convert(day, i);
-			dateContainers[options.delta + i]
-				.html(date.getDate())
-				.data('ms', date.getTime());
+			var date = convert(day, i),
+				d = date.getDate(),
+				j = dateContainers[options.delta + i]
+					.html(d)
+					.data('ms', date.getTime());
+
+			if (i == -options.delta) {
+				jContainer.children('.month_name.m1')
+					.css({
+						left: j.offset().left
+					})
+					.html(common.monthName(date));
+			}
+
+			if(d == 1) {
+				jContainer.children('.month_name.m2')
+					.show()
+					.css({
+						left: j.offset().left
+					})
+					.html(common.monthName(date));
+			}
 		}
 	};
 
@@ -1313,6 +1336,11 @@ function Timeline(options) {
 					var ms = $(this).data('ms');
 					setCenterDayMs(ms, true);
 				});
+
+			jContainer.children('.month_name').css({
+				width: dw - options.commonW
+			});
+
 			return jContainer;
 		},
 

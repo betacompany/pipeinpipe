@@ -30,7 +30,18 @@ var common = {
 		{name: 'Октябрь', name_gen: 'октября', name_short: 'окт', length: 31, length_leap: 31},
 		{name: 'Ноябрь', name_gen: 'ноября', name_short: 'ноя', length: 30, length_leap: 30},
 		{name: 'Декабрь', name_gen: 'декабря', name_short: 'дек', length: 31, length_leap: 31}
-	]
+	],
+
+	monthDaysCount: function (date) {
+		var y = date.getFullYear(),
+			isLeap = (y % 4 == 0 && y % 100 != 0 || y % 400 == 0),
+			mon = this.months[date.getMonth()];
+		return isLeap ? mon.length_leap : mon.length;
+	},
+
+	monthName: function (date) {
+		return this.months[date.getMonth()].name;
+	}
 };
 
 function ce(tag) {

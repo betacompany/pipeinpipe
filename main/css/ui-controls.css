@@ -252,8 +252,8 @@ div.ui-date-selector .grid th.off:hover {
 div.ui-timeline {
     position: relative;
     width: 100%;
-    height: 70px;
-    margin-top: 10px;
+    height: 60px;
+    margin-top: 20px;
 }
 
 div.ui-timeline .date {
@@ -265,6 +265,7 @@ div.ui-timeline .date {
     color: #007ca7;
     cursor: pointer;
     margin-left: 5px;
+    height: 30px;
 }
 
 div.ui-timeline .date:hover {
@@ -274,4 +275,14 @@ div.ui-timeline .date:hover {
 div.ui-timeline .date.center {
     background-color: #007ca7;
     color: #fff;
+}
+
+div.ui-timeline .month_name {
+    position: absolute;
+    font-size: 0.8em;
+    top: -18px;
+    color: #007ca7;
+    text-align: center;
+    padding: 0 10px;
+    border-bottom: 1px solid #c7dce3;
 }
