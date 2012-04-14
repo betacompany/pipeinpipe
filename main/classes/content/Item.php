@@ -435,6 +435,14 @@ class Item {
 	}
 
 	/**
+	 * Sets the value of comments count
+	 * @param $count
+	 */
+	public function setCommentsCountForLite($count) {
+		$this->commentsCount = $count;
+	}
+
+	/**
 	 * Checks if new for $user comments appeared since his last view
 	 * @param mixed $user (User or int)
 	 * @return boolean
