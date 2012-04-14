@@ -30,6 +30,7 @@ class ItemsContainer extends Item {
 				throw new InvalidArgumentException("all items should be the same type");
 			}
 			$this->items[] = $item;
+			$this->timestamp = max($this->timestamp, $item->getTimestamp());
 		}
 	}
 

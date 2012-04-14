@@ -102,6 +102,7 @@ function life_show_item_content(Item $item) {
 
 		<div<?=($topicNew && $topicClosed ? ' class="topic new closed"' : ($topicClosed ? ' class="topic closed"' : ($topicNew ? ' class="topic new"' : ' class="topic"')))?>>
 			<a href="/forum/part<?=$item->getPartId()?>/topic<?=$item->getId()?>"><?=$item->getTitle()?></a>
+			<small>+&nbsp;<?=lang_number_sclon($item->countMessages(), "сообщение", "сообщения", "сообщений")?></small>
 		</div>
 <?
 	} elseif ($isPhoto) {
@@ -124,6 +125,7 @@ function life_show_item_content(Item $item) {
 		<p>
 			<div>
 				<a href="/life/blog/<?=$item->getId()?>"><?=$item->getTitle()?></a>
+				<small>+&nbsp;<?=lang_number_sclon($item->countComments(), "комментарий", "комментария", "комментариев")?></small>
 			</div>
 			<?=$item->getShortHTML()?>
 		</p>

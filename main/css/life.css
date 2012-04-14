@@ -423,6 +423,13 @@
     margin-left: -24px;
 }
 
+#feed .forum_topic small,
+#feed .forum_topic_container small,
+#feed .blog_post small,
+#feed .blog_post_container small {
+    color: #b0c3d4;
+}
+
 #feed .content {
     margin: 0 100px;
 }
