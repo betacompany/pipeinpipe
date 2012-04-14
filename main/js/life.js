@@ -283,7 +283,7 @@ var feed = {
 	},
 
 	getFirstVisibleTime: function (windowOffset) {
-		debug('window_offset=' + windowOffset);
+//		debug('window_offset=' + windowOffset);
 		for (var i = 0; i < feed.__items.length; ++i) {
 			if (windowOffset <= feed.__items[i][3] - feed.__items[i][4]) {
 				return feed.__items[i][2];
@@ -341,18 +341,21 @@ var feed = {
 	},
 
 	loadNearItems: function (ms) {
+		const MS_IN_DAY = 24 * 60 * 60 * 1000;
+
 		var upperMs = feed.__items[0][2],
-			lowerMs = feed.__items[feed.__items.length - 1][2]
+			lowerMs = feed.__items[feed.__items.length - 1][2],
+			current = Math.floor(ms / MS_IN_DAY)
 			;
 
 		if (upperMs >= ms && lowerMs <= ms) {
 			debug(ms + ', ' + lowerMs + ', ' + upperMs);
 
-			var best = Math.pow(upperMs - ms, 2),
+			var best = Math.pow(Math.floor(upperMs / MS_IN_DAY) - current, 2),
 				index = 0;
 			for (var i = 0; i < feed.__items.length; ++i) {
 				var item = feed.__items[i],
-					cur = Math.pow(item[2] - ms, 2);
+					cur = Math.pow(Math.floor(item[2] / MS_IN_DAY) - current, 2);
 				if (cur < best) {
 					best = cur;
 					index = i;
