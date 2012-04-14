@@ -93,15 +93,24 @@ function setCookie(name, value, days) {
 
 function debug(text) {
 	try {
-		var time = (tm() - common.startTime) / 1000 + '';
-		for (var i = 0; i < 8 - time.length; i++) {
-			time = (time[i] ? time[i] : '0') + time;
+		var time = (tm() - common.startTime) / 1000 + '',
+			splitted = time.split('.', 2),
+			resultTime = ''
+			;
+
+		for (var i = 0; i < 5 - splitted[0].length; ++i) {
+			resultTime += '0';
 		}
+		resultTime += time;
+		for (var j = 0; j < 3 - splitted[1].length; ++j) {
+			resultTime += '0';
+		}
+
         if (CONFIG.DEBUG) {
             if (typeof text === 'string') {
-                console && console.debug(''+time+': ' + text);
+                console && console.debug(''+resultTime+': ' + text);
             } else {
-                console && console.debug(''+time+': ');
+                console && console.debug(''+resultTime+': ');
                 console && console.debug(text);
             }
         }
