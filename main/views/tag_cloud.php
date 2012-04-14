@@ -37,6 +37,9 @@ function tag_cloud_show($tags, $height = 300) {
             .attr('width', $('.body_container').width())
             .tagcanvas({
                 minBrightness: 0,
+                maxSpeed: 0.03,
+                initial: [0.3, 0.2],
+                decel: 0.98,
                 textColour: null,
                 outlineThickness: 2,
                 outlineColour: '#c7dce3',
