@@ -6,16 +6,13 @@
  */
 
 /**
- * @param int $width width of the canvas in pixels
  * @param int $height height of the canvas in pixels
- * @param null $tags all tags are loaded by default
  */
-function tag_cloud_show($width = 300, $height = 300, $tags = null) {
+function tag_cloud_show($tags, $height = 300) {
 ?>
 <div id="tag_cloud_container">
-    <canvas id="tag_cloud" width="<?=$width?>" height="<?=$height?>">
+    <canvas id="tag_cloud" height="<?=$height?>">
 <?
-    $tags = Tag::getAllByType(Item::BLOG_POST, true);
     $max = Tag::$max;
     foreach ($tags as $tag) {
         $id = $tag->getId();
@@ -33,25 +30,32 @@ function tag_cloud_show($width = 300, $height = 300, $tags = null) {
     </canvas>
 </div>
 <script type="text/javascript">
-    $(document).ready(function() {
-        if(!$('#tag_cloud').tagcanvas({
-            minBrightness: 0,
-            textColour: null,
-            outlineThickness: 2,
-            outlineColour: '#c7dce3',
-            outlineMethod: 'block',
-            outlineOffset: 3,
-            frontSelect: true,
-            reverse: true,
-            weight: true,
-            depth: 0.9,
-            stretchX: 4//,
-//            textHeight: 14,
+    const tagCloudSelector = '#tag_cloud';
+
+    var initCloud = function() {
+        if(!$(tagCloudSelector)
+            .attr('width', $('.body_container').width())
+            .tagcanvas({
+                minBrightness: 0,
+                textColour: null,
+                outlineThickness: 2,
+                outlineColour: '#c7dce3',
+                outlineMethod: 'block',
+                outlineOffset: 3,
+                frontSelect: true,
+                reverse: true,
+                weight: true,
+                depth: 0.9,
+                stretchX: 4//,
+//                textHeight: 14,
         })) {
             // TagCanvas failed to load
             $('#tag_cloud_container').hide();
         }
-    });
+    };
+
+    $(document).ready(initCloud);
+    $(window).resize(initCloud);
 </script>
 <?
 }

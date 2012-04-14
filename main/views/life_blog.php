@@ -15,8 +15,9 @@ if (!isset($_REQUEST['post_id'])) {
 	$blogs = Group::getRootsByType(Group::BLOG);
 	if ($user) Group::preloadNewItemsCountFor($user);
 	$posts = Item::getAllByType(Item::BLOG_POST, 0, 10, true, true);
+    $tags = Tag::getAllByType(Item::BLOG_POST, true);
 ?>
-<center><?tag_cloud_show(1000, 300);?></center>
+<center><?tag_cloud_show($tags, 300);?></center>
 
 <div id="stream_wrapper">
 	<div id="stream_container">
