@@ -56,7 +56,8 @@ var api = {
 					},
 					error:task.error ? task.error : function () {
 						debug('[api] task-' + task.number + ' error');
-					}
+					},
+					async: task.async !== undefined ? task.async : true
 				};
 
 				$.extend(ajax.data, task.data);

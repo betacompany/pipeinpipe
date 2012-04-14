@@ -306,6 +306,7 @@ var feed = {
 			},
 			dataType: 'html',
 			preventRepeating: true,
+			async: false,
 
 			success: function (html) {
 				feed.__feedContainer.append(html);
@@ -329,6 +330,7 @@ var feed = {
 			},
 			dataType: 'html',
 			preventRepeating: true,
+			async: false,
 
 			success: function (html) {
 				feed.__feedContainer.prepend(html);
@@ -372,6 +374,7 @@ var feed = {
 			},
 			dataType: 'html',
 			preventRepeating: true,
+			async: false,
 
 			success: function (html) {
 				feed.__feedContainer.html(html);
