@@ -119,54 +119,10 @@ if ($auth->isAuth()) {
 			<div id="tags" class="tags"></div>
 			<div style="clear: both;"></div>
 		</div>
-		<div class="tag_panel">			
-			<div id="tag_panel_selector"></div>			
-		</div>
-		<script type="text/javascript">
-			$$(function () {
-				var tags = <?=Tag::getAllJSON()?>;
-				var tagById = {};
-				for (var i = 0; i < tags.length; i++) {
-					tagById[tags[i].id] = tags[i].value;
-				}
-
-				var selectedTags = <?=$tagIds?>;
-				var refreshTags = function () {
-					$('#tags').html('');
-					var tag_ids = getTrueKeys(selectedTags),
-						str = '', prev_id = 0, i;
-					tag_ids.sort();
-					for (i = 0; i < tag_ids.length; i++) {
-						var tag_id = tag_ids[i];
-						if (prev_id != tag_id) {
-							$('#tags').append(
-								$('<div/>')
-									.addClass('tag')
-									.html(tagById[tag_id])
-									.data('tag_id', tag_id)
-									.click(function (e) {
-										selectedTags[$(this).data('tag_id')] = false;
-										refreshTags();
-									})
-							);
-							str += tag_id + ',';
-						}
-						prev_id = tag_id;
-					}
-					$('input[name=post_tags]').val(str.substr(0, str.length - 1));
-				};
-				var dynamicSelector = new DynamicSelector({
-					content: tags,
-					onSelect: function (id) {
-						selectedTags[id] = true;
-						refreshTags();
-					}
-				});
-				dynamicSelector.appendTo($('#tag_panel_selector'));
-				refreshTags();
-			});
-		</script>
-		<div class="blog_selector">
+<?
+        tag_creator_show($post);
+?>
+        <div class="blog_selector">
 			<label for="post_blog_id">Добавить пост в блог:</label>
 			<select name="post_blog_id">
 <?
