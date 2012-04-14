@@ -87,13 +87,9 @@ RewriteRule ^sign_up/$ /sign_up.php [L]
 # RewriteRule ^js/([^\.]*.js)$ /js_compiled/$1.js [L]
 # RewriteRule ^js/(jquery[^\.].js)$ /js/$1 [L]
 
-ErrorDocument 404 http://main.pipev4.ru/error_docs/404.html
-ErrorDocument 403 http://main.pipev4.ru/error_docs/403.html
-ErrorDocument 500 http://main.pipev4.ru/error_docs/500.html
-
-# ErrorDocument 404 http://pipeinpipe.info/error_docs/404.html
-# ErrorDocument 403 http://pipeinpipe.info/error_docs/403.html
-# ErrorDocument 500 http://pipeinpipe.info/error_docs/500.html
+ErrorDocument 404 /error_docs/404.html
+ErrorDocument 403 /error_docs/403.html
+ErrorDocument 500 /error_docs/500.html
 
 # Redirects from old URLs
 RedirectMatch 301 /sport/wpr/([0-9]+)$ /pm$1
