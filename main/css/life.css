@@ -479,6 +479,10 @@
     display: block;
 }
 
+#feed .item + .item.break {
+    margin-top: 50px;
+}
+
 #feed .item .date .d {
     font-size: 1.5em;
     text-align: center;
@@ -492,6 +496,7 @@
 #feed .item .time {
     position: absolute;
     right: -70px;
+    top: -3px;
     height: 30px;
     color: #007ca7;
     font-size: 0.8em;

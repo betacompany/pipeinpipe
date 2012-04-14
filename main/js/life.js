@@ -255,7 +255,7 @@ var feed = {
 				upBound = th.attr('pipe:up-bound-id'),
 				ms = th.attr('pipe:time') * 1000,
 				top = th.offset().top,
-				height = th.height(),
+				height = th.outerHeight(true),
 				curDate = parent.find('.date').text(),
 				eq = (curDate == prevDate)
 				;
