@@ -38,19 +38,15 @@ function tag_cloud_show($width = 300, $height = 300, $tags = null) {
             minBrightness: 0,
             textColour: null,
             outlineThickness: 2,
-            outlineColour: '#8FBC13',
+            outlineColour: '#c7dce3',
+            outlineMethod: 'block',
             outlineOffset: 3,
             frontSelect: true,
             reverse: true,
             weight: true,
             depth: 0.9,
             stretchX: 4//,
-//            zoom: 2.2,
 //            textHeight: 14,
-//            shadow: '#007CA7',
-//            shadowBlur: 10,
-//            shadowOffset: [2,2]
-
         })) {
             // TagCanvas failed to load
             $('#tag_cloud_container').hide();
