@@ -67,7 +67,7 @@ class Forum {
 		self::preloadParts();
 	}
 
-	private static function preloadTopics($uid) {
+	public static function preloadTopics($uid) {
 		$topics = ForumTopic::getOpened();
 		if ($uid > 0) {
 			$iterator = ContentViewDBClient::getOpenedItemViewsByUser($uid);

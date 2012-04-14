@@ -112,5 +112,15 @@ class UserDBClient {
 			)
 		) > 0;
 	}
+
+	public static function getByIds($ids) {
+		$in = array();
+		foreach ($ids as $id) {
+			$in[] = intval($id);
+		}
+		return new MySQLResultIterator(
+			mysql_qw('SELECT * FROM `p_user` WHERE `id` IN ('.implode(",", $in).')')
+		);
+	}
 }
 ?>

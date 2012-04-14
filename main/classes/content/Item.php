@@ -738,5 +738,14 @@ class Item {
 
 	}
 
+	public static function cache(array $ids) {
+		$iterator = ItemDBClient::getByIds($ids);
+		while ($iterator->valid()) {
+			$data = $iterator->current();
+			self::$items[$data['id']] = Item::getByData($data);
+			$iterator->next();
+		}
+	}
+
 }
 ?>

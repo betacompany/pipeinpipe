@@ -4,6 +4,7 @@ require_once dirname(__FILE__) . '/../../includes/import.php';
 
 import('db/MySQLResultIterator');
 import('content/ItemsContainer');
+import('forum/Forum');
 
 /**
  * User: ortemij
@@ -89,22 +90,34 @@ class Feed {
 	}
 
 	private static function fetchItems(DBResultIterator $dbIterator) {
+		global $auth;
+
 		$items = array();
+
+		// Caching of needed items
+		$ids = array();
+		$uids = array();
 		while ($dbIterator->valid()) {
 			$grouped = $dbIterator->current();
-			$ids = $grouped['ids'];
-			$itemsIterator =
-				new MySQLResultIterator(
-					mysql_qw(
-						"SELECT * FROM `p_content_item` WHERE `id` IN ($ids)"
-					)
-				);
+			$ids = array_merge($ids, explode(",", $grouped['ids']));
+			$uids[$grouped['uid']] = true;
+			$dbIterator->next();
+		}
+		Item::cache($ids);
+		User::cache(array_keys($uids));
+		if ($auth->isAuth()) {
+			Forum::preloadTopics($auth->uid());
+		}
+
+		$dbIterator->rewind();
+		while ($dbIterator->valid()) {
+			$data = $dbIterator->current();
+			$grouped = explode(",", $data['ids']);
 			$itemsArray = array();
-			while ($itemsIterator->valid()) {
-				$data = $itemsIterator->current();
-				$itemsArray[] = Item::getByData($data);
-				$itemsIterator->next();
+			foreach ($grouped as $id) {
+				$itemsArray[] = Item::getById($id);
 			}
+
 			if (count($itemsArray) > 5 && date('Y-m-d', $itemsArray[0]->getTimestamp()) == '2011-04-07' ||
 				count($itemsArray) == 1 && $itemsArray[0]->getId() == 1672) {
 				// nothing: hack for first site convertations made on the 7th of April
