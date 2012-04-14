@@ -104,19 +104,19 @@ if ($auth->isAuth()) {
 		<? endif; ?>
 		<div class="title">
 			<label for="post_title">Заголовок</label>
-			<input type="text" name="post_title" value="<?=$postTitle?>" />
+			<input type="text" name="post_title" id="post_title" value="<?=$postTitle?>" />
 		</div>
 		<div class="body">
 			<label for="post_full_source">Текст поста</label>
-			<textarea name="post_full_source"><?=$postFullSource?></textarea>
+			<textarea name="post_full_source" id="post_full_source"><?=$postFullSource?></textarea>
 		</div>
 		<div class="subbody">
 			<label for="post_short_source">Выдержка</label>
-			<textarea name="post_short_source"><?=$postShortSource?></textarea>
+			<textarea name="post_short_source" id="post_short_source"><?=$postShortSource?></textarea>
 		</div>
 		<div>
 			<label for="post_tags">Тэги</label>
-			<input type="hidden" name="post_tags" value="" />
+			<input type="hidden" name="post_tags" id="post_tags" value="" />
 			<div id="tags" class="tags"></div>
 			<div style="clear: both;"></div>
 		</div>
@@ -125,7 +125,7 @@ if ($auth->isAuth()) {
 ?>
         <div class="blog_selector">
 			<label for="post_blog_id">Добавить пост в блог:</label>
-			<select name="post_blog_id">
+			<select name="post_blog_id" id="post_blog_id">
 <?
 		foreach ($blogs as $blog) {
 ?>
@@ -136,7 +136,7 @@ if ($auth->isAuth()) {
 ?>
 
 			</select>
-			<div id="editor_button" class="button">Опубликовать</div>
+			<div id="editor_button" class="button" onclick="javascript: fillFormTagsInput('input[name=post_tags]', <?=$postId?>)">Опубликовать</div>
 <?
 		if ($postId) {
 ?>

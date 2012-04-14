@@ -6,7 +6,7 @@
 
 #stream_wrapper {
 	width: 100%;
-	margin-right: -400px;
+	margin-right: -200px;
 	float: left;
 }
 
@@ -15,7 +15,7 @@
 }
 
 #stream_container {
-	margin-right: 430px;
+	margin-right: 230px;
 	position: relative;
 }
 
@@ -24,7 +24,7 @@
 }
 
 #options_wrapper {
-	width: 400px;
+	width: 200px;
 	float: right;
 }
 

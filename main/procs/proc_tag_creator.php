@@ -32,8 +32,10 @@ try {
             exit(0);
 
         case 'create_tag' :
-            $tag = getTag($data);
-            addTagToItem($itemId, $tag);
+            $auth = new Auth();
+            $user = $auth->getCurrentUser();
+            $tag = Tag::create($user->getId(), $data);
+            addTagToItem($itemId, $tag, $user);
             response_json(true, array(
                 'tag_id' => $tag->getId()
             ));
@@ -69,10 +71,12 @@ function response_json($success, $data = null) {
     echo json($response);
 }
 
-function addTagToItem($itemId, $tag) {
+function addTagToItem($itemId, $tag, $user = null) {
     if ($itemId) {
-        $auth = new Auth();
-        $user = $auth->getCurrentUser();
+        if (!$user) {
+            $auth = new Auth();
+            $user = $auth->getCurrentUser();
+        }
         $item = Item::getById($itemId);
         $item->addTag($tag, $user);
     }
