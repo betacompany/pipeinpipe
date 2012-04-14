@@ -305,6 +305,7 @@ LABEL;
 
 	$result .= <<< LABEL
 	<img src="$url" />
+
 LABEL;
 
 	return $result;

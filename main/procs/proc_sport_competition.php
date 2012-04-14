@@ -4,6 +4,7 @@
  */
 require_once dirname(__FILE__).'/../views/sport_competition_functions.php';
 require_once dirname(__FILE__).'/../includes/assertion.php';
+require_once dirname(__FILE__).'/../includes/common.php';
 require_once dirname(__FILE__).'/../classes/user/Auth.php';
 require_once dirname(__FILE__).'/../classes/user/User.php';
 
@@ -60,7 +61,12 @@ try {
 	}
 
 } catch (Exception $ex) {
-	echo $ex->getMessage();
+    echo json(
+            array(
+                'status' => 'failed',
+                'message' => $ex->getMessage()
+            )
+        );
 }
 	
 ?>

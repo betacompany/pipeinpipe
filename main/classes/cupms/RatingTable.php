@@ -196,7 +196,7 @@ class RatingTable {
 		$req = RatingDBClient::selectByPmidInterval($begin, $end, $leagueId, $pmid);
 		while ($row = mysql_fetch_assoc($req)) {
 			$result[] = array(
-				'date' => $row['date'],
+                'date' => $row['date'],
 				'place' => $row['rating_place'],
 				'points' => $row['points']
 			);

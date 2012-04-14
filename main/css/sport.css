@@ -131,10 +131,6 @@
     margin: 0px;
 }
 
-.clear {
-    clear: both;
-}
-
 .round_border {
 	border-radius: 6px;
 	-webkit-border-radius: 6px;
@@ -1409,8 +1405,16 @@ div.strip_label {
 }
 
 #pipemen_container > .pipeman_wrapper .city {
-	color: #66A1D2;
-	margin-bottom: 5px;
+    color: #66A1D2;
+    margin-bottom: 5px;
+}
+
+#pipemen_container > .pipeman_wrapper .value {
+    color: #8FBC13;
+    font-size: 2.3em;
+    position: absolute;
+    top: 70px;
+    right: 10px;
 }
 
 #sort_selector {

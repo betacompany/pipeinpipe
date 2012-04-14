@@ -5,8 +5,12 @@ require_once dirname(__FILE__) . '/../classes/cupms/League.php';
 global $auth;
 
 ?>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
 <script type="text/javascript">
 	$$(function () {
+		google.load('visualization', '1.0', {'packages':['corechart']});
+		
 		if (getAnchorParam('date') != null) {
 			var dt = getAnchorParam('date').split('-');
 			window.y = dt[0];

@@ -441,141 +441,91 @@ function profile_show_player($person, Player $player, $tabs) {
 				</div>
 
 
-                <div class="slide_block">
+                <div id="rating_main_box" class="slide_block">
                     <div class="title">
                         <div class="left">
                             <div class="content">Рейтинг</div>
+                            <script type="text/javascript">
+                                var drawRatingGraphs = <?if(profile_get_charts_data($player) == null) echo "true"; else echo "false"?>;
+                                if(drawRatingGraphs) $("#rating_main_box").hide();
+                            </script>
                         </div>
                         <div class="right"></div>
                         <div style="clear: both;"></div>
                     </div>
-                    <div class="body chart" id="chart_div_pts"></div>
-                    <div class="body chart" id="chart_div_pls"></div>
 
-                    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-                    <script type="text/javascript">
+					<div class="body">
+						<div id="chart_vk_rating" style="margin: 20px;">
+<?
+	require_once dirname(__FILE__) . '/../classes/charts/VkontakteLineChart.php';
+	$movement = $player->getRatingMovement();
+        $line = new Line();
+	    foreach ($movement as $d) {
+            $line->addPoint(strtotime($d['date']), $d['points']);
+        }
+        $chart = new VkontakteLineChart("chart_vk_place_graph");
+        $chart->addLine("Очков в WPR", "8fbc13", $line);
+    echo $chart->toHTML(time());
+?>
+                            <div id="chart_place">
 
-                        // Load the Visualization API and the piechart package.
-                        google.load('visualization', '1.0', {'packages':['corechart']});
+                                <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+                                <script type="text/javascript">
+                                    google.load("visualization", "1", {packages:["corechart"]});
+                                    google.setOnLoadCallback(drawChart);
+                                    function drawChart() {
+                                        var dataTable = new google.visualization.DataTable();
+                                        dataTable.addColumn('date', 'Дата');
+                                        dataTable.addColumn('number', 'Место в WPR');
+                                        dataTable.addRows([
+                                            <?
+                                                $movement = profile_get_charts_data($player);
+                                                    $date = array();
+                                                    $isFirst = true;
+                                                    foreach($movement as $d){
+                                                        $date = explode('-', $d['date']);
+                                                        if(!$isFirst) echo ",\n";
+                                                        echo "[new Date(" . $date[0] . ', ' . $date[1] . ', ' . $date[2] . "), " . $d['place'] . "]";
+                                                        $isFirst = false;
+                                                    }
+                                            ?>
+                                        ]);
 
-                        // Set a callback to run when the Google Visualization API is loaded.
-                        google.setOnLoadCallback(drawChart);
+                                        var dataView = new google.visualization.DataView(dataTable);
 
-                        // Callback that creates and populates a data table,
-                        // instantiates the pie chart, passes in the data and
-                        // draws it.
-                        function drawChart() {
-
-                            // Create the data table.
-                            var data = new google.visualization.DataTable();
-                            data.addColumn('date', 'День');
-                            data.addColumn('number', 'Рейтинг');
-                            data.addRows([
-                                <?
-                                $data = profile_get_charts_data($player);
-                                foreach($data['dates'] as $dates){
-                                    foreach($data['points'] as $points) {
-                                        list($year, $month, $day) = explode("-", $dates);
-                                        print_r ("[new Date($year, $month, $day), $points],\n");
-                                        $data['points'] = array_slice($data['points'], 1);
-                                        break;
+                                        var chart = new google.visualization.AreaChart(document.getElementById('chart_place'));
+                                        var options = {
+                                            chartArea: {
+                                                left: 58,
+                                                top: 20,
+                                                width: 666
+                                            },
+                                            colors: ['#2969FF'],
+                                            hAxis: {
+                                                baselineColor: '#2969FF',
+                                                showTextEvery: 1,
+                                                textStyle: {
+                                                    fontSize: 10
+                                                },
+                                                format:'MMM y'
+                                            },
+                                            vAxis: {
+                                                baselineColor: '#2969FF',
+                                                direction: -1,
+                                                maxValue: <?=count_max_places($player) * 1.5?>,
+                                                minValue: 0.5
+                                            },
+                                            focusTarget: 'category',
+                                            height: 400,
+                                            legend: 'none'
+                                        };
+                                        chart.draw(dataView, options);
                                     }
-                                }
-                                ?>
-                            ]);
-                            var dataView = new google.visualization.DataView(data);
-                            dataView.setColumns([{calc: function(data, row) { return data.getFormattedValue(row, 0); }, type:'string'}, 1]);
-                            // Set chart options from http://code.google.com/intl/ru-RU/apis/chart/interactive/docs/gallery/areachart.html
-                            var options = {
-                                'title':'Движение по WPR',
-                                'legend': "none",
-                                'chartArea': {left: 69, width: 666},
-                                'focusTarget': 'category',
-                                'hAxis': {
-                                    'format': 'd MMM y',
-                                    'textPosition': 'out',
-                                    'title': "Дата",
-                                    'slantedText': false,
-                                    'gridlines.count': 8,
-                                    'maxAlternation': 2
-                                },
-                                'vAxis': {
-                                    'gridlines.count': 8
-                                },
-                                'width': 750,
-                                'height': 300
-                            };
-                            // Instantiate and draw our chart, passing in some options.
-                            var chart = new google.visualization.AreaChart(document.getElementById('chart_div_pts'));
-                            chart.draw(data, options);
+                                </script>
+                            </div>
 
-                        }
-                    </script>
-
-                    <script type="text/javascript">
-
-                        // Load the Visualization API and the piechart package.
-                        google.load('visualization', '1.0', {'packages':['corechart']});
-
-                        // Set a callback to run when the Google Visualization API is loaded.
-                        google.setOnLoadCallback(drawChart);
-
-                        // Callback that creates and populates a data table,
-                        // instantiates the pie chart, passes in the data and
-                        // draws it.
-                        function drawChart() {
-
-                            // Create the data table.
-                            var data = new google.visualization.DataTable();
-                            data.addColumn('date', 'День');
-                            data.addColumn('number', 'Место');
-                            data.addRows([
-                                <?
-                                $data = profile_get_charts_data($player);
-                                foreach($data['dates'] as $dates){
-                                    foreach($data['places'] as $places) {
-                                        list($year, $month, $day) = explode("-", $dates);
-                                        print_r ("[new Date($year, $month, $day), $places],\n");
-                                        $data['places'] = array_slice($data['places'], 1);
-                                        break;
-                                    }
-                                }
-                                ?>
-                            ]);
-                            var dataView = new google.visualization.DataView(data);
-                            dataView.setColumns([{calc: function(data, row) { return data.getFormattedValue(row, 0); }, type:'string'}, 1]);
-                            // Set chart options from http://code.google.com/intl/ru-RU/apis/chart/interactive/docs/gallery/areachart.html
-                            var options = {
-                                'title':'Движение по местам WPR',
-                                'legend': "none",
-                                'chartArea': {left: 69, width: 666},
-                                'focusTarget': 'category',
-                                'hAxis': {
-                                    'format': 'd MMM y',
-                                    'textPosition': 'out',
-                                    'title': "Дата",
-                                    'slantedText': false,
-                                    'gridlines.count': 8,
-                                    'maxAlternation': 2
-                                },
-                                'vAxis': {
-                                    'direction': -1,
-                                    'viewWindowMode': 'explicit',
-                                    'viewWindow':{
-                                        'min': 1,
-                                        'max': <?=$data['maxPlaces'] * 1.5?>
-                                    },
-                                    'gridlines.count': 8
-                                },
-                                'width': 750,
-                                'height': 300
-                            };
-                            // Instantiate and draw our chart, passing in some options.
-                            var chart = new google.visualization.AreaChart(document.getElementById('chart_div_pls'));
-                            chart.draw(data, options);
-
-                        }
-                    </script>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -591,34 +541,36 @@ function profile_get_charts_data(Player $player) {
 
 	$points = array();
 	$places = array();
-	$dates = array();
 
 	$leaguesInfo = $player->getLeaguesInfo();
 	foreach ($leaguesInfo as $leagueInfo) {
 		$today = date("Y-m-d");
-		$yearAgo = (date("Y") - 1) . date("-m-d");
+		$start = "2007-10-23";
 
-        $dates = array();
-        $points = array();
-        $places = array();
-
-        $movement = RatingTable::getRatingMovementInterval($yearAgo, $today, 1, $player->getId());
+        $movement = RatingTable::getRatingMovementInterval($start, $today, 1, $player->getId());
 		foreach ($movement as $step) {
-            $dates[] = $step['date'];
             $points[] = round($step['points']);
             $places[] = $step['place'];
 		}
 	}
 
-    $maxPoints = max($points);
-    $maxPlaces = max($places);
-	return array (
-        'dates' => $dates,
-        'points' => $points,
-        'places' => $places,
-        'maxPoints' => $maxPoints,
-        'maxPlaces' => $maxPlaces,
-    );
+    return $movement;
+}
+
+function count_max_places(Player $player) {
+    require_once dirname(__FILE__) . '/../classes/cupms/RatingTable.php';
+
+    $places = array();
+    $movement = $player->getRatingMovement();
+    foreach ($movement as $step) {
+        $places[] = $step['place'];
+    }
+    $res = 0;
+    try{
+        $res = max($places);
+    } catch(Exception $e) {}
+
+    return $res;
 }
 
 function profile_show_game_stats(Player $player) {
