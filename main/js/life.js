@@ -335,6 +335,7 @@ var feed = {
 				feed.recalc();
 			}
 		});
+		feed.recalc();
 	},
 
 	loadNearItems: function (ms) {

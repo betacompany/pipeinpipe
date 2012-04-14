@@ -14,7 +14,7 @@ $items = Feed::getNear(time());
 ?>
 
 <div id="timeline_dates" style="background-color: #fff; width: 100%; z-index: 10;"></div>
-<div id="timeline_height"></div>
+<div id="timeline_height" style="height: 80px; display: none;"></div>
 
 <script type="text/javascript">
 	$$(function () {
@@ -58,9 +58,7 @@ $items = Feed::getNear(time());
 					position: 'fixed',
 					top: 0
 				});
-				heighter.css({
-					height: 80
-				});
+				heighter.show();
 				prevPosition = 'fixed';
 				feed.recalc();
 			} else if (x > 0 && prevPosition == 'fixed') {
@@ -68,9 +66,7 @@ $items = Feed::getNear(time());
 					position: 'static',
 					top: 0
 				});
-				heighter.css({
-					height: 0
-				});
+				heighter.hide();
 				prevPosition = 'static';
 				feed.recalc();
 			}
