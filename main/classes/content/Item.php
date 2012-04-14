@@ -510,6 +510,10 @@ class Item {
 		TagDBClient::removeTagsFor($this->getId());
 	}
 
+    public function removeTag($tag) {
+        TagDBClient::removeTag($this->getId(), $tag->getId());
+    }
+
 	/**
 	 * Wrapper for native function "clone"
 	 * @param Item $item

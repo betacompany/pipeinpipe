@@ -103,5 +103,9 @@ class TagDBClient {
 	public static function removeTagsFor($itemId) {
 		mysql_qw('DELETE FROM `p_content_tag_target` WHERE `target_type`=\'item\' AND `target_id`=?', $itemId);
 	}
+
+    public static function removeTag($itemId, $tagId) {
+        mysql_qw('DELETE FROM `p_content_tag_target` WHERE `target_type`=\'item\' AND `target_id`=? AND tag_id=?', $itemId, $tagId);
+    }
 }
 ?>
