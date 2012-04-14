@@ -99,7 +99,7 @@ function debug(text) {
 			;
 
 		for (var i = 0; i < 5 - splitted[0].length; ++i) {
-			resultTime += '0';
+			resultTime += ' ';
 		}
 		resultTime += time;
 		for (var j = 0; j < 3 - splitted[1].length; ++j) {
