@@ -213,7 +213,7 @@ if ($_SERVER['SCRIPT_NAME'] == '/life.php') {
 }
 
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns:pipe="http://pipeinpipe.info">
+<html>
 	<head>
 		<title><?=$title?></title>
 
@@ -261,7 +261,6 @@ if (isset ($_REQUEST['part']) && file_exists(dirname(__FILE__).'/../css/'.$scrip
 
 if (isset ($_REQUEST['part']) && $_SERVER['SCRIPT_NAME'] == '/sport.php' && isset($_REQUEST['part']) && $_REQUEST['part'] == 'league') {
 ?>
-
 		<link rel="stylesheet" href="/css/life.css" type="text/css" />
 <?
 }
@@ -282,6 +281,16 @@ if (isset ($_REQUEST['part']) && $_SERVER['SCRIPT_NAME'] == '/sport.php' && isse
 				ui_handlers.push(callback);
 			}
 		</script>
+<?
+if (isset ($_REQUEST['part']) && $_SERVER['SCRIPT_NAME'] == '/life.php') {
+?>
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="excanvas.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="/js/jquery.tagcanvas.js"></script>
+<?
+}
+?>
 	</head>
 	<body>
 		<!--[if lte IE 7]>
