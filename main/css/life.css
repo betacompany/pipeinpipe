@@ -490,6 +490,10 @@
     margin-top: 50px;
 }
 
+#feed .item:first-child {
+    margin-top: 20px;
+}
+
 #feed .item .date .d {
     font-size: 1.5em;
     text-align: center;
