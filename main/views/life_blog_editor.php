@@ -136,7 +136,7 @@ if ($auth->isAuth()) {
 ?>
 
 			</select>
-			<div id="editor_button" class="button">Опубликовать</div>
+			<div id="editor_button" class="button" onclick="javascript: fillFormTagsInput('input[name=post_tags]', <?=$postId?>)">Опубликовать</div>
 <?
 		if ($postId) {
 ?>

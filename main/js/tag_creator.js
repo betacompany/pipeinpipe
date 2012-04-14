@@ -181,8 +181,10 @@
 						method: JSON_METHOD_CREATE,
 						data: value,
 						item_id: itemId
-					}, function () {
-						showTag(json[JSON_TAG_ID_KEY], value)
+					}, function (json) {
+						var tagId = json[JSON_TAG_ID_KEY];
+						showTag(tagId, value);
+						addTag(tagId, value, itemId);
 					});
 				}
 			}
