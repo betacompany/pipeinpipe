@@ -16,7 +16,7 @@ function tag_creator_show($item = null) {
     $itemId = $item ? $item->getId() : 0;
 ?>
 <script type="text/javascript" src="/js/tag_creator.js"></script>
-<link rel="stylesheet" type="text/css" href="/css/tag_creator.css">
+<link rel="stylesheet" type="text/css" href="/css/tag_creator.css"/>
 
 <div class="tag_creator" data-item-id="<?=$itemId?>">
     <script type="text/javascript">

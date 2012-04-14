@@ -5,6 +5,7 @@
 
 require_once dirname(__FILE__) . '/../classes/blog/Blog.php';
 require_once dirname(__FILE__) . '/../classes/blog/BlogPost.php';
+require_once dirname(__FILE__) . '/tag_creator.php';
 
 global $auth, $user;
 
