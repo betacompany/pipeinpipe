@@ -825,5 +825,14 @@ LABEL;
 	public function removeFavourite($target) {
 		return UserDBClient::deleteFavourite($this->getId(), $target);
 	}
+
+	public static function cache(array $ids) {
+		$iterator = UserDBClient::getByIds($ids);
+		while ($iterator->valid()) {
+			$data = $iterator->current();
+			User::getByData($data);
+			$iterator->next();
+		}
+	}
 }
 ?>

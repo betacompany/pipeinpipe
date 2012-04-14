@@ -17,6 +17,16 @@ class ItemDBClient {
 		);
 	}
 
+	public static function getByIds($ids) {
+		$in = array();
+		foreach ($ids as $id) {
+			$in[] = intval($id);
+		}
+		return new MySQLResultIterator(
+			mysql_qw('SELECT * FROM `p_content_item` WHERE `id` IN ('.implode(",", $in).')')
+		);
+	}
+
 	public static function getByGroupId($groupId, $from, $limit, $descendive = false, $orderBy = 'id') {
 		$req = null;
 		if ($limit == 0) {
