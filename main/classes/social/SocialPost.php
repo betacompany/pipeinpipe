@@ -34,6 +34,7 @@ class SocialPost {
 		$this->id				   = $data['id'];
 		$this->socialWebType	   = $data['source'];
 		$this->socialWebAuthorId   = $data['user_id'];
+		$this->socialWebAuthorName = $data['user_id'];
 		$this->outerId			   = $data['outer_id'];
 		$this->content			   = $data['content'];
 		$this->timestamp		   = $data['timestamp'];
@@ -73,7 +74,13 @@ class SocialPost {
 	}
 
 	public function getUrl() {
-		return $this->outerId;
+		switch ($this->socialWebType) {
+		case ISocialWeb::TWITTER:
+			return "http://twitter.com/{$this->socialWebAuthorId}";
+		case ISocialWeb::VKONTAKTE:
+			return "http://vk.com/wall{$this->socialWebAuthorId}_{$this->outerId}";
+		}
+		return "#";
 	}
 
 	public function makeHandled() {

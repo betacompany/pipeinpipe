@@ -25,9 +25,13 @@ function life_show_feed_item2(Item $item) {
 	if ($item instanceof CrossPost) {
 		$itemClass .= " {$item->getSocialWebType()}";
 	}
+	$isCrossPost = $item instanceof CrossPost;
+	$delegate = $item;
 	if ($item instanceof ItemsContainer) {
 		$items = $item->getItems();
+		$delegate = $items[0];
 		if (count($items) && $items[0] instanceof CrossPost) {
+			$isCrossPost = true;
 			$added = array();
 			foreach ($items as $it) {
 				$added[ $it->getSocialWebType() ] = true;
@@ -47,8 +51,6 @@ function life_show_feed_item2(Item $item) {
 	
 	$u = $item->getUser();
 	$ts = $item->getCreationTimestamp();
-
-	$isCrossPost = $item instanceof CrossPost;
 ?>
 
 <div class="item_inner <?=$itemClass?>" pipe:low-bound-id="<?=$itemId[0]?>" pipe:up-bound-id="<?=$itemId[count($itemId) - 1]?>" pipe:time="<?=$item->getCreationTimestamp()?>">
@@ -61,10 +63,10 @@ function life_show_feed_item2(Item $item) {
 		<? if ($u) { ?>
 		<a href="<?=$u->getURL()?>"><?=$u->getFullName()?></a>
 			<? if ($isCrossPost) { ?>
-			via <a href="<?=$item->getExternalUrl()?>"><?=$item->getSocialWebAuthorName()?></a>
+			via <a href="<?=$delegate->getExternalUrl()?>"><?=$delegate->getSocialWebAuthorName()?></a>
 			<? } ?>
 		<? } elseif($isCrossPost) { ?>
-		<a href="<?=$item->getExternalUrl()?>"><?=$item->getSocialWebAuthorName()?></a>
+		<a href="<?=$delegate->getExternalUrl()?>"><?=$delegate->getSocialWebAuthorName()?></a>
 		<? } ?>
 	</div>
 	<div class="body">
