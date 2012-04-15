@@ -15,10 +15,9 @@ class SocialPost {
 	private $socialWebAuthorName;
 	private $timestamp;
 
-	private $url;
+	private $outerId;
 
-	private $title;
-	private $source;
+	private $content;
 
 	private $handled;
 
@@ -33,14 +32,12 @@ class SocialPost {
 		}
 
 		$this->id				   = $data['id'];
-		$this->socialWebType	   = $data['sw_type'];
-		$this->socialWebAuthorId   = $data['sw_author_id'];
-		$this->socialWebAuthorName = $data['sw_author_name'];
-		$this->url				   = $data['url'];
-		$this->title			   = $data['title'];
-		$this->source			   = $data['source'];
-		$this->handled			   = $data['handled'];
+		$this->socialWebType	   = $data['source'];
+		$this->socialWebAuthorId   = $data['user_id'];
+		$this->outerId			   = $data['outer_id'];
+		$this->content			   = $data['content'];
 		$this->timestamp		   = $data['timestamp'];
+		$this->handled			   = $data['handled'];
 	}
 
 	public function getId() {
@@ -59,12 +56,8 @@ class SocialPost {
 		return $this->socialWebAuthorName;
 	}
 
-	public function getSource() {
-		return $this->source;
-	}
-
-	public function getTitle() {
-		return $this->title;
+	public function getContent() {
+		return $this->content;
 	}
 
 	public function getHandleTime() {
@@ -80,13 +73,12 @@ class SocialPost {
 	}
 
 	public function getUrl() {
-		return $this->url;
+		return $this->outerId;
 	}
 
 	public function makeHandled() {
-		$time = time();
-		if (SocialPostDBClient::setHandled($this->id, $time)) {
-			$this->handled = $time;
+		if (SocialPostDBClient::setHandled($this->id)) {
+			$this->handled = true;
 		}
 	}
 
