@@ -22,8 +22,9 @@ function tag_cloud_show($tags, $height = 300) {
     <a href="#tag=<?=$id?>" style="font-size: <?=$fontSize?>em" onclick="javascript: life.showTag(<?=$id?>);">
 <?
         echo $value;
+    // DO NOT INDENT THE FOLLOWING CLOSING TAG!! THERE IS A STRANGEST BUG CONNECTED!
 ?>
-    </a>
+</a>
 <?
     }
 ?>
