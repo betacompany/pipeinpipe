@@ -441,14 +441,10 @@ function profile_show_player($person, Player $player, $tabs) {
 				</div>
 
 
-                <div id="rating_main_box" class="slide_block">
+                <div class="slide_block">
                     <div class="title">
                         <div class="left">
                             <div class="content">Рейтинг</div>
-                            <script type="text/javascript">
-                                var drawRatingGraphs = <?if(profile_get_charts_data($player) == null) echo "true"; else echo "false"?>;
-                                if(drawRatingGraphs) $("#rating_main_box").hide();
-                            </script>
                         </div>
                         <div class="right"></div>
                         <div style="clear: both;"></div>
@@ -459,13 +455,15 @@ function profile_show_player($person, Player $player, $tabs) {
 <?
 	require_once dirname(__FILE__) . '/../classes/charts/VkontakteLineChart.php';
 	$movement = $player->getRatingMovement();
-    $line = new Line();
-	foreach ($movement as $d) {
-        $line->addPoint(strtotime($d['date']), $d['points']);
+	if($movement != null){
+        $line = new Line();
+	    foreach ($movement as $d) {
+            $line->addPoint(strtotime($d['date']), $d['points']);
+        }
+        $chart = new VkontakteLineChart("chart_vk_place_graph");
+        $chart->addLine("Очков в WPR", "8fbc13", $line);
+        echo $chart->toHTML(time());
     }
-    $chart = new VkontakteLineChart("chart_vk_place_graph");
-    $chart->addLine("Очков в WPR", "8fbc13", $line);
-    echo $chart->toHTML(time());
 ?>
                             <div id="chart_place">
 
@@ -480,18 +478,22 @@ function profile_show_player($person, Player $player, $tabs) {
                                         dataTable.addRows([
                                             <?
                                                 $movement = profile_get_charts_data($player);
-                                                $date = array();
-                                                $isFirst = true;
-                                                foreach($movement as $d){
-                                                    $date = explode('-', $d['date']);
-                                                    if(!$isFirst) echo ",\n";
-                                                    echo "[new Date(" . $date[0] . ', ' . $date[1] . ', ' . $date[2] . "), " . $d['place'] . "]";
-                                                    $isFirst = false;
+                                                if($movement != null){
+                                                    $date = array();
+                                                    $isFirst = true;
+                                                    foreach($movement as $d){
+                                                        $date = explode('-', $d['date']);
+                                                        if(!$isFirst) echo ",\n";
+                                                        $month = $date[1] - 1;
+                                                        echo "[new Date(" . $date[0] . ', ' . $month . ', ' . $date[2] . "), " . $d['place'] . "]";
+                                                        $isFirst = false;
+                                                    }
                                                 }
                                             ?>
                                         ]);
 
                                         var dataView = new google.visualization.DataView(dataTable);
+
                                         var chart = new google.visualization.AreaChart(document.getElementById('chart_place'));
                                         var options = {
                                             chartArea: {
@@ -512,7 +514,7 @@ function profile_show_player($person, Player $player, $tabs) {
                                                 baselineColor: '#2969FF',
                                                 direction: -1,
                                                 maxValue: <?=count_max_places($player) * 1.5?>,
-                                                minValue: 0.8
+                                                minValue: 0.5
                                             },
                                             focusTarget: 'category',
                                             height: 400,
@@ -522,6 +524,7 @@ function profile_show_player($person, Player $player, $tabs) {
                                     }
                                 </script>
                             </div>
+
 						</div>
 					</div>
 				</div>
@@ -551,6 +554,9 @@ function profile_get_charts_data(Player $player) {
             $places[] = $step['place'];
 		}
 	}
+
+    $maxPoints = max($points);
+    $maxPlaces = max($places);
     return $movement;
 }
 
@@ -562,12 +568,7 @@ function count_max_places(Player $player) {
     foreach ($movement as $step) {
         $places[] = $step['place'];
     }
-    $result = 0;
-    try{
-        $result = max($places);
-    } catch(Exception $e) {}
-
-    return $result;
+    return max($places);
 }
 
 function profile_show_game_stats(Player $player) {
@@ -919,4 +920,3 @@ function profile_show_date_edit($key, $name, $value) {
 <?
 }
 ?>
-}

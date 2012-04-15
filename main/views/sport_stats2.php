@@ -3,7 +3,6 @@
 require_once dirname(__FILE__) . '/../classes/cupms/Player.php';
 require_once dirname(__FILE__) . '/../classes/stats/StatsCounter.php';
 require_once dirname(__FILE__) . '/../classes/cupms/Competition.php';
-require_once dirname(__FILE__) . '/../classes/cupms/Competition.php';
 
 require_once dirname(__FILE__) . '/../classes/utils/ResponseCache.php';
 
