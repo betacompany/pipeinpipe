@@ -228,7 +228,7 @@ global $user;
 						</div>
 						<div id="submenu_media"<?=is_opened_by_script($MENU_MEDIA_FILE, '', ' style="display: none;"')?>>
 <?
-						show_submenu_element("/media/photo", "submenu_photoalbum", "фотоальбомы", is_opened_by_request(array('part' => 'photo')));
+						show_submenu_element("/media/photo", "submenu_photoalbum", "фотогалерея", is_opened_by_request(array('part' => 'photo')));
 						show_submenu_element("/media/video", "submenu_videoalbum", "видеогалерея", is_opened_by_request(array('part' => 'video')));
 						show_submenu_element("/media/download", "submenu_download", "скачать", is_opened_by_request(array('part' => 'download')));
 						if ($auth->isAuth()) {
