@@ -18,15 +18,12 @@ function tag_cloud_show($tags, $height = 300) {
         $id = $tag->getId();
         $value = $tag->getValue();
         $fontSize = 1 + round(($tag->getCount() / $max) * 20) / 10;
+		if (mb_strlen($value) > 0) {
 ?>
-    <a href="#tag=<?=$id?>" style="font-size: <?=$fontSize?>em" onclick="javascript: life.showTag(<?=$id?>);">
+		<a href="#tag=<?=$id?>" style="font-size: <?=$fontSize?>em" onclick="javascript: life.showTag(<?=$id?>);"><?=$value?></a>
 <?
-        echo $value;
-    // DO NOT INDENT THE FOLLOWING CLOSING TAG!! THERE IS A STRANGEST BUG CONNECTED!
-?>
-</a>
-<?
-    }
+		}
+   }
 ?>
     </canvas>
 </div>
