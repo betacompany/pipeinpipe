@@ -27,6 +27,9 @@ try {
 				include 'views/media_item.php';
 			}
 			break;
+		case 'upload':
+			include 'views/media_upload.php';
+			break;
 		case 'download':
 			include 'static/media_download.xhtml';
 			break;
