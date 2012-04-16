@@ -209,6 +209,12 @@ div.button:hover {
 	border-color: #b8d46c;
 }
 
+div.button.disabled {
+	background: #c7dce3;
+	border-color: #c7dce3;
+	cursor: default;
+}
+
 .paging {
 	margin-bottom: 5px;
 	margin-top: 5px;

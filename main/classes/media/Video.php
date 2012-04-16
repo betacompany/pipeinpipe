@@ -12,6 +12,9 @@ class Video extends Item {
         "<object "
     );
 
+    const LINK_REGEX_VIDEO_ID_MASK_NAME = "video_id";
+    const LINK_REGEX_YOUTUBE = "/(http\:\/\/|)(www.|)(youtube\.com)\/(v\/|watch\?v\=)(?<video_id>(\w|\-){7,}).*/";
+
 	protected function  __construct($id, $item = null) {
 		parent::__construct($id, $item);
 		if ($this->type != Item::VIDEO) throw new Exception('Item is not video!');
@@ -76,8 +79,8 @@ class Video extends Item {
 		return ($count == 0) ? 0 : ($value / $count);
 	}
 
-	public static function create($albumId, $uid, $title, $html) {
-		return Item::create(Item::VIDEO, $albumId, $uid, time(), $html, $title);
+	public static function create($albumId, $uid, $title, $source) {
+		return Item::create(Item::VIDEO, $albumId, $uid, time(), $source, $title);
 	}
 
 	/**
@@ -89,5 +92,9 @@ class Video extends Item {
 		return parent::getByRating(Item::VIDEO, $limit);
 	}
 
+    public static function parseLink($videoLink) {
+        preg_match(self::LINK_REGEX_YOUTUBE, $videoLink, $matches);
+        return $matches[self::LINK_REGEX_VIDEO_ID_MASK_NAME];
+    }
 }
 ?>

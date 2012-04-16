@@ -23,9 +23,7 @@ $icons = array(
 
 <?if (!$subpart):?>
 <h1 class="other">Загружайте фото и видео с пайпом на наш сайт!</h1>
-<p>
-	Для этого выберите в меню ниже любой удобный для Вас способ:
-</p>
+<p>Для этого выберите любой удобный для Вас способ:</p>
 <? endif; ?>
 
 <div class="slide_block">
@@ -48,8 +46,49 @@ if ($subpart) {
 <?
 	switch ($subpart) {
 	case 'video_youtube':
-		echo 'YouTube';
+?>
+        <table id="video_uploader">
+            <form method="post" action="/procs/proc_media_uploader.php">
+            <input name="method" type="hidden" value="youtube">
+            <tbody>
+                <tr>
+                    <td><label for="video_title">Название:</label></td>
+                    <td><input id="video_title" name="video_title" type="text"></td>
+                </tr>
+                <tr>
+                    <td><label for="video_link">Вставьте ссылку на видео:</label></td>
+                    <td><input id="video_link" name="video_link" type="text" onchange=""></td>
+                </tr>
+                <tr>
+                    <td><label for="group_id">Выберите альбом</label></td>
+                    <td>
+                        <select id="group_id" name="group_id">
+<?
+        $groups = Group::getAllByType(Group::VIDEO_ALBUM);
+        foreach ($groups as $group) {
+?>
+                            <option value="<?=$group->getId()?>"><?=$group->getTitle()?></option>
+<?
+        }
+?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><div id="video_upload_btn" class="button disabled">Загрузить</div></td>
+                </tr>
+            </tbody>
+            </form>
+        </table>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                media.youtube.init();
+            });
+        </script>
+<?
 		break;
+
 	case 'video_vkontakte':
 		echo 'Video VK';
 		break;

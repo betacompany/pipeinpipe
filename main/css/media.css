@@ -296,3 +296,27 @@ div.zoom:hover {
 #slideshow_close:hover {
 	opacity: 1;
 }
+
+#video_uploader {
+	width: 600px;
+	margin: 0 auto;
+}
+
+#video_uploader tr > td:first-child {
+	width: 200px;
+}
+
+#video_uploader input[type=text] {
+	width: 99%;
+}
+
+#video_uploader select {
+	width: 100%;
+}
+
+#video_upload_btn {
+	margin-top: 20px;
+	float: right;
+}
+
+

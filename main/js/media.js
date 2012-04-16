@@ -270,6 +270,76 @@ var media = {
 					)
 			);
 		}
+	},
+
+	youtube: {
+		init: function() {
+			const formSelector = "#video_uploader > form";
+			const uploadBtnId = "video_upload_btn";
+			const titleInputId = "video_title";
+			const linkInputId = "video_link";
+
+			const linkInputFocusoutColor = "#007ca7";
+			const linkInputFocusinColor = "black";
+
+			const defaultLinkInputValue = 'http://www.youtube.com/watch?v=';
+			const defaultTitleInputValue = 'Введите название для видеозаписи';
+
+			const linkRegex = /(http\:\/\/|)(www.|)(youtube\.com)\/(v\/|watch\?v\=)((\w|\-){7,}).*/;
+
+			var uploadBtn = $('#' + uploadBtnId);
+
+			function checkValue() {
+				var link = $('#' + linkInputId).val();
+				return (
+					$('#' + titleInputId).val() &&
+					$('#' + titleInputId).val() != defaultTitleInputValue &&
+					linkRegex.test(link)
+				)
+			}
+
+			function bindFadingValue(inputId, defaultValue) {
+				$('#' + inputId).val(defaultValue)
+						.css({
+							color: linkInputFocusoutColor
+						})
+						.focusin(function () {
+							if ($(this).val() == defaultValue) {
+								$(this).val('')
+										.css({
+											color: linkInputFocusinColor
+										});
+							}
+						})
+						.focusout(function () {
+							var val = $(this).val();
+							if (val === '') {
+								$(this).val(defaultValue)
+										.css({
+											color: linkInputFocusoutColor
+										});
+							}
+						})
+						.bind('keyup', function() {
+							if (checkValue()) {
+								uploadBtn.removeClass('disabled')
+										.click(function () {
+											$(formSelector).submit();
+										});
+							} else {
+								uploadBtn.addClass('disabled')
+										.click(function() {});
+							}
+						});
+			}
+
+			bindFadingValue(linkInputId, defaultLinkInputValue);
+			bindFadingValue(titleInputId, defaultTitleInputValue);
+		}
+	},
+
+	vk: {
+
 	}
 	
 };
