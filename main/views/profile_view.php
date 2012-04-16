@@ -455,15 +455,13 @@ function profile_show_player($person, Player $player, $tabs) {
 <?
 	require_once dirname(__FILE__) . '/../classes/charts/VkontakteLineChart.php';
 	$movement = $player->getRatingMovement();
-	if($movement != null){
-        $line = new Line();
-	    foreach ($movement as $d) {
-            $line->addPoint(strtotime($d['date']), $d['points']);
-        }
-        $chart = new VkontakteLineChart("chart_vk_place_graph");
-        $chart->addLine("Очков в WPR", "8fbc13", $line);
-        echo $chart->toHTML(time());
+    $line = new Line();
+	foreach ($movement as $d) {
+        $line->addPoint(strtotime($d['date']), $d['points']);
     }
+    $chart = new VkontakteLineChart("chart_vk_place_graph");
+    $chart->addLine("Очков в WPR", "8fbc13", $line);
+    echo $chart->toHTML(time());
 ?>
                             <div id="chart_place">
 
@@ -478,7 +476,6 @@ function profile_show_player($person, Player $player, $tabs) {
                                         dataTable.addRows([
                                             <?
                                                 $movement = profile_get_charts_data($player);
-                                                if($movement != null){
                                                     $date = array();
                                                     $isFirst = true;
                                                     foreach($movement as $d){
@@ -488,7 +485,6 @@ function profile_show_player($person, Player $player, $tabs) {
                                                         echo "[new Date(" . $date[0] . ', ' . $month . ', ' . $date[2] . "), " . $d['place'] . "]";
                                                         $isFirst = false;
                                                     }
-                                                }
                                             ?>
                                         ]);
 
