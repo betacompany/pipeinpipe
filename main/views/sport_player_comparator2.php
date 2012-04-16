@@ -46,6 +46,12 @@ function show_player_comparator($data) {
 	$name1 = $pm1->getFullName();
 	$name2 = $pm2->getFullName();
 
+    require_once dirname(__FILE__) . '/../classes/cupms/RatingTable.php';
+    $rt = RatingTable::getInstance();
+    $points1 = round($rt->getScoreByPmid($data['pmid1']));
+    $points2 = round($rt->getScoreByPmid($data['pmid2']));
+    $pointsDifference = $points1 - $points2;
+
 //upper table with images
 	$result = <<<LABEL
 <div style="padding-left: 10px;">
@@ -60,18 +66,33 @@ function show_player_comparator($data) {
 		</thead>
 		<tbody>
 			<tr>
-				<td>
-					<img src="$imURL1"/>
+			    <td>
+				    <div class = "pipeman_image_wrapper">
+					    <img src="$imURL1"/>
+				            <div class = "first_rating_values">
+				            </div>
+				    </div>
 				</td>
 				<td>
-					<img src="$imURL2"/>
+					<div class = "pipeman_image_wrapper">
+					    <img src="$imURL2"/>
+				            <div class = "second_rating_values">
+				            </div>
+				    </div>
 				</td>
 			</tr>
 		</tbody>
 	</table>
-	
 LABEL;
 
+?>
+<script type="text/javascript">
+    if(<?=$pointsDifference?> < 0) $('<p id = "point_lag"><?=$pointsDifference?></p>').appendTo(".first_rating_values");
+    else if(<?=$pointsDifference?> > 0) $('<p id = "point_lag"><?='-' . $pointsDifference?></p>').appendTo(".second_rating_values");
+    $("<p><?=$points2?></p>").appendTo(".second_rating_values");
+    $("<p><?=$points1?></p>").appendTo(".first_rating_values");
+</script>
+<?
 //=====================таблица личных встреч=====================
 	
 	$irv1 = $data['games_inter_stat']['regular']['v1']['total'];
@@ -203,7 +224,9 @@ LABEL;
 					<th colspan="3">Движение по рейтингу</th>
 				</thead>
 				<tbody>
-
+				<div id = "chart_vk_rating" style="margin: 20px;">
+	        </div>
+		</tbody>
 LABEL;
 
     require_once dirname(__FILE__) . '/../classes/charts/VkontakteLineChart.php';
@@ -224,9 +247,7 @@ LABEL;
     $chart->addLine($name2 . " - Очки в WPR", "8fbc13", $line2);
     echo $chart->toHTML(time());
 
-
-	$result .= <<<LABEL
-		</tbody>
+$result .= <<<LABEL
 	</table>
 LABEL;
 
