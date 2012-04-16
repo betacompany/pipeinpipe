@@ -138,27 +138,23 @@ try {
 
 		switch (param('holder_type')) {
 		case 'user':
-			try {
-				$holder = User::getById(intparam('holder_id'));
-				$title = Parser::parseStrict(textparam('blog_title'));
-				$contentSource = (param('blog_description') == '') ? '' : Parser::parseSource( textparam('blog_description') );
-				$contentParsed = Parser::parseDescription($contentSource);
-				
-				if ($holder->getId() == $user->getId()) {
-					$blog = Group::create(Group::BLOG, 0, $title, $contentSource, $contentParsed);
-					Connection::bind($blog, $user);
-					echo json(array (
-						'status' => 'ok'
-					));
-				} else {
-					echo json(array (
-						'status' => 'failed',
-						'reason' => 'access denied'
-					));
-				}
-			} catch (Exception $e) {
-				echo_json_exception($e);
-			}
+            $holder = User::getById(intparam('holder_id'));
+            $title = Parser::parseStrict(textparam('blog_title'));
+            $contentSource = (param('blog_description') == '') ? '' : Parser::parseSource( textparam('blog_description') );
+            $contentParsed = Parser::parseDescription($contentSource);
+
+            if ($holder->getId() == $user->getId()) {
+                $blog = Group::create(Group::BLOG, 0, $title, $contentSource, $contentParsed);
+                Connection::bind($blog, $user);
+                echo json(array (
+                    'status' => 'ok'
+                ));
+            } else {
+                echo json(array (
+                    'status' => 'failed',
+                    'reason' => 'access denied'
+                ));
+            }
 
 			break;
 
@@ -275,31 +271,25 @@ try {
 
 		assertIsset('post_id');
 
-		try {
-			$post = Item::getById(param('post_id'));
-			if ($post instanceof BlogPost) {
-				$blog = $post->getGroup();
-				if ($user->hasPermission($blog, 'edit')) {
-					$post->remove();
-					echo json(array (
-						'status' => 'ok'
-					));
-				} else {
-					echo json(array (
-						'status' => 'failed',
-						'reason' => 'You have no permissions to this post'
-					));
-				}
-			} else {
-				global $LOG;
-				@$LOG->warn('Item id='.param('post_id').' is not a blog post');
-			}
-		} catch (Exception $e) {
-			global $LOG;
-			@$LOG->exception($e);
-			echo_json_exception($e);
-		}
-		
+        $post = Item::getById(param('post_id'));
+        if ($post instanceof BlogPost) {
+            $blog = $post->getGroup();
+            if ($user->hasPermission($blog, 'edit')) {
+                $post->remove();
+                echo json(array (
+                    'status' => 'ok'
+                ));
+            } else {
+                echo json(array (
+                    'status' => 'failed',
+                    'reason' => 'You have no permissions to this post'
+                ));
+            }
+        } else {
+            global $LOG;
+            @$LOG->warn('Item id='.param('post_id').' is not a blog post');
+        }
+
 		break;
 
 	case 'get_dates':
