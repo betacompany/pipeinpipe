@@ -291,6 +291,7 @@
 	margin: 5px 5px 0px 0px;
 }
 
+/*
 #feed .video {
 	background-color: #c7dce3;
 	background-repeat: no-repeat;
@@ -305,7 +306,6 @@
 	width: 69px;
 	height: 69px;
 	background-repeat: no-repeat;
-/*	z-index: 2;*/
 }
 
 #stream_container td.item_shortcut .video {
@@ -322,8 +322,7 @@
 	width: 69px;
 	height: 69px;
 	background-repeat: no-repeat;
-/*	z-index: 2;*/
-}
+}                */
 
 .ui-date-selector .date {
 	background-color: #007ca7;
