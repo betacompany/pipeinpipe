@@ -67,7 +67,7 @@ class CrossPost extends Item {
 		}
 
 		$source = $post->getContent();
-		$parsed = Parser::parseSocialPost(utf8_encode($source));
+		$parsed = Parser::parseSocialPost($source);
 		$ts = $post->getTimestamp();
 
 		$item = parent::create(Item::CROSS_POST, 0, $uid, $ts, $source, $parsed, "", $spId);
