@@ -115,11 +115,7 @@ function life_show_item_content(Item $item) {
 	} elseif ($isVideo) {
 ?>
 
-		<a href="/media/video/album<?=$item->getGroupId()?>/<?=$item->getId()?>" title="<?=$item->getTitle()?>">
-			<div class="video" style="background-image: url('<?=$item->getPreviewUrl()?>');">
-				<div></div>
-			</div>
-		</a>
+		<a href="/media/video/album<?=$item->getGroupId()?>/<?=$item->getId()?>" title="<?=$item->getTitle()?>"><?=$item->getTitle()?></a>
 <?
 	} elseif ($isBlogPost) {
 ?>
