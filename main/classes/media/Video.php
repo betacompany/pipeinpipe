@@ -7,6 +7,11 @@ require_once dirname(__FILE__) . '/../content/Item.php';
  */
 class Video extends Item {
 
+    private static $VIDEO_CODE_PREFIXES = array(
+        "<iframe ",
+        "<object "
+    );
+
 	protected function  __construct($id, $item = null) {
 		parent::__construct($id, $item);
 		if ($this->type != Item::VIDEO) throw new Exception('Item is not video!');
@@ -20,9 +25,18 @@ class Video extends Item {
 	 * Returns HTML-code for pasting into page
 	 * @return string
 	 */
-	public function getHTML() {
+	public function getSource() {
 		return $this->getContentSource();
 	}
+
+    public function isVideoCode() {
+        $source = $this->getSource();
+        foreach (self::$VIDEO_CODE_PREFIXES as $prefix) {
+            if (string_starts_with($source, $prefix)) {
+                return true;
+            }
+        }
+    }
 
 	/**
 	 * Returns title of this video

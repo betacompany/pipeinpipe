@@ -302,8 +302,25 @@ function hyphenate($word, $max_prefix_length) {
 		$jotAdded = false;
 	}
 	return array('', $word);
-
 }
+
+function string_starts_with($string, $prefix)
+{
+    $length = strlen($prefix);
+    return (substr($string, 0, $length) === $prefix);
+}
+
+function string_ends_with($string, $suffix)
+{
+    $length = strlen($suffix);
+    if ($length == 0) {
+        return true;
+    }
+
+    $start  = $length * -1; //negative
+    return (substr($string, $start) === $suffix);
+}
+
 
 function redirect_back($anchor = false, $exit = true) {
 	Header('Location: ' . $_SERVER['HTTP_REFERER'] . ($anchor ? '#'.$anchor : ''));

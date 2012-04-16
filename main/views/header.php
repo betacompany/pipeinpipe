@@ -290,6 +290,12 @@ if (isset ($_REQUEST['part']) && $_SERVER['SCRIPT_NAME'] == '/life.php') {
     <script type="text/javascript" src="/js/jquery.tagcanvas.js"></script>
 <?
 }
+
+if (isset ($_REQUEST['part']) && $_REQUEST['part'] == 'video') {
+?>
+    <script type="text/javascript" src="/js/swfobject.js"></script>
+<?
+}
 ?>
 	</head>
 	<body>

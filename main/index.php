@@ -66,7 +66,7 @@ try {
 	<div id="index_video">
 <?
 		if ($indexVideo && $indexVideo instanceof Video) {
-			echo $indexVideo->getHTML();
+			echo $indexVideo->getSource();
 		} else {
 ?>
 		<div style="width: 480px; height: 385px; background-color: #aaa;"></div>

@@ -209,8 +209,13 @@ function media_show_video($uid, Video $video) {
 		<div class="item_wrapper">
 			<div class="item_left">
 				<div>
-					<?=$video->getHTML()?>
-
+<?
+    if ($video->isVideoCode()) {
+        echo $video->getSource();
+    } else {
+        media_show_youtube_video($video->getSource());
+    }
+?>
 				</div>
 			</div>
 			<div class="comments">
@@ -220,6 +225,31 @@ function media_show_video($uid, Video $video) {
 
 			</div>
 		</div>
+<?
+}
+
+function media_show_youtube_video($videoId, $width = 480, $height = 385) {
+?>
+<div id="ytapiplayer">
+    You need Flash player 8+ and JavaScript enabled to view this video.
+</div>
+
+<script type="text/javascript">
+    var params = { allowScriptAccess: "always" };
+    var atts = {
+        id: "ytplayer",
+        allowfullscreen: true
+    };
+    swfobject.embedSWF (
+        "http://www.youtube.com/v/<?=$videoId?>?enablejsapi=1&playerapiid=ytplayer",
+        "ytapiplayer", "<?=$width?>", "<?=$height?>", "8", null, null, params, atts
+    );
+
+    window.onYouTubePlayerReady = function (playerId) {
+        var ytplayer = document.getElementById(playerId);
+        ytplayer.playVideo();
+    }
+</script>
 <?
 }
 
@@ -283,4 +313,3 @@ function media_script_album() {
 
 ?>
 
-					
