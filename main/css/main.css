@@ -215,6 +215,10 @@ div.button.disabled {
 	cursor: default;
 }
 
+input[type=text].disabled {
+	color: #c7dce3 !important;
+}
+
 .paging {
 	margin-bottom: 5px;
 	margin-top: 5px;
