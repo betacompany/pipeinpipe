@@ -53,11 +53,15 @@ if ($subpart) {
             <tbody>
                 <tr>
                     <td><label for="video_title">Название:</label></td>
-                    <td><input id="video_title" name="video_title" type="text"></td>
+                    <td><input id="video_title" class="disabled" name="video_title" type="text" disabled="disabled"></td>
                 </tr>
                 <tr>
                     <td><label for="video_link">Вставьте ссылку на видео:</label></td>
                     <td><input id="video_link" name="video_link" type="text" onchange=""></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><img id="video_preview"></td>
                 </tr>
                 <tr>
                     <td><label for="group_id">Выберите альбом</label></td>

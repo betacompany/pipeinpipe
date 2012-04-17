@@ -302,6 +302,10 @@ div.zoom:hover {
 	margin: 0 auto;
 }
 
+#video_uploader input {
+	color: #007ca7;
+}
+
 #video_uploader tr > td:first-child {
 	width: 200px;
 }
