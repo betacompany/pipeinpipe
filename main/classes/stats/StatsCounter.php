@@ -120,7 +120,7 @@ class StatsCounter {
 
 		if ($row == null) {
 			$maxValue = 0;
-			$maxKey;
+			$maxKey = 0;
 			foreach ($counter as $key => $value) {
 				if ($value > $maxValue) {
 					$maxValue = $value;
@@ -162,7 +162,7 @@ class StatsCounter {
 
 		if ($row == null) {
 			$maxValue = 0;
-			$maxKey;
+			$maxKey = 0;
 			foreach ($counter as $key => $value) {
 				if ($value > $maxValue) {
 					$maxValue = $value;

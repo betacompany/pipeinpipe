@@ -46,6 +46,12 @@ function show_player_comparator($data) {
 	$name1 = $pm1->getFullName();
 	$name2 = $pm2->getFullName();
 
+    require_once dirname(__FILE__) . '/../classes/cupms/RatingTable.php';
+    $rt = RatingTable::getInstance();
+    $points1 = round($rt->getScoreByPmid($data['pmid1']));
+    $points2 = round($rt->getScoreByPmid($data['pmid2']));
+    $pointsDifference = $points1 - $points2;
+
 //upper table with images
 	$result = <<<LABEL
 <div style="padding-left: 10px;">
@@ -60,18 +66,33 @@ function show_player_comparator($data) {
 		</thead>
 		<tbody>
 			<tr>
-				<td>
-					<img src="$imURL1"/>
+			    <td>
+				    <div class = "pipeman_image_wrapper">
+					    <img src="$imURL1"/>
+				            <div class = "first_rating_values">
+				            </div>
+				    </div>
 				</td>
 				<td>
-					<img src="$imURL2"/>
+					<div class = "pipeman_image_wrapper">
+					    <img src="$imURL2"/>
+				            <div class = "second_rating_values">
+				            </div>
+				    </div>
 				</td>
 			</tr>
 		</tbody>
 	</table>
-	
 LABEL;
 
+?>
+<script type="text/javascript">
+    if(<?=$pointsDifference?> < 0) $('<p id = "point_lag"><?=$pointsDifference?></p>').appendTo(".first_rating_values");
+    else if(<?=$pointsDifference?> > 0) $('<p id = "point_lag"><?='-' . $pointsDifference?></p>').appendTo(".second_rating_values");
+    $("<p><?=$points2?></p>").appendTo(".second_rating_values");
+    $("<p><?=$points1?></p>").appendTo(".first_rating_values");
+</script>
+<?
 //=====================таблица личных встреч=====================
 	
 	$irv1 = $data['games_inter_stat']['regular']['v1']['total'];
@@ -198,69 +219,41 @@ LABEL;
     }
 
     $result .= <<<LABEL
-            <table class="comparator">
-				<thead>
-					<th colspan="3">Движение по рейтингу</th>
-				</thead>
-				<tbody id="comparison_chart">
-
+		<table class="comparator">
+			<thead>
+				<th colspan="3">Движение по рейтингу</th>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						<div id = "chart_vk_rating" style="margin: 20px;">
 LABEL;
 
-    $result .= "<script type=\"text/javascript\">\n";
+	require_once dirname(__FILE__) . '/../classes/charts/VkontakteLineChart.php';
 
-    // Callback that creates and populates a data table,
-    // instantiates the pie chart, passes in the data and
-    // draws it.
-    $result .= "(function() {\n";
+    $movement1 = $pm1->getRatingMovement();
+    $movement2 = $pm2->getRatingMovement();
+    $line1 = new Line();
+    $line2 = new Line();
+    foreach($movement1 as $first){
+        $line1->addPoint(strtotime($first['date']), $first['points']);
+    }
+    foreach($movement2 as $second){
+        $line2->addPoint(strtotime($second['date']), $second['points']);
+    }
 
-    // Create the data table.
-    $result .= "\tvar data = new google.visualization.DataTable();\n";
+    $chart = new VkontakteLineChart("comparison_points_vk_graph");
+    $chart->addLine($name1 . " - Очки в WPR", "007ca7", $line1);
+    $chart->addLine($name2 . " - Очки в WPR", "8fbc13", $line2);
 
-	$chartData = $data['movement'];
-	$pm1 = Player::getById($data['pmid1']);
-	$pm2 = Player::getById($data['pmid2']);
-
-    $result .= "\tvar players = ['" . $pm1->getFullName() . "', '" . $pm2->getFullName() . "'];\n";
-    $result .= "\tdata.addColumn('date', 'День');\n";
-    $result .= "\tfor (var i = 0; i < players.length; i++) {\n\t\tdata.addColumn('number', players[i]);\n\t}\n";
-
-	/* ADD DATA HERE */
-
-    $result .= "\tvar dataView = new google.visualization.DataView(data);\n";
-    $result .= "\tdataView.setColumns([{calc: function(data, row) { return data.getFormattedValue(row, 0); }, type:'string'}, 1]);\n";
-
-    // Chart options may be found on http://code.google.com/intl/ru-RU/apis/chart/interactive/docs/gallery/areachart.html
-    $result .= "var options = {\n
-                    'title':'Движение по WPR',
-                    \n'legend': \"none\",
-                    \n'chartArea': {left: 69, width: 666},
-                    \n" . "'focusTarget': 'category',
-			        \n'legend.position': 'right',
-			        \n'hAxis': {
-                        \n" . "'format': 'd MMM y',
-                        \n'textPosition': 'out',
-                        \n'title': \"Дата\",
-                        \n'slantedText': false,
-                        \n'gridlines.count': 8,
-                        \n'maxAlternation': 2
-			        \n" . "},
-			        \n'vAxis': {
-			            \n'gridlines.count': 8
-			        \n},
-			        \n'width': 750,
-			        \n'height': 300
-			        \n};
-			    \n";
-
-	$result .= "\tvar chart = new google.visualization.AreaChart(document.getElementById('chart_compare'));\n";
-	$result .= "\tchart.draw(data, options);";
-	$result .= "})();\n";
-
-	$result .= "</script>\n";
+	$result .= $chart->toHTML(time());
 
 	$result .= <<<LABEL
-		</tbody>
-	</table>
+	        			</div>
+	        		</td>
+	        	</tr>
+			</tbody>
+		</table>
 LABEL;
 
 	return $result;
