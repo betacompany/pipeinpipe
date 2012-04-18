@@ -44,6 +44,8 @@ class Item {
 			$type == self::CROSS_POST;
 	}
 
+	protected $creationTimestamp;
+
 	protected $id;
 	protected $type;
 
@@ -55,7 +57,6 @@ class Item {
 	protected $user;
 	protected $userLoaded = false;
 
-	protected $creationTimestamp;
 	protected $lastCommentTimestamp;
 	protected $contentTitle;
 	protected $contentSource;

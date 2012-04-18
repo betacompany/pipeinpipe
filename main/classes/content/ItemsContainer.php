@@ -3,6 +3,7 @@
 require_once dirname(__FILE__) . '/../../includes/import.php';
 
 import("content/Item");
+import("utils/Sorting");
 
 /**
  * User: ortemij
@@ -32,6 +33,7 @@ class ItemsContainer extends Item {
 			$this->items[] = $item;
 			$this->timestamp = max($this->timestamp, $item->getTimestamp());
 		}
+		rsort($this->items);
 	}
 
 	public function getId() {
