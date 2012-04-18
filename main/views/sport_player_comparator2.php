@@ -219,15 +219,17 @@ LABEL;
     }
 
     $result .= <<<LABEL
-            <table class="comparator">
-				<thead>
-					<th colspan="3">Движение по рейтингу</th>
-				</thead>
-				<tbody>
-
+		<table class="comparator">
+			<thead>
+				<th colspan="3">Движение по рейтингу</th>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						<div id = "chart_vk_rating" style="margin: 20px;">
 LABEL;
 
-    require_once dirname(__FILE__) . '/../classes/charts/VkontakteLineChart.php';
+	require_once dirname(__FILE__) . '/../classes/charts/VkontakteLineChart.php';
 
     $movement1 = $pm1->getRatingMovement();
     $movement2 = $pm2->getRatingMovement();
@@ -243,12 +245,15 @@ LABEL;
     $chart = new VkontakteLineChart("comparison_points_vk_graph");
     $chart->addLine($name1 . " - Очки в WPR", "007ca7", $line1);
     $chart->addLine($name2 . " - Очки в WPR", "8fbc13", $line2);
-    echo $chart->toHTML(time());
 
+	$result .= $chart->toHTML(time());
 
 	$result .= <<<LABEL
-		</tbody>
-	</table>
+	        			</div>
+	        		</td>
+	        	</tr>
+			</tbody>
+		</table>
 LABEL;
 
 	return $result;
