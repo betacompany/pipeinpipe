@@ -13,7 +13,7 @@ define ("SUM_TIME", ini_get("max_execution_time"));
 
 echo "END_DATE=".END_DATE." SUM_TIME=".SUM_TIME."<br/>";
 
-$cur_date = issetParam('start_date') ? param('start_date') : "2009-09-28";
+$cur_date = issetParam('start_date') ? param('start_date') : "2008-09-28";
 $avg_time = 0;
 $sum_time = 0;
 $count = 0;

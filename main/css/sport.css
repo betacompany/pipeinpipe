@@ -1054,6 +1054,38 @@ table.comparator_head img {
 	max-width: 300px;
 }
 
+.pipeman_image_wrapper {
+    position: relative;
+    text-align: right;
+    width: 100%; /* for IE 6 */
+}
+
+.pipeman_image_wrapper .first_rating_values, .second_rating_values {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 81%;
+    font-size: 26px;
+    font-weight: bold;
+    background-color: #c7dce3;
+    opacity: 0.6;
+}
+
+.pipeman_image_wrapper .first_rating_values p, .second_rating_values p{
+    margin-bottom: 3px;
+    margin-top: 3px;
+    margin-right: 5px;
+    padding-right: 3px;
+    color: green;
+}
+
+#point_lag{
+    color: red;
+    font-size: 23px;
+    padding-bottom: -3px;
+    margin-bottom: -3px;
+}
+
 table.comparator_head tbody td {
 	padding: 10px;
 	vertical-align: middle;
