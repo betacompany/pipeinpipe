@@ -35,12 +35,14 @@ try {
             assertParam('video_link');
             $videoLink = param('video_link');
 
-            assertParam('group_id');
-            $groupId = param('group_id');
+            //TODO remove group id
+            $groupId = 0;
 
             $videoId = Video::parseLink($videoLink);
-            if ($videoId && $videoTitle && $groupId && user) {
+            if ($videoId && $videoTitle && $user) {
                 $video = Video::create($groupId, $user->getId(), $videoTitle, $videoId);
+                $tagIds = array_slice( explode(',', param('video_tags')), 0, 100 ); // protection from too many tags
+                $video->addTags($tagIds, $user);
                 Header("Location: /media/video/album{$groupId}/{$video->getId()}");
             } else {
                 Header("Location: /media/upload/video_youtube");

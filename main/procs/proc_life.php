@@ -244,7 +244,7 @@ try {
 		}
 
 		$post = Item::getById(param('post_id'));
-		$tagIds = array_slice( explode(',', param('post_tags')), 0, 100 ); // protection for too may tags
+		$tagIds = array_slice( explode(',', param('post_tags')), 0, 100 ); // protection from too many tags
 		
 		if ($post instanceof BlogPost) {
 			$post->setFull(param('post_full_source'), false);

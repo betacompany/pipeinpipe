@@ -71,7 +71,8 @@
 	const ANIMATION_SPEED = 'fast';
 
 	const ITEM_ID_ATTR_NAME = "data-item-id";
-	const TAG_SELECTOR_WIDTH = 324;
+	const WIDTH_ATTR_NAME = "data-width";
+	const DEFAULT_TAG_SELECTOR_WIDTH = 300;
 
 	const AJAX_PROC_URL = '/procs/proc_tag_creator.php';
 
@@ -90,6 +91,10 @@
 			//this = tag creator outer container
 			var itemId = $(this).attr(ITEM_ID_ATTR_NAME);
 			if (!itemId) itemId = 0;
+
+			var width = $(this).attr(WIDTH_ATTR_NAME);
+			width = parseInt(width);
+			if (!width) width = DEFAULT_TAG_SELECTOR_WIDTH
 
 			var addedTagsDiv = $(ADDED_TAGS_CSS_SELECTOR, this);
 			showAddedTags();
@@ -143,7 +148,7 @@
 							tagSelector.clear();
 						}
 					}))
-							.setWidth(TAG_SELECTOR_WIDTH)
+							.setWidth(width)
 							.appendTo(tagSelectorDiv);
 
 					createBtn.click(function () {
