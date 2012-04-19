@@ -70,7 +70,7 @@ class UserDataDBClient {
 	// agg_vk_access_token
 
 	public static function getAccessTokenFor($vkid) {
-		$req = mysql_qw('SELECT * FROM agg_vk_access_token WHERE user_id=?', $vkid);
+		$req = mysql_qw('SELECT * FROM agg_vk_access_token WHERE user_id=? AND (expires_timestamp=0 OR expires_timestamp<?)', $vkid, time());
 		if ($row = mysql_fetch_assoc($req)) {
 			return $row['access_token'];
 		}
