@@ -63,6 +63,20 @@ if ($subpart) {
                 <tr>
                     <td></td>
                     <td><img id="video_preview"></td>
+                </tr><tr>
+                    <td><label for="group_id">Выберите альбом</label></td>
+                    <td>
+                        <select id="group_id" name="group_id">
+                            <?
+                            $groups = Group::getAllByType(Group::VIDEO_ALBUM);
+                            foreach ($groups as $group) {
+                                ?>
+                                <option value="<?=$group->getId()?>"><?=$group->getTitle()?></option>
+                                <?
+                            }
+                            ?>
+                        </select>
+                    </td>
                 </tr>
                 <tr>
                     <td><label for="video_tags">Добавьте теги:</label></td>

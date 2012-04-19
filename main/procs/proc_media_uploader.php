@@ -35,11 +35,11 @@ try {
             assertParam('video_link');
             $videoLink = param('video_link');
 
-            //TODO remove group id
-            $groupId = 0;
+            assertParam('group_id');
+            $groupId = param('group_id');
 
             $videoId = Video::parseLink($videoLink);
-            if ($videoId && $videoTitle && $user) {
+            if ($videoId && $videoTitle && $groupId && user) {
                 $video = Video::create($groupId, $user->getId(), $videoTitle, $videoId);
                 $tagIds = array_slice( explode(',', param('video_tags')), 0, 100 ); // protection from too many tags
                 $video->addTags($tagIds, $user);
