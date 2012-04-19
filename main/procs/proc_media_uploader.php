@@ -41,6 +41,8 @@ try {
             $videoId = Video::parseLink($videoLink);
             if ($videoId && $videoTitle && $groupId && user) {
                 $video = Video::create($groupId, $user->getId(), $videoTitle, $videoId);
+                $tagIds = array_slice( explode(',', param('video_tags')), 0, 100 ); // protection from too many tags
+                $video->addTags($tagIds, $user);
                 Header("Location: /media/video/album{$groupId}/{$video->getId()}");
             } else {
                 Header("Location: /media/upload/video_youtube");

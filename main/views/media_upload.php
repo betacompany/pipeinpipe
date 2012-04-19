@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__FILE__) . '/tag_creator.php';
 
 global $auth;
 if (!$auth->isAuth()) {
@@ -62,25 +63,33 @@ if ($subpart) {
                 <tr>
                     <td></td>
                     <td><img id="video_preview"></td>
-                </tr>
-                <tr>
+                </tr><tr>
                     <td><label for="group_id">Выберите альбом</label></td>
                     <td>
                         <select id="group_id" name="group_id">
-<?
-        $groups = Group::getAllByType(Group::VIDEO_ALBUM);
-        foreach ($groups as $group) {
-?>
-                            <option value="<?=$group->getId()?>"><?=$group->getTitle()?></option>
-<?
-        }
-?>
+                            <?
+                            $groups = Group::getAllByType(Group::VIDEO_ALBUM);
+                            foreach ($groups as $group) {
+                                ?>
+                                <option value="<?=$group->getId()?>"><?=$group->getTitle()?></option>
+                                <?
+                            }
+                            ?>
                         </select>
                     </td>
                 </tr>
                 <tr>
+                    <td><label for="video_tags">Добавьте теги:</label></td>
+                    <td>
+                        <input id="video_tags" name="video_tags" type="hidden">
+<?
+        tag_creator_show(null, 304);
+?>
+                    </td>
+                </tr>
+                <tr>
                     <td></td>
-                    <td><div id="video_upload_btn" class="button disabled">Загрузить</div></td>
+                    <td><div id="video_upload_btn" class="button disabled" onclick="javascript: fillFormTagsInput('input#video_tags')">Загрузить</div></td>
                 </tr>
             </tbody>
             </form>
