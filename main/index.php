@@ -20,7 +20,7 @@ try {
 	include 'includes/authorize.php';
 	include 'views/header.php';
 
-	$cache = new ResponseCache('index', array());
+	$cache = new ResponseCache('index', array('uid'));
 	if ($cache->getAge() < 60 * 60) {
 		echo $cache->get();
 	} else {
