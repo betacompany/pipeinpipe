@@ -299,6 +299,26 @@ if (isset ($_REQUEST['part']) && $_REQUEST['part'] == 'video') {
 ?>
 	</head>
 	<body>
+<?
+if ($auth->isAuth() && $user->needAccessToken()) {
+?>
+
+		<script type="text/javascript">
+			$$(function () {
+				window.open(
+					'http://oauth.vk.com/authorize?client_id=<?=Vkontakte::VK_APP_ID?>' +
+					'&scope=wall,friends,offline,notes' +
+					'&redirect_uri=http%3A%2F%2F<?=MAIN_SITE_URL?>%2Fprocs%2Fproc_vk_access.php' +
+					'&response_type=code',
+					'VK Authorization',
+					'width=640,height=300,location=yes,menubar=no,left=100,top=100'
+				);
+			});
+		</script>
+<?
+}
+?>
+
 		<!--[if lte IE 7]>
 		<iframe id="old_browser" src="/static/old_browser.html" />
 		<![endif]-->

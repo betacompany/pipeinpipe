@@ -66,5 +66,19 @@ class UserDataDBClient {
 			return 0;
 		}
 	}
+
+	// agg_vk_access_token
+
+	public static function getAccessTokenFor($vkid) {
+		$req = mysql_qw('SELECT * FROM agg_vk_access_token WHERE user_id=?', $vkid);
+		if ($row = mysql_fetch_assoc($req)) {
+			return $row['access_token'];
+		}
+		return false;
+	}
+
+	public static function insertAccessToken($vkid, $access_token, $expires = 0) {
+		return mysql_qw('REPLACE INTO agg_vk_access_token (user_id, access_token, expires_timestamp) VALUES (?, ?, ?)', $vkid, $access_token, $expires);
+	}
 }
 ?>

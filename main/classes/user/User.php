@@ -61,6 +61,10 @@ class User {
     private $CA = array();//boolean array of user competition administrative ability
     private $permissionsLoaded = false;
 
+	private $accessTokenLoaded = false;
+	private $accessTokenNeeded = false;
+	private $accessToken = false;
+
 	private static $KEYS = array(
 		self::FIELD_NAME, self::FIELD_SURNAME,
 		self::KEY_BIRTHDAY, self::KEY_EMAIL, self::KEY_ICQ, self::KEY_LOGIN,
@@ -824,6 +828,34 @@ LABEL;
 
 	public function removeFavourite($target) {
 		return UserDBClient::deleteFavourite($this->getId(), $target);
+	}
+
+	public function needAccessToken() {
+		$this->loadAccessToken();
+		return $this->accessTokenNeeded;
+	}
+
+	public function getAccessToken() {
+	    return $this->accessToken;
+	}
+
+	private function loadAccessToken() {
+		if ($this->accessTokenLoaded) {
+			return;
+		}
+		$this->accessTokenLoaded = true;
+		$vkid = $this->getVkid();
+		if (!$vkid) {
+			$this->accessTokenNeeded = false;
+			return;
+		}
+		$access_token = UserDataDBClient::getAccessTokenFor($vkid);
+		if ($access_token) {
+			$this->accessTokenNeeded = false;
+			$this->accessToken = $access_token;
+			return;
+		}
+		$this->accessTokenNeeded = true;
 	}
 
 	public static function cache(array $ids) {
