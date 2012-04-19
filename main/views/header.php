@@ -311,7 +311,7 @@ if ($auth->isAuth() && $user->needAccessToken()) {
 					'&redirect_uri=http%3A%2F%2F<?=MAIN_SITE_URL?>%2Fprocs%2Fproc_vk_access.php' +
 					'&response_type=code',
 					'VK Authorization',
-					'width=640,height=300,location=yes,menubar=no,left=100,top=100'
+					'width=800,height=500,location=yes,menubar=no,left=100,top=100'
 				);
 			});
 		</script>
