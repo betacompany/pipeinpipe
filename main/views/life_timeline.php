@@ -121,11 +121,13 @@ function life_show_item_content(Item $item) {
 ?>
 		
 		<p>
-			<div>
-				<a style="font-size: 1.2em;" href="/life/blog/<?=$item->getId()?>"><?=$item->getTitle()?></a>
+			<div class="post_title">
+				<a href="/life/blog/<?=$item->getId()?>"><?=$item->getTitle()?></a>
 				<small>+&nbsp;<?=lang_number_sclon($item->countComments(), "комментарий", "комментария", "комментариев")?></small>
 			</div>
-			<?=$item->getShortHTML()?>
+			<div class="post_body">
+				<?=$item->getShortHTML()?>
+			</div>
 		</p>
 <?
 	}

@@ -244,11 +244,10 @@ var feed = {
 	init: function () {
 		this.recalc();
 		this.__feedContainer = $('#feed .timeline_wrapper');
-		var date = getAnchorParam('date');
-		if (date) {
-			var ymd = date.split('-');
-			life.timeline.scrollTo(new Date(ymd[0], parseInt(ymd[1], 10) - 1, parseInt(ymd[2])));
-		}
+//		var date = getAnchorParam('date');
+//		if (date) {
+//			life.timeline.scrollTo(parseYMD(date).getTime());
+//		}
 	},
 
 	recalc: function () {
@@ -398,6 +397,7 @@ var feed = {
 		if (firstVisibleTime) {
 			//debug(firstVisibleTime);
 			life.timeline && life.timeline.silentScrollTo(firstVisibleTime);
+			setAnchorParam('date', formatYMD(new Date(firstVisibleTime)));
 		}
 	}
 };

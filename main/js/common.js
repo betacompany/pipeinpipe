@@ -107,10 +107,10 @@ function debug(text) {
 		}
 
         if (CONFIG.DEBUG) {
-            if (typeof text === 'string') {
+            if (typeof text === 'string' || typeof text == 'number') {
                 console && console.debug(''+resultTime+': ' + text);
             } else {
-                console && console.debug(''+resultTime+': ');
+                console && console.debug(''+resultTime+': Object!');
                 console && console.debug(text);
             }
         }
@@ -228,6 +228,18 @@ function datecmp(d1, m1, y1, d2, m2, y2) {
 	return 0;
 }
 
+function formatYMD(date) {
+	var y = date.getFullYear(), m = date.getMonth() + 1, d = date.getDate();
+	(d < 10) && (d = '0' + d);
+	(m < 10) && (m = '0' + m);
+	return y + '-' + m + '-' + d;
+}
+
+function parseYMD(ymd) {
+	var ymda = ymd.split('-');
+	return new Date(ymda[0], parseInt(ymda[1], 10) - 1, parseInt(ymda[2]));
+}
+
 function myParseInt(s) {
 	if (parseInt(s) === s) return s;
 	var str = "0", i = 0;
@@ -281,7 +293,7 @@ function preventSelection(element){
 			removeSelection();
 	});
 	addHandler(element, 'mousedown', function(event){
-		var event = event || window.event;
+		event = event || window.event;
 		var sender = event.target || event.srcElement;
 		preventSelection = !sender.tagName.match(/INPUT|TEXTAREA/i);
 	});

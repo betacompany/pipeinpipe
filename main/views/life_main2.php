@@ -32,6 +32,8 @@ $items = Feed::getNear(time());
 		feed.redrawTimeline();
 
 		life.timeline.onChange(function (ms) {
+			var date = new Date(ms);
+			setAnchorParam('date', formatYMD(date));
 			feed.loadNearItems(ms);
 		});
 
