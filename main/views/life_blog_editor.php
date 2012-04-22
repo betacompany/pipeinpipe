@@ -17,10 +17,12 @@ if ($auth->isAuth()) {
 	$postId = 0;
 	$postBlogId = 0;
 	$tagIds = '{}';
+	$publishLabel = "Опубликовать";
 
 	if (issetParam('post_id')) {
 		$postId = intparam('post_id');
 		$post = Item::getById($postId);
+		$publishLabel = "Сохранить";
 		if ($post instanceof BlogPost) {
 			$blog = $post->getGroup();
 			if ($user->hasPermission($blog, 'edit')) {
@@ -52,11 +54,11 @@ if ($auth->isAuth()) {
 
 	<div>У вас нет ни одного блога, в который вы можете писать.</div>
 	<div class="title">
-		<label for="title">Название блога</label>
+		<label for="blog_title">Название блога</label>
 		<input id="blog_title" type="text" name="title" value="<?=$user->getFullName();?>" />
 	</div>
 	<div class="subbody">
-		<label for="desc">Краткое описание</label>
+		<label for="blog_description">Краткое описание</label>
 		<textarea id="blog_description" name="desc"></textarea>
 	</div>
 	<div>
@@ -136,7 +138,9 @@ if ($auth->isAuth()) {
 ?>
 
 			</select>
-			<div id="editor_button" class="button" onclick="javascript: fillFormTagsInput('input[name=post_tags]', <?=$postId?>)">Опубликовать</div>
+		</div>
+		<div class="editor_controls">
+			<div id="editor_button" class="button" onclick="javascript: fillFormTagsInput('input[name=post_tags]', <?=$postId?>)"><?=$publishLabel?></div>
 <?
 		if ($postId) {
 ?>

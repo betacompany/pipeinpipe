@@ -244,6 +244,11 @@ var feed = {
 	init: function () {
 		this.recalc();
 		this.__feedContainer = $('#feed .timeline_wrapper');
+		var date = getAnchorParam('date');
+		if (date) {
+			var ymd = date.split('-');
+			life.timeline.scrollTo(new Date(ymd[0], parseInt(ymd[1], 10) - 1, parseInt(ymd[2])));
+		}
 	},
 
 	recalc: function () {
