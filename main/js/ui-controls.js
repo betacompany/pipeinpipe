@@ -1293,7 +1293,7 @@ function Timeline(options) {
 					.css({
 						left: j.offset().left
 					})
-					.html(common.monthName(date));
+					.html(common.monthName(date) + "'" + date.getFullYear() % 100);
 			}
 
 			if(d == 1 && i > -options.delta) {
@@ -1302,7 +1302,7 @@ function Timeline(options) {
 					.css({
 						left: j.offset().left
 					})
-					.html(common.monthName(date));
+					.html(common.monthName(date) + "'" + date.getFullYear() % 100);
 			}
 		}
 	};
