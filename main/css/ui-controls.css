@@ -283,6 +283,6 @@ div.ui-timeline .month_name {
     top: -18px;
     color: #007ca7;
     text-align: center;
-    padding: 0 10px;
+    /*padding: 0 10px;*/
     border-bottom: 1px solid #c7dce3;
 }

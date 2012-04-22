@@ -1293,7 +1293,7 @@ function Timeline(options) {
 					.css({
 						left: j.offset().left
 					})
-					.html(common.monthName(date) + "'" + date.getFullYear() % 100);
+					.html(common.monthName(date) + "'" + new String(date.getFullYear()).substring(2));
 			}
 
 			if(d == 1 && i > -options.delta) {
@@ -1302,7 +1302,7 @@ function Timeline(options) {
 					.css({
 						left: j.offset().left
 					})
-					.html(common.monthName(date) + "'" + date.getFullYear() % 100);
+					.html(common.monthName(date) + "'" + new String(date.getFullYear()).substring(2));
 			}
 		}
 	};
@@ -1318,27 +1318,36 @@ function Timeline(options) {
 		}
 	};
 
+	var redraw = function (container) {
+		var w = container.width(),
+			dw = w / (2 * options.delta + 1);
+
+		jContainer.children('.date')
+			.width(dw - options.commonW)
+			.each(function (i) {
+				var x = (i - options.delta) / options.delta * 2;
+				$(this).css({
+					left:i * dw,
+					opacity:Math.exp(-x * x / 2)
+				});
+			})
+			.click(function () {
+				var ms = $(this).data('ms');
+				setCenterDayMs(ms, true);
+			});
+
+		jContainer.children('.month_name').css({
+			width:dw - options.commonW + 20
+		});
+	};
+
 	return {
 		getByContainer: function (container) {
-			var w = container.width(),
-				dw = w / (2 * options.delta + 1);
 
-			jContainer.children('.date')
-				.width(dw - options.commonW)
-				.each(function (i) {
-					var x = (i - options.delta) / options.delta * 2;
-					$(this).css({
-						left: i * dw,
-						opacity: Math.exp(-x * x / 2)
-					});
-				})
-				.click(function () {
-					var ms = $(this).data('ms');
-					setCenterDayMs(ms, true);
-				});
+			redraw(container);
 
-			jContainer.children('.month_name').css({
-				width: dw - options.commonW
+			$(window).resize(function () {
+				redraw($(jContainer).parent());
 			});
 
 			return jContainer;

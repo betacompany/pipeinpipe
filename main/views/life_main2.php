@@ -13,7 +13,7 @@ $items = Feed::getNear(time());
 
 ?>
 
-<div id="timeline_dates" style="background-color: #fff; width: 100%; z-index: 10;"></div>
+<div id="timeline_dates" style="background-color: #fff; width: 100%; z-index: 10; min-width: 944px;"></div>
 <div id="timeline_height" style="height: 80px; display: none;"></div>
 
 <script type="text/javascript">
