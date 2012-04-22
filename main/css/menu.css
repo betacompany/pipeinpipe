@@ -169,7 +169,7 @@
 #forum_new, #life_new {
 	display: none;
 	position: absolute;
-	top: -10px;
+	top: -3px;
 	right: 15px;
 	height: 14px;
 	color: #fff;
