@@ -24,14 +24,14 @@ class ItemsContainer extends Item {
 		$first = $items[0];
 		$this->innerType = ItemsContainer::checkAndGetType($first);
 		$this->innerUser = $first->getUser();
-		$this->timestamp = $first->getTimestamp();
+		$this->timestamp = $first->getCreationTimestamp();
 		foreach ($items as $item) {
 			$type = ItemsContainer::checkAndGetType($item);
 			if ($type != $this->innerType) {
 				throw new InvalidArgumentException("all items should be the same type");
 			}
 			$this->items[] = $item;
-			$this->timestamp = max($this->timestamp, $item->getTimestamp());
+			$this->timestamp = max($this->timestamp, $item->getCreationTimestamp());
 		}
 		rsort($this->items);
 	}
