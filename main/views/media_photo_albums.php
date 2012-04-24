@@ -46,8 +46,9 @@ foreach ($album2league as $albumId => $leagueId) {
 
 function media_show_album_cover(Group $group, $league = false) {
 	$count = $group->countItems();
-	$n = min(floor(sqrt($count)), 8);
-	$items = $group->getItems(0, $n * $n, true, Item::CREATION);
+	$m = 4;
+	$n = max(1, min(floor($count / $m), $m));
+	$items = $group->getItems(0, $n * $m, true, Item::CREATION);
 	$additionClass = "";
 	if ($n == 1) {
 		$additionClass = " n1";
@@ -59,6 +60,9 @@ function media_show_album_cover(Group $group, $league = false) {
 	<a href="/media/photo/album<?=$group->getId()?>">
 		<div class="cover<?=$additionClass?>">
 			<table>
+				<thead>
+					<th colspan="<?=$m?>"><?=$group->getTitle()?></th>
+				</thead>
 				<tbody>
 <?
 	for ($i = 0; $i < $n; $i++)	{
@@ -66,15 +70,18 @@ function media_show_album_cover(Group $group, $league = false) {
 		
 					<tr>
 <?
-		for ($j = 0; $j < $n; $j++) {
+		for ($j = 0; $j < $m; $j++) {
 			$k = $i * $n + $j;
-			$photo = $items[ $k ];
-			if (!($photo instanceof Photo)) {
-				global $LOG;
-				@$LOG->error("Not photo item (id={$photo->getId()}) in photo_album (id={$group->getId()})");
+			if ($k < $count) {
+				$photo = $items[ $k ];
+				if (!($photo instanceof Photo)) {
+					global $LOG;
+					@$LOG->error("Not photo item (id={$photo->getId()}) in photo_album (id={$group->getId()})");
+				}
+				echo '<td><div><img src="'.$photo->getUrl(Photo::SIZE_MINI).'"/></div></td>';
+			} else {
+				echo '<td><div></div></td>';
 			}
-
-			echo '<td><div><img src="'.$photo->getUrl(Photo::SIZE_MINI).'"/></div></td>';
 		}
 ?>
 					
