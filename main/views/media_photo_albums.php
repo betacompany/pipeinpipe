@@ -46,7 +46,7 @@ foreach ($album2league as $albumId => $leagueId) {
 
 function media_show_album_cover(Group $group, $league = false) {
 	$count = $group->countItems();
-	$n = floor(sqrt($count));
+	$n = max(floor(sqrt($count)), 8);
 	$items = $group->getItems(0, $n * $n, true, Item::CREATION);
 	$additionClass = "";
 	if ($n == 1) {
