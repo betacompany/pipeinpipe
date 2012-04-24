@@ -281,22 +281,6 @@ if (isset ($_REQUEST['part']) && $_SERVER['SCRIPT_NAME'] == '/sport.php' && isse
 				ui_handlers.push(callback);
 			}
 		</script>
-<?
-if (isset ($_REQUEST['part']) && $_SERVER['SCRIPT_NAME'] == '/life.php') {
-?>
-    <!--[if lt IE 9]>
-    <script type="text/javascript" src="excanvas.js"></script>
-    <![endif]-->
-    <script type="text/javascript" src="/js/jquery.tagcanvas.js"></script>
-<?
-}
-
-if (isset ($_REQUEST['part']) && $_REQUEST['part'] == 'video') {
-?>
-    <script type="text/javascript" src="/js/swfobject.js"></script>
-<?
-}
-?>
 	</head>
 	<body>
 <?

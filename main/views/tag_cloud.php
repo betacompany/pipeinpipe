@@ -9,6 +9,8 @@
  * @param int $height height of the canvas in pixels
  */
 function tag_cloud_show($tags, $height = 300) {
+	global $tagCloudEnabled;
+	$tagCloudEnabled = true;
 ?>
 <div id="tag_cloud_container">
     <canvas id="tag_cloud" height="<?=$height?>">
@@ -32,7 +34,7 @@ function tag_cloud_show($tags, $height = 300) {
 
     var initCloud = function() {
         if(!$(tagCloudSelector)
-            .attr('width', $('.body_container').width())
+            .attr('width', $('.body_container').innerWidth())
             .tagcanvas({
                 minBrightness: 0,
                 maxSpeed: 0.03,
@@ -55,8 +57,10 @@ function tag_cloud_show($tags, $height = 300) {
         }
     };
 
-    $(document).ready(initCloud);
-    $(window).resize(initCloud);
+	$$(function () {
+		initCloud();
+		$(window).resize(initCloud);
+	});
 </script>
 <?
 }

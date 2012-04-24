@@ -68,7 +68,7 @@ class Photo extends Item {
 	}
 
 	/**
-	 * Return size (in described blelow format) the nearest by square above
+	 * Return size (in described below format) the nearest by square above
 	 * the $size.
 	 * @param string $size
 	 * @return string 

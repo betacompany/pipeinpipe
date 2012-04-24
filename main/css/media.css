@@ -323,4 +323,64 @@ div.zoom:hover {
 	float: right;
 }
 
+#media_container .cover {
+    background-color: #007ca7;
+    float: left;
+    border-radius: 5px;
+    padding: 2px;
+    margin: 0 10px 10px 0;
+}
 
+#media_container .cover:hover {
+    background-color: #8FBC13;
+}
+
+#media_container .cover table {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+#media_container .cover td div {
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+}
+
+/*#media_container .cover td div:hover {*/
+    /*overflow: visible;*/
+/*}*/
+
+/*#media_container .cover td div:hover img {*/
+    /*border: #8FBC13 3px solid;*/
+    /*border-radius: 2px;*/
+/*}*/
+
+#media_container .cover td div img {
+    margin-left: -25px;
+    margin-top: -25px;
+    max-width: 150px;
+    max-height: 150px;
+    z-index: 0;
+}
+
+
+/*#media_container .cover.n1 td div {*/
+    /*width: 100px;*/
+    /*height: 100px;*/
+/*}*/
+
+/*#media_container .cover td div img {*/
+    /*margin-left: 0;*/
+    /*margin-top: 0;*/
+/*}*/
+
+
+/*#media_container .cover.nn td div {*/
+    /*width: 40px;*/
+    /*height: 40px;*/
+/*}*/
+
+/*#media_container .cover td div img {*/
+    /*margin-left: -50px;*/
+    /*margin-top: -50px;*/
+/*}*/

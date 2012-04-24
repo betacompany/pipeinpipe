@@ -94,6 +94,24 @@ if (isset ($_REQUEST['part']) && file_exists(dirname(__FILE__).'/../js/'.$script
 
 ?>
 
+<?
+global $tagCloudEnabled;
+if ($tagCloudEnabled) {
+?>
+<!--[if lt IE 9]>
+<script type="text/javascript" src="excanvas.js"></script>
+<![endif]-->
+<script type="text/javascript" src="/js/jquery.tagcanvas.js"></script>
+<?
+}
+
+if (isset ($_REQUEST['part']) && $_REQUEST['part'] == 'video') {
+	?>
+<script type="text/javascript" src="/js/swfobject.js"></script>
+<?
+}
+?>
+
 <script type="text/javascript">
 	for (var i = 0; i < ui_handlers.length; ++i) {
 		debug('[ui] Handler-' + i + ' started');

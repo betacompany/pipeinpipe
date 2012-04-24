@@ -20,7 +20,13 @@ try {
 		case 'photo':
 		case 'video':
 			if (!issetParam('group_id')) {
-				include 'views/media_albums.php';
+				$part = param('part');
+				if ($part == 'photo') {
+					include 'views/media_photo_albums.php';
+				} elseif ($part == 'video') {
+					//include 'views/media_video_albums.php';
+					include 'views/media_albums.php';
+				}
 			} elseif (!issetParam('item_id')) {
 				include 'views/media_album.php';
 			} else {
