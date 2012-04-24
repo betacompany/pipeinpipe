@@ -323,12 +323,17 @@ div.zoom:hover {
 	float: right;
 }
 
+#media_container table.wrap {
+    width: 900px;
+    margin: 0 auto;
+}
+
 #media_container .cover {
     background-color: #007ca7;
     float: left;
     border-radius: 5px;
     padding: 2px;
-    margin: 0 10px 10px 0;
+    margin-bottom: 10px;
 }
 
 #media_container .cover:hover {

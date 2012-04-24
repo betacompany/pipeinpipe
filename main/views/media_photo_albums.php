@@ -35,14 +35,48 @@ $tags = Tag::getAllByType(Item::PHOTO);
 
 tag_cloud_show($tags);
 
+$view = array();
 foreach ($album2league as $albumId => $leagueId) {
 	$album = Group::getById($albumId);
 	$league = false;
 	if ($leagueId < FAKE_ID) {
 		$league = League::getById($leagueId);
 	}
-	media_show_album_cover($album, $league);
+	
+	$view[] = array($album, $league);
 }
+
+$c = count($view);
+?>
+
+<table class="wrap">
+	<tbody>
+		<tr>
+			<td style="vertical-align: top;">
+<?
+for ($i = 0; $i < $c; $i += 3) {
+	media_show_album_cover($view[$i][0], $view[$i][1]);
+}
+?>
+			</td>
+			<td style="vertical-align: top;">
+<?
+for ($i = 1; $i < $c; $i += 3) {
+	media_show_album_cover($view[$i][0], $view[$i][1]);
+}
+?>
+			</td>
+			<td style="vertical-align: top;">
+<?
+for ($i = 2; $i < $c; $i += 3) {
+	media_show_album_cover($view[$i][0], $view[$i][1]);
+}
+?>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<?
 
 function media_show_album_cover(Group $group, $league = false) {
 	$count = $group->countItems();
