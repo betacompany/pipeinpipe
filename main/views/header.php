@@ -291,7 +291,7 @@ if ($auth->isAuth() && $user->needAccessToken()) {
 			$$(function () {
 				window.open(
 					'http://oauth.vk.com/authorize?client_id=<?=Vkontakte::VK_APP_ID?>' +
-					'&scope=wall,friends,offline,notes' +
+					'&scope=wall,friends,offline,notes,photos' +
 					'&redirect_uri=http%3A%2F%2F<?=MAIN_SITE_URL?>%2Fprocs%2Fproc_vk_access.php' +
 					'&response_type=code',
 					'VK Authorization',
