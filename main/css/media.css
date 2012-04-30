@@ -326,6 +326,11 @@ div.zoom:hover {
 #media_container table.wrap {
     width: 900px;
     margin: 0 auto;
+    border-spacing: 10px;
+}
+
+#media_container table.wrap td {
+    /*padding: 3px;*/
 }
 
 #media_container .cover {
@@ -349,6 +354,7 @@ div.zoom:hover {
     color: #fff;
     max-width: 280px;
     overflow: hidden;
+    padding: 5px;
 }
 
 #media_container .cover td div {
@@ -356,6 +362,8 @@ div.zoom:hover {
     height: 70px;
     overflow: hidden;
     background: #C7DCE3;
+    padding: 2px;
+    border-radius: 2px;
 }
 
 /*#media_container .cover td div:hover {*/

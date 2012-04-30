@@ -667,8 +667,8 @@ class Item {
 	 * @param int $limit
 	 * @return array
 	 */
-	protected static function getByRating($type, $limit) {
-		$iterator = ItemDBClient::getAllByRating($type, $limit);
+	public static function getByRating($type, $limit, $groupId = 0) {
+		$iterator = ItemDBClient::getAllByRating($type, $limit, $groupId);
 		return self::makeArray($iterator);
 	}
 

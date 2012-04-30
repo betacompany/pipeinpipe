@@ -88,8 +88,8 @@ class Video extends Item {
 	 * @param int $limit
 	 * @return array
 	 */
-	public static function getAllByRating($limit) {
-		return parent::getByRating(Item::VIDEO, $limit);
+	public static function getAllByRating($limit, $groupId = 0) {
+		return parent::getByRating(Item::VIDEO, $limit, $groupId);
 	}
 
     public static function parseLink($videoLink) {

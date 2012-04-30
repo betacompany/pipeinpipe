@@ -55,34 +55,56 @@ $c = count($view);
 			<td style="vertical-align: top;">
 <?
 for ($i = 0; $i < $c; $i += 3) {
-	media_show_album_cover($view[$i][0], $view[$i][1]);
+//	media_show_album_cover($view[$i][0], $view[$i][1]);
 }
 ?>
 			</td>
 			<td style="vertical-align: top;">
 <?
 for ($i = 1; $i < $c; $i += 3) {
-	media_show_album_cover($view[$i][0], $view[$i][1]);
+//	media_show_album_cover($view[$i][0], $view[$i][1]);
 }
 ?>
 			</td>
 			<td style="vertical-align: top;">
 <?
 for ($i = 2; $i < $c; $i += 3) {
-	media_show_album_cover($view[$i][0], $view[$i][1]);
+//	media_show_album_cover($view[$i][0], $view[$i][1]);
 }
 ?>
 			</td>
 		</tr>
 	</tbody>
 </table>
+
+<script type="text/javascript">
+	$$(function () {
+		$('.cover td div img').hover(
+			function () {
+				var t = $(this),
+					w = t.innerWidth(),
+					h = t.innerHeight();
+				t.animate({
+					marginLeft: (2 + Math.random()) * (75 - w) / 3,
+					marginTop: (2 + Math.random()) * (75 - h) / 3
+				}, "slow");
+			},
+			function () {
+				$(this).animate({
+					marginLeft: -5,
+					marginTop: -5
+				}, "slow");
+			}
+		);
+	});
+</script>
 <?
 
 function media_show_album_cover(Group $group, $league = false) {
 	$count = $group->countItems();
 	$m = 4;
 	$n = max(1, min(floor($count / $m), $m));
-	$items = $group->getItems(0, $n * $m, true, Item::CREATION);
+	$items = Item::getByRating(Item::PHOTO, $n * $m, $group->getId());
 	$additionClass = "";
 	if ($n == 1) {
 		$additionClass = " n1";

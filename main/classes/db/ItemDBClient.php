@@ -152,7 +152,7 @@ class ItemDBClient {
 		);
 	}
 
-	public static function getAllByRating($type, $limit) {
+	public static function getAllByRating($type, $limit, $groupId = 0) {
 		return new MySQLResultIterator(
 			mysql_qw(
 				'SELECT * FROM (
@@ -161,7 +161,7 @@ class ItemDBClient {
 						SELECT * FROM 
 							`pv_content_item`
 						WHERE
-							`type`=?
+							`type`=?'.($groupId ? " AND `group_id`=".intval($groupId) : "").'
 					) `r1`
 
 					LEFT JOIN

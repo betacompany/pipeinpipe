@@ -164,8 +164,8 @@ class Photo extends Item {
 	 * @param int $limit
 	 * @return array
 	 */
-	public static function getAllByRating($limit) {
-		return parent::getByRating(Item::PHOTO, $limit);
+	public static function getAllByRating($limit, $groupId = 0) {
+		return parent::getByRating(Item::PHOTO, $limit, $groupId);
 	}
 
 	private function parseAndSetContent() {
