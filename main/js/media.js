@@ -290,8 +290,6 @@ var media = {
 			const videoPreviewImgId = "video_preview";
 
 			const defaultLinkInputValue = 'http://www.youtube.com/watch?v=';
-			const defaultTitleInputValue = '';//'Введите название для видеозаписи';
-
 			const linkRegex = /(http\:\/\/|)(www.|)(youtube\.com)\/(v\/|watch\?v\=)((\w|\-){7,}).*/;
 
 			var titleInput = $('#' + titleInputId);
@@ -345,14 +343,6 @@ var media = {
 								.slideDown("fast");
 						break;
 					}
-				}
-			}
-
-			function checkValues() {
-				if (videoLoaded && titleInput.val() && titleInput.val() != defaultTitleInputValue) {
-					enableSubmitBtn();
-				} else {
-					disableSubmitBtn();
 				}
 			}
 

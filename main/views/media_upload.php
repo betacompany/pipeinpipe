@@ -58,7 +58,7 @@ if ($subpart) {
                 </tr>
                 <tr>
                     <td><label for="video_link">Вставьте ссылку на видео:</label></td>
-                    <td><input id="video_link" name="video_link" type="text" onchange=""></td>
+                    <td><input id="video_link" name="video_link" type="text"></td>
                 </tr>
                 <tr>
                     <td></td>
@@ -83,7 +83,7 @@ if ($subpart) {
                     <td>
                         <input id="video_tags" name="video_tags" type="hidden">
 <?
-        tag_creator_show(null, 304);
+        tag_creator_show(null, 300);
 ?>
                     </td>
                 </tr>
