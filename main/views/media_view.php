@@ -235,20 +235,22 @@ function media_show_youtube_video($videoId, $width = 480, $height = 385) {
 </div>
 
 <script type="text/javascript">
-    var params = { allowScriptAccess: "always" };
-    var atts = {
-        id: "ytplayer",
-        allowfullscreen: true
-    };
-    swfobject.embedSWF (
-        "http://www.youtube.com/v/<?=$videoId?>?enablejsapi=1&playerapiid=ytplayer",
-        "ytapiplayer", "<?=$width?>", "<?=$height?>", "8", null, null, params, atts
-    );
+    $(document).ready(function(){
+        var params = { allowScriptAccess: "always" };
+        var atts = {
+            id: "ytplayer",
+            allowfullscreen: true
+        };
+        swfobject.embedSWF (
+            "http://www.youtube.com/v/<?=$videoId?>?enablejsapi=1&playerapiid=ytplayer",
+            "ytapiplayer", "<?=$width?>", "<?=$height?>", "8", null, null, params, atts
+        );
 
-    window.onYouTubePlayerReady = function (playerId) {
-        var ytplayer = document.getElementById(playerId);
-        ytplayer.playVideo();
-    }
+        window.onYouTubePlayerReady = function (playerId) {
+            var ytplayer = document.getElementById(playerId);
+            ytplayer.playVideo();
+        }
+    });
 </script>
 <?
 }
