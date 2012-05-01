@@ -4,64 +4,64 @@
  *		 vk.com/innocent
  */
 (function() {
-	/**
-	 * itemId -> tagId[]
-	 * @type {Array}
-	 */
-	window.tagIds = {};
+	window.TagCreator = {
+		/**
+		 * itemId -> tagId[]
+		 * @type {Array}
+		 */
+		_tagIds: {},
 
-	/**
-	 * tagId -> tagValue
-	 * @type {Array}
-	 */
-	window.tagValues = {};
+		/**
+		 * tagId -> tagValue
+		 * @type {Array}
+		 */
+		_tagValues: {},
 
-	window.setTags = function (tags, itemId) {
-		for (var i in tags) {
-			addTag(tags[i].id, tags[i].value, itemId);
-		}
-	}
-
-	window.getTagIds = function (itemId) {
-		if (!itemId) itemId = 0;
-		tagIds[itemId] || (tagIds[itemId] = []);
-		return tagIds[itemId];
-	}
-
-	window.addTag = function (tagId, tagValue, itemId) {
-		if (!itemId) itemId = 0;
-		tagIds[itemId] || (tagIds[itemId] = []);
-		tagIds[itemId].push(tagId);
-		tagValues[tagId] = tagValue;
-	}
-
-	window.removeTag = function (tagId, itemId) {
-		if (!itemId) itemId = 0;
-		var newTags = [];
-		for (var i in tagIds[itemId]) {
-			if (!(tagIds[itemId][i] == tagId)) {
-				newTags.push(tagIds[itemId][i]);
+		setTags: function (tags, itemId) {
+			for (var i in tags) {
+				this.addTag(tags[i].id, tags[i].value, itemId);
 			}
+		},
+
+		getTagIds: function (itemId) {
+			if (!itemId) itemId = 0;
+			this._tagIds[itemId] || (this._tagIds[itemId] = []);
+			return this._tagIds[itemId];
+		},
+
+		addTag: function (tagId, tagValue, itemId) {
+			if (!itemId) itemId = 0;
+			this._tagIds[itemId] || (this._tagIds[itemId] = []);
+			this._tagIds[itemId].push(tagId);
+			this._tagValues[tagId] = tagValue;
+		},
+
+		removeTag: function (tagId, itemId) {
+			if (!itemId) itemId = 0;
+			var newTags = [];
+			for (var i in this._tagIds[itemId]) {
+				if (!(this._tagIds[itemId][i] == tagId)) {
+					newTags.push(this._tagIds[itemId][i]);
+				}
+			}
+			this._tagIds[itemId] = newTags;
+		},
+
+		getTagValue: function (tagId) {
+			return this._tagValues[tagId];
+		},
+
+		fillFormTagsInput: function(tagsInputCssSelector, itemId) {
+			var tagIds = this.getTagIds(itemId);
+			var str = '';
+			for (var i in tagIds) {
+				str += tagIds[i] + (i == tagIds.length - 1 ? '' : ',');
+			}
+			$(tagsInputCssSelector).val(str);
+			return true;
 		}
-		tagIds[itemId] = newTags;
-	}
+	};
 
-	window.getTagValue = function (tagId) {
-		return tagValues[tagId];
-	}
-
-	window.fillFormTagsInput = function(tagsInputCssSelector, itemId) {
-		var tagIds = getTagIds(itemId);
-		var str = '';
-		for (var i in tagIds) {
-			str += tagIds[i] + (i == tagIds.length - 1 ? '' : ',');
-		}
-		$(tagsInputCssSelector).val(str);
-		return true;
-	}
-})();
-
-(function() {
 	const TAG_CREATOR_CSS_SELECTOR = '.tag_creator';
 	const ADDED_TAGS_CSS_SELECTOR = '.tag_creator_added_tags';
 	const NEW_TAG_SELECTOR_CSS_SELECTOR = '.tag_creator_new_tag_selector';
@@ -105,11 +105,11 @@
 
 
 			function showAddedTags() {
-				var localTagIds = getTagIds(itemId);
+				var localTagIds = TagCreator.getTagIds(itemId);
 				var id;
 				for (var i in localTagIds) {
 					id = localTagIds[i];
-					showTag(id, getTagValue(id));
+					showTag(id, TagCreator.getTagValue(id));
 				}
 			}
 
@@ -165,7 +165,7 @@
 				}, function (json) {
 					var tagValue = json[JSON_TAG_VALUE_KEY];
 					showTag(tagId, tagValue);
-					addTag(tagId, tagValue, itemId);
+					TagCreator.addTag(tagId, tagValue, itemId);
 				});
 			}
 
@@ -176,7 +176,7 @@
 					item_id: itemId
 				}, function () {
 					tagDiv.slideUp(ANIMATION_SPEED);
-					removeTag(tagId, itemId);
+					TagCreator.removeTag(tagId, itemId);
 				});
 			}
 
@@ -189,7 +189,7 @@
 					}, function (json) {
 						var tagId = json[JSON_TAG_ID_KEY];
 						showTag(tagId, value);
-						addTag(tagId, value, itemId);
+						TagCreator.addTag(tagId, value, itemId);
 					});
 				}
 			}

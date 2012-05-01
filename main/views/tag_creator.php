@@ -20,7 +20,7 @@ function tag_creator_show($item = null, $width = 300) {
 
 <div class="tag_creator" data-item-id="<?=$itemId?>" data-width="<?=$width?>">
     <script type="text/javascript">
-        setTags(<?=$addedTags?>, <?=$itemId?>);
+        TagCreator.setTags(<?=$addedTags?>, <?=$itemId?>);
     </script>
     <div class="tag_creator_added_tags_container">
         <div class="tag_creator_added_tags"></div>

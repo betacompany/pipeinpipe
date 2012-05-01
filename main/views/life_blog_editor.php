@@ -140,7 +140,7 @@ if ($auth->isAuth()) {
 			</select>
 		</div>
 		<div class="editor_controls">
-			<div id="editor_button" class="button" onclick="javascript: fillFormTagsInput('input[name=post_tags]', <?=$postId?>)"><?=$publishLabel?></div>
+			<div id="editor_button" class="button" onclick="javascript: TagCreator.fillFormTagsInput('input[name=post_tags]', <?=$postId?>)"><?=$publishLabel?></div>
 <?
 		if ($postId) {
 ?>
