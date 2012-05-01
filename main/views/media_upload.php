@@ -5,6 +5,8 @@ global $auth;
 if (!$auth->isAuth()) {
 	exit(0);
 }
+$user = $auth->getCurrentUser();
+$accessToken = $user->getAccessToken();
 
 $subpart = param('subpart');
 $subparts = array(
@@ -48,57 +50,59 @@ if ($subpart) {
 	switch ($subpart) {
 	case 'video_youtube':
 ?>
-        <table id="video_uploader">
-            <form method="post" action="/procs/proc_media_uploader.php">
+    <table id="video_uploader">
+        <form method="post" action="/procs/proc_media_uploader.php">
             <input name="method" type="hidden" value="youtube">
             <tbody>
-                <tr>
-                    <td><label for="video_title">Название:</label></td>
-                    <td><input id="video_title" class="disabled" name="video_title" type="text" disabled="disabled"></td>
-                </tr>
-                <tr>
-                    <td><label for="video_link">Вставьте ссылку на видео:</label></td>
-                    <td><input id="video_link" name="video_link" type="text"></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><img id="video_preview"></td>
-                </tr><tr>
-                    <td><label for="group_id">Выберите альбом</label></td>
-                    <td>
-                        <select id="group_id" name="group_id">
-                            <?
+            <tr>
+                <td><label for="video_title">Название:</label></td>
+                <td><input id="video_title" class="disabled" name="video_title" type="text" disabled="disabled"></td>
+            </tr>
+            <tr>
+                <td><label for="video_link">Вставьте ссылку на видео:</label></td>
+                <td><input id="video_link" name="video_link" type="text"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><img id="video_preview"></td>
+            </tr>
+            <tr>
+                <td><label for="group_id">Выберите альбом</label></td>
+                <td>
+                    <select id="group_id" name="group_id">
+<?
                             $groups = Group::getAllByType(Group::VIDEO_ALBUM);
                             foreach ($groups as $group) {
-                                ?>
-                                <option value="<?=$group->getId()?>"><?=$group->getTitle()?></option>
-                                <?
-                            }
-                            ?>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="video_tags">Добавьте теги:</label></td>
-                    <td>
-                        <input id="video_tags" name="video_tags" type="hidden">
-<?
-        tag_creator_show(null, 300);
 ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><div id="video_upload_btn" class="button disabled" onclick="javascript: fillFormTagsInput('input#video_tags')">Загрузить</div></td>
-                </tr>
+                            <option value="<?=$group->getId()?>"><?=$group->getTitle()?></option>
+<?
+                            }
+?>
+                    </select>
+                </td>
+            <tr>
+                <td><label for="video_tags">Добавьте теги:</label></td>
+                <td>
+                    <input id="video_tags" name="video_tags" type="hidden">
+<?
+        tag_creator_show();
+?>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <div id="video_upload_btn" class="button disabled" onclick="javascript: TagCreator.fillFormTagsInput('input#video_tags')">Загрузить</div>
+                </td>
+            </tr>
             </tbody>
-            </form>
-        </table>
-        <script type="text/javascript">
-            $(document).ready(function() {
-                media.youtube.init();
-            });
-        </script>
+        </form>
+    </table>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            media.youtube.init();
+        });
+    </script>
 <?
 		break;
 
@@ -108,9 +112,77 @@ if ($subpart) {
 	case 'photo_files':
 		echo 'Photo Files';
 		break;
+
 	case 'photo_vkontakte':
-		echo 'Photo VK';
-		break;
+?>
+    <div id="vk_photos_selector_container">
+        <table id="vk_photos_selector" class="vk_photos">
+            <thead>
+            <tr>
+                <th id="vk_available_photos_title"></th>
+                <th id="vk_selected_photos_title" colspan="2"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td id="vk_available_photos" class="vk_photos"></td>
+                <td id="vk_selected_photos" class="vk_photos"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="vk_photos_controls">
+        <div id="vk_photos_controls_back" class="button disabled">◄ Назад</div>
+        <div id="vk_photos_controls_all" class="button disabled">Выбрать все ►</div>
+        <div class="clear"></div>
+    </div>
+
+    <div id="vk_photos_options">
+        <table class="vk_photos">
+            <tbody>
+            <tr id="vk_photos_group">
+                <td>
+                    <div>Выберите альбом</div>
+                </td>
+                <td>
+                    <select id="vk_photos_group_id">
+<?
+                        $groups = Group::getAllByType(Group::PHOTO_ALBUM);
+                        foreach ($groups as $group) {
+?>
+                        <option value="<?=$group->getId()?>"><?=$group->getTitle()?></option>
+<?
+                        }
+?>
+                    </select>
+                </td>
+            <tr>
+            <tr id="vk_photos_tag_creator">
+                <td>Добавьте теги</td>
+                <td>
+                    <?
+                    tag_creator_show();
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <div id="vk_photos_controls_upload" class="button disabled">Загрузить ▲</div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            media.vk.photos.init('<?=$accessToken?>');
+        });
+    </script>
+<?
+        break;
 	}
 ?>
 

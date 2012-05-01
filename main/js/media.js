@@ -380,7 +380,408 @@ var media = {
 	},
 
 	vk: {
+		photos: {
+			init: function(accessToken) {
+				function sendApiRequest(method, callback, data) {
+					var data1 = data;
+					$.ajax({
+						url:'https://api.vk.com/method/' + method,
+						data:$.extend(data1, {
+							access_token: accessToken,
+							callback: callback
+						}),
+						dataType:'jsonp',
+						beforeSend: function() {
+							vkPhotosEnabled = false;
+						}
+					});
+				}
 
+				var vkPhotosEnabled = true;
+
+				const availablePhotosTitle = $('#vk_available_photos_title');
+				const selectedPhotosTitle = $('#vk_selected_photos_title').hide().html('Выбранные фотографии');
+				const availablePhotosList = $('#vk_available_photos');
+				const selectedPhotosList = $('#vk_selected_photos');
+
+				const options = $('#vk_photos_options');
+				const groupSelector = $('#vk_photos_group select');
+				const tagCreator = $('#vk_photos_tag_creator');
+
+				const actionBtnBack = $('#vk_photos_controls_back');
+				const actionBtnAll = $('#vk_photos_controls_all');
+				const actionBtnUpload = $('#vk_photos_controls_upload');
+
+				/**
+				 * photoId -> {Object} details
+				 * @type map
+				 */
+				var selectedPhotos = {};
+				var availablePhotosCount = 0;
+				var selectedPhotosCount = 0;
+
+				const animationSpeed = "fast";
+
+				const focusOutImageOpacity = 0.9;
+
+				const focusOutTitleBgPadding = '4px'
+				const focusInTitleBgPadding = '10px';
+				const focusOutTitleBgOpacity = 0.6
+				const focusInTitleBgOpacity = 0.8;
+
+				const focusOutTitleBgCss = {
+					'padding-top': focusOutTitleBgPadding,
+					'padding-bottom': focusOutTitleBgPadding,
+					'opacity': focusOutTitleBgOpacity
+				};
+
+				const focusInTitleBgCss = {
+					'padding-top': focusInTitleBgPadding,
+					'padding-bottom': focusInTitleBgPadding,
+					'opacity': focusInTitleBgOpacity
+				};
+
+				const focusOutTitleCss = {
+					'height': '14px'
+				};
+
+				function buildAlbum(data) {
+					/*
+					 aid: "154808970"
+					 created: "1332285464"
+					 description: "часть фоток у нас с бобом одинаковые, а остальные – не совсем. http://vk.com/album312666_153850082"
+					 owner_id: "355679"
+					 privacy: 0
+					 size: 31
+					 thumb_id: "280431237"
+					 thumb_src: "http://cs301301.userapi.com/u355679/154808970/m_86454a14.jpg"
+					 title: "Барса"
+					 updated: "1332511095"
+					 */
+
+					var container = $('<div/>',{
+						title: data.description
+					})
+							.addClass('vk_album')
+							.addClass('vk_media_item')
+							.appendTo(availablePhotosList);
+
+					$('<img/>', {src:data.thumb_src}).appendTo(container);
+
+					var titleBg = $('<div/>')
+							.css(focusOutTitleBgCss)
+							.addClass('vk_album_title_bg')
+							.appendTo(container);
+
+					var title = $('<div/>', {
+						text:data.title
+					})
+							.addClass('vk_album_title')
+							.appendTo(titleBg);
+
+					var focusInTitleCss = {
+						'height': Math.min(title.height(), container.height())
+					};
+
+					title.css(focusOutTitleCss);
+
+					container.hover(function () {
+						titleBg.animate(focusInTitleBgCss, animationSpeed);
+						title.animate(focusInTitleCss, animationSpeed);
+					}, function () {
+						titleBg.animate(focusOutTitleBgCss, animationSpeed);
+						title.animate(focusOutTitleCss, animationSpeed);
+					});
+
+					bindHover(container);
+
+					container.click(function() {
+						if (vkPhotosEnabled) {
+							sendApiRequest("photos.get", 'showPhotos', {
+								uid: data.owner_id,
+								aid: data.aid
+							})
+//							showPhotos({"response":[{"pid":280307174,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/m_3fc3979e.jpg","src_big":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/x_7d73584d.jpg","src_small":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/s_2bcd9e3f.jpg","src_xbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/y_d29aaf43.jpg","src_xxbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/z_2561fda1.jpg","width":1280,"height":960,"text":"","created":1332285986},{"pid":280307177,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/m_695fcc0e.jpg","src_big":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/x_d2854859.jpg","src_small":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/s_d6fbd1c7.jpg","src_xbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/y_a4281d7e.jpg","src_xxbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/z_dd6672cc.jpg","width":1280,"height":890,"text":"","created":1332286002},{"pid":280307180,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/m_0bfe84f3.jpg","src_big":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/x_e58b5ae6.jpg","src_small":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/s_6c436c85.jpg","src_xbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/y_f7ced2fb.jpg","src_xxbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/z_b0aba393.jpg","width":1280,"height":960,"text":"","created":1332286011},{"pid":280307181,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/m_ee871f87.jpg","src_big":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/x_6b687e17.jpg","src_small":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/s_637442cf.jpg","src_xbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/y_0da5c43a.jpg","src_xxbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/z_10798667.jpg","width":1280,"height":960,"text":"","created":1332286021},{"pid":280307182,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/m_c332ee57.jpg","src_big":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/x_81b01d48.jpg","src_small":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/s_00522950.jpg","src_xbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/y_183eb1a7.jpg","src_xxbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/z_1db1fd6a.jpg","width":768,"height":1024,"text":"","created":1332286026},{"pid":280307183,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/m_d3502078.jpg","src_big":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/x_33d1cb22.jpg","src_small":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/s_48c065d1.jpg","src_xbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/y_5b4bd8e1.jpg","src_xxbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/z_ffec0832.jpg","width":1280,"height":960,"text":"","created":1332286035},{"pid":280307185,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/m_6c35cfda.jpg","src_big":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/x_61af0525.jpg","src_small":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/s_d5adb9d4.jpg","src_xbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/y_fbcf18e9.jpg","src_xxbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/z_5e754ed6.jpg","width":1280,"height":995,"text":"","created":1332286045},{"pid":280307188,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/m_36cbd169.jpg","src_big":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/x_3e72f509.jpg","src_small":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/s_d3bc7d46.jpg","src_xbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/y_bad929ae.jpg","src_xxbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/z_d06c8975.jpg","width":1280,"height":936,"text":"","created":1332286058},{"pid":280307190,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/m_ebdf5453.jpg","src_big":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/x_7f5e2305.jpg","src_small":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/s_fc2fdee0.jpg","src_xbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/y_8cc5fd70.jpg","src_xxbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/z_057bc68d.jpg","width":1280,"height":960,"text":"","created":1332286072},{"pid":280307194,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/m_8de9f6ba.jpg","src_big":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/x_b9038798.jpg","src_small":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/s_625bf68b.jpg","src_xbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/y_8fc676be.jpg","src_xxbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/z_16853233.jpg","width":1280,"height":960,"text":"","created":1332286086},{"pid":280307197,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/m_2b8ae660.jpg","src_big":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/x_61efef4a.jpg","src_small":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/s_14349045.jpg","src_xbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/y_72e56b29.jpg","src_xxbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/z_5fcafa12.jpg","width":1280,"height":960,"text":"","created":1332286098},{"pid":280307200,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/m_dc4a8911.jpg","src_big":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/x_fc21ce84.jpg","src_small":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/s_05d292b9.jpg","src_xbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/y_e4bf9376.jpg","src_xxbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/z_d129a640.jpg","width":1280,"height":960,"text":"","created":1332286110},{"pid":280307203,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/m_86504086.jpg","src_big":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/x_c2ac87e3.jpg","src_small":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/s_ad757d5e.jpg","src_xbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/y_82a8abdd.jpg","src_xxbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/z_295e6527.jpg","width":1280,"height":944,"text":"","created":1332286119},{"pid":280307204,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/m_9bc30b89.jpg","src_big":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/x_22d8f519.jpg","src_small":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/s_9c033038.jpg","src_xbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/y_b763b210.jpg","src_xxbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/z_355e38d3.jpg","width":1280,"height":960,"text":"","created":1332286130},{"pid":280307207,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/m_8adddbdf.jpg","src_big":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/x_999b46d3.jpg","src_small":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/s_62a45a74.jpg","src_xbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/y_dd32a36c.jpg","src_xxbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/z_1503679e.jpg","width":1280,"height":960,"text":"","created":1332286146},{"pid":280307209,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/m_80d26a86.jpg","src_big":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/x_1e832b8c.jpg","src_small":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/s_5d1bfdb5.jpg","src_xbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/y_2cda57b7.jpg","src_xxbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/z_ded3cc1a.jpg","width":1280,"height":909,"text":"","created":1332286155},{"pid":280307210,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/m_80dc7740.jpg","src_big":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/x_adfcaa39.jpg","src_small":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/s_31c57e81.jpg","src_xbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/y_9e738dd5.jpg","src_xxbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/z_5040c622.jpg","width":790,"height":1024,"text":"","created":1332286165},{"pid":280307211,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/m_a204e805.jpg","src_big":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/x_1ba516ab.jpg","src_small":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/s_ae38075b.jpg","src_xbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/y_c1d6ba73.jpg","src_xxbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/z_caa2b856.jpg","width":768,"height":1024,"text":"","created":1332286171},{"pid":280307213,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/m_fa3b42c3.jpg","src_big":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/x_628d5017.jpg","src_small":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/s_b2fbf26a.jpg","src_xbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/y_ee501658.jpg","src_xxbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/z_3578e32d.jpg","width":1280,"height":960,"text":"","created":1332286184},{"pid":280307214,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/m_688b58f1.jpg","src_big":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/x_a49d7ff3.jpg","src_small":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/s_d31a740c.jpg","src_xbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/y_78136185.jpg","src_xxbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/z_d41810d3.jpg","width":1280,"height":960,"text":"","created":1332286192},{"pid":280307216,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/m_bba5d818.jpg","src_big":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/x_dec464b1.jpg","src_small":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/s_b1df006d.jpg","src_xbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/y_74a41bc3.jpg","src_xxbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/z_939a6f80.jpg","width":768,"height":1024,"text":"Gerardo,  мы там с ним угорали","created":1332286198},{"pid":280307221,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/m_d56bd5fb.jpg","src_big":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/x_89df4aa9.jpg","src_small":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/s_8cc7ce70.jpg","src_xbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/y_e989095a.jpg","src_xxbig":"http:\/\/cs5171.userapi.com\/u355679\/154808970\/z_06ae51db.jpg","width":1280,"height":871,"text":"","created":1332286220},{"pid":280408383,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/m_2ecbf9ea.jpg","src_big":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/x_19ff3b05.jpg","src_small":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/s_78ecf1ee.jpg","src_xbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/y_785db038.jpg","src_xxbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/z_5a776992.jpg","src_xxxbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/w_1749eedf.jpg","width":2560,"height":1873,"text":"","created":1332453742},{"pid":280408392,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/m_c900c995.jpg","src_big":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/x_f33a3088.jpg","src_small":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/s_3b86b35f.jpg","src_xbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/y_6cf4497c.jpg","src_xxbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/z_2e03bf90.jpg","src_xxxbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/w_41d8f588.jpg","width":2560,"height":1857,"text":"","created":1332453777},{"pid":280408409,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/m_8981b076.jpg","src_big":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/x_61c74d7e.jpg","src_small":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/s_4611ceaf.jpg","src_xbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/y_266494e3.jpg","src_xxbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/z_6f5f968c.jpg","src_xxxbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/w_51ae395b.jpg","width":2560,"height":1920,"text":"","created":1332453833},{"pid":280408418,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/m_7c2bfa4a.jpg","src_big":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/x_0956c333.jpg","src_small":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/s_902cd65a.jpg","src_xbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/y_acfba559.jpg","src_xxbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/z_9b4558c7.jpg","src_xxxbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/w_980c73f5.jpg","width":1551,"height":2048,"text":"","created":1332453882},{"pid":280427490,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/m_f9309746.jpg","src_big":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/x_9cd9aa49.jpg","src_small":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/s_f264f749.jpg","src_xbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/y_edd16f88.jpg","src_xxbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/z_52faa9e1.jpg","src_xxxbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/w_57f7b20a.jpg","width":2560,"height":1835,"text":"","created":1332506294},{"pid":280427493,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/m_57a19a4a.jpg","src_big":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/x_f03d48e6.jpg","src_small":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/s_48ea6e17.jpg","src_xbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/y_c80714b5.jpg","src_xxbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/z_6832afc6.jpg","src_xxxbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/w_b7f8fc21.jpg","width":2560,"height":1920,"text":"","created":1332506297},{"pid":280427495,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/m_a0d80571.jpg","src_big":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/x_b2908c77.jpg","src_small":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/s_a46cbdab.jpg","src_xbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/y_f940eea4.jpg","src_xxbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/z_39610912.jpg","src_xxxbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/w_7e0be6f5.jpg","width":2560,"height":1781,"text":"","created":1332506299},{"pid":280431235,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/m_269d85d9.jpg","src_big":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/x_ad1e4cd0.jpg","src_small":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/s_282706fd.jpg","src_xbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/y_5065c368.jpg","src_xxbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/z_976b5e29.jpg","src_xxxbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/w_a6469871.jpg","width":2560,"height":1920,"text":"","created":1332511092},{"pid":280431237,"aid":154808970,"owner_id":355679,"src":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/m_86454a14.jpg","src_big":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/x_d517121d.jpg","src_small":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/s_58ca6bbc.jpg","src_xbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/y_b77022ca.jpg","src_xxbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/z_bbb361ba.jpg","src_xxxbig":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/w_9d7ad5ea.jpg","width":2560,"height":1920,"text":"","created":1332511095}]});
+						}
+					});
+				}
+
+				function bindHover(elem) {
+					return elem.css({
+						'opacity':focusOutImageOpacity
+					}).hover(function () {
+								$(this).fadeTo(animationSpeed, 1);
+							}, function () {
+								$(this).fadeTo(animationSpeed, focusOutImageOpacity);
+							});
+				}
+
+				function buildPhoto(data) {
+					/*
+					 aid: 154808970
+					 created: 1332285986
+					 height: 960
+					 owner_id: 355679
+					 pid: 280307174
+					 src: "http://cs5171.userapi.com/u355679/154808970/m_3fc3979e.jpg"
+					 src_big: "http://cs5171.userapi.com/u355679/154808970/x_7d73584d.jpg"
+					 src_small: "http://cs5171.userapi.com/u355679/154808970/s_2bcd9e3f.jpg"
+					 src_xbig: "http://cs5171.userapi.com/u355679/154808970/y_d29aaf43.jpg"
+					 src_xxbig: "http://cs5171.userapi.com/u355679/154808970/z_2561fda1.jpg"
+					 text: ""
+					 width: 1280
+					 */
+
+					if (selectedPhotos[data.aid] && selectedPhotos[data.aid][data.pid]) {
+						availablePhotosCount --;
+						return;
+					}
+
+					var container = $('<div/>', {
+						title: data.text
+					})
+							.addClass('vk_photo')
+							.addClass('vk_media_item')
+							.appendTo(availablePhotosList);
+
+					bindHover(container)
+
+					var containerWidth = container.width();
+					var containerHeight = container.height();
+					var imgWidth = data.width;
+					var imgHeight = data.height;
+
+					var properties = {src: imgWidth > imgHeight ? data.src : data.src_big};
+
+					if (imgWidth / imgHeight >= containerWidth / containerHeight) {
+						properties.height = containerHeight;
+					} else {
+						properties.width = containerWidth;
+					}
+
+					$('<img/>', properties).appendTo(container);
+
+					bindPhotoClick(container, data)
+				}
+
+				function bindPhotoClick(container, data) {
+					container.click(function () {
+						if (vkPhotosEnabled) {
+							var copy = container.clone()
+									.hide()
+									.appendTo(selectedPhotosList)
+									.click(function() {
+										delete selectedPhotos[data.aid][data.pid];
+										availablePhotosCount ++;
+										selectedPhotosCount --;
+										moveLeftAndResize(copy, container);
+									});
+
+							availablePhotosCount --;
+							selectedPhotosCount ++;
+							if (!selectedPhotos[data.aid])
+								selectedPhotos[data.aid] = {};
+							selectedPhotos[data.aid][data.pid] = data;
+							moveRightAndResize(container, copy);
+						}
+					});
+				}
+
+				function moveRightAndResize(photo1, photo2) {
+					resizePhotosList(50, selectedPhotosList, availablePhotosList, function() {
+						selectedPhotosTitle.show();
+						togglePhoto(photo1, photo2, function() {
+							enableActionUpload();
+							showUploadOptions(function() {
+								if (availablePhotosCount == 0) {
+									availablePhotosTitle.hide();
+									disableActionAll();
+									resizePhotosList(0, availablePhotosList, selectedPhotosList);
+								}
+							});
+						});
+					});
+				}
+
+				function moveLeftAndResize(photo1, photo2) {
+					resizePhotosList(50, availablePhotosList, selectedPhotosList, function() {
+						availablePhotosTitle.show();
+						enableActionAll();
+						togglePhoto(photo1, photo2, function() {
+							if (selectedPhotosCount == 0) {
+								selectedPhotosTitle.hide();
+								disableActionUpload();
+								resizePhotosList(0, selectedPhotosList, availablePhotosList, hideUploadOptions);
+							}
+							photo1.remove();
+						});
+					});
+				}
+
+				function resizePhotosList(percentage, list, otherList, callback) {
+					otherList.animate({width:(100 - percentage) + '%'}, animationSpeed);
+					list.animate({width:percentage + '%'}, animationSpeed, null, callback);
+				}
+
+				function togglePhoto(photo1, photo2, callback) {
+					photo1.unbind('mouseenter mouseleave')
+							.fadeOut(animationSpeed, function () {
+								photo2.fadeTo(animationSpeed, focusOutImageOpacity, function(){
+									bindHover(photo2);
+									callback && callback();
+								});
+
+							});
+				}
+
+				function showUploadOptions(callback) {
+					options.slideDown(animationSpeed, callback);
+				}
+
+				function hideUploadOptions() {
+					options.slideUp(animationSpeed);
+				}
+
+				function enableActionAll() {
+					enableAction(actionBtnAll, actionAll);
+				}
+
+				function disableActionAll() {
+					disableAction(actionBtnAll);
+				}
+
+				function enableActionUpload() {
+					enableAction(actionBtnUpload, actionUpload);
+				}
+
+				function disableActionUpload() {
+					disableAction(actionBtnUpload);
+				}
+
+				function enableAction(btn, fn) {
+					btn.removeClass('disabled')
+							.unbind('click')
+							.click(function() {
+								vkPhotosEnabled && fn && fn();
+							});
+				}
+
+				function disableAction(btn) {
+					btn.addClass('disabled')
+							.unbind('click');
+				}
+
+				function actionAll() {
+					availablePhotosList.children().each(function () {
+						if ($(this).css('display') != 'none')
+							$(this).click()
+					});
+				}
+				
+				function actionUpload() {
+					var photos = [];
+					for (var i in selectedPhotos) {
+						for (var j in selectedPhotos[i]) {
+							var data = selectedPhotos[i][j];
+							photos.push({
+								micro: data.src_small,
+								mini: data.src,
+								middle: data.src_big,
+								hq: data.src_xxbig,
+								description: data.text
+							});
+						}
+					}
+
+					$.ajax({
+						url: '/procs/proc_media_uploader.php',
+						data: {
+							method: 'vk_photos',
+							photos: JSON.stringify(photos),
+							tags: JSON.stringify(TagCreator.getTagIds()),
+							group_id: groupSelector.val()
+						},
+						dataType: 'json',
+						beforeSend: function() {
+							vkPhotosEnabled = false;
+						},
+						success: function(data) {
+							if (data && data.status == 'ok') {
+								main.showNotification('<p>Загрузка фотографий прошла успешно!</p>' +
+										'<p>Вы можете <a href="' + data.redirect + '">перейти</a> к их просмотру.</p>');
+
+								selectedPhotos = {};
+								selectedPhotosCount = 0;
+								selectedPhotosList.empty();
+
+								selectedPhotosTitle.hide();
+								disableActionUpload();
+								resizePhotosList(0, selectedPhotosList, availablePhotosList, hideUploadOptions);
+							} else {
+								main.showErrorText(data && data.message ? data.message : 'Загрузка не удалась! Попробуйте ещё раз!');
+								console.debug(data);
+							}
+							vkPhotosEnabled = true;
+						},
+						error: function() {
+							main.showErrorText('Загрузка не удалась! Попробуйте ещё раз!');
+							console.debug(data);
+							vkPhotosEnabled = true;
+						}
+					});
+				}
+
+				function show(data, fn, title) {
+					availablePhotosList.fadeOut(animationSpeed, function() {
+						$(this).html('')
+								.show();
+
+						var response = data.response;
+						for (var i in response) {
+							fn(response[i]);
+						}
+						availablePhotosTitle.html(title);
+						vkPhotosEnabled = true;
+					});
+				}
+
+				var albumsData;
+
+				window.showAlbums = function(data) {
+					show(data, buildAlbum, 'Выберите альбом');
+					albumsData = data;
+				}
+
+				window.showPhotos = function(data) {
+					show(data, buildPhoto, 'Выберите фотографии');
+
+					enableAction(actionBtnBack, function(){
+						disableAction(actionBtnBack);
+						disableActionAll();
+						if (availablePhotosCount == 0) {
+							resizePhotosList(50, availablePhotosList, selectedPhotosList, function() {
+								showAlbums(albumsData);
+							});
+						} else {
+							showAlbums(albumsData);
+						}
+					});
+
+					availablePhotosCount = data.response.length;
+					if (availablePhotosCount > 0)
+						enableActionAll();
+				}
+
+				$(document).ready(function(){
+					sendApiRequest('photos.getAlbums', 'showAlbums', {need_covers:1});
+//					showAlbums({"response":[{"aid":"154808970","thumb_id":"280431237","owner_id":"355679","title":"Барса","description":"часть фоток у нас с бобом одинаковые, а остальные – не совсем. http:\/\/vk.com\/album312666_153850082","created":"1332285464","updated":"1332511095","size":31,"privacy":0,"thumb_src":"http:\/\/cs301301.userapi.com\/u355679\/154808970\/m_86454a14.jpg"},{"aid":"122568522","thumb_id":"163723944","owner_id":"355679","title":"случайные фотки","description":"листики, там, всякие.. натюрморты..","created":"1290898589","updated":"1320425798","size":41,"privacy":0,"thumb_src":"http:\/\/cs517.userapi.com\/u355679\/2443014\/m_8d275227.jpg"},{"aid":"116992054","thumb_id":"179817101","owner_id":"355679","title":"Sverige","description":"Stockholm + a bit of Helsinki\n\nкто хотел найти в этом альбоме просто виды Стокгольма, тому сюда: http:\/\/images.google.com\/images?q=stockholm","created":"1283890658","updated":"1300549452","size":69,"privacy":0,"thumb_src":"http:\/\/cs226.userapi.com\/u355679\/116992054\/m_245ac857.jpg"},{"aid":"28966094","thumb_id":"155546412","owner_id":"355679","title":"Питер","description":"в хорошем качестве\nздесь:\nhttp:\/\/s613.photobucket.com\/albums\/tt218\/kex_guru\/city\/\n\nи здесь:\n(в нескольких постах)\nhttp:\/\/shuvalovip.livejournal.com\/","created":"1211989252","updated":"1308659078","size":94,"privacy":0,"thumb_src":"http:\/\/cs224.userapi.com\/u355679\/28966094\/m_9ab93801.jpg"},{"aid":"6152017","thumb_id":"161257980","owner_id":"355679","title":"Комарово","description":"в хорошем качестве\nтут:\nhttp:\/\/s613.photobucket.com\/albums\/tt218\/kex_guru\/komarovo\/\n\nили тут:\nhttp:\/\/shuvalovip.livejournal.com\/1790.html\nhttp:\/\/shuvalovip.livejournal.com\/1920.html","created":"1194903958","updated":"1309791888","size":76,"privacy":0,"thumb_src":"http:\/\/cs9980.userapi.com\/u355679\/6152017\/m_d05562d6.jpg"},{"aid":"139170314","thumb_id":"275461242","owner_id":"355679","title":"in Berlin","description":"","created":"1310997101","updated":"1326304723","size":43,"privacy":0,"thumb_src":"http:\/\/cs5999.userapi.com\/u355679\/139170314\/m_3f1231c5.jpg"},{"aid":"95254084","thumb_id":"167517172","owner_id":"355679","title":"Нюмтхайон","description":"в хорошем качестве тут:\nhttp:\/\/shuvalovip.livejournal.com\/2979.html\n\nили тут:\nhttp:\/\/s613.photobucket.com\/albums\/tt218\/kex_guru\/numthaion\/","created":"1250240725","updated":"1287599377","size":94,"privacy":0,"thumb_src":"http:\/\/cs10188.userapi.com\/u355679\/95254084\/m_71e29ba6.jpg"},{"aid":"2443014","thumb_id":"206975936","owner_id":"355679","title":"просто","description":"хронологический порядок полностью отсутствует.\n\nсамые, на мой взгляд, хорошие есть в нормальном качестве\nтут портреты: \nhttp:\/\/s613.photobucket.com\/albums\/tt218\/kex_guru\/portraits\/\n\nтут просто всякое макро-и-не-только:\nhttp:\/\/s613.photobucket.com\/albums\/tt218\/kex_guru\/\n\nи тут всякие там листики:\nhttp:\/\/s613.photobucket.com\/albums\/tt218\/kex_guru\/autumn\/","created":"1188323843","updated":"1318789562","size":483,"privacy":0,"thumb_src":"http:\/\/cs10011.userapi.com\/u355679\/2443014\/m_1bcfe232.jpg"},{"aid":"154513363","thumb_id":"281444118","owner_id":"355679","title":"hipster-like","description":"","created":"1331753432","updated":"1334343174","size":7,"privacy":0,"thumb_src":"http:\/\/cs11376.userapi.com\/u355679\/154513363\/m_f73825c9.jpg"},{"aid":"142819209","thumb_id":"267697035","owner_id":"355679","title":"Вот и свадебку сыграли","description":"http:\/\/vkontakte.ru\/video397095_160883034","created":"1315858902","updated":"1320783281","size":121,"privacy":0,"thumb_src":"http:\/\/cs10096.userapi.com\/u355679\/142819209\/m_7728731c.jpg"},{"aid":"133980710","thumb_id":"258670967","owner_id":"355679","title":"у Даши","description":"новоселье + Радин первый др","created":"1304371168","updated":"1312559032","size":18,"privacy":0,"thumb_src":"http:\/\/cs5587.userapi.com\/u355679\/133980710\/m_aa3ddb7e.jpg"},{"aid":"144870026","thumb_id":"269190299","owner_id":"355679","title":"concert","description":"","created":"1318429912","updated":"1318430963","size":11,"privacy":0,"thumb_src":"http:\/\/cs10096.userapi.com\/u355679\/144870026\/m_a90b4a41.jpg"},{"aid":"80327597","thumb_id":"123978973","owner_id":"355679","title":"Abaza parties","description":"22.02.2009\n20.02.2011\n\nв хорошем качестве\nтут:\nhttp:\/\/s613.photobucket.com\/albums\/tt218\/kex_guru\/\n\nили тут:\nhttp:\/\/shuvalovip.livejournal.com\/717.html","created":"1235582930","updated":"1304241627","size":25,"privacy":0,"thumb_src":"http:\/\/cs4152.userapi.com\/u355679\/80329275\/m_5b14efaa.jpg"},{"aid":"96518249","thumb_id":"138642133","owner_id":"355679","title":"Самая организованная нимфейская встреча","description":"когда я отправлял фотки масс-аплоадером, то он мне показал, что в контакте они весят 666 кб!!!","created":"1253739849","updated":"1253740524","size":16,"privacy":0,"thumb_src":"http:\/\/cs1575.userapi.com\/u355679\/96518249\/m_2ff1485b.jpg"},{"aid":"14881506","thumb_id":"94226540","owner_id":"355679","title":"удолбки","description":"нарыл в компе.\nне помню когда это снималось.\nи не мной.","created":"1203104493","updated":"1203104598","size":13,"privacy":1,"thumb_src":"http:\/\/cs159.userapi.com\/u355679\/14881506\/m_9b96406f.jpg"},{"aid":"86142598","thumb_id":"125094086","owner_id":"355679","title":"пайп и жизнь вокруг него","description":"pipeinpipe.info","created":"1237213751","updated":"1310078566","size":76,"privacy":1,"thumb_src":"http:\/\/cs508.userapi.com\/u355679\/86142598\/m_190dc21d.jpg"},{"aid":"64760885","thumb_id":"125490989","owner_id":"355679","title":"Сахнен Open Air","description":"","created":"1230490388","updated":"1246603591","size":22,"privacy":1,"thumb_src":"http:\/\/cs508.userapi.com\/u355679\/64760885\/m_4f428b2f.jpg"},{"aid":"81835077","thumb_id":"124263448","owner_id":"355679","title":"Сахнен пати","description":"одну из партий шопофотить было лень... может потом...\nя только \"автоматический контраст\" сделал и всё...","created":"1236015332","updated":"1267261281","size":42,"privacy":1,"thumb_src":"http:\/\/cs4152.userapi.com\/u355679\/81835077\/m_356fd1ab.jpg"},{"aid":"91917319","thumb_id":"126458812","owner_id":"355679","title":"Толстой пати","description":"","created":"1239030874","updated":"1239292669","size":18,"privacy":1,"thumb_src":"http:\/\/cs584.userapi.com\/u355679\/91917319\/m_96388df2.jpg"},{"aid":"63906536","thumb_id":"120449946","owner_id":"355679","title":"ну ни фига же не умеет!..","description":"у Шигарова\n21.12.08","created":"1230144309","updated":"1230145447","size":18,"privacy":1,"thumb_src":"http:\/\/cs222.userapi.com\/u355679\/63906536\/m_84dc59b8.jpg"},{"aid":"92360627","thumb_id":"127469423","owner_id":"355679","title":"Лёха news","description":"","created":"1240550842","updated":"1263479127","size":18,"privacy":1,"thumb_src":"http:\/\/cs501.userapi.com\/u355679\/92360627\/m_baed6116.jpg"},{"aid":"84729769","thumb_id":"128854071","owner_id":"355679","title":"Мой универчик","description":"(с) Пит","created":"1236791286","updated":"1299606390","size":86,"privacy":1,"thumb_src":"http:\/\/cs4230.userapi.com\/u355679\/84729769\/m_c82493e3.jpg"},{"aid":"92491255","thumb_id":"127795395","owner_id":"355679","title":"Этнофест","description":"","created":"1240991566","updated":"1240992086","size":24,"privacy":1,"thumb_src":"http:\/\/cs855.userapi.com\/u355679\/92491255\/m_7e0b8c87.jpg"},{"aid":"6779939","thumb_id":"81314269","owner_id":"355679","title":"they're coming","description":"нашествие чумных зомбанов","created":"1195676416","updated":"1195851760","size":48,"privacy":1,"thumb_src":"http:\/\/cs53.userapi.com\/u355679\/6779939\/m_20bb9210.jpg"},{"aid":"14885713","thumb_id":"94221522","owner_id":"355679","title":"школа. тяжесть трудовых будней","description":"некоторые портреты, на мой взгляд, особенно удались\n","created":"1203106114","updated":"1234792467","size":37,"privacy":1,"thumb_src":"http:\/\/cs159.userapi.com\/u355679\/14876511\/m_e3c37606.jpg"},{"aid":"84790778","thumb_id":"146981708","owner_id":"355679","title":"fun'n'order","description":"","created":"1236800276","updated":"1320915481","size":147,"privacy":0,"thumb_src":"http:\/\/cs4737.userapi.com\/u355679\/84790778\/m_eed78b84.jpg"},{"aid":"121801819","thumb_id":"241053322","owner_id":"355679","title":"Поука","description":"адские бед-биты и просто прикольные моменты","created":"1289853910","updated":"1301348260","size":31,"privacy":1,"thumb_src":"http:\/\/cs11002.userapi.com\/u355679\/121801819\/m_c0cc192a.jpg"}]});
+				})
+			}
+		},
+
+		video: {
+
+		}
 	}
 	
 };
