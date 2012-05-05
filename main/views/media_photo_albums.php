@@ -117,7 +117,12 @@ function media_show_album_cover(Group $group, $league = false) {
 		<div class="cover<?=$additionClass?>">
 			<table>
 				<thead>
-					<th colspan="<?=$m?>"><?=$group->getTitle()?></th>
+					<th colspan="<?=$m?>">
+						<?if ($league):?>
+		                <a href="/sport/league/<?=$league->getId()?>" title="<?=$league->getName()?>"><img src="<?=$league->getImageUrl(League::IMAGE_SMALL)?>"/></a>
+						<?endif;?>
+						<?=$group->getTitle()?>
+					</th>
 				</thead>
 				<tbody>
 <?

@@ -457,6 +457,12 @@ div.zoom:hover {
     padding: 5px;
 }
 
+#media_container .cover th img {
+    max-width: 16px;
+    max-height: 16px;
+    margin-bottom: -3px;
+}
+
 #media_container .cover td div {
     width: 70px;
     height: 70px;
