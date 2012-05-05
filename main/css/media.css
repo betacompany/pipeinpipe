@@ -426,7 +426,7 @@ div.zoom:hover {
 #media_container table.wrap {
     width: 900px;
     margin: 0 auto;
-    border-spacing: 10px;
+    border-spacing: 20px;
 }
 
 #media_container table.wrap td {
@@ -438,7 +438,7 @@ div.zoom:hover {
     float: left;
     border-radius: 5px;
     padding: 2px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 #media_container .cover:hover {

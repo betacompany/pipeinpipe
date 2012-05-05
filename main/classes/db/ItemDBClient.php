@@ -177,7 +177,7 @@ class ItemDBClient {
 					ON `r2`.`item_id`=`r1`.`id`
 
 				) ORDER BY `avg` DESC, `cnt` DESC LIMIT ?',
-					$type, $limit
+					$type, intval($limit)
 			)
 		);
 	}

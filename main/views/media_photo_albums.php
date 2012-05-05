@@ -55,21 +55,21 @@ $c = count($view);
 			<td style="vertical-align: top;">
 <?
 for ($i = 0; $i < $c; $i += 3) {
-//	media_show_album_cover($view[$i][0], $view[$i][1]);
+	media_show_album_cover($view[$i][0], $view[$i][1]);
 }
 ?>
 			</td>
 			<td style="vertical-align: top;">
 <?
 for ($i = 1; $i < $c; $i += 3) {
-//	media_show_album_cover($view[$i][0], $view[$i][1]);
+	media_show_album_cover($view[$i][0], $view[$i][1]);
 }
 ?>
 			</td>
 			<td style="vertical-align: top;">
 <?
 for ($i = 2; $i < $c; $i += 3) {
-//	media_show_album_cover($view[$i][0], $view[$i][1]);
+	media_show_album_cover($view[$i][0], $view[$i][1]);
 }
 ?>
 			</td>
@@ -133,6 +133,7 @@ function media_show_album_cover(Group $group, $league = false) {
 				if (!($photo instanceof Photo)) {
 					global $LOG;
 					@$LOG->error("Not photo item (id={$photo->getId()}) in photo_album (id={$group->getId()})");
+					continue;
 				}
 				echo '<td><div><img src="'.$photo->getUrl(Photo::SIZE_MINI).'"/></div></td>';
 			} else {
