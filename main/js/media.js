@@ -381,7 +381,7 @@ var media = {
 
 	vk: {
 		photos: {
-			init: function(accessToken) {
+			init: function(accessToken, vkAuthPopupOptions) {
 				function sendApiRequest(method, callback, data) {
 					var data1 = data;
 					$.ajax({
@@ -419,6 +419,9 @@ var media = {
 				var selectedPhotos = {};
 				var availablePhotosCount = 0;
 				var selectedPhotosCount = 0;
+				var currentAid = 0;
+
+				var albumsData;
 
 				const animationSpeed = "fast";
 
@@ -497,6 +500,7 @@ var media = {
 
 					container.click(function() {
 						if (vkPhotosEnabled) {
+							currentAid = data.aid;
 							sendApiRequest("photos.get", 'showPhotos', {
 								uid: data.owner_id,
 								aid: data.aid
@@ -544,7 +548,7 @@ var media = {
 							.addClass('vk_media_item')
 							.appendTo(availablePhotosList);
 
-					bindHover(container)
+					bindHover(container);
 
 					var containerWidth = container.width();
 					var containerHeight = container.height();
@@ -572,9 +576,13 @@ var media = {
 									.appendTo(selectedPhotosList)
 									.click(function() {
 										delete selectedPhotos[data.aid][data.pid];
-										availablePhotosCount ++;
 										selectedPhotosCount --;
-										moveLeftAndResize(copy, container);
+										if (data.aid == currentAid) {
+											availablePhotosCount ++;
+											moveLeftAndResize(copy, container);
+										} else {
+											moveLeftAndResize(copy);
+										}
 									});
 
 							availablePhotosCount --;
@@ -626,7 +634,7 @@ var media = {
 				function togglePhoto(photo1, photo2, callback) {
 					photo1.unbind('mouseenter mouseleave')
 							.fadeOut(animationSpeed, function () {
-								photo2.fadeTo(animationSpeed, focusOutImageOpacity, function(){
+								photo2 && photo2.fadeTo(animationSpeed, focusOutImageOpacity, function(){
 									bindHover(photo2);
 									callback && callback();
 								});
@@ -658,6 +666,14 @@ var media = {
 					disableAction(actionBtnUpload);
 				}
 
+				function disableActionBack() {
+					disableAction(actionBtnBack);
+				}
+
+				function enableActionBack() {
+					enableAction(actionBtnBack, actionBack);
+				}
+
 				function enableAction(btn, fn) {
 					btn.removeClass('disabled')
 							.unbind('click')
@@ -677,24 +693,35 @@ var media = {
 							$(this).click()
 					});
 				}
-				
+
+				function actionBack(){
+					disableAction(actionBtnBack);
+					disableActionAll();
+					resizePhotosList(selectedPhotosCount > 0 ? 50 : 100, availablePhotosList, selectedPhotosList, function() {
+						showAlbums(albumsData);
+					});
+				}
+
 				function actionUpload() {
 					var photos = [];
 					for (var i in selectedPhotos) {
 						for (var j in selectedPhotos[i]) {
 							var data = selectedPhotos[i][j];
-							photos.push({
-								micro: data.src_small,
-								mini: data.src,
-								middle: data.src_big,
-								hq: data.src_xxbig,
-								description: data.text
-							});
+							if (!data.uploaded) {
+								photos.push({
+									micro: data.src_small,
+									mini: data.src,
+									middle: data.src_big,
+									hq: data.src_xxbig,
+									description: data.text
+								});
+							}
 						}
 					}
 
 					$.ajax({
 						url: '/procs/proc_media_uploader.php',
+						type: "POST",
 						data: {
 							method: 'vk_photos',
 							photos: JSON.stringify(photos),
@@ -710,13 +737,22 @@ var media = {
 								main.showNotification('<p>Загрузка фотографий прошла успешно!</p>' +
 										'<p>Вы можете <a href="' + data.redirect + '">перейти</a> к их просмотру.</p>');
 
-								selectedPhotos = {};
-								selectedPhotosCount = 0;
-								selectedPhotosList.empty();
+								for (var i in selectedPhotos) {
+									for (var j in selectedPhotos[i]) {
+										selectedPhotos[i][j].uploaded = true;
+									}
+								}
 
-								selectedPhotosTitle.hide();
+								selectedPhotosCount = 0;
 								disableActionUpload();
-								resizePhotosList(0, selectedPhotosList, availablePhotosList, hideUploadOptions);
+								selectedPhotosList.empty();
+								selectedPhotosTitle.hide();
+								selectedPhotosTitle.show();
+								if (availablePhotosCount > 0) {
+									resizePhotosList(0, selectedPhotosList, availablePhotosList, hideUploadOptions);
+								} else {
+									actionBack();
+								}
 							} else {
 								main.showErrorText(data && data.message ? data.message : 'Загрузка не удалась! Попробуйте ещё раз!');
 								console.debug(data);
@@ -733,8 +769,12 @@ var media = {
 
 				function show(data, fn, title) {
 					availablePhotosList.fadeOut(animationSpeed, function() {
-						$(this).html('')
-								.show();
+						$(this).children().each(function() {
+							$(this).unbind('mouseenter mouseleave')
+									.hide();
+						});
+
+						$(this).show();
 
 						var response = data.response;
 						for (var i in response) {
@@ -745,31 +785,36 @@ var media = {
 					});
 				}
 
-				var albumsData;
-
 				window.showAlbums = function(data) {
+					if (data.error) {
+						main.showNotification('Не удалось загрузить альбомы!');
+						var popup = window.open(vkAuthPopupOptions.url, vkAuthPopupOptions.windowName, vkAuthPopupOptions.windowFeatures);
+
+						function checkPopup() {
+							if(popup.closed) {
+								window.location.reload();
+							} else {
+								setTimeout(checkPopup, 300);
+							}
+						}
+
+						checkPopup();
+					}
 					show(data, buildAlbum, 'Выберите альбом');
 					albumsData = data;
+					currentAid = 0;
 				}
 
 				window.showPhotos = function(data) {
 					show(data, buildPhoto, 'Выберите фотографии');
 
-					enableAction(actionBtnBack, function(){
-						disableAction(actionBtnBack);
-						disableActionAll();
-						if (availablePhotosCount == 0) {
-							resizePhotosList(50, availablePhotosList, selectedPhotosList, function() {
-								showAlbums(albumsData);
-							});
-						} else {
-							showAlbums(albumsData);
-						}
-					});
-
+					enableActionBack();
 					availablePhotosCount = data.response.length;
-					if (availablePhotosCount > 0)
+					if (availablePhotosCount > 0) {
 						enableActionAll();
+					} else {
+						availablePhotosList.html('Так вы ж уже загрузили все фотки из этого альбома!');
+					}
 				}
 
 				$(document).ready(function(){
