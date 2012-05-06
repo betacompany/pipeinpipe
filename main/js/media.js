@@ -419,6 +419,9 @@ var media = {
 				var selectedPhotos = {};
 				var availablePhotosCount = 0;
 				var selectedPhotosCount = 0;
+				var currentAid = 0;
+
+				var albumsData;
 
 				const animationSpeed = "fast";
 
@@ -497,6 +500,7 @@ var media = {
 
 					container.click(function() {
 						if (vkPhotosEnabled) {
+							currentAid = data.aid;
 							sendApiRequest("photos.get", 'showPhotos', {
 								uid: data.owner_id,
 								aid: data.aid
@@ -544,7 +548,7 @@ var media = {
 							.addClass('vk_media_item')
 							.appendTo(availablePhotosList);
 
-					bindHover(container)
+					bindHover(container);
 
 					var containerWidth = container.width();
 					var containerHeight = container.height();
@@ -572,9 +576,13 @@ var media = {
 									.appendTo(selectedPhotosList)
 									.click(function() {
 										delete selectedPhotos[data.aid][data.pid];
-										availablePhotosCount ++;
 										selectedPhotosCount --;
-										moveLeftAndResize(copy, container);
+										if (data.aid == currentAid) {
+											availablePhotosCount ++;
+											moveLeftAndResize(copy, container);
+										} else {
+											moveLeftAndResize(copy);
+										}
 									});
 
 							availablePhotosCount --;
@@ -626,7 +634,7 @@ var media = {
 				function togglePhoto(photo1, photo2, callback) {
 					photo1.unbind('mouseenter mouseleave')
 							.fadeOut(animationSpeed, function () {
-								photo2.fadeTo(animationSpeed, focusOutImageOpacity, function(){
+								photo2 && photo2.fadeTo(animationSpeed, focusOutImageOpacity, function(){
 									bindHover(photo2);
 									callback && callback();
 								});
@@ -761,8 +769,12 @@ var media = {
 
 				function show(data, fn, title) {
 					availablePhotosList.fadeOut(animationSpeed, function() {
-						$(this).html('')
-								.show();
+						$(this).children().each(function() {
+							$(this).unbind('mouseenter mouseleave')
+									.hide();
+						});
+
+						$(this).show();
 
 						var response = data.response;
 						for (var i in response) {
@@ -772,8 +784,6 @@ var media = {
 						vkPhotosEnabled = true;
 					});
 				}
-
-				var albumsData;
 
 				window.showAlbums = function(data) {
 					if (data.error) {
@@ -792,6 +802,7 @@ var media = {
 					}
 					show(data, buildAlbum, 'Выберите альбом');
 					albumsData = data;
+					currentAid = 0;
 				}
 
 				window.showPhotos = function(data) {
@@ -799,8 +810,11 @@ var media = {
 
 					enableActionBack();
 					availablePhotosCount = data.response.length;
-					if (availablePhotosCount > 0)
+					if (availablePhotosCount > 0) {
 						enableActionAll();
+					} else {
+						availablePhotosList.html('Так вы ж уже загрузили все фотки из этого альбома!');
+					}
 				}
 
 				$(document).ready(function(){
