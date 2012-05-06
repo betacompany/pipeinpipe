@@ -683,18 +683,21 @@ var media = {
 					for (var i in selectedPhotos) {
 						for (var j in selectedPhotos[i]) {
 							var data = selectedPhotos[i][j];
-							photos.push({
-								micro: data.src_small,
-								mini: data.src,
-								middle: data.src_big,
-								hq: data.src_xxbig,
-								description: data.text
-							});
+							if (!data.uploaded) {
+								photos.push({
+									micro: data.src_small,
+									mini: data.src,
+									middle: data.src_big,
+									hq: data.src_xxbig,
+									description: data.text
+								});
+							}
 						}
 					}
 
 					$.ajax({
 						url: '/procs/proc_media_uploader.php',
+						type: "POST",
 						data: {
 							method: 'vk_photos',
 							photos: JSON.stringify(photos),
@@ -710,7 +713,12 @@ var media = {
 								main.showNotification('<p>Загрузка фотографий прошла успешно!</p>' +
 										'<p>Вы можете <a href="' + data.redirect + '">перейти</a> к их просмотру.</p>');
 
-								selectedPhotos = {};
+								for (var i in selectedPhotos) {
+									for (var j in selectedPhotos[i]) {
+										selectedPhotos[i][j].uploaded = true;
+									}
+								}
+
 								selectedPhotosCount = 0;
 								selectedPhotosList.empty();
 
