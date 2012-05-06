@@ -6,9 +6,12 @@
  */
 
 /**
+ * @param $tags
  * @param int $height height of the canvas in pixels
+ * @param string $hrefPattern
+ * @param string $onclickActionPattern
  */
-function tag_cloud_show($tags, $height = 300) {
+function tag_cloud_show($tags, $height = 300, $hrefPattern = "#tag=%d", $onclickActionPattern = "life.showTag(%d);") {
 	global $tagCloudEnabled;
 	$tagCloudEnabled = true;
 ?>
@@ -21,8 +24,10 @@ function tag_cloud_show($tags, $height = 300) {
         $value = $tag->getValue();
         $fontSize = 1 + round(($tag->getCount() / $max) * 20) / 10;
 		if (mb_strlen($value) > 0) {
+			$href = sprintf($hrefPattern, $id);
+			$onclick = sprintf($onclickActionPattern, $id);
 ?>
-		<a href="#tag=<?=$id?>" style="font-size: <?=$fontSize?>em" onclick="javascript: life.showTag(<?=$id?>);"><?=$value?></a>
+		<a href="<?=$href?>" style="font-size: <?=$fontSize?>em" onclick="<?=$onclick?>"><?=$value?></a>
 <?
 		}
    }

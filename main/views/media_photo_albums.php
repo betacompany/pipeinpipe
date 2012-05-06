@@ -33,7 +33,12 @@ asort($album2league);
 
 $tags = Tag::getAllByType(Item::PHOTO);
 
-tag_cloud_show($tags);
+?>
+
+<div id="media_container" class="body_container">
+
+<?
+tag_cloud_show($tags, 300, "/media/photo/tag%d", "");
 
 $view = array();
 foreach ($album2league as $albumId => $leagueId) {
@@ -49,7 +54,6 @@ foreach ($album2league as $albumId => $leagueId) {
 $c = count($view);
 ?>
 
-<div id="media_container">
 	<table class="wrap">
 		<tbody>
 			<tr>
