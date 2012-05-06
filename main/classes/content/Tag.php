@@ -2,12 +2,14 @@
 
 require_once dirname(__FILE__) . '/../db/TagDBClient.php';
 
+require_once dirname(__FILE__) . '/../utils/IJsonSerializable.php';
+
 require_once dirname(__FILE__) . '/../../includes/common.php';
 
 /**
  * @author ortemij
  */
-class Tag {
+class Tag implements IJsonSerializable {
 
 	private $id;
 	private $uid;
@@ -130,6 +132,14 @@ class Tag {
 			return new Tag(-1, $data);
 		}
 		return null;
+	}
+
+	public function toJson() {
+		return json(array(
+			'id' => $this->id,
+			'uid' => $this->uid,
+			'value' => $this->value
+		));
 	}
 }
 ?>

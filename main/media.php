@@ -9,10 +9,7 @@ require_once 'includes/log.php';
 try {
 	include 'includes/authorize.php';
 	include 'views/header.php';
-?>
 
-<div id="media_container" class="body_container">
-<?
 	if (!issetParam('part')) {
 		include 'views/media_main.php';
 	} else {
@@ -28,9 +25,24 @@ try {
 					include 'views/media_albums.php';
 				}
 			} elseif (!issetParam('item_id')) {
-				include 'views/media_album.php';
+				$part = param('part');
+				if ($part == 'photo') {
+					$album = Group::getById(intparam('group_id'));
+					$photos = $album->getItems();
+					include 'views/media_photo_viewer.php';
+				} else {
+					include 'views/media_album.php';
+				}
 			} else {
-				include 'views/media_item.php';
+				$part = param('part');
+				if ($part == 'photo') {
+					$album = Group::getById(intparam('group_id'));
+					$photos = $album->getItems();
+					$itemId = intparam('item_id');
+					include 'views/media_photo_viewer.php';
+				} else {
+					include 'views/media_item.php';
+				}
 			}
 			break;
 		case 'upload':

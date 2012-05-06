@@ -1,11 +1,12 @@
 <?php
 
 require_once dirname(__FILE__) . '/../content/Item.php';
+require_once dirname(__FILE__) . '/../utils/IJsonSerializable.php';
 
 /**
  * @author Artyom Grigoriev
  */
-class Photo extends Item {
+class Photo extends Item implements IJsonSerializable {
 
 	private $urls = array();
 	private $availableSizes = array();
@@ -145,6 +146,18 @@ class Photo extends Item {
 		}
 
 		return ($count == 0) ? 0 : ($value / $count);
+	}
+
+	public function toJson() {
+		return json(array (
+			'id' => $this->getId(),
+			'album_id' => $this->getGroupId(),
+			'title' => $this->getTitle(),
+			'preview_url' => $this->getPreviewUrl(),
+			'main_url' => $this->getUrl(),
+			'all_urls' => $this->urls,
+			'tags' => $this->getTags()
+		));
 	}
 
 	/**

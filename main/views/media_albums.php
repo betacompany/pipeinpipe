@@ -15,6 +15,8 @@ case 'video':
 }
 ?>
 
+<div id="media_container" class="body_container">
+
 	<h1><?=(param('part') == 'photo' ? 'Фотогалерея' : 'Видеогалерея')?></h1>
 <?
 
@@ -57,7 +59,7 @@ foreach ($albums as $album) {
 
 		</div>
 	</div>
-
+</div>
 <?
 }
 ?>

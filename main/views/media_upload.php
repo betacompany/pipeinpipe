@@ -24,6 +24,7 @@ $icons = array(
 
 ?>
 
+<div id="media_container" class="body_container">
 <?if (!$subpart):?>
 <h1 class="other">Загружайте фото и видео с пайпом на наш сайт!</h1>
 <p>Для этого выберите любой удобный для Вас способ:</p>
@@ -192,3 +193,5 @@ if ($subpart) {
 ?>
 
 </div>
+</div>
+

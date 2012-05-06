@@ -114,18 +114,20 @@ if ($author != null) {
 <?
 }
 
-function media_show_preview_photos_list(Photo $photo) {
-	$items = $photo->getGroup()->getItems();
+function media_show_preview_photos_list(Photo $photo, $items = false) {
+	if (!$items) {
+		$items = $photo->getGroup()->getItems();
+	}
 ?>
 
-				<div style="width: <?=count($items) * 80?>px;">
+				<div>
 <?
 	foreach ($items as $item) {
 		if ($item instanceof Photo) {
 			$t = ($item->getId() == $photo->getId()) ? ' class="selected"' : '';
 ?>
 
-					<a href="/media/photo/album<?=$item->getGroupId()?>/<?=$item->getId()?>"><img<?=$t?> src="<?=$item->getPreviewUrl()?>" alt="<?=$item->getTitle()?>" /></a>
+					<a id="thumb_<?=$item->getId()?>" href="/media/photo/album<?=$item->getGroupId()?>/<?=$item->getId()?>"><img<?=$t?> src="<?=$item->getPreviewUrl()?>" alt="<?=$item->getTitle()?>" /></a>
 <?
 		}
 	}

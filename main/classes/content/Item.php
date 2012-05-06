@@ -494,11 +494,11 @@ class Item {
 	 * @param string $type
 	 * @return boolean
 	 */
-	public function isActedBy($user, $type) {
-		if ($user == null) return false;
+	public function isActedBy($user, $type = Action::EVALUATION) {
+		if (!$user) return false;
 		$actions = $this->getActions();
 		foreach ($actions as $action) {
-			if ($action->getType() == Action::EVALUATION) {
+			if ($action->getType() == $type) {
 				if ($action->getUID() == $user->getId()) {
 					return true;
 				}

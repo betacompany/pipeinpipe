@@ -49,33 +49,35 @@ foreach ($album2league as $albumId => $leagueId) {
 $c = count($view);
 ?>
 
-<table class="wrap">
-	<tbody>
-		<tr>
-			<td style="vertical-align: top;">
+<div id="media_container">
+	<table class="wrap">
+		<tbody>
+			<tr>
+				<td style="vertical-align: top;">
 <?
 for ($i = 0; $i < $c; $i += 3) {
 	media_show_album_cover($view[$i][0], $view[$i][1]);
 }
 ?>
-			</td>
-			<td style="vertical-align: top;">
+				</td>
+				<td style="vertical-align: top;">
 <?
 for ($i = 1; $i < $c; $i += 3) {
 	media_show_album_cover($view[$i][0], $view[$i][1]);
 }
 ?>
-			</td>
-			<td style="vertical-align: top;">
+				</td>
+				<td style="vertical-align: top;">
 <?
 for ($i = 2; $i < $c; $i += 3) {
 	media_show_album_cover($view[$i][0], $view[$i][1]);
 }
 ?>
-			</td>
-		</tr>
-	</tbody>
-</table>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
 
 <script type="text/javascript">
 	$$(function () {

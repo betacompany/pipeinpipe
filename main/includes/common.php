@@ -67,6 +67,10 @@ function array_contains($array, $value) {
  * @return string
  */
 function json($var) {
+	if ($var instanceof IJsonSerializable) {
+		return $var->toJson();
+	}
+
 	if (!is_array($var)) {
 		$var = str_replace("\r\n", "\\n", $var);
 		$var = str_replace("\n", "\\n", $var);
