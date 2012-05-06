@@ -658,6 +658,14 @@ var media = {
 					disableAction(actionBtnUpload);
 				}
 
+				function disableActionBack() {
+					disableAction(actionBtnBack);
+				}
+
+				function enableActionBack() {
+					enableAction(actionBtnBack, actionBack);
+				}
+
 				function enableAction(btn, fn) {
 					btn.removeClass('disabled')
 							.unbind('click')
@@ -677,7 +685,15 @@ var media = {
 							$(this).click()
 					});
 				}
-				
+
+				function actionBack(){
+					disableAction(actionBtnBack);
+					disableActionAll();
+					resizePhotosList(selectedPhotosCount > 0 ? 50 : 100, availablePhotosList, selectedPhotosList, function() {
+						showAlbums(albumsData);
+					});
+				}
+
 				function actionUpload() {
 					var photos = [];
 					for (var i in selectedPhotos) {
@@ -720,11 +736,15 @@ var media = {
 								}
 
 								selectedPhotosCount = 0;
-								selectedPhotosList.empty();
-
-								selectedPhotosTitle.hide();
 								disableActionUpload();
-								resizePhotosList(0, selectedPhotosList, availablePhotosList, hideUploadOptions);
+								selectedPhotosList.empty();
+								selectedPhotosTitle.hide();
+								selectedPhotosTitle.show();
+								if (availablePhotosCount > 0) {
+									resizePhotosList(0, selectedPhotosList, availablePhotosList, hideUploadOptions);
+								} else {
+									actionBack();
+								}
 							} else {
 								main.showErrorText(data && data.message ? data.message : 'Загрузка не удалась! Попробуйте ещё раз!');
 								console.debug(data);
@@ -777,18 +797,7 @@ var media = {
 				window.showPhotos = function(data) {
 					show(data, buildPhoto, 'Выберите фотографии');
 
-					enableAction(actionBtnBack, function(){
-						disableAction(actionBtnBack);
-						disableActionAll();
-						if (availablePhotosCount == 0) {
-							resizePhotosList(50, availablePhotosList, selectedPhotosList, function() {
-								showAlbums(albumsData);
-							});
-						} else {
-							showAlbums(albumsData);
-						}
-					});
-
+					enableActionBack();
 					availablePhotosCount = data.response.length;
 					if (availablePhotosCount > 0)
 						enableActionAll();
