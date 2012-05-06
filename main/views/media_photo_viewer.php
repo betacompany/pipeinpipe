@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . '/media_view.php';
 
 global $photos;
 global $itemId;
-global $uid;
+global $user;
 
 $index = 0;
 $photo = $photos[0];
@@ -18,6 +18,8 @@ if ($itemId) {
 		}
 	}
 }
+
+$photo->viewedBy($user);
 
 ?>
 
@@ -33,7 +35,7 @@ if ($itemId) {
 							$('.evaluation'),
 						<?=$photo->getId()?>,
 						<?=$photo->getEvaluation()?>,
-						<?=($uid != 0 && !$photo->isActedBy(User::getById($uid), Action::EVALUATION) && Action::isActive(Action::EVALUATION, $photo) ? 'true' : 'false')?>
+						<?=($uid != 0 && !$photo->isActedBy($user, Action::EVALUATION) && Action::isActive(Action::EVALUATION, $photo) ? 'true' : 'false')?>
 
 						);
 					});

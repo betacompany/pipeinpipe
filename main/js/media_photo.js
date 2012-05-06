@@ -115,6 +115,7 @@ var photo = {
 
 		content.loadInitialComments(ph.id, $('#photo_comments'));
 		content.loadEvaluation($('.tools .evaluation'), ph.id);
+		content.markAsViewed('item', ph.id, function () {});
 
 		history.pushState && history.pushState({}, ph.title, '/media/photo/album' + ph.album_id + '/' + ph.id);
 	},

@@ -11,14 +11,14 @@ $accessToken = $user->getAccessToken();
 $subpart = param('subpart');
 $subparts = array(
 	'video_youtube' => 'Видео YouTube',
-	'video_vkontakte' => 'Видео VK.com',
-	'photo_files' => 'Фото из файлов',
+//	'video_vkontakte' => 'Видео VK.com',
+//	'photo_files' => 'Фото из файлов',
 	'photo_vkontakte' => 'Фото VK.com'
 );
 $icons = array(
 	'video_youtube' => 'youtube.png',
-	'video_vkontakte' => 'vk16.png',
-	'photo_files' => '',
+//	'video_vkontakte' => 'vk16.png',
+//	'photo_files' => '',
 	'photo_vkontakte' => 'vk16.png'
 );
 
@@ -115,6 +115,10 @@ if ($subpart) {
 		break;
 
 	case 'photo_vkontakte':
+		if (!$user->getVkid()) {
+			echo "Добавьте привязку к ВКонтакте на странице <a href=\"/profile/edit\">редактирования Вашего профиля</a>";
+			break;
+		}
 ?>
     <div id="vk_photos_selector_container">
         <table id="vk_photos_selector" class="vk_photos">
@@ -134,8 +138,8 @@ if ($subpart) {
     </div>
 
     <div class="vk_photos_controls">
-        <div id="vk_photos_controls_back" class="button disabled">◄ Назад</div>
-        <div id="vk_photos_controls_all" class="button disabled">Выбрать все ►</div>
+        <div id="vk_photos_controls_back" class="button disabled">&larr; Назад</div>
+        <div id="vk_photos_controls_all" class="button disabled">Выбрать все &rarr;</div>
         <div class="clear"></div>
     </div>
 

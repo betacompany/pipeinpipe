@@ -30,7 +30,10 @@ try {
 	assertParam('method');
 
 	$auth = new Auth();
-	
+
+	//print_r($auth);
+	//print_r($_SESSION);
+
 	if ($auth->isAuth()) {
 		switch (param('method')) {
 
@@ -121,6 +124,8 @@ try {
 
 			try {
 				$user = $auth->getCurrentUser();
+
+				print_r($user);
 
 				switch (param('target_type')) {
 				case 'group':
