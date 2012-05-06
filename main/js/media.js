@@ -381,7 +381,7 @@ var media = {
 
 	vk: {
 		photos: {
-			init: function(accessToken) {
+			init: function(accessToken, vkAuthPopupOptions) {
 				function sendApiRequest(method, callback, data) {
 					var data1 = data;
 					$.ajax({
@@ -748,6 +748,20 @@ var media = {
 				var albumsData;
 
 				window.showAlbums = function(data) {
+					if (data.error) {
+						main.showNotification('Не удалось загрузить альбомы!');
+						var popup = window.open(vkAuthPopupOptions.url, vkAuthPopupOptions.windowName, vkAuthPopupOptions.windowFeatures);
+
+						function checkPopup() {
+							if(popup.closed) {
+								window.location.reload();
+							} else {
+								setTimeout(checkPopup, 300);
+							}
+						}
+
+						checkPopup();
+					}
 					show(data, buildAlbum, 'Выберите альбом');
 					albumsData = data;
 				}
