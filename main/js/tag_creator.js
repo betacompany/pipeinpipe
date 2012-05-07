@@ -170,14 +170,20 @@
 			}
 
 			function tagRemove(tagDiv, tagId) {
-				sendAjax({
-					method: JSON_METHOD_REMOVE,
-					data: tagId,
-					item_id: itemId
-				}, function () {
+				var removeLocally = function () {
 					tagDiv.slideUp(ANIMATION_SPEED);
 					TagCreator.removeTag(tagId, itemId);
-				});
+				};
+
+				if (itemId) {
+					sendAjax({
+						method: JSON_METHOD_REMOVE,
+						data: tagId,
+						item_id: itemId
+					}, removeLocally);
+				} else {
+					removeLocally();
+				}
 			}
 
 			function tagCreate(value) {

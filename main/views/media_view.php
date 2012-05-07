@@ -206,11 +206,15 @@ function media_show_photo($uid, Photo $photo) {
 }
 
 function media_show_video($uid, Video $video) {
+    $user = User::getById($uid);
 ?>
 
 		<div class="item_wrapper">
 			<div class="item_left">
-				<div>
+                <div class="item_title_wrapper">
+                    <div class="item_title"><?=$video->getTitle()?></div>
+                </div>
+				<div id="video_source">
 <?
     if ($video->isVideoCode()) {
         echo $video->getSource();
@@ -219,10 +223,64 @@ function media_show_video($uid, Video $video) {
     }
 ?>
 				</div>
-			</div>
-			<div class="comments">
 <?
-	show_block_comments(User::getById($uid), $video);
+    $tags = $video->getTags();
+
+    $editable = $user && $user->hasPermission($video, 'edit');
+    $removable = $user && $user->hasPermission($video, 'remove');
+
+    if (!empty($tags) || $removable || $editable) {
+?>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td>
+<?
+        show_block_tags($tags, "/media/video/tag%d");
+
+        if ($editable) {
+            require_once dirname(__FILE__) . '/tag_creator.php';
+            tag_creator_show($video);
+        }
+?>
+                        </td>
+<?
+        if ($removable || $editable) {
+?>
+                        <td id="option_links">
+                            <div class="sub" style="text-align: right;">
+                                <span class="text_menu">
+                                    <a href="#" id="video_edit_link">править</a>
+                                    <script type="text/javascript">
+                                        $(document).ready(function () {
+                                            media.initEditing.video(<?=$video->getId()?>);
+                                        })
+                                    </script>
+<?
+            if ($removable) {
+?>
+                                    <span class="video_options_separator">|</span>
+                                    <a href="#" onclick="javascript: media.remove.video(<?=$video->getId()?>);">удалить</a>
+<?
+            }
+?>
+                                </span>
+                            </div>
+                        </td>
+<?
+        }
+?>
+                    </tr>
+                    </tbody>
+                </table>
+<?
+    }
+?>
+            </div>
+
+            <div class="comments">
+<?
+    show_block_comments($user, $video);
 ?>
 
 			</div>

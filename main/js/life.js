@@ -220,10 +220,12 @@ var life = {
 					success: function (json) {
 						if (!json || !json.status || json.status != 'ok') {
 							main.showErrorText('Не удалось :(');
+							console.debug(json);
 						} else {
 							window.location = '/life/blog';
 						}
-					}
+					},
+					error: console.debug
 				});
 			}
 		}
