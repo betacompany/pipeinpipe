@@ -72,12 +72,12 @@ function json($var) {
 	}
 
 	if (!is_array($var)) {
-		$var = str_replace("\r\n", "\\n", $var);
-		$var = str_replace("\n", "\\n", $var);
-		$var = str_replace('"', '\"', $var);
 		if (is_bool($var)) {
 			return $var ? 'true' : 'false';
 		}
+		$var = str_replace("\r\n", "\\n", $var);
+		$var = str_replace("\n", "\\n", $var);
+		$var = str_replace('"', '\"', $var);
 		return '"' . $var . '"';
 	}
 

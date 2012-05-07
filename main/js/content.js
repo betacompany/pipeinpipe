@@ -37,7 +37,8 @@ var content = {
 			url: '/procs/proc_content.php',
 			data: {
 				method: 'get_initial_comments',
-				item_id: itemId
+				item_id: itemId,
+				t: tm()
 			},
 
 			beforeSend: function () {
@@ -95,8 +96,10 @@ var content = {
 			url: '/procs/proc_content.php',
 			data: {
 				method: 'get_evaluations',
-				item_id: itemId
+				item_id: itemId,
+				t: tm()
 			},
+
 			dataType: 'json',
 			
 			beforeSend: function () {
@@ -106,7 +109,7 @@ var content = {
 			success: function (json) {
 				if (content.loadingEvaluations != itemId) return;
 				container.html('');
-				content.showEvaluation(container, itemId, json.avg, !json.is_evaluable);
+				content.showEvaluation(container, itemId, json.avg, json.is_evaluable);
 				content.loadingEvaluations = '';
 			}
 		});

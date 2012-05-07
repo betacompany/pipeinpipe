@@ -264,7 +264,7 @@ try {
 				'item_id' => param('item_id'),
 				'actions' => $result,
 				'avg' => $avg,
-				'is_evaluable' => $user && $item->isActedBy($user, Action::EVALUATION) && $item->isEvaluable()
+				'is_evaluable' => ($user && $item->isActedBy($user, Action::EVALUATION) && $item->isEvaluable() ? true : false)
 			));
 		} catch (Exception $e) {
 			echo_json_exception($e);
