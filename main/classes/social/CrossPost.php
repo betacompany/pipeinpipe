@@ -37,6 +37,10 @@ class CrossPost extends Item {
 		return $this->getSocialPost()->getUrl();
 	}
 
+	public function getPhotos() {
+
+	}
+
 	public static function valueOf(Item $item) {
 		return new CrossPost(-1, $item);
 	}

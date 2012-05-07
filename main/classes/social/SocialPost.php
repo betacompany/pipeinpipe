@@ -25,7 +25,7 @@ class SocialPost {
 
 	private function __construct($id, $data = null) {
 		if ($data == null) {
-			$it = AggregatorDBClient::getById($id);
+			$it = AggregatorDBClient::getPostById($id);
 			if ($it->valid()) {
 				$data = $it->current();
 			}
@@ -84,9 +84,14 @@ class SocialPost {
 	}
 
 	public function makeHandled() {
-		if (AggregatorDBClient::setHandled($this->id)) {
+		if (AggregatorDBClient::setPostHandled($this->id)) {
 			$this->handled = true;
 		}
+	}
+
+	public function getPhotos() {
+		ItemDBClient::getAllByTypeAndValue(Item::PHOTO, $this->getId());
+
 	}
 
 	/**
@@ -103,7 +108,7 @@ class SocialPost {
 
 	public static function getAllUnhandled() {
 		$result = array();
-		$it = AggregatorDBClient::getAllUnhandled();
+		$it = AggregatorDBClient::getAllUnhandledPosts();
 		while ($it->valid()) {
 			$data = $it->current();
 			$result[] = new SocialPost(-1, $data);

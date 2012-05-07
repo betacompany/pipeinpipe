@@ -49,7 +49,11 @@ $PROPERTIES = array (
 	// YUI Compiler
 	'yui_compiler_enabled' => true,
 
-	'version' => 1
+	'version' => 1,
+
+	'content' => array(
+		'social_photo_album_id' => 89
+	)
 );
 
 ?>

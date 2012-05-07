@@ -260,5 +260,14 @@ class ItemDBClient {
 			)
 		);
 	}
+
+	public static function getAllByTypeAndValue($type, $value) {
+		return new MySQLResultIterator(
+			mysql_qw(
+				'SELECT * FROM `pv_content_item` WHERE `type`=? AND `content_value`=?',
+				$type, $value
+			)
+		);
+	}
 }
 ?>
