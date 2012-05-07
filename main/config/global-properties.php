@@ -52,7 +52,8 @@ $PROPERTIES = array (
 	'version' => 1,
 
 	'content' => array(
-		'social_photo_album_id' => 89
+		'social_photo_album_id' => 89,
+		'social_photo_author_id' => 69
 	)
 );
 
