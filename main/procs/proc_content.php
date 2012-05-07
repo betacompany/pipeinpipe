@@ -296,7 +296,15 @@ try {
 		}
 
 		break;
+
+	default:
+		echo json(array(
+			'status' => 'failed',
+			'reason' => 'this action is denied or unknown'
+		));
 	}
+
+
 
 } catch (Exception $e) {
 	
