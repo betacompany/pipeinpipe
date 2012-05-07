@@ -16,7 +16,16 @@ try {
 		switch (param('part')) {
 		case 'photo':
 		case 'video':
-			if (!issetParam('group_id')) {
+			if (issetParam('tag_id')) {
+				$part = param('part');
+				if ($part == 'photo') {
+					$photos = Item::getAllByTypeAndTag(Item::PHOTO, intparam('tag_id'));
+					if (issetParam('item_id')) {
+						$itemId = intparam('item_id');
+					}
+					include 'views/media_photo_viewer.php';
+				}
+			} elseif (!issetParam('group_id')) {
 				$part = param('part');
 				if ($part == 'photo') {
 					include 'views/media_photo_albums.php';

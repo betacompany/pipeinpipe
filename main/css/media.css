@@ -515,3 +515,31 @@ div.zoom:hover {
     /*margin-left: -50px;*/
     /*margin-top: -50px;*/
 /*}*/
+
+.tags {
+    height: 100%;
+
+    margin-bottom: 30px;
+}
+
+.tags .tag {
+    padding: 3px 5px;
+
+    border: 1px solid #C7DCE3;
+
+    float: left;
+    margin: 0 2px 2px 0;
+    font-size: 0.8em;
+    text-decoration: none;
+    color: #007ca7;
+
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -khtml-border-radius: 2px;
+    -opera-border-radius: 2px;
+    -moz-border-radius: 2px;
+}
+
+.tags .tag:hover {
+    background-color: #c7dce3;
+}

@@ -113,6 +113,18 @@ var photo = {
 		$('#thumbs img').removeClass('selected');
 		$('#thumb_' + ph.id + ' img').addClass('selected');
 
+		var tgs = $('#photo_tags .tags').html('');
+		for (var j = 0; j < ph.tags.length; ++j) {
+			tgs.append(
+				$('<a href="/media/photo/tag'+ph.tags[j].id+'"/>')
+					.append(
+						$('<div/>')
+							.addClass('tag')
+							.html(ph.tags[j].value)
+					)
+			);
+		}
+
 		content.loadInitialComments(ph.id, $('#photo_comments'));
 		content.loadEvaluation($('.tools .evaluation'), ph.id);
 		content.markAsViewed('item', ph.id, function () {});

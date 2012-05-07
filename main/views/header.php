@@ -124,8 +124,13 @@ function document_title() {
 
 		switch (param('part')) {
 		case 'photo':
-			if (!issetParam('group_id')) {
+			if (!issetParam('group_id') && !issetParam('tag_id')) {
 				return 'Фотогалерея сайта про пайп';
+			}
+
+			if (issetParam('tag_id')) {
+				$tag = Tag::getById(intparam('tag_id'));
+				return 'Фотографии с тегом &laquo;' . $tag->getValue() . '&raquo;';
 			}
 
 			try {
@@ -142,7 +147,7 @@ function document_title() {
 				break;
 			}
 
-		case 'photo':
+		case 'video':
 			if (!issetParam('group_id')) {
 				return 'Видеогалерея сайта про пайп';
 			}
@@ -150,8 +155,13 @@ function document_title() {
 			try {
 				$album = Group::getById(param('group_id'));
 
-				if (!issetParam('item_id')) {
+				if (!issetParam('item_id') && !issetParam('tag_id')) {
 					return 'Видеоальбом &laquo;' . $album->getTitle() . '&raquo; на сайте про пайп';
+				}
+
+				if (issetParam('tag_id')) {
+					$tag = Tag::getById(intparam('tag_id'));
+					return 'Видеозаписи с тегом &laquo;' . $tag->getValue() . '&raquo;';
 				}
 
 				$item = Item::getById(param('item_id'));
@@ -185,9 +195,6 @@ function document_title() {
 		} catch (Exception $e) {
 			break;
 		}
-
-		return 'Форум про пайп';
-
 	}
 
 	return 'Сайт про pipe-in-pipe, одномерный спорт';
@@ -224,7 +231,7 @@ if ($_SERVER['SCRIPT_NAME'] == '/life.php') {
 		<meta name="copyright" content="International Federation of Pipe-in-pipe" />
 		<meta name="keywords" content="pipe-in-pipe, пайп, пайпмен, спорт, труба-в-трубе" />
 		<meta name="publisher-email" content="info@pipeinpipe.info" />
-		<meta name="generator" content="NetBeans 6.9" />
+		<meta name="generator" content="NetBeans 6.9, IntelliJ IDEA 11" />
 
 		<link rel="search" type="application/opensearchdescription+xml" title="pipeinpipe.info" href="/static/opensearch.xml" />
 		<link rel="apple-touch-icon" type="image/png" href="/images/icons/apple-icon.png" />

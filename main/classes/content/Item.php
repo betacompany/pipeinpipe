@@ -696,7 +696,7 @@ class Item {
 		return self::makeArray($iterator);
 	}
 
-	public static function getAllByTypeAndTag($type, $tag, $from, $limit, $descendive = false, $orderByCreation = false) {
+	public static function getAllByTypeAndTag($type, $tag, $from = 0, $limit = 0, $descendive = false, $orderByCreation = false) {
 		$tagId = $tag;
 		if ($tag instanceof Tag) {
 			$tagId = $tag->getId();

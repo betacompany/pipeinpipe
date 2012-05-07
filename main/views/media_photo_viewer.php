@@ -53,6 +53,9 @@ if ($user) {
 	<div id="photo_bar">
 		<div class="item_wrapper">
 			<div class="item_left">
+				<div id="photo_tags">
+					<? show_block_tags($photo->getTags(), '/media/photo/tag%d'); ?>
+				</div>
 				<div id="photo_comments" class="comments">
 					<?
 					show_block_comments($user, $photo);
@@ -64,7 +67,7 @@ if ($user) {
 	</div>
 	<div id="thumbs" class="item_right">
 		<?
-		media_show_preview_photos_list($photo);
+		media_show_preview_photos_list($photo, $photos);
 		?>
 
 	</div>
