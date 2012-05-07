@@ -57,18 +57,18 @@ $script_name = substr($script_name, 1);
 <script type="text/javascript" src="/js/jquery-ui-1.8.4.custom.min.js"></script>
 
 <? if (CLOSURE_COMPILER_ENABLED): ?>
-<script type="text/javascript" src="/js/all.js"></script>
+<script type="text/javascript" src="/js/all.js?<?=VERSION?>"></script>
 <? else: ?>
-<script type="text/javascript" src="/js/lib-structures.js"></script>
-<script type="text/javascript" src="/js/api.js?2"></script>
-<script type="text/javascript" src="/js/common.js?2"></script>
-<script type="text/javascript" src="/js/error-handler.js"></script>
-<script type="text/javascript" src="/js/ui-controls.js"></script>
-<script type="text/javascript" src="/js/ui-boxes.js"></script>
-<script type="text/javascript" src="/js/content.js"></script>
-<script type="text/javascript" src="/js/menu.js"></script>
-<script type="text/javascript" src="/js/error.js"></script>
-<script type="text/javascript" src="/js/main.js"></script>
+<script type="text/javascript" src="/js/lib-structures.js?<?=VERSION?>"></script>
+<script type="text/javascript" src="/js/api.js?<?=VERSION?>"></script>
+<script type="text/javascript" src="/js/common.js?<?=VERSION?>"></script>
+<script type="text/javascript" src="/js/error-handler.js?<?=VERSION?>"></script>
+<script type="text/javascript" src="/js/ui-controls.js?<?=VERSION?>"></script>
+<script type="text/javascript" src="/js/ui-boxes.js?<?=VERSION?>"></script>
+<script type="text/javascript" src="/js/content.js?<?=VERSION?>"></script>
+<script type="text/javascript" src="/js/menu.js?<?=VERSION?>"></script>
+<script type="text/javascript" src="/js/error.js?<?=VERSION?>"></script>
+<script type="text/javascript" src="/js/main.js?<?=VERSION?>"></script>
 <? endif; ?>
 
 <script type="text/javascript" src="/js/fullajax.js"></script>
@@ -81,14 +81,14 @@ $script_name = substr($script_name, 1);
 if (file_exists(dirname(__FILE__).'/../js/'.$script_name.'.js')) {
 	?>
 
-<script type="text/javascript" src="/js/<?=$script_name?>.js"></script>
+<script type="text/javascript" src="/js/<?=$script_name?>.js?<?=VERSION?>"></script>
 <?
 }
 
 if (isset ($_REQUEST['part']) && file_exists(dirname(__FILE__).'/../js/'.$script_name.'_'.$_REQUEST['part'].'.js')) {
 	?>
 
-<script type="text/javascript" src="/js/<?=$script_name.'_'.$_REQUEST['part']?>.js"></script>
+<script type="text/javascript" src="/js/<?=$script_name.'_'.$_REQUEST['part']?>.js?<?=VERSION?>"></script>
 <?
 }
 

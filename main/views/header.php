@@ -239,12 +239,12 @@ if ($_SERVER['SCRIPT_NAME'] == '/life.php') {
 		<link rel="image_src" href="/images/logo/pipe200.jpg" />
 
 		<? if (YUI_COMPILER_ENABLED): ?>
-		<link rel="stylesheet" href="/css/all.css" type="text/css" />
+		<link rel="stylesheet" href="/css/all.css?<?=VERSION?>" type="text/css" />
 		<? else: ?>
-		<link rel="stylesheet" href="/css/main.css" type="text/css" />
-		<link rel="stylesheet" href="/css/menu.css" type="text/css" />
-		<link rel="stylesheet" href="/css/icons.css" type="text/css" />
-		<link rel="stylesheet" href="/css/ui-controls.css" type="text/css" />
+		<link rel="stylesheet" href="/css/main.css?<?=VERSION?>" type="text/css" />
+		<link rel="stylesheet" href="/css/menu.css?<?=VERSION?>" type="text/css" />
+		<link rel="stylesheet" href="/css/icons.css?<?=VERSION?>" type="text/css" />
+		<link rel="stylesheet" href="/css/ui-controls.css?<?=VERSION?>" type="text/css" />
 		<? endif; ?>
 
 <?
@@ -255,20 +255,20 @@ $script_name = substr($script_name, 1);
 if (file_exists(dirname(__FILE__).'/../css/'.$script_name.'.css')) {
 ?>
 
-		<link rel="stylesheet" href="/css/<?=$script_name?>.css" type="text/css" />
+		<link rel="stylesheet" href="/css/<?=$script_name?>.css?<?=VERSION?>" type="text/css" />
 <?
 }
 
 if (isset ($_REQUEST['part']) && file_exists(dirname(__FILE__).'/../css/'.$script_name.'_'.$_REQUEST['part'].'.css')) {
 ?>
 
-		<link rel="stylesheet" href="/css/<?=$script_name.'_'.$_REQUEST['part']?>.css" type="text/css" />
+		<link rel="stylesheet" href="/css/<?=$script_name.'_'.$_REQUEST['part']?>.css?<?=VERSION?>" type="text/css" />
 <?
 }
 
 if (isset ($_REQUEST['part']) && $_SERVER['SCRIPT_NAME'] == '/sport.php' && isset($_REQUEST['part']) && $_REQUEST['part'] == 'league') {
 ?>
-		<link rel="stylesheet" href="/css/life.css" type="text/css" />
+		<link rel="stylesheet" href="/css/life.css?<?=VERSION?>" type="text/css" />
 <?
 }
 ?>
