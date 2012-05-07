@@ -26,9 +26,12 @@ try {
             exit(0);
 
         case 'remove_tag' :
-            $tag = getTag($data);
-            addTagToItem($itemId, $tag);
-            response_json(true);
+            if ($itemId) {
+                $tag = getTag($data);
+                $item = Item::getById($itemId);
+                $item->removeTag($tag);
+            }
+            response_json(false);
             exit(0);
 
         case 'create_tag' :
