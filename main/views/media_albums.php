@@ -16,14 +16,13 @@ case 'video':
 ?>
 
 <div id="media_container" class="body_container">
-
 	<h1><?=(param('part') == 'photo' ? 'Фотогалерея' : 'Видеогалерея')?></h1>
+
 <?
 
 foreach ($albums as $album) {
 	$lastItems = $album->getItems(0, 10, true);
 ?>
-
 	<div class="media_album <?=$album->getType();?>" id="album_<?=$album->getId();?>">
 		<div class="title">
 			<a href="/media/<?=param('part')?>/album<?=$album->getId()?>"><?=$album->getTitle()?></a>
@@ -59,7 +58,9 @@ foreach ($albums as $album) {
 
 		</div>
 	</div>
-</div>
 <?
 }
 ?>
+	
+</div>
+
