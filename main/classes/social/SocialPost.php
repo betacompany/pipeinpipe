@@ -89,11 +89,6 @@ class SocialPost {
 		}
 	}
 
-	public function getPhotos() {
-		ItemDBClient::getAllByTypeAndValue(Item::PHOTO, $this->getId());
-
-	}
-
 	/**
 	 * @static
 	 * @param $id

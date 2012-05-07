@@ -94,8 +94,16 @@ function life_show_item_content(Item $item) {
 	$isVideo = $item instanceof Video;
 	$isForumTopic = $item instanceof ForumTopic;
 
-	if ($isEvent || $isCrossPost) {
+	if ($isEvent) {
 		echo "<p>{$item->getContentParsed()}</p>";
+	} elseif ($isCrossPost) {
+		echo "<p>{$item->getContentParsed()}</p>";
+		$photos = $item->getPhotos();
+		echo "<div>";
+		foreach ($photos as $photo) {
+			life_show_item_content($photo);
+		}
+		echo "</div>";
 	} elseif ($isForumTopic) {
 		global $user;
 		$topicNew = $item->hasNewFor($user);

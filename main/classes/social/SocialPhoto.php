@@ -1,4 +1,8 @@
 <?php
+
+require_once dirname(__FILE__) . '/../db/AggregatorDBClient.php';
+require_once dirname(__FILE__) . '/../social/CrossPost.php';
+
 /**
  * User: ortemij
  * Date: 07.05.12

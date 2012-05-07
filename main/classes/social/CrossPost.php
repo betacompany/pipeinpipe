@@ -1,5 +1,6 @@
 <?php
 
+require_once dirname(__FILE__) . '/../db/ItemDBClient.php';
 require_once dirname(__FILE__) . '/../content/Item.php';
 require_once dirname(__FILE__) . '/../content/Parser.php';
 
@@ -38,7 +39,13 @@ class CrossPost extends Item {
 	}
 
 	public function getPhotos() {
-
+		$it = ItemDBClient::getAllByTypeAndValue(Item::PHOTO, $this->getId());
+		$photos = array();
+		while ($it->valid()) {
+			$photos[] = Item::getByData($it->current());
+			$it->next();
+		}
+		return $photos;
 	}
 
 	public static function valueOf(Item $item) {

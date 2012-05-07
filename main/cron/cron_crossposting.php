@@ -32,6 +32,11 @@ if ($lock->isLocked()) {
 		foreach ($allUnhandled as $socialPost) {
 			$crossPost = CrossPost::create($socialPost);
 			$logger->info("Cross post [id={$crossPost->getId()}] created from social post [id={$socialPost->getId()}]");
+			$socialPhotos = AggregatorDBClient::getPhotoByPostId($socialPost->getId());
+			foreach ($socialPhotos as $socialPhoto) {
+				$photo = CrossPhoto::create($socialPhoto, $crossPost);
+				$logger->info("Cross photo [id={$photo->getId()}] created from social photo [id={$socialPhoto->getId()}]");
+			}
 		}
 	} catch (Exception $e) {
 		$logger->exception($e);
