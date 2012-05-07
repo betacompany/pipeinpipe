@@ -19,7 +19,9 @@ if ($itemId) {
 	}
 }
 
-$photo->viewedBy($user);
+if ($user) {
+	$photo->viewedBy($user);
+}
 
 ?>
 
