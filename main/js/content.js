@@ -325,8 +325,34 @@ var content = {
 				content.cancelBug();
 			}
 		});
-	}
+	},
 
+	/**
+	 * @param tags array of objects with the following keys {id,value}
+	 * @param anchor
+	 * @param parent
+	 */
+	showTags: function(tags, anchor, parent) {
+		parent = $(parent);
+
+		for (var i in tags) {
+			var tag = tags[i];
+			var href = anchor.replace('%d', tag.id);
+			content.showTag(href, tag.value, tag.id, parent);
+		}
+	},
+
+	showTag: function (href, value, id, parent) {
+		var link = $('<a/>', {
+			href:href
+		}).appendTo(parent);
+
+		$('<div/>', {
+			class:'tag',
+			id:'tag' + id,
+			text:value
+		}).appendTo(link);
+	}
 };
 
 $(function () {

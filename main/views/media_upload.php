@@ -101,7 +101,7 @@ if ($subpart) {
     </table>
     <script type="text/javascript">
         $(document).ready(function () {
-            media.youtube.init();
+            media.upload.youtube.init();
         });
     </script>
 <?
@@ -191,7 +191,7 @@ if ($subpart) {
                 windowName: 'VK Authorization',
                 windowFeatures: 'width=800,height=500,location=yes,menubar=no,left=100,top=100'
             };
-            media.vk.photos.init('<?=$accessToken?>', vkAuthPopupOptions);
+            media.upload.vk.photos.init('<?=$accessToken?>', vkAuthPopupOptions);
         });
     </script>
 <?

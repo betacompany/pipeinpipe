@@ -161,7 +161,7 @@ div.zoom:hover {
 	margin-bottom: 20px;
 }
 
-.item_left > div {
+.item_left > div, .item_left > table, .item_left .item_title {
 	width: 600px;
 	text-align: center;
 	position: relative;
@@ -169,9 +169,56 @@ div.zoom:hover {
 	margin-left: -300px;
 }
 
+#video_source {
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
+.item_left > td#option_links {
+	vertical-align: bottom;
+}
+
+.item_wrapper .tag_creator {
+	display: none;
+}
+
+/*bug in chrome!!!*/
+.item_title_wrapper {
+	width: 99%;
+}
+
+.item_title_wrapper .button {
+	margin-top: 3px;
+	font-size: 0.9em;
+	float: right;
+}
+
+.item_wrapper #option_links {
+	vertical-align: bottom;
+}
+
+.item_edit_title_input {
+	width: 80%;
+	/*height: 100%;*/
+	border: #007CA7 1px solid;
+	border-radius: 2px;
+	padding: 2px;
+	font-size: 1em;
+}
+
 .item_left img {
 	max-width: 600px;
 	max-height: 600px;
+}
+
+.item_left .item_title_wrapper {
+	margin-bottom: 20px;
+	margin-top: 10px;
+	color: #007CA7;
+}
+
+.item_left .item_title_wrapper .item_title {
+	font-size: 1.2em;
 }
 
 .item_right {
