@@ -547,6 +547,16 @@ class User {
 			}
 		}
 
+        if ($target instanceof Video) {
+            switch ($type) {
+                case 'edit':
+                case 'remove':
+                    return $this->isTotalAdmin() || $this->getId() === $target->getUID();
+            }
+
+            return false;
+        }
+
         return false;
     }
 

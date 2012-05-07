@@ -49,6 +49,11 @@ class Video extends Item {
 		return $this->getContentParsed();
 	}
 
+    public function setTitle($title) {
+        $this->contentParsed = Parser::parseSource($title);
+        $this->update();
+    }
+
 	/**
 	 * Returns URL of preview image
 	 * @return string
