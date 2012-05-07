@@ -19,9 +19,20 @@ require_once dirname(__FILE__) . '/MySQLResultIterator.php';
  */
 class SocialPostDBClient {
 
+	const QUERY = 'SELECT
+				`agg_post`.*,
+				UNIX_TIMESTAMP(`date`) as `timestamp`,
+	            `agg_user`.`first_name`,
+	            `agg_user`.`last_name`
+			FROM
+				`agg_post`
+				LEFT JOIN
+				`agg_user`
+				ON `agg_post`.`source`=`agg_user`.`source` AND `agg_post`.`user_id`=`agg_user`.`id`';
+
 	public static function getById($id) {
 		return new MySQLResultIterator(mysql_qw(
-			'SELECT *, UNIX_TIMESTAMP(`date`) as `timestamp` FROM `agg_post` WHERE `id`=?', $id
+			self::QUERY . ' WHERE `agg_post`.`id`=?', $id
 		));
 	}
 
@@ -31,7 +42,7 @@ class SocialPostDBClient {
 
 	public static function getAllUnhandled() {
 		return new MySQLResultIterator(mysql_qw(
-			'SELECT *, UNIX_TIMESTAMP(`date`) as `timestamp` FROM `agg_post` WHERE `viewed`=0'
+			self::QUERY . ' WHERE `viewed`=0'
 		));
 	}
 }

@@ -34,7 +34,7 @@ class SocialPost {
 		$this->id				   = $data['id'];
 		$this->socialWebType	   = $data['source'];
 		$this->socialWebAuthorId   = $data['user_id'];
-		$this->socialWebAuthorName = $data['user_id'];
+		$this->socialWebAuthorName = $data['first_name'] ? $data['first_name'] . " " . $data['last_name'] : $data['user_id'];
 		$this->outerId			   = $data['outer_id'];
 		$this->content			   = $data['content'];
 		$this->timestamp		   = $data['timestamp'];
