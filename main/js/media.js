@@ -747,7 +747,7 @@ var media = {
 								disableActionUpload();
 								selectedPhotosList.empty();
 								selectedPhotosTitle.hide();
-								selectedPhotosTitle.show();
+								availablePhotosTitle.show();
 								if (availablePhotosCount > 0) {
 									resizePhotosList(0, selectedPhotosList, availablePhotosList, hideUploadOptions);
 								} else {
