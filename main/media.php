@@ -19,6 +19,7 @@ try {
 			if (issetParam('tag_id')) {
 				$part = param('part');
 				if ($part == 'photo') {
+					$tag = Tag::getById(intparam('tag_id'));
 					$photos = Item::getAllByTypeAndTag(Item::PHOTO, intparam('tag_id'));
 					if (issetParam('item_id')) {
 						$itemId = intparam('item_id');
@@ -26,6 +27,7 @@ try {
 					include 'views/media_photo_viewer.php';
 				}
 			} elseif (!issetParam('group_id')) {
+				$tag = false;
 				$part = param('part');
 				if ($part == 'photo') {
 					include 'views/media_photo_albums.php';
@@ -34,6 +36,7 @@ try {
 					include 'views/media_albums.php';
 				}
 			} elseif (!issetParam('item_id')) {
+				$tag = false;
 				$part = param('part');
 				if ($part == 'photo') {
 					$album = Group::getById(intparam('group_id'));
@@ -43,6 +46,7 @@ try {
 					include 'views/media_album.php';
 				}
 			} else {
+				$tag = false;
 				$part = param('part');
 				if ($part == 'photo') {
 					$album = Group::getById(intparam('group_id'));

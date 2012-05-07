@@ -5,6 +5,7 @@ require_once dirname(__FILE__) . '/media_view.php';
 global $photos;
 global $itemId;
 global $user;
+global $tag;
 
 $index = 0;
 $photo = $photos[0];
@@ -67,7 +68,11 @@ if ($user) {
 	</div>
 	<div id="thumbs" class="item_right">
 		<?
-		media_show_preview_photos_list($photo, $photos);
+		if ($tag) {
+			media_show_preview_photos_list($photo, $photos, $tag);
+		} else {
+			media_show_preview_photos_list($photo, $photos);
+		}
 		?>
 
 	</div>

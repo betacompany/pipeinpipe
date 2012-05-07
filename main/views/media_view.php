@@ -114,7 +114,7 @@ if ($author != null) {
 <?
 }
 
-function media_show_preview_photos_list(Photo $photo, $items = false) {
+function media_show_preview_photos_list(Photo $photo, $items = false, $tag = false) {
 	if (!$items) {
 		$items = $photo->getGroup()->getItems();
 	}
@@ -125,9 +125,14 @@ function media_show_preview_photos_list(Photo $photo, $items = false) {
 	foreach ($items as $item) {
 		if ($item instanceof Photo) {
 			$t = ($item->getId() == $photo->getId()) ? ' class="selected"' : '';
+			if ($tag) {
+				$href = "/media/photo/tag{$tag->getId()}/{$item->getId()}";
+			} else {
+				$href = "/media/photo/album{$item->getGroupId()}/{$item->getId()}";
+			}
 ?>
 
-					<a id="thumb_<?=$item->getId()?>" href="/media/photo/album<?=$item->getGroupId()?>/<?=$item->getId()?>"><img<?=$t?> src="<?=$item->getPreviewUrl()?>" alt="<?=$item->getTitle()?>" /></a>
+					<a id="thumb_<?=$item->getId()?>" href="<?=$href?>"><img<?=$t?> src="<?=$item->getPreviewUrl()?>" alt="<?=$item->getTitle()?>" /></a>
 <?
 		}
 	}
