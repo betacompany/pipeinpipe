@@ -495,7 +495,7 @@ class Item {
 	 * @return boolean
 	 */
 	public function isActedBy($user, $type = Action::EVALUATION) {
-		if ($user == null) return false;
+		if (!($user instanceof User)) return false;
 		$actions = $this->getActions();
 		foreach ($actions as $action) {
 			if ($action->getType() == $type) {

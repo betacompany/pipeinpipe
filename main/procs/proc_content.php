@@ -218,6 +218,7 @@ try {
 		try {
 			global $user;
 			$item = Item::getById(intparam('item_id'));
+			if ($item instanceof ForumTopic) incorrect_api();
 			show_block_comments($user, $item);
 		} catch (Exception $e) {
 
