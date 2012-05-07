@@ -62,7 +62,7 @@ try {
             $group = Group::getById($groupId);
 
             assertParam('tags');
-            $tags = json_decode(param('tags'));
+            $tagIds = json_decode(param('tags'));
 
             if (!$user) {
                 echo json(array(
@@ -82,6 +82,8 @@ try {
                         Photo::SIZE_MIDDLE => $photo['middle'],
                         Photo::SIZE_HQ => $photo['hq']
                     ));
+
+                    $photoObj->addTags($tagIds, $user);
 
                     if (!$redirect) {
                         $redirect = "/media/photo/album{$groupId}/{$photoObj->getId()}";
