@@ -174,7 +174,7 @@ if ($subpart) {
             <tr>
                 <td></td>
                 <td>
-                    <div id="vk_photos_controls_upload" class="button disabled">Загрузить ▲</div>
+                    <div id="vk_photos_controls_upload" class="button disabled">Загрузить &uarr;</div>
                 </td>
             </tr>
             </tbody>
@@ -190,7 +190,7 @@ if ($subpart) {
                     '&response_type=code',
                 windowName: 'VK Authorization',
                 windowFeatures: 'width=800,height=500,location=yes,menubar=no,left=100,top=100'
-            }
+            };
             media.vk.photos.init('<?=$accessToken?>', vkAuthPopupOptions);
         });
     </script>
