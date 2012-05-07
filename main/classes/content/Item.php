@@ -585,7 +585,7 @@ class Item {
 		case self::PHOTO: $item = Photo::valueOf($item); break;
 		case self::VIDEO: $item = Video::valueOf($item); break;
 		case self::EVENT: $item = Event::valueOf($item); break;
-		case self::CROSS_POST: $item = Event::valueOf($item); break;
+		case self::CROSS_POST: $item = CrossPost::valueOf($item); break;
 		}
 
 		return self::$items[$id] = $item;

@@ -31,15 +31,14 @@ class SocialPhoto {
 			$json = json_decode($data['urls']);
 
 			$this->urls = array(
-				Photo::SIZE_MINI => $json->src_small,
-				Photo::SIZE_MIDDLE => $json->src,
-				Photo::SIZE_HQ => $json->src_xxbig ?
-					$json->src_xxbig :
-					($json->src_xbig ?
-						$json->src_xbig :
-						($json->src_big ? $json->src_big : $json->src)
-					),
+				Photo::SIZE_MINI => $json->src,
+				Photo::SIZE_MIDDLE => $json->src_big
 			);
+			if ($json->src_xxbig) {
+				$this->urls[Photo::SIZE_HQ] = $json->src_xxbig;
+			} else if ($json->src_xbig) {
+				$this->urls[Photo::SIZE_HQ] = $json->src_xbig;
+			}
 		} else {
 			$this->urls = array(
 				Photo::SIZE_MIDDLE => $data['urls']
@@ -52,8 +51,12 @@ class SocialPhoto {
 		return $this->urls;
 	}
 
-	public static function getBySocialPost(CrossPost $post) {
-		$it = AggregatorDBClient::getPhotoByPostId($post->getSocialPostId());
+	public function getId() {
+		return $this->id;
+	}
+
+	public static function getBySocialPost(SocialPost $post) {
+		$it = AggregatorDBClient::getPhotoByPostId($post->getId());
 		$photos = array();
 		while ($it->valid()) {
 			$data = $it->current();

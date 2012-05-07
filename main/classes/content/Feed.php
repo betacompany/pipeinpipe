@@ -115,7 +115,11 @@ class Feed {
 			$grouped = explode(",", $data['ids']);
 			$itemsArray = array();
 			foreach ($grouped as $id) {
-				$itemsArray[] = Item::getById($id);
+				$byId = Item::getById($id);
+				if ($byId instanceof Photo && $byId->getContentValue() > 0) {
+					continue;
+				}
+				$itemsArray[] = $byId;
 			}
 
 			if (count($itemsArray) > 5 && date('Y-m-d', $itemsArray[0]->getTimestamp()) == '2011-04-07' ||

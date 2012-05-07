@@ -16,7 +16,9 @@ require_once dirname(__FILE__) . '/../classes/utils/Logger.php';
 require_once dirname(__FILE__) . '/../classes/utils/Lock.php';
 
 require_once dirname(__FILE__) . '/../classes/social/SocialPost.php';
+require_once dirname(__FILE__) . '/../classes/social/SocialPhoto.php';
 require_once dirname(__FILE__) . '/../classes/social/CrossPost.php';
+require_once dirname(__FILE__) . '/../classes/social/CrossPhoto.php';
 
 $logger = new Logger('../../logs/cross_posting.log');
 $logger->info("Cross posting started");
@@ -32,7 +34,7 @@ if ($lock->isLocked()) {
 		foreach ($allUnhandled as $socialPost) {
 			$crossPost = CrossPost::create($socialPost);
 			$logger->info("Cross post [id={$crossPost->getId()}] created from social post [id={$socialPost->getId()}]");
-			$socialPhotos = AggregatorDBClient::getPhotoByPostId($socialPost->getId());
+			$socialPhotos = SocialPhoto::getBySocialPost($socialPost);
 			foreach ($socialPhotos as $socialPhoto) {
 				$photo = CrossPhoto::create($socialPhoto, $crossPost);
 				$logger->info("Cross photo [id={$photo->getId()}] created from social photo [id={$socialPhoto->getId()}]");

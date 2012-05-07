@@ -99,7 +99,7 @@ function life_show_item_content(Item $item) {
 	} elseif ($isCrossPost) {
 		echo "<p>{$item->getContentParsed()}</p>";
 		$photos = $item->getPhotos();
-		echo "<div>";
+		echo "<div style=\"margin-top: 20px;\">";
 		foreach ($photos as $photo) {
 			life_show_item_content($photo);
 		}
