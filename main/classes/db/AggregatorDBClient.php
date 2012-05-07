@@ -17,7 +17,7 @@ require_once dirname(__FILE__) . '/MySQLResultIterator.php';
  *   viewed Bool Default false
  * );
  */
-class SocialPostDBClient {
+class AggregatorDBClient {
 
 	const QUERY = 'SELECT
 				`agg_post`.*,

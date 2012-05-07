@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . '/../db/SocialPostDBClient.php';
+require_once dirname(__FILE__) . '/../db/AggregatorDBClient.php';
 
 /**
  * User: ortemij
@@ -25,7 +25,7 @@ class SocialPost {
 
 	private function __construct($id, $data = null) {
 		if ($data == null) {
-			$it = SocialPostDBClient::getById($id);
+			$it = AggregatorDBClient::getById($id);
 			if ($it->valid()) {
 				$data = $it->current();
 			}
@@ -84,7 +84,7 @@ class SocialPost {
 	}
 
 	public function makeHandled() {
-		if (SocialPostDBClient::setHandled($this->id)) {
+		if (AggregatorDBClient::setHandled($this->id)) {
 			$this->handled = true;
 		}
 	}
@@ -103,7 +103,7 @@ class SocialPost {
 
 	public static function getAllUnhandled() {
 		$result = array();
-		$it = SocialPostDBClient::getAllUnhandled();
+		$it = AggregatorDBClient::getAllUnhandled();
 		while ($it->valid()) {
 			$data = $it->current();
 			$result[] = new SocialPost(-1, $data);
