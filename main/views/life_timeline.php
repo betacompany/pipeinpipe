@@ -99,11 +99,13 @@ function life_show_item_content(Item $item) {
 	} elseif ($isCrossPost) {
 		echo "<p>{$item->getContentParsed()}</p>";
 		$photos = $item->getPhotos();
-		echo "<div style=\"margin-top: 20px;\">";
-		foreach ($photos as $photo) {
-			life_show_item_content($photo);
+		if (count($photos) > 0) {
+			echo "<div style=\"margin-top: 20px;\">";
+			foreach ($photos as $photo) {
+				life_show_item_content($photo);
+			}
+			echo "</div>";
 		}
-		echo "</div>";
 	} elseif ($isForumTopic) {
 		global $user;
 		$topicNew = $item->hasNewFor($user);
