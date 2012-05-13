@@ -12,6 +12,7 @@ class SocialPost {
 	private $id;
 	private $socialWebType;
 	private $socialWebAuthorId;
+	private $socialWebOwnerId;
 	private $socialWebAuthorName;
 	private $timestamp;
 
@@ -33,8 +34,9 @@ class SocialPost {
 
 		$this->id				   = $data['id'];
 		$this->socialWebType	   = $data['source'];
-		$this->socialWebAuthorId   = $data['user_id'];
-		$this->socialWebAuthorName = $data['first_name'] ? $data['first_name'] . " " . $data['last_name'] : $data['user_id'];
+		$this->socialWebAuthorId   = $data['author_id'];
+		$this->socialWebOwnerId    = $data['owner_id'];
+		$this->socialWebAuthorName = $data['first_name'] ? $data['first_name'] . " " . $data['last_name'] : $data['author_id'];
 		$this->outerId			   = $data['outer_id'];
 		$this->content			   = $data['content'];
 		$this->timestamp		   = $data['timestamp'];
@@ -78,7 +80,7 @@ class SocialPost {
 		case ISocialWeb::TWITTER:
 			return "http://twitter.com/{$this->socialWebAuthorId}";
 		case ISocialWeb::VKONTAKTE:
-			return "http://vk.com/wall{$this->socialWebAuthorId}_{$this->outerId}";
+			return "http://vk.com/wall{$this->socialWebOwnerId}_{$this->outerId}";
 		}
 		return "#";
 	}

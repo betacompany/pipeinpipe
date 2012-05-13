@@ -28,7 +28,7 @@ class AggregatorDBClient {
 				`agg_post`
 				LEFT JOIN
 				`agg_user`
-				ON `agg_post`.`source`=`agg_user`.`source` AND `agg_post`.`user_id`=`agg_user`.`id`';
+				ON `agg_post`.`source`=`agg_user`.`source` AND `agg_post`.`author_id`=`agg_user`.`id`';
 
 	public static function getPostById($id) {
 		return new MySQLResultIterator(mysql_qw(
