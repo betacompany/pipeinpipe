@@ -134,6 +134,13 @@ function profile_show_person(User $person, $player, $tabs) {
 					'В&nbsp;Контакте'
 				);
 				break;
+			case User::KEY_TWNAME:
+				profile_show_contact(
+					'http://twitter.com/'.$value,
+					'/images/social/twitter.png',
+					'@'.$value
+				);
+				break;
 			}
 		}
 	}

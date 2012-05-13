@@ -77,7 +77,7 @@ class User {
 	}
 
 	private static $CONTACT_KEYS = array(
-		self::KEY_ICQ, self::KEY_SKYPE, self::KEY_VKID
+		self::KEY_ICQ, self::KEY_SKYPE, self::KEY_VKID, self::KEY_TWNAME
 	);
 	public static final function getContactKeys() {
 		return self::$CONTACT_KEYS;

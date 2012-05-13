@@ -398,3 +398,7 @@ img {
 #person .data_wrapper div span {
 	font-weight: bold;
 }
+
+.slide_block .title {
+    font-size: 1em !important;
+}
