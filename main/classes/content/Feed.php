@@ -129,7 +129,7 @@ class Feed {
 				if ($itemsArray[0] instanceof CrossPost) {
 					$splitted = array();
 					foreach ($itemsArray as $item) {
-						$type = $item->getSocialWebType();
+						$type = "{$item->getSocialWebType()}/{$item->getSocialWebAuthorName()}";
 						if (!$splitted[ $type ]) {
 							$splitted[ $type ] = array();
 						}
