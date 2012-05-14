@@ -1,0 +1,2 @@
+MAILTO=dev@pipeinpipe.info
+*/5 * * * * root curl http://pipeinpipe.info/cron/cron_crossposting.php?password=yreutywerUIUihkhsdjahsduhweuUUUUU

@@ -326,7 +326,7 @@ $$(function () {
 
 	</div>
 <?
-	if ($user != null) {
+	if ($user instanceof User) {
 ?>
 
 	<div class="add_comment" onkeypress="javascript: content.ctrlEnterHandler(event, function () { content.sendComment(<?=$item->getId()?>); })">

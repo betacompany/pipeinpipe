@@ -30,7 +30,18 @@ var common = {
 		{name: 'Октябрь', name_gen: 'октября', name_short: 'окт', length: 31, length_leap: 31},
 		{name: 'Ноябрь', name_gen: 'ноября', name_short: 'ноя', length: 30, length_leap: 30},
 		{name: 'Декабрь', name_gen: 'декабря', name_short: 'дек', length: 31, length_leap: 31}
-	]
+	],
+
+	monthDaysCount: function (date) {
+		var y = date.getFullYear(),
+			isLeap = (y % 4 == 0 && y % 100 != 0 || y % 400 == 0),
+			mon = this.months[date.getMonth()];
+		return isLeap ? mon.length_leap : mon.length;
+	},
+
+	monthName: function (date) {
+		return this.months[date.getMonth()].name;
+	}
 };
 
 function ce(tag) {
@@ -82,15 +93,24 @@ function setCookie(name, value, days) {
 
 function debug(text) {
 	try {
-		var time = (tm() - common.startTime) / 1000 + '';
-		for (var i = 0; i < 8 - time.length; i++) {
-			time = ' ' + time;
+		var time = (tm() - common.startTime) / 1000 + '',
+			splitted = time.split('.', 2),
+			resultTime = ''
+			;
+
+		for (var i = 0; i < 5 - splitted[0].length; ++i) {
+			resultTime += ' ';
 		}
+		resultTime += time;
+		for (var j = 0; j < 3 - splitted[1].length; ++j) {
+			resultTime += '0';
+		}
+
         if (CONFIG.DEBUG) {
-            if (typeof text === 'string') {
-                console && console.debug(''+time+': ' + text);
+            if (typeof text === 'string' || typeof text == 'number') {
+                console && console.debug(''+resultTime+': ' + text);
             } else {
-                console && console.debug(''+time+': ');
+                console && console.debug(''+resultTime+': Object!');
                 console && console.debug(text);
             }
         }
@@ -208,6 +228,18 @@ function datecmp(d1, m1, y1, d2, m2, y2) {
 	return 0;
 }
 
+function formatYMD(date) {
+	var y = date.getFullYear(), m = date.getMonth() + 1, d = date.getDate();
+	(d < 10) && (d = '0' + d);
+	(m < 10) && (m = '0' + m);
+	return y + '-' + m + '-' + d;
+}
+
+function parseYMD(ymd) {
+	var ymda = ymd.split('-');
+	return new Date(ymda[0], parseInt(ymda[1], 10) - 1, parseInt(ymda[2]));
+}
+
 function myParseInt(s) {
 	if (parseInt(s) === s) return s;
 	var str = "0", i = 0;
@@ -261,7 +293,7 @@ function preventSelection(element){
 			removeSelection();
 	});
 	addHandler(element, 'mousedown', function(event){
-		var event = event || window.event;
+		event = event || window.event;
 		var sender = event.target || event.srcElement;
 		preventSelection = !sender.tagName.match(/INPUT|TEXTAREA/i);
 	});

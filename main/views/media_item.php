@@ -15,7 +15,10 @@ global $user;
 $uid = $auth->uid();
 
 try {
+?>
 
+<div id="media_container" class="body_container">
+<?
 	$item = Item::getById(intparam('item_id'));
 	
 	if ($item instanceof Photo) {
@@ -35,6 +38,10 @@ try {
 	} else {
 		echo 'Item type is not photo or video';
 	}
+?>
+
+</div>
+<?
 
 } catch (Exception $e) {
 	global $LOG;

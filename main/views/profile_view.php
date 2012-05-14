@@ -134,6 +134,13 @@ function profile_show_person(User $person, $player, $tabs) {
 					'В&nbsp;Контакте'
 				);
 				break;
+			case User::KEY_TWNAME:
+				profile_show_contact(
+					'http://twitter.com/'.$value,
+					'/images/social/twitter.png',
+					'@'.$value
+				);
+				break;
 			}
 		}
 	}
@@ -441,10 +448,14 @@ function profile_show_player($person, Player $player, $tabs) {
 				</div>
 
 
-                <div class="slide_block">
+                <div id="rating_main_box" class="slide_block">
                     <div class="title">
                         <div class="left">
                             <div class="content">Рейтинг</div>
+                            <script type="text/javascript">
+                                var drawRatingGraphs = <?if(profile_get_charts_data($player) == null) echo "true"; else echo "false"?>;
+                                if(drawRatingGraphs) $("#rating_main_box").hide();
+                            </script>
                         </div>
                         <div class="right"></div>
                         <div style="clear: both;"></div>
@@ -455,13 +466,15 @@ function profile_show_player($person, Player $player, $tabs) {
 <?
 	require_once dirname(__FILE__) . '/../classes/charts/VkontakteLineChart.php';
 	$movement = $player->getRatingMovement();
-    $line = new Line();
-	foreach ($movement as $d) {
-        $line->addPoint(strtotime($d['date']), $d['points']);
+	if($movement != null){
+        $line = new Line();
+	    foreach ($movement as $d) {
+            $line->addPoint(strtotime($d['date']), $d['points']);
+        }
+        $chart = new VkontakteLineChart("chart_vk_place_graph");
+        $chart->addLine("Очков в WPR", "8fbc13", $line);
+        echo $chart->toHTML(time());
     }
-    $chart = new VkontakteLineChart("chart_vk_place_graph");
-    $chart->addLine("Очков в WPR", "8fbc13", $line);
-    echo $chart->toHTML(time());
 ?>
                             <div id="chart_place">
 
@@ -476,6 +489,7 @@ function profile_show_player($person, Player $player, $tabs) {
                                         dataTable.addRows([
                                             <?
                                                 $movement = profile_get_charts_data($player);
+                                                if($movement != null){
                                                     $date = array();
                                                     $isFirst = true;
                                                     foreach($movement as $d){
@@ -485,6 +499,7 @@ function profile_show_player($person, Player $player, $tabs) {
                                                         echo "[new Date(" . $date[0] . ', ' . $month . ', ' . $date[2] . "), " . $d['place'] . "]";
                                                         $isFirst = false;
                                                     }
+                                                }
                                             ?>
                                         ]);
 
@@ -564,7 +579,12 @@ function count_max_places(Player $player) {
     foreach ($movement as $step) {
         $places[] = $step['place'];
     }
-    return max($places);
+    $res = 0;
+    try{
+        $res = max($places);
+    } catch(Exception $e) {}
+
+    return $res;
 }
 
 function profile_show_game_stats(Player $player) {

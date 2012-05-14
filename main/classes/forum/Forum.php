@@ -67,7 +67,7 @@ class Forum {
 		self::preloadParts();
 	}
 
-	private static function preloadTopics($uid) {
+	public static function preloadTopics($uid) {
 		$topics = ForumTopic::getOpened();
 		if ($uid > 0) {
 			$iterator = ContentViewDBClient::getOpenedItemViewsByUser($uid);
@@ -78,9 +78,19 @@ class Forum {
 				$iterator->next();
 			}
 
+			$iterator = CommentDBClient::getCountsForItems(array_keys($views));
+			$counts = array();
+			while ($iterator->valid()) {
+				$count = $iterator->current();
+				$counts[$count['iid']] = $count['count'];
+				$iterator->next();
+			}
+
 			foreach ($topics as $topic) {
 				$time = isset($views[$topic->getId()]) ? $views[$topic->getId()] : 0;
 				$topic->setLastViewForLite($uid, $time);
+				$count = isset($counts[$topic->getId()]) ? $counts[$topic->getId()] : 0;
+				$topic->setCommentsCountForLite($count);
 			}
 		}
 	}

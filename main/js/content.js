@@ -4,6 +4,7 @@
 var content = {
 
 	loadingComments: '',
+	loadingEvaluations: '',
 	sending: false,
 
 	loadComments: function (itemId, page) {
@@ -26,6 +27,27 @@ var content = {
 			success: function (html) {
 				if (content.loadingComments != itemId + '_' + page) return;
 				$('#comments_' + itemId).find('.comments_content').html(html);
+				content.loadingComments = '';
+			}
+		});
+	},
+
+	loadInitialComments: function (itemId, container) {
+		$.ajax({
+			url: '/procs/proc_content.php',
+			data: {
+				method: 'get_initial_comments',
+				item_id: itemId,
+				t: tm()
+			},
+
+			beforeSend: function () {
+				content.loadingComments = itemId + '_';
+			},
+
+			success: function (html) {
+				if (content.loadingComments != itemId + '_') return;
+				container.html(html);
 				content.loadingComments = '';
 			}
 		});
@@ -67,6 +89,30 @@ var content = {
 		if (event.ctrlKey && (event.keyCode == 10 || event.keyCode == 13)) {
 			handler();
 		}
+	},
+	
+	loadEvaluation: function (container, itemId) {
+		$.ajax({
+			url: '/procs/proc_content.php',
+			data: {
+				method: 'get_evaluations',
+				item_id: itemId,
+				t: tm()
+			},
+
+			dataType: 'json',
+			
+			beforeSend: function () {
+				content.loadingEvaluations = itemId;	
+			},
+			
+			success: function (json) {
+				if (content.loadingEvaluations != itemId) return;
+				container.html('');
+				content.showEvaluation(container, itemId, json.avg, json.is_evaluable);
+				content.loadingEvaluations = '';
+			}
+		});
 	},
 
 	showEvaluation: function (container, itemId, evaluation, possibility) {
@@ -279,8 +325,34 @@ var content = {
 				content.cancelBug();
 			}
 		});
-	}
+	},
 
+	/**
+	 * @param tags array of objects with the following keys {id,value}
+	 * @param anchor
+	 * @param parent
+	 */
+	showTags: function(tags, anchor, parent) {
+		parent = $(parent);
+
+		for (var i in tags) {
+			var tag = tags[i];
+			var href = anchor.replace('%d', tag.id);
+			content.showTag(href, tag.value, tag.id, parent);
+		}
+	},
+
+	showTag: function (href, value, id, parent) {
+		var link = $('<a/>', {
+			href:href
+		}).appendTo(parent);
+
+		$('<div/>', {
+			class:'tag',
+			id:'tag' + id,
+			text:value
+		}).appendTo(link);
+	}
 };
 
 $(function () {

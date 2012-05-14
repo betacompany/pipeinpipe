@@ -30,7 +30,10 @@ try {
 	assertParam('method');
 
 	$auth = new Auth();
-	
+
+	//print_r($auth);
+	//print_r($_SESSION);
+
 	if ($auth->isAuth()) {
 		switch (param('method')) {
 
@@ -122,6 +125,8 @@ try {
 			try {
 				$user = $auth->getCurrentUser();
 
+				print_r($user);
+
 				switch (param('target_type')) {
 				case 'group':
 					$group = Group::getById(intparam('target_id'));
@@ -206,6 +211,21 @@ try {
 
 		break;
 
+	case 'get_initial_comments':
+
+		assertParam('item_id');
+
+		try {
+			global $user;
+			$item = Item::getById(intparam('item_id'));
+			if ($item instanceof ForumTopic) incorrect_api();
+			show_block_comments($user, $item);
+		} catch (Exception $e) {
+
+		}
+
+		break;
+
 	/*
 	 * @param item_id
 	 * @format JSON
@@ -225,17 +245,26 @@ try {
 			}
 
 			$result = array();
+			$avg = 0;
 			$actions = $item->getActions();
 			foreach ($actions as $action) {
 				if ($action->getType() == Action::EVALUATION) {
-					$result[] = $action->toArray();
+					$avg += ($result[] = $action->getValue());
 				}
 			}
+			$n = count($result);
+			if ($n) {
+				$avg = $avg / $n;
+			}
+
+			global $user;
 
 			echo json(array (
 				'status' => 'ok',
 				'item_id' => param('item_id'),
-				'actions' => $result
+				'actions' => $result,
+				'avg' => $avg,
+				'is_evaluable' => ($user && $item->isActedBy($user, Action::EVALUATION) && $item->isEvaluable() ? true : false)
 			));
 		} catch (Exception $e) {
 			echo_json_exception($e);
@@ -268,7 +297,15 @@ try {
 		}
 
 		break;
+
+	default:
+		echo json(array(
+			'status' => 'failed',
+			'reason' => 'this action is denied or unknown'
+		));
 	}
+
+
 
 } catch (Exception $e) {
 	

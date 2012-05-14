@@ -113,6 +113,23 @@ class CommentDBClient {
 		);
 	}
 
+	public static function getCountsForItems($ids) {
+		$in = array();
+		foreach ($ids as $id) {
+			$in[] = intval($id);
+		}
+		return new MySQLResultIterator(
+			mysql_qw('SELECT
+						COUNT(*) AS `count`, `p_content_item`.`id` AS `iid`
+					  FROM
+					    `p_content_item` JOIN `pv_content_comment`
+					    ON `p_content_item`.`id`=`pv_content_comment`.`item_id`
+					  WHERE
+					    `p_content_item`.`id` IN ('.implode(",", $in).')
+					  GROUP BY `iid`')
+		);
+	}
+
 	public static function getByItemType($itemTypes, $from, $limit, $descendive) {
 		$request = 'SELECT `pv_content_comment`.* AS `item_type` FROM
 			`pv_content_comment`

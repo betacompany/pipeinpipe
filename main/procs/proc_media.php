@@ -76,7 +76,56 @@ try {
 		}
 
 		break;
-	}
+
+    case 'remove_item':
+
+        assertParam('item_id');
+
+        $item = Item::getById(param('item_id'));
+        if ($user->hasPermission($item, 'remove')) {
+            $item->remove();
+            echo json(array (
+                'status' => 'ok'
+            ));
+        } else {
+            echo json(array (
+                'status' => 'failed',
+                'reason' => 'You have no permission to remove this item!'
+            ));
+        }
+
+        break;
+
+    case 'set_video_title':
+
+        assertParam('video_id');
+        assertParam('title');
+
+        $video = Video::getById(param('video_id'));
+        if ($user->hasPermission($video, 'edit')) {
+            $video->setTitle(param('title'));
+            echo json(array (
+                'status' => 'ok'
+            ));
+        } else {
+            echo json(array (
+                'status' => 'failed',
+                'reason' => 'You have no permission to edit this vid!'
+            ));
+        }
+
+
+        break;
+
+    default:
+        echo json(array (
+            'status' => 'failed',
+            'reason' => 'Unsupported method'
+        ));
+
+        break;
+    }
+
 
 } catch (Exception $e) {
 	// TODO use error log file

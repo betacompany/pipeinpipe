@@ -43,6 +43,44 @@ var main = {
 
 	showErrorText: function (text) {
 		$('#error_box').html(text).slideDown().delay(5000).slideUp();
+	},
+
+	showNotification: function(textOrJQueryElement) {
+		var speed = 'fast';
+
+		var alert = $('<div/>', {
+			class: 'custom_alert'
+		}).hide()
+				.appendTo($('html'));
+
+		if (textOrJQueryElement instanceof $) {
+			textOrJQueryElement.appendTo(alert);
+		} else {
+			$('<div/>', {
+				class:'custom_alert_text',
+				html: textOrJQueryElement
+			}).appendTo(alert);
+
+			$('<div/>', {
+				class: 'custom_alert_btn button',
+				text: 'Ok'
+			}).appendTo(alert)
+					.click(function () {
+						alert.fadeOut(speed, function () {
+							$('body').fadeTo(speed,1);
+							alert.remove();
+						})
+					})
+		}
+
+		alert.css({
+			'margin-left':'-' + alert.width()/2 + 'px',
+			'margin-top':'-' + alert.height()/2 + 'px'
+		});
+
+		$('body').fadeTo(speed,0.4, function() {
+			alert.fadeIn(speed);
+		})
 	}
 };
 

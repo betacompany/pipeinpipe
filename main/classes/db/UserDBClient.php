@@ -59,7 +59,7 @@ class UserDBClient {
 	public static function getByKey($key, $value) {
 		return new MySQLResultIterator(
 			mysql_qw(
-				'SELECT * FROM (
+				'SELECT `p_user`.* FROM (
 					`p_user`
 					INNER JOIN
 						(
@@ -111,6 +111,16 @@ class UserDBClient {
 				$uid, $target
 			)
 		) > 0;
+	}
+
+	public static function getByIds($ids) {
+		$in = array();
+		foreach ($ids as $id) {
+			$in[] = intval($id);
+		}
+		return new MySQLResultIterator(
+			mysql_qw('SELECT * FROM `p_user` WHERE `id` IN ('.implode(",", $in).')')
+		);
 	}
 }
 ?>

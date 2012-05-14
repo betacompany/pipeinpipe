@@ -21,7 +21,7 @@ function mysql_qw() {
 
 	if (MYSQL_DEBUG_MODE) {
 		global $MYSQL_LOGGER;
-		$MYSQL_LOGGER->sql($query);
+		@$MYSQL_LOGGER->sql($query);
 	}
 
 	return ($conn !== null) ? mysql_query($query, $conn) : mysql_query($query);

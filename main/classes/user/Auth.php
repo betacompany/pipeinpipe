@@ -59,10 +59,14 @@ class Auth {
 	public function getCurrentUser() {
 		if ($this->currentUserLoaded) return $this->currentUser;
 
-		try {
-			$this->currentUser = User::getById($this->uid());
-		} catch (Exception $e) {
-			// TODO use error log file
+		if ($this->uid() > 0) {
+			try {
+				$this->currentUser = User::getById($this->uid());
+			} catch (Exception $e) {
+				// TODO use error log file
+				$this->currentUser = null;
+			}
+		} else {
 			$this->currentUser = null;
 		}
 

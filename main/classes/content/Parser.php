@@ -75,6 +75,10 @@ class Parser {
 		return self::parseDescription($source);
 	}
 
+	public static function parseSocialPost($source) {
+		return self::parseStrict($source); // TODO: rewrite this
+	}
+
 	private $replacer;
 	private $pipeMLTrie;
 	private $HTMLTrie;

@@ -6,6 +6,7 @@
 require_once dirname(__FILE__) . '/../classes/blog/BlogPost.php';
 
 require_once dirname(__FILE__) . '/life_view.php';
+require_once dirname(__FILE__) . '/tag_cloud.php';
 
 global $auth;
 global $user;
@@ -13,10 +14,10 @@ global $user;
 if (!isset($_REQUEST['post_id'])) {
 	$blogs = Group::getRootsByType(Group::BLOG);
 	if ($user) Group::preloadNewItemsCountFor($user);
-	$tags = Tag::getAllByType(Item::BLOG_POST, true);
 	$posts = Item::getAllByType(Item::BLOG_POST, 0, 10, true, true);
-	$max = Tag::$max;
+    $tags = Tag::getAllByType(Item::BLOG_POST, true);
 ?>
+<center><?tag_cloud_show($tags, 300);?></center>
 
 <div id="stream_wrapper">
 	<div id="stream_container">
@@ -28,7 +29,7 @@ if (!isset($_REQUEST['post_id'])) {
 		</div>
 		<div id="stream_loading"></div>
 		<div id="stream_end"></div>
-	</div>	
+	</div>
 </div>
 
 <div id="options_wrapper">
@@ -74,32 +75,10 @@ if (!isset($_REQUEST['post_id'])) {
 <?
 	}
 ?>
-
-	</div>
-	<div id="right">
-<?
-	foreach ($tags as $tag) {
-		$id = $tag->getId();
-		$value = $tag->getValue();
-		$fontSize = 1 + round(($tag->getCount() / $max) * 10) / 10;
-?>
-		<a href="#tag=<?=$id?>" onclick="javascript: life.showTag(<?=$id?>);">
-			<div id="tag_<?=$id?>" class="tag">
-				<span style="font-size: <?=$fontSize?>em;"><?=$value?></span>
-			</div>
-		</a>
-<?
-	}
-?>
-
 	</div>
 	<script type="text/javascript">
 		$$(function () {
 			if ($('#life_container').innerWidth() < 900) {
-				$('#right').css({
-					"margin-top":20,
-					"float":"left"
-				});
 				$('#options_wrapper').width(200);
 				$('#stream_wrapper').css('margin-right', '-200px');
 				$('#stream_container').css('margin-right', '230px');

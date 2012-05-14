@@ -172,62 +172,6 @@ var life = {
 		}
 	},
 
-	feed: {
-		loading: null,
-		dates: {},
-
-		init: function () {
-			$('#feed .event .title').click(function () {
-				$('#feed .event .body').slideToggle();
-			});
-			$.ajax({
-				url: '/procs/proc_life.php',
-				data: {
-					method: 'get_dates'
-				},
-				dataType: 'json',
-				success: function (json) {
-					if (!json || !json.status || json.status != 'ok') return;
-					life.feed.dates = json.dates;
-					var dates = getKeys(life.feed.dates);
-					dates.sort();
-					var firstDate = dates[0],
-						lastDate = dates[dates.length - 1];
-					ds.setBounds(firstDate, lastDate);
-					ds.showGrid();
-				}
-			});
-		},
-
-		dateChecked: function (d, m, y) {
-			var date = '';
-			date += y + '-';
-			date += m < 10 ? '0'+m+'-' : m+'-';
-			date += d < 10 ? '0'+d : d;
-			debug(date);
-			if (life.feed.dates[date] > 0) return ' checked';
-			return '';
-		},
-		
-		selectHandler: function (date) {
-			life.feed.loading = loading(ge('stream_content'), true, undefined, 100);
-			debug('sel: ' + date);
-			$.ajax({
-				url: '/procs/proc_life.php',
-				data: {
-					method: 'load_date',
-					date: date
-				},
-				cache: false,
-
-				success: function (html) {
-					$('#stream_content').html(html);
-					life.feed.loading.hide();
-				}
-			});
-		}
-	},
-
 	blog: {
 		check: function () {
 			var title_len = $('input[name=post_title]').val().length;
@@ -276,15 +220,188 @@ var life = {
 					success: function (json) {
 						if (!json || !json.status || json.status != 'ok') {
 							main.showErrorText('Не удалось :(');
+							console.debug(json);
 						} else {
 							window.location = '/life/blog';
 						}
-					}
+					},
+					error: console.debug
 				});
 			}
 		}
-	}
+	},
 
+	timeline: false
+};
+
+var feed = {
+
+	__items: [],
+	__minId: 1e100,
+	__maxId: -1,
+	__minTs: 1e1000,
+	__maxTs: -1,
+	__feedContainer: null,
+
+	init: function () {
+		this.recalc();
+		this.__feedContainer = $('#feed .timeline_wrapper');
+//		var date = getAnchorParam('date');
+//		if (date) {
+//			life.timeline.scrollTo(parseYMD(date).getTime());
+//		}
+	},
+
+	recalc: function () {
+		var prevDate = "";
+		$('.item > div').each(function () {
+			var th = $(this),
+				parent = th.parent(),
+				lowBound = th.attr('pipe:low-bound-id'),
+				upBound = th.attr('pipe:up-bound-id'),
+				ms = th.attr('pipe:time') * 1000,
+				top = th.offset().top,
+				height = th.outerHeight(true),
+				curDate = parent.find('.date').text(),
+				eq = (curDate == prevDate)
+				;
+
+//			debug(th);
+//			debug(prevDate + ',' + curDate + '; ms=' + ms);
+
+			if (!eq) {
+				parent.addClass('break');
+			} else {
+				parent.removeClass('break');
+			}
+
+			feed.__items.push([lowBound, upBound, ms, top, height]);
+			feed.__minId = Math.min(feed.__minId, lowBound);
+			feed.__maxId = Math.max(feed.__maxId, upBound);
+			feed.__minTs = Math.min(feed.__minTs, ms / 1000);
+			feed.__maxTs = Math.max(feed.__maxTs, ms / 1000);
+
+
+			prevDate = curDate;
+		});
+
+		life.timeline.silentScrollTo(feed.getFirstVisibleTime($(window).scrollTop()));
+	},
+
+	getFirstVisibleTime: function (windowOffset) {
+//		debug('window_offset=' + windowOffset);
+		for (var i = 0; i < feed.__items.length; ++i) {
+			if (windowOffset <= feed.__items[i][3] - feed.__items[i][4]) {
+				return feed.__items[i][2];
+			}
+		}
+		return false;
+	},
+
+	getMinId: function () {
+		return feed.__minId;
+	},
+
+	loadElderItems: function () {
+		api.request({
+			handler: 'life',
+			method: 'load_before',
+			data: {
+				item_id: feed.getMinId(),
+				timestamp: feed.__minTs
+			},
+			dataType: 'html',
+			preventRepeating: true,
+			async: false,
+
+			success: function (html) {
+				feed.__feedContainer.append(html);
+				feed.recalc();
+			}
+		});
+		feed.recalc();
+	},
+
+	getMaxId: function () {
+		return feed.__maxId;
+	},
+
+	loadNewerItems: function () {
+		api.request({
+			handler: 'life',
+			method: 'load_after',
+			data: {
+				item_id: feed.getMaxId(),
+				timestamp: feed.__maxTs
+			},
+			dataType: 'html',
+			preventRepeating: true,
+			async: false,
+
+			success: function (html) {
+				feed.__feedContainer.prepend(html);
+				feed.recalc();
+			}
+		});
+		feed.recalc();
+	},
+
+	loadNearItems: function (ms) {
+		const MS_IN_DAY = 24 * 60 * 60 * 1000;
+
+		var upperMs = feed.__items[0][2],
+			lowerMs = feed.__items[feed.__items.length - 1][2],
+			current = Math.floor(ms / MS_IN_DAY)
+			;
+
+		if (upperMs >= ms && lowerMs <= ms) {
+			debug(ms + ', ' + lowerMs + ', ' + upperMs);
+
+			var best = Math.pow(Math.floor(upperMs / MS_IN_DAY) - current, 2),
+				index = 0;
+			for (var i = 0; i < feed.__items.length; ++i) {
+				var item = feed.__items[i],
+					cur = Math.pow(Math.floor(item[2] / MS_IN_DAY) - current, 2);
+				if (cur < best) {
+					best = cur;
+					index = i;
+				}
+			}
+
+			var top = feed.__items[index][3] - 10;
+			debug(top);
+			$(window).scrollTop(top - 80);
+			return;
+		}
+
+		var ts = Math.floor(ms / 1000);
+		api.request({
+			handler: 'life',
+			method: 'load_near',
+			data: {
+				timestamp: ts
+			},
+			dataType: 'html',
+			preventRepeating: true,
+			async: false,
+
+			success: function (html) {
+				feed.__feedContainer.html(html);
+				feed.recalc();
+			}
+		});
+	},
+
+	redrawTimeline: function () {
+		var scrollTop = $(window).scrollTop(),
+			firstVisibleTime = feed.getFirstVisibleTime(scrollTop);
+
+		if (firstVisibleTime) {
+			//debug(firstVisibleTime);
+			life.timeline && life.timeline.silentScrollTo(firstVisibleTime);
+			setAnchorParam('date', formatYMD(new Date(firstVisibleTime)));
+		}
+	}
 };
 
 if (document.URL.match(/blog/)) {
@@ -305,9 +422,5 @@ if (document.URL.match(/blog/)) {
 } else if (document.URL.match(/comments/)) {
 	$(function () {
 		life.showComments(getAnchorParam('type'));
-	});
-} else if (document.URL.match(/life/)) {
-	$(function () {
-		life.feed.init();
 	});
 }

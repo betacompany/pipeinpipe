@@ -10,6 +10,7 @@ require_once dirname(__FILE__) . '/../classes/content/Action.php';
 require_once dirname(__FILE__) . '/../classes/content/Item.php';
 require_once dirname(__FILE__) . '/../classes/content/Comment.php';
 require_once dirname(__FILE__) . '/../classes/content/Group.php';
+require_once dirname(__FILE__) . '/../classes/content/Feed.php';
 
 require_once dirname(__FILE__) . '/../classes/utils/ResponseCache.php';
 require_once dirname(__FILE__) . '/../classes/utils/Logger.php';
@@ -92,6 +93,35 @@ try {
 
 		break;
 
+	case 'load_before':
+
+		assertIsset('item_id');
+		assertIsset('timestamp');
+
+		$items = Feed::getBefore(intparam('item_id'), intparam('timestamp'));
+		include dirname(__FILE__) . '/../views/life_timeline.php';
+
+		break;
+
+	case 'load_after':
+
+		assertIsset('item_id');
+		assertIsset('timestamp');
+
+		$items = Feed::getAfter(intparam('item_id'), intparam('timestamp'));
+		include dirname(__FILE__) . '/../views/life_timeline.php';
+
+		break;
+
+	case 'load_near':
+
+		assertIsset('timestamp');
+
+		$items = Feed::getNear(intparam('timestamp'));
+		include dirname(__FILE__) . '/../views/life_timeline.php';
+
+		break;
+
 	case 'create_blog':
 
 		if (!$auth->isAuth()) {
@@ -108,27 +138,23 @@ try {
 
 		switch (param('holder_type')) {
 		case 'user':
-			try {
-				$holder = User::getById(intparam('holder_id'));
-				$title = Parser::parseStrict(textparam('blog_title'));
-				$contentSource = (param('blog_description') == '') ? '' : Parser::parseSource( textparam('blog_description') );
-				$contentParsed = Parser::parseDescription($contentSource);
-				
-				if ($holder->getId() == $user->getId()) {
-					$blog = Group::create(Group::BLOG, 0, $title, $contentSource, $contentParsed);
-					Connection::bind($blog, $user);
-					echo json(array (
-						'status' => 'ok'
-					));
-				} else {
-					echo json(array (
-						'status' => 'failed',
-						'reason' => 'access denied'
-					));
-				}
-			} catch (Exception $e) {
-				echo_json_exception($e);
-			}
+            $holder = User::getById(intparam('holder_id'));
+            $title = Parser::parseStrict(textparam('blog_title'));
+            $contentSource = (param('blog_description') == '') ? '' : Parser::parseSource( textparam('blog_description') );
+            $contentParsed = Parser::parseDescription($contentSource);
+
+            if ($holder->getId() == $user->getId()) {
+                $blog = Group::create(Group::BLOG, 0, $title, $contentSource, $contentParsed);
+                Connection::bind($blog, $user);
+                echo json(array (
+                    'status' => 'ok'
+                ));
+            } else {
+                echo json(array (
+                    'status' => 'failed',
+                    'reason' => 'access denied'
+                ));
+            }
 
 			break;
 
@@ -218,7 +244,7 @@ try {
 		}
 
 		$post = Item::getById(param('post_id'));
-		$tagIds = array_slice( explode(',', param('post_tags')), 0, 100 ); // protection for too may tags
+		$tagIds = array_slice( explode(',', param('post_tags')), 0, 100 ); // protection from too many tags
 		
 		if ($post instanceof BlogPost) {
 			$post->setFull(param('post_full_source'), false);
@@ -245,31 +271,25 @@ try {
 
 		assertIsset('post_id');
 
-		try {
-			$post = Item::getById(param('post_id'));
-			if ($post instanceof BlogPost) {
-				$blog = $post->getGroup();
-				if ($user->hasPermission($blog, 'edit')) {
-					$post->remove();
-					echo json(array (
-						'status' => 'ok'
-					));
-				} else {
-					echo json(array (
-						'status' => 'failed',
-						'reason' => 'You have no permissions to this post'
-					));
-				}
-			} else {
-				global $LOG;
-				@$LOG->warn('Item id='.param('post_id').' is not a blog post');
-			}
-		} catch (Exception $e) {
-			global $LOG;
-			@$LOG->exception($e);
-			echo_json_exception($e);
-		}
-		
+        $post = Item::getById(param('post_id'));
+        if ($post instanceof BlogPost) {
+            $blog = $post->getGroup();
+            if ($user->hasPermission($blog, 'edit')) {
+                $post->remove();
+                echo json(array (
+                    'status' => 'ok'
+                ));
+            } else {
+                echo json(array (
+                    'status' => 'failed',
+                    'reason' => 'You have no permissions to this post'
+                ));
+            }
+        } else {
+            global $LOG;
+            @$LOG->warn('Item id='.param('post_id').' is not a blog post');
+        }
+
 		break;
 
 	case 'get_dates':

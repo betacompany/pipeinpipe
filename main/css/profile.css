@@ -118,7 +118,7 @@ h1 {
 	max-width: 30px;
 }
 
-.slide_block .title {
+.ta_block .title {
 	font-size: 1em;
 }
 
@@ -397,4 +397,8 @@ img {
 
 #person .data_wrapper div span {
 	font-weight: bold;
+}
+
+.slide_block .title {
+    font-size: 1em !important;
 }
