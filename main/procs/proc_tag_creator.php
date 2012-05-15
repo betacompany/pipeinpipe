@@ -15,7 +15,7 @@ try {
     $auth = new Auth();
     $user = $auth->getCurrentUser();
     if (!$user) {
-        echo_json(false, "Please log in first!");
+        echo_json(false, 'Для изменения тегов нужно залогиниться!');
         exit(0);
     }
 
@@ -28,7 +28,9 @@ try {
     switch ($method) {
         case 'add_tag' :
             $tag = getTag($data);
-            addTagToItem($itemId, $tag, $user);
+            if ($itemId) {
+                addTagToItem($itemId, $tag, $user);
+            }
             echo_json(true, array(
                 'tag_value' => $tag->getValue()
             ));
@@ -52,7 +54,9 @@ try {
 
         case 'create_tag' :
             $tag = Tag::create($user->getId(), $data);
-            addTagToItem($itemId, $tag, $user);
+            if ($itemId) {
+                addTagToItem($itemId, $tag, $user);
+            }
             echo_json(true, array(
                 'tag_id' => $tag->getId()
             ));
@@ -93,9 +97,12 @@ function echo_json($status, $data = null) {
 }
 
 function addTagToItem($itemId, $tag, $user) {
-    if ($itemId) {
-        $item = Item::getById($itemId);
+    $item = Item::getById($itemId);
+    if ($user->hasPermission($item, 'add_tag')) {
         $item->addTag($tag, $user);
+    } else {
+        echo_json(false, "You do not have permission to do this!");
+        exit(0);
     }
 }
 ?>
