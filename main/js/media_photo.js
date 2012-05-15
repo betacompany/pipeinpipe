@@ -101,13 +101,13 @@ var photo = {
 			return;
 		}
 		var ph = photo._photos[i];
-		photo._prevImg.attr('src', ph.main_url).show();
+		photo._slide(photo._prevImg, ph.main_url, 'fast');
 	},
 
 	_setMain: function (i) {
 		var ph = photo._photos[i];
 		photo._index = i;
-		photo._mainImg.attr('src', ph.main_url);
+		photo._slide(photo._mainImg, ph.main_url);
 
 		$('#photo_title').html(ph.title);
 		$('#thumbs img').removeClass('selected');
@@ -138,6 +138,13 @@ var photo = {
 			return;
 		}
 		var ph = photo._photos[i];
-		photo._nextImg.attr('src', ph.main_url).show();
+		photo._slide(photo._nextImg, ph.main_url, 'fast');
+	},
+
+	_slide: function (jq, src, speed) {
+		speed = speed ? speed : 'slow';
+		jq.fadeOut('fast', function () {
+			$(this).attr('src', src).fadeIn(speed);
+		});
 	}
 };
