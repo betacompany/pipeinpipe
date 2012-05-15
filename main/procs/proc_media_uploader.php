@@ -26,6 +26,11 @@ try {
 
     $auth = new Auth();
     $user = $auth->getCurrentUser();
+    if (!$user) {
+        echo_json(false, 'Сначала нужно залогиниться!');
+        exit(0);
+    }
+
     $uid = $user->getId();
 
     switch ($_REQUEST['method']) {
@@ -64,16 +69,8 @@ try {
             assertParam('tags');
             $tagIds = json_decode(param('tags'));
 
-            if (!$user) {
-                echo json(array(
-                    'status' => 'failed',
-                    'message' => 'Для добавления фотографий нужно залогиниться!'
-                ));
-            } else if(!$group || $group->getType() != Group::PHOTO_ALBUM) {
-                echo json(array(
-                    'status' => 'failed',
-                    'message' => 'Нужно правильно указать альбом с фотографиями!'
-                ));
+            if(!$group || $group->getType() != Group::PHOTO_ALBUM) {
+                echo_json(false, 'Нужно правильно указать альбом с фотографиями!');
             } else {
                 foreach ($photos as $photo) {
                     $photoObj = Photo::create($groupId, $uid, "Фотография", array(
@@ -89,8 +86,7 @@ try {
                         $redirect = "/media/photo/album{$groupId}/{$photoObj->getId()}";
                     }
                 }
-                echo json(array(
-                    'status' => 'ok',
+                echo_json(true, array(
                     'redirect' => $redirect
                 ));
             }
@@ -102,5 +98,19 @@ try {
     global $LOG;
     @$LOG->exception($e);
     echo_json_exception($e);
+}
+
+function echo_json($status, $data = null) {
+    $response = array('status' => ($status ? 'ok' : 'failed'));
+    if($data) {
+        if (is_string($data)) {
+            $response = array_merge($response, array(
+                'message' => $data
+            ));
+        } elseif (is_array($data)) {
+            $response = array_merge($response, $data);
+        }
+    }
+    echo json($response);
 }
 ?>

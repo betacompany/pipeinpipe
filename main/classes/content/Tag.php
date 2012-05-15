@@ -58,13 +58,25 @@ class Tag implements IJsonSerializable {
 
 	public function getTaggedItems($type) {
 		$iterator = TagDBClient::getItemsByTagId($this->id, $type);
-		$items = array ();
-		while ($iterator->valid()) {
-			$items[] = Item::getByData($iterator->current());
-			$iterator->next();
-		}
-		return $items;
+        return Item::getByDataIterator($iterator);
 	}
+
+	public function getItemsTaggedByUser(User $user = null) {
+        if (!$user) {
+            $auth = new Auth();
+            $user = $auth->getCurrentUser();
+        }
+		$iterator = TagDBClient::getItemsTaggedByUser($this->id, $user->getId());
+        return Item::getByDataIterator($iterator);
+	}
+
+    public function hasTaggedItem(Item $item) {
+        return array_contains($this->getTaggedItems($item->getType()), $item);
+    }
+
+    public function hasItemTaggedByUser(Item $item, User $user = null) {
+        return array_contains($this->getItemsTaggedByUser($user), $item);
+    }
 
 	public static function create($uid, $value) {
 		assertTrue('There is no user with id=' . $uid, User::existsById($uid));
