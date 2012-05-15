@@ -191,7 +191,7 @@ var content = {
 			url: '/procs/proc_content.php',
 			data: {
 				method: 'mark_as_viewed',
-				tagret_type: targetType,
+				target_type: targetType,
 				target_id: targetId
 			},
 			dataType: 'json',
