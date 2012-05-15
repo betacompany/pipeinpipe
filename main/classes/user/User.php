@@ -400,14 +400,16 @@ class User {
 	 *		<li>League instance</li>
 	 *		<li>Competition instance</li>
 	 *		<li>Blog instance</li>
-	 *		<li>string: 'player', 'league', 'competition' iff $type == 'add'!</li>
+	 *		<li>Video instance</li>
+	 *		<li>string: 'player', 'league', 'competition' if $type == 'add'!</li>
+     *      <li>associative array with keys 'item' and 'tag' if $type == 'remove_tag'</li>
 	 *			</ul>
 	 * $type: 'add', 'edit', 'remove',
 	 *			('start', 'stop', 'restart' for defined Competition)
 	 *			('add_competition' for defined League)
 	 *			('add_post' for defined Blog)
 	 *
-	 * @param Player|League|Competition|Blog|string $target
+	 * @param Player|League|Competition|Blog|string|array $target
 	 * @param string $type
 	 * @return boolean
 	 */
@@ -552,6 +554,21 @@ class User {
                 case 'edit':
                 case 'remove':
                     return $this->isTotalAdmin() || $this->getId() === $target->getUID();
+            }
+
+            return false;
+        }
+
+        if (is_array($target)) {
+            $item = $target['item'];
+            $tag = $target['tag'];
+            if ($item instanceof Item && $tag instanceof Tag) {
+                switch ($type) {
+                    case 'remove_tag':
+                        return $this->isTotalAdmin() ||
+                            $item->getUID() == $this->getId() ||
+                            $tag->hasItemTaggedByUser($item, $this);
+                }
             }
 
             return false;

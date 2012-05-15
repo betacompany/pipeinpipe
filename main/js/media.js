@@ -383,7 +383,8 @@ var media = {
 
 				toggleEditLink(startEditing, function() {
 					slideToggle(titleInputWrapper, title, function() {
-						slideToggle(tagCreator, tagsContainer);
+						tagCreator.slideUp(speed);
+						tagsContainer.show();
 					});
 				});
 			}

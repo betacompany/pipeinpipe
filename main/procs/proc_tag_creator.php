@@ -6,10 +6,19 @@
  */
 require_once dirname(__FILE__).'/../includes/assertion.php';
 require_once dirname(__FILE__).'/../includes/common.php';
+require_once dirname(__FILE__).'/../includes/error.php';
 require_once dirname(__FILE__).'/../classes/user/Auth.php';
 require_once dirname(__FILE__).'/../classes/user/User.php';
 
 try {
+
+    $auth = new Auth();
+    $user = $auth->getCurrentUser();
+    if (!$user) {
+        echo_json(false, "Please log in first!");
+        exit(0);
+    }
+
     $method = $_REQUEST['method'];
     assertIsset($method, 'method');
 
@@ -19,45 +28,48 @@ try {
     switch ($method) {
         case 'add_tag' :
             $tag = getTag($data);
-            addTagToItem($itemId, $tag);
-            response_json(true, array(
+            addTagToItem($itemId, $tag, $user);
+            echo_json(true, array(
                 'tag_value' => $tag->getValue()
             ));
             exit(0);
 
         case 'remove_tag' :
-            if ($itemId) {
-                $tag = getTag($data);
-                $item = Item::getById($itemId);
+            assertParam('item_id');
+            $tag = getTag($data);
+            $item = Item::getById($itemId);
+
+            if ($user->hasPermission(array(
+                'item' => $item,
+                'tag' => $tag
+            ), 'remove_tag')) {
                 $item->removeTag($tag);
+                echo_json(true);
+            } else {
+                echo_json(false, "You do not have permission to do this!");
             }
-            response_json(false);
             exit(0);
 
         case 'create_tag' :
-            $auth = new Auth();
-            $user = $auth->getCurrentUser();
             $tag = Tag::create($user->getId(), $data);
             addTagToItem($itemId, $tag, $user);
-            response_json(true, array(
+            echo_json(true, array(
                 'tag_id' => $tag->getId()
             ));
             exit(0);
 
         case 'get_tag_suggestions' :
-            response_json(true, array(
+            echo_json(true, array(
                'tags' => Tag::getAllJSON()
             ));
             exit(0);
 
         default :
-            response_json(false);
+            echo_json(false);
             exit(0);
     }
 } catch (Exception $ex) {
-    response_json(false, array(
-        'message' => $ex->getMessage()
-    ));
+    echo_json_exception($ex);
 };;
 
 function getTag($data) {
@@ -66,20 +78,22 @@ function getTag($data) {
     return $tag;
 }
 
-function response_json($success, $data = null) {
-    $response = array('status' => ($success ? 'ok' : 'failed'));
+function echo_json($status, $data = null) {
+    $response = array('status' => ($status ? 'ok' : 'failed'));
     if($data) {
-        $response = array_merge($response, $data);
+        if (is_string($data)) {
+            $response = array_merge($response, array(
+                'message' => $data
+            ));
+        } elseif (is_array($data)) {
+            $response = array_merge($response, $data);
+        }
     }
     echo json($response);
 }
 
-function addTagToItem($itemId, $tag, $user = null) {
+function addTagToItem($itemId, $tag, $user) {
     if ($itemId) {
-        if (!$user) {
-            $auth = new Auth();
-            $user = $auth->getCurrentUser();
-        }
         $item = Item::getById($itemId);
         $item->addTag($tag, $user);
     }

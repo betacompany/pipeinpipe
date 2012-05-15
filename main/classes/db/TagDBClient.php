@@ -100,6 +100,21 @@ class TagDBClient {
 		);
 	}
 
+	public static function getItemsTaggedByUser($tagId, $uid) {
+		return new MySQLResultIterator(
+			mysql_qw(
+				'SELECT `p_content_item`.* FROM
+					`p_content_item`
+					INNER JOIN
+					`p_content_tag_target`
+					ON `p_content_item`.`id`=`p_content_tag_target`.`target_id`
+				WHERE
+					`p_content_tag_target`.`tag_id`=? AND `p_content_tag_target`.`uid`=?',
+				$tagId, $uid
+			)
+		);
+	}
+
 	public static function removeTagsFor($itemId) {
 		mysql_qw('DELETE FROM `p_content_tag_target` WHERE `target_type`=\'item\' AND `target_id`=?', $itemId);
 	}
