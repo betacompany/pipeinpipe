@@ -308,7 +308,7 @@ try {
 
 
 } catch (Exception $e) {
-	
+	echo_json_exception($e);
 }
 
 ?>
