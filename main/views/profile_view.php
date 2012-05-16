@@ -566,8 +566,6 @@ function profile_get_charts_data(Player $player) {
 		}
 	}
 
-    $maxPoints = max($points);
-    $maxPlaces = max($places);
     return $movement;
 }
 
