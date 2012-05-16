@@ -545,8 +545,6 @@ class User {
 						if ($holder->getId() == $this->getId())
 							return true;
 				}
-
-				return false;
 			}
 		}
 
@@ -556,19 +554,15 @@ class User {
                 case 'remove':
                     return $this->isTotalAdmin() || $this->getId() === $target->getUID();
             }
-
-            return false;
         }
 
-        if ($target instanceof Item) {
-            switch ($type) {
+		if ($target instanceof Item) {
+			switch ($type) {
                 case 'add_tag':
                     return $this->isTotalAdmin() ||
                         $target instanceof Photo ||
                         $target->getUID() == $this->getId();
             }
-
-            return false;
         }
 
         if (is_array($target)) {
