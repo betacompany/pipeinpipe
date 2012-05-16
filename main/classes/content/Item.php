@@ -568,6 +568,15 @@ class Item {
 		return $item;
 	}
 
+    public static function getByDataIterator($iterator) {
+        $items = array();
+        while ($iterator->valid()) {
+            $items[] = Item::getByData($iterator->current());
+            $iterator->next();
+        }
+        return $items;
+    }
+
 	/**
 	 * Constructs new item by its ID loading data from DB.
 	 * @param int $id

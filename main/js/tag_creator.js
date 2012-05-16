@@ -206,10 +206,11 @@
 					data: data,
 					dataType: 'json',
 					success: function (json) {
-						if (json.status) {
+						if (json.status && json.status == 'ok') {
 							handlerFunction(json)
 						} else {
-							alert('Извините, при отправке данных произошла неведомая ошибка. Попробуйте ещё раз!');
+							main.showErrorText(json.message ? json.message : 'Извините, при отправке данных произошла неведомая ошибка. Попробуйте ещё раз!');
+							console.debug('json:');
 							console.debug(json);
 						}
 					}

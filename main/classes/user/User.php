@@ -70,7 +70,7 @@ class User {
 		self::KEY_BIRTHDAY, self::KEY_EMAIL, self::KEY_ICQ, self::KEY_LOGIN,
 		self::KEY_PASSHASH, self::KEY_PMID, self::KEY_SKYPE, self::KEY_VKID,
 		self::KEY_CITY, self::KEY_COUNTRY, self::KEY_PHOTO,
-		self::KEY_TEMP_PASSHASH
+		self::KEY_TEMP_PASSHASH, self::KEY_TWNAME
 	);
 	public static final function getKeys() {
 		return self::$KEYS;
@@ -86,7 +86,7 @@ class User {
 	private static $EDITABLE_KEYS = array(
 		self::KEY_BIRTHDAY, 
 		self::KEY_EMAIL, self::KEY_CITY, self::KEY_COUNTRY,
-		self::KEY_ICQ, self::KEY_SKYPE, self::KEY_VKID
+		self::KEY_ICQ, self::KEY_SKYPE, self::KEY_VKID, self::KEY_TWNAME
 	);
 	public static final function getEditableKeys() {
 		return self::$EDITABLE_KEYS;
@@ -400,14 +400,17 @@ class User {
 	 *		<li>League instance</li>
 	 *		<li>Competition instance</li>
 	 *		<li>Blog instance</li>
-	 *		<li>string: 'player', 'league', 'competition' iff $type == 'add'!</li>
+	 *		<li>Video instance</li>
+	 *		<li>Item instance</li>
+	 *		<li>string: 'player', 'league', 'competition' if $type == 'add'!</li>
+     *      <li>associative array with keys 'item' and 'tag' if $type == 'remove_tag'</li>
 	 *			</ul>
 	 * $type: 'add', 'edit', 'remove',
 	 *			('start', 'stop', 'restart' for defined Competition)
 	 *			('add_competition' for defined League)
 	 *			('add_post' for defined Blog)
 	 *
-	 * @param Player|League|Competition|Blog|string $target
+	 * @param Player|League|Competition|Blog|Item|string|array $target
 	 * @param string $type
 	 * @return boolean
 	 */
@@ -542,8 +545,6 @@ class User {
 						if ($holder->getId() == $this->getId())
 							return true;
 				}
-
-				return false;
 			}
 		}
 
@@ -552,6 +553,28 @@ class User {
                 case 'edit':
                 case 'remove':
                     return $this->isTotalAdmin() || $this->getId() === $target->getUID();
+            }
+        }
+
+		if ($target instanceof Item) {
+			switch ($type) {
+                case 'add_tag':
+                    return $this->isTotalAdmin() ||
+                        $target instanceof Photo ||
+                        $target->getUID() == $this->getId();
+            }
+        }
+
+        if (is_array($target)) {
+            $item = $target['item'];
+            $tag = $target['tag'];
+            if ($item instanceof Item && $tag instanceof Tag) {
+                switch ($type) {
+                    case 'remove_tag':
+                        return $this->isTotalAdmin() ||
+                            $item->getUID() == $this->getId() ||
+                            $tag->hasItemTaggedByUser($item, $this);
+                }
             }
 
             return false;
