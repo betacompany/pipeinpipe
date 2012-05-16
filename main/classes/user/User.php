@@ -70,7 +70,7 @@ class User {
 		self::KEY_BIRTHDAY, self::KEY_EMAIL, self::KEY_ICQ, self::KEY_LOGIN,
 		self::KEY_PASSHASH, self::KEY_PMID, self::KEY_SKYPE, self::KEY_VKID,
 		self::KEY_CITY, self::KEY_COUNTRY, self::KEY_PHOTO,
-		self::KEY_TEMP_PASSHASH
+		self::KEY_TEMP_PASSHASH, self::KEY_TWNAME
 	);
 	public static final function getKeys() {
 		return self::$KEYS;
@@ -86,7 +86,7 @@ class User {
 	private static $EDITABLE_KEYS = array(
 		self::KEY_BIRTHDAY, 
 		self::KEY_EMAIL, self::KEY_CITY, self::KEY_COUNTRY,
-		self::KEY_ICQ, self::KEY_SKYPE, self::KEY_VKID
+		self::KEY_ICQ, self::KEY_SKYPE, self::KEY_VKID, self::KEY_TWNAME
 	);
 	public static final function getEditableKeys() {
 		return self::$EDITABLE_KEYS;
