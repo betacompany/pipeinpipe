@@ -17,6 +17,16 @@ class ItemDBClient {
 		);
 	}
 
+	public static function getByIds($ids) {
+		$in = array();
+		foreach ($ids as $id) {
+			$in[] = intval($id);
+		}
+		return new MySQLResultIterator(
+			mysql_qw('SELECT * FROM `p_content_item` WHERE `id` IN ('.implode(",", $in).')')
+		);
+	}
+
 	public static function getByGroupId($groupId, $from, $limit, $descendive = false, $orderBy = 'id') {
 		$req = null;
 		if ($limit == 0) {
@@ -142,7 +152,7 @@ class ItemDBClient {
 		);
 	}
 
-	public static function getAllByRating($type, $limit) {
+	public static function getAllByRating($type, $limit, $groupId = 0) {
 		return new MySQLResultIterator(
 			mysql_qw(
 				'SELECT * FROM (
@@ -151,7 +161,7 @@ class ItemDBClient {
 						SELECT * FROM 
 							`pv_content_item`
 						WHERE
-							`type`=?
+							`type`=?'.($groupId ? " AND `group_id`=".intval($groupId) : "").'
 					) `r1`
 
 					LEFT JOIN
@@ -167,7 +177,7 @@ class ItemDBClient {
 					ON `r2`.`item_id`=`r1`.`id`
 
 				) ORDER BY `avg` DESC, `cnt` DESC LIMIT ?',
-					$type, $limit
+					$type, intval($limit)
 			)
 		);
 	}
@@ -247,6 +257,15 @@ class ItemDBClient {
 			mysql_qw(
 				'SELECT * FROM `pv_content_item` WHERE `type`=? AND `content_source`=?',
 				$type, $src
+			)
+		);
+	}
+
+	public static function getAllByTypeAndValue($type, $value) {
+		return new MySQLResultIterator(
+			mysql_qw(
+				'SELECT * FROM `pv_content_item` WHERE `type`=? AND `content_value`=?',
+				$type, $value
 			)
 		);
 	}

@@ -1,0 +1,2 @@
+MAILTO=dev@pipeinpipe.info
+0 0 * * * root rm -rf /var/www/pipeinpipe.info/main/temp/api && php /var/www/pipeinpipe.info/main/cron/cron_sport_rating.php

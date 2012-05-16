@@ -11,6 +11,8 @@ require_once dirname(__FILE__) . '/../content/Connection.php';
 require_once dirname(__FILE__) . '/../image/OpenCVAvatarsMinifier.php';
 require_once dirname(__FILE__) . '/../image/DummyAvatarsMinifier.php';
 
+require_once dirname(__FILE__) . '/../social/ISocialWeb.php';
+
 require_once dirname(__FILE__).'/../db/UserDBClient.php';
 require_once dirname(__FILE__).'/../db/UserDataDBClient.php';
 require_once dirname(__FILE__).'/../db/UserPermissionDBClient.php';
@@ -23,7 +25,6 @@ require_once dirname(__FILE__).'/../db/LeagueDBClient.php';
  */
 class User {
 
-	const KEY_VKID = 'vkid';
 	const KEY_PMID = 'pmid';
 	const KEY_LOGIN = 'login';
 	const KEY_EMAIL = 'email';
@@ -35,6 +36,10 @@ class User {
 	const KEY_COUNTRY = 'country';
 	const KEY_CITY = 'city';
 	const KEY_PHOTO = 'photo';
+
+	const KEY_VKID = 'vkid';
+	const KEY_FBID = 'fbid';
+	const KEY_TWNAME = 'tw_name';
 
 	const FIELD_NAME = 'name';
 	const FIELD_SURNAME = 'surname';
@@ -56,19 +61,23 @@ class User {
     private $CA = array();//boolean array of user competition administrative ability
     private $permissionsLoaded = false;
 
+	private $accessTokenLoaded = false;
+	private $accessTokenNeeded = false;
+	private $accessToken = false;
+
 	private static $KEYS = array(
 		self::FIELD_NAME, self::FIELD_SURNAME,
 		self::KEY_BIRTHDAY, self::KEY_EMAIL, self::KEY_ICQ, self::KEY_LOGIN,
 		self::KEY_PASSHASH, self::KEY_PMID, self::KEY_SKYPE, self::KEY_VKID,
 		self::KEY_CITY, self::KEY_COUNTRY, self::KEY_PHOTO,
-		self::KEY_TEMP_PASSHASH
+		self::KEY_TEMP_PASSHASH, self::KEY_TWNAME
 	);
 	public static final function getKeys() {
 		return self::$KEYS;
 	}
 
 	private static $CONTACT_KEYS = array(
-		self::KEY_ICQ, self::KEY_SKYPE, self::KEY_VKID
+		self::KEY_ICQ, self::KEY_SKYPE, self::KEY_VKID, self::KEY_TWNAME
 	);
 	public static final function getContactKeys() {
 		return self::$CONTACT_KEYS;
@@ -77,7 +86,7 @@ class User {
 	private static $EDITABLE_KEYS = array(
 		self::KEY_BIRTHDAY, 
 		self::KEY_EMAIL, self::KEY_CITY, self::KEY_COUNTRY,
-		self::KEY_ICQ, self::KEY_SKYPE, self::KEY_VKID
+		self::KEY_ICQ, self::KEY_SKYPE, self::KEY_VKID, self::KEY_TWNAME
 	);
 	public static final function getEditableKeys() {
 		return self::$EDITABLE_KEYS;
@@ -391,14 +400,17 @@ class User {
 	 *		<li>League instance</li>
 	 *		<li>Competition instance</li>
 	 *		<li>Blog instance</li>
-	 *		<li>string: 'player', 'league', 'competition' iff $type == 'add'!</li>
+	 *		<li>Video instance</li>
+	 *		<li>Item instance</li>
+	 *		<li>string: 'player', 'league', 'competition' if $type == 'add'!</li>
+     *      <li>associative array with keys 'item' and 'tag' if $type == 'remove_tag'</li>
 	 *			</ul>
 	 * $type: 'add', 'edit', 'remove',
 	 *			('start', 'stop', 'restart' for defined Competition)
 	 *			('add_competition' for defined League)
 	 *			('add_post' for defined Blog)
 	 *
-	 * @param Player|League|Competition|Blog|string $target
+	 * @param Player|League|Competition|Blog|Item|string|array $target
 	 * @param string $type
 	 * @return boolean
 	 */
@@ -533,10 +545,40 @@ class User {
 						if ($holder->getId() == $this->getId())
 							return true;
 				}
-
-				return false;
 			}
 		}
+
+        if ($target instanceof Video) {
+            switch ($type) {
+                case 'edit':
+                case 'remove':
+                    return $this->isTotalAdmin() || $this->getId() === $target->getUID();
+            }
+        }
+
+		if ($target instanceof Item) {
+			switch ($type) {
+                case 'add_tag':
+                    return $this->isTotalAdmin() ||
+                        $target instanceof Photo ||
+                        $target->getUID() == $this->getId();
+            }
+        }
+
+        if (is_array($target)) {
+            $item = $target['item'];
+            $tag = $target['tag'];
+            if ($item instanceof Item && $tag instanceof Tag) {
+                switch ($type) {
+                    case 'remove_tag':
+                        return $this->isTotalAdmin() ||
+                            $item->getUID() == $this->getId() ||
+                            $tag->hasItemTaggedByUser($item, $this);
+                }
+            }
+
+            return false;
+        }
 
         return false;
     }
@@ -677,6 +719,15 @@ class User {
 		return $users;
 	}
 
+	public static function keyBySocialWeb($swType) {
+		switch ($swType) {
+		case ISocialWeb::VKONTAKTE: return self::KEY_VKID;
+		case ISocialWeb::FACEBOOK: return self::KEY_FBID;
+		case ISocialWeb::TWITTER: return self::KEY_TWNAME;
+		}
+		return false;
+	}
+
 	private function getImagePrefix() {
 		$photo = $this->get(self::KEY_PHOTO);
 		if (!$photo)
@@ -810,6 +861,43 @@ LABEL;
 
 	public function removeFavourite($target) {
 		return UserDBClient::deleteFavourite($this->getId(), $target);
+	}
+
+	public function needAccessToken() {
+		$this->loadAccessToken();
+		return $this->accessTokenNeeded;
+	}
+
+	public function getAccessToken() {
+	    return $this->accessToken;
+	}
+
+	private function loadAccessToken() {
+		if ($this->accessTokenLoaded) {
+			return;
+		}
+		$this->accessTokenLoaded = true;
+		$vkid = $this->getVkid();
+		if (!$vkid) {
+			$this->accessTokenNeeded = false;
+			return;
+		}
+		$access_token = UserDataDBClient::getAccessTokenFor($vkid);
+		if ($access_token) {
+			$this->accessTokenNeeded = false;
+			$this->accessToken = $access_token;
+			return;
+		}
+		$this->accessTokenNeeded = true;
+	}
+
+	public static function cache(array $ids) {
+		$iterator = UserDBClient::getByIds($ids);
+		while ($iterator->valid()) {
+			$data = $iterator->current();
+			User::getByData($data);
+			$iterator->next();
+		}
 	}
 }
 ?>

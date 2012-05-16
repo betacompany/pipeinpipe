@@ -61,7 +61,14 @@ RewriteRule ^media/video/$ /media.php?part=video [L]
 RewriteRule ^media/(photo|video)/album([0-9]+)$ /media.php?part=$1&group_id=$2 [L]
 RewriteRule ^media/(photo|video)/album([0-9]+)/$ /media.php?part=$1&group_id=$2 [L]
 RewriteRule ^media/(photo|video)/album([0-9]+)/([0-9]+)$ /media.php?part=$1&group_id=$2&item_id=$3 [L]
+RewriteRule ^media/(photo|video)/tag([0-9]+)$ /media.php?part=$1&tag_id=$2 [L]
+RewriteRule ^media/(photo|video)/tag([0-9]+)/([0-9]+)$ /media.php?part=$1&tag_id=$2&item_id=$3 [L]
 RewriteRule ^media/download$ /media.php?part=download [L]
+RewriteRule ^media/upload$ /media.php?part=upload [L]
+RewriteRule ^media/upload/video_youtube$ /media.php?part=upload&subpart=video_youtube [L]
+RewriteRule ^media/upload/video_vkontakte$ /media.php?part=upload&subpart=video_vkontakte [L]
+RewriteRule ^media/upload/photo_files$ /media.php?part=upload&subpart=photo_files [L]
+RewriteRule ^media/upload/photo_vkontakte$ /media.php?part=upload&subpart=photo_vkontakte [L]
 
 # forum
 RewriteRule ^forum$ /forum.php [L]
@@ -87,13 +94,9 @@ RewriteRule ^sign_up/$ /sign_up.php [L]
 # RewriteRule ^js/([^\.]*.js)$ /js_compiled/$1.js [L]
 # RewriteRule ^js/(jquery[^\.].js)$ /js/$1 [L]
 
-ErrorDocument 404 http://main.pipev4.ru/error_docs/404.html
-ErrorDocument 403 http://main.pipev4.ru/error_docs/403.html
-ErrorDocument 500 http://main.pipev4.ru/error_docs/500.html
-
-# ErrorDocument 404 http://pipeinpipe.info/error_docs/404.html
-# ErrorDocument 403 http://pipeinpipe.info/error_docs/403.html
-# ErrorDocument 500 http://pipeinpipe.info/error_docs/500.html
+ErrorDocument 404 /error_docs/404.html
+ErrorDocument 403 /error_docs/403.html
+ErrorDocument 500 /error_docs/500.html
 
 # Redirects from old URLs
 RedirectMatch 301 /sport/wpr/([0-9]+)$ /pm$1

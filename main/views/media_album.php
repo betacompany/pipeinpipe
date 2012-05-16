@@ -23,7 +23,7 @@ try {
 	}
 
 ?>
-
+<div id="media_container" class="body_container">
 	<div class="media_album_preview">
 		<h1><?=$group->getTitle()?></h1>
 		<div class="description">
@@ -37,6 +37,7 @@ try {
 		<? media_script_album(); ?>
 
 	</div>
+</div>
 
 <?
 	media_slideshow_block();

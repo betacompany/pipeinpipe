@@ -5,6 +5,7 @@
 
 require_once dirname(__FILE__) . '/../classes/blog/Blog.php';
 require_once dirname(__FILE__) . '/../classes/blog/BlogPost.php';
+require_once dirname(__FILE__) . '/tag_creator.php';
 
 global $auth, $user;
 
@@ -16,10 +17,12 @@ if ($auth->isAuth()) {
 	$postId = 0;
 	$postBlogId = 0;
 	$tagIds = '{}';
+	$publishLabel = "Опубликовать";
 
 	if (issetParam('post_id')) {
 		$postId = intparam('post_id');
 		$post = Item::getById($postId);
+		$publishLabel = "Сохранить";
 		if ($post instanceof BlogPost) {
 			$blog = $post->getGroup();
 			if ($user->hasPermission($blog, 'edit')) {
@@ -51,11 +54,11 @@ if ($auth->isAuth()) {
 
 	<div>У вас нет ни одного блога, в который вы можете писать.</div>
 	<div class="title">
-		<label for="title">Название блога</label>
+		<label for="blog_title">Название блога</label>
 		<input id="blog_title" type="text" name="title" value="<?=$user->getFullName();?>" />
 	</div>
 	<div class="subbody">
-		<label for="desc">Краткое описание</label>
+		<label for="blog_description">Краткое описание</label>
 		<textarea id="blog_description" name="desc"></textarea>
 	</div>
 	<div>
@@ -103,72 +106,28 @@ if ($auth->isAuth()) {
 		<? endif; ?>
 		<div class="title">
 			<label for="post_title">Заголовок</label>
-			<input type="text" name="post_title" value="<?=$postTitle?>" />
+			<input type="text" name="post_title" id="post_title" value="<?=$postTitle?>" />
 		</div>
 		<div class="body">
 			<label for="post_full_source">Текст поста</label>
-			<textarea name="post_full_source"><?=$postFullSource?></textarea>
+			<textarea name="post_full_source" id="post_full_source"><?=$postFullSource?></textarea>
 		</div>
 		<div class="subbody">
 			<label for="post_short_source">Выдержка</label>
-			<textarea name="post_short_source"><?=$postShortSource?></textarea>
+			<textarea name="post_short_source" id="post_short_source"><?=$postShortSource?></textarea>
 		</div>
 		<div>
 			<label for="post_tags">Тэги</label>
-			<input type="hidden" name="post_tags" value="" />
+			<input type="hidden" name="post_tags" id="post_tags" value="" />
 			<div id="tags" class="tags"></div>
 			<div style="clear: both;"></div>
 		</div>
-		<div class="tag_panel">			
-			<div id="tag_panel_selector"></div>			
-		</div>
-		<script type="text/javascript">
-			$$(function () {
-				var tags = <?=Tag::getAllJSON()?>;
-				var tagById = {};
-				for (var i = 0; i < tags.length; i++) {
-					tagById[tags[i].id] = tags[i].value;
-				}
-
-				var selectedTags = <?=$tagIds?>;
-				var refreshTags = function () {
-					$('#tags').html('');
-					var tag_ids = getTrueKeys(selectedTags),
-						str = '', prev_id = 0, i;
-					tag_ids.sort();
-					for (i = 0; i < tag_ids.length; i++) {
-						var tag_id = tag_ids[i];
-						if (prev_id != tag_id) {
-							$('#tags').append(
-								$('<div/>')
-									.addClass('tag')
-									.html(tagById[tag_id])
-									.data('tag_id', tag_id)
-									.click(function (e) {
-										selectedTags[$(this).data('tag_id')] = false;
-										refreshTags();
-									})
-							);
-							str += tag_id + ',';
-						}
-						prev_id = tag_id;
-					}
-					$('input[name=post_tags]').val(str.substr(0, str.length - 1));
-				};
-				var dynamicSelector = new DynamicSelector({
-					content: tags,
-					onSelect: function (id) {
-						selectedTags[id] = true;
-						refreshTags();
-					}
-				});
-				dynamicSelector.appendTo($('#tag_panel_selector'));
-				refreshTags();
-			});
-		</script>
-		<div class="blog_selector">
+<?
+        tag_creator_show($post);
+?>
+        <div class="blog_selector">
 			<label for="post_blog_id">Добавить пост в блог:</label>
-			<select name="post_blog_id">
+			<select name="post_blog_id" id="post_blog_id">
 <?
 		foreach ($blogs as $blog) {
 ?>
@@ -179,7 +138,9 @@ if ($auth->isAuth()) {
 ?>
 
 			</select>
-			<div id="editor_button" class="button">Опубликовать</div>
+		</div>
+		<div class="editor_controls">
+			<div id="editor_button" class="button" onclick="javascript: TagCreator.fillFormTagsInput('input[name=post_tags]', <?=$postId?>)"><?=$publishLabel?></div>
 <?
 		if ($postId) {
 ?>

@@ -3,14 +3,18 @@
  */
 function Selector(options) {
 	var defaultOptions = {
-		content: [],
-		editable: false,
-		enabled: true,
-		maxOptionsCount: 5,
-		onChange: function (o, value) {},
-		onSelect: function (id) {},
-		onSlideDown: function () {},
-		onSlideUp: function () {}
+		content:[],
+		editable:false,
+		enabled:true,
+		maxOptionsCount:5,
+		onChange:function (o, value) {
+		},
+		onSelect:function (id) {
+		},
+		onSlideDown:function () {
+		},
+		onSlideUp:function () {
+		}
 	};
 
 	$.extend(defaultOptions, options);
@@ -21,43 +25,43 @@ function Selector(options) {
 	};
 
 	var inputArea = ce('div');
-		inputArea.className = 'ui-selector';
+	inputArea.className = 'ui-selector';
 
 	var inputFieldArea = ce('div');
-		inputArea.appendChild(inputFieldArea);
+	inputArea.appendChild(inputFieldArea);
 
 	var slideButton = ce('div');
-		inputArea.appendChild(slideButton);
+	inputArea.appendChild(slideButton);
 
 	var inputField = options.editable ? ce('input') : ce('div');
-		inputFieldArea.appendChild(inputField);
-		if (!options.editable) {
-			$(inputField).click(function () {
-				if (!returnObject.enabled) return;
-				var shown = $(slideButton).data('shown');
-				if (shown) {
-					returnObject.hideOptions();
-				} else {
-					returnObject.showOptions();
-				}
-			});
-		}
+	inputFieldArea.appendChild(inputField);
+	if (!options.editable) {
+		$(inputField).click(function () {
+			if (!returnObject.enabled) return;
+			var shown = $(slideButton).data('shown');
+			if (shown) {
+				returnObject.hideOptions();
+			} else {
+				returnObject.showOptions();
+			}
+		});
+	}
 
 	var optionsArea = ce('div');
-		optionsArea.className = 'ui-options';
+	optionsArea.className = 'ui-options';
 
 	var returnObject = {
-		optionsArea: optionsArea,
-		slideButton: slideButton,
-		inputField: inputField,
+		optionsArea:optionsArea,
+		slideButton:slideButton,
+		inputField:inputField,
 
-		selectedId: null,
-		content: [],
+		selectedId:null,
+		content:[],
 
-		editable: options.editable,
-		enabled: options.enabled,
+		editable:options.editable,
+		enabled:options.enabled,
 
-		data: function (key, value) {
+		data:function (key, value) {
 			if (value == undefined) {
 				return $(this.optionsArea).data(key);
 			}
@@ -65,7 +69,7 @@ function Selector(options) {
 			return $(this.optionsArea).data(key, value);
 		},
 
-		appendTo: function (container) {
+		appendTo:function (container) {
 			if (container instanceof Element) {
 				container.appendChild(inputArea);
 				container.appendChild(optionsArea);
@@ -77,7 +81,7 @@ function Selector(options) {
 			return this;
 		},
 
-		setWidth: function (w) {
+		setWidth:function (w) {
 			$(inputArea).width(w);
 			$(optionsArea).width(w);
 			$(inputFieldArea).width(w - 20);
@@ -85,14 +89,14 @@ function Selector(options) {
 			return this;
 		},
 
-		setHeight: function (h) {
+		setHeight:function (h) {
 			$(inputArea).height(h);
 			$(inputFieldArea).height(h);
 
 			return this;
 		},
 
-		select: function (id) {
+		select:function (id) {
 			var option = this.data('id_' + id);
 			if (this.editable) {
 				$(inputField).val(option.value);
@@ -105,9 +109,9 @@ function Selector(options) {
 			return this;
 		},
 
-		addOption: function (option) {
+		addOption:function (option) {
 			var opt = ce('div');
-				opt.innerHTML = (option.html != undefined) ? option.html : option.value;
+			opt.innerHTML = (option.html != undefined) ? option.html : option.value;
 
 			$(opt).data('id', option.id);
 			$(opt).data('value', option.value);
@@ -142,7 +146,7 @@ function Selector(options) {
 		/**
 		 * @brief sets the new array of options on the place of the old set
 		 */
-		setOptions: function (options) {
+		setOptions:function (options) {
 			this.content = [];
 			$(this.optionsArea).children().remove();
 			for (var i = 0; i < options.length; i++) {
@@ -155,7 +159,7 @@ function Selector(options) {
 		/**
 		 * @brief hides options list if it is not hidden yet
 		 */
-		hideOptions: function () {
+		hideOptions:function () {
 			if ($(this.slideButton).data('shown')) {
 				$(this.optionsArea).slideUp("fast");
 				$(this.slideButton).data('shown', false);
@@ -168,8 +172,8 @@ function Selector(options) {
 		/**
 		 * @brief shows options list if it is not shown yet
 		 */
-		showOptions: function () {
-			if (! $(this.slideButton).data('shown')) {
+		showOptions:function () {
+			if (!$(this.slideButton).data('shown')) {
 				$(this.optionsArea).slideDown("fast");
 				$(this.slideButton).data('shown', true);
 				options.onSlideDown();
@@ -181,7 +185,7 @@ function Selector(options) {
 		/**
 		 * @brief handles the changing of input field content and calls user handler
 		 */
-		onChange: function () {
+		onChange:function () {
 			options.onChange(this, $(inputField).val());
 			this.showOptions();
 
@@ -191,7 +195,7 @@ function Selector(options) {
 		/**
 		 * @brief handles the selection of one of options and calls user handler
 		 */
-		onSelect: function (id) {
+		onSelect:function (id) {
 			options.onSelect(id);
 			this.selectedId = id;
 			this.hideOptions();
@@ -203,7 +207,7 @@ function Selector(options) {
 		 * @param [id]
 		 * @brief returns the id of selected option and null if nothing is selected
 		 */
-		val: function (id) {
+		val:function (id) {
 			if (id != undefined) {
 				this.selectedId = id;
 				return id;
@@ -212,7 +216,7 @@ function Selector(options) {
 			return this.selectedId;
 		},
 
-		enable: function () {
+		enable:function () {
 			this.enabled = true;
 			if (this.editable) {
 				this.inputField.disabled = false;
@@ -221,7 +225,7 @@ function Selector(options) {
 			return this;
 		},
 
-		disable: function () {
+		disable:function () {
 			this.enabled = false;
 			if (this.editable) {
 				this.inputField.disabled = true;
@@ -230,7 +234,7 @@ function Selector(options) {
 			return this;
 		},
 
-		clear: function () {
+		clear:function () {
 			this.selectedId = false;
 			$(inputField).val('');
 
@@ -290,10 +294,14 @@ function DynamicSelector(options) {
 	options.content = (options.content != undefined) ? options.content : [];
 	options.enabled = (options.enabled != undefined) ? options.enabled : true;
 	options.maxOptionsCount = (options.maxOptionsCount != undefined) ? options.maxOptionsCount : 5;
-	options.onSlideDown = (options.onSlideDown != undefined) ? options.onSlideDown : function () {};
-	options.onSlideUp = (options.onSlideUp != undefined) ? options.onSlideUp : function () {};
-	options.onSelect = (options.onSelect != undefined) ? options.onSelect : function () {};
-	options.onChange = (options.onChange != undefined) ? options.onChange : function () {};
+	options.onSlideDown = (options.onSlideDown != undefined) ? options.onSlideDown : function () {
+	};
+	options.onSlideUp = (options.onSlideUp != undefined) ? options.onSlideUp : function () {
+	};
+	options.onSelect = (options.onSelect != undefined) ? options.onSelect : function () {
+	};
+	options.onChange = (options.onChange != undefined) ? options.onChange : function () {
+	};
 
 	var optionsArray = options.content;
 	var stringArray = new Array();
@@ -304,15 +312,15 @@ function DynamicSelector(options) {
 	var suffixTree = new SuffixTree(stringArray);
 
 	var selector = new Selector({
-		content: options.content,
-		editable: true,
-		enabled: options.enabled,
-		maxOptionsCount: options.maxOptionsCount,
-		onSlideDown: options.onSlideDown,
-		onSlideUp: options.onSlideUp,
-		onSelect: options.onSelect,
+		content:options.content,
+		editable:true,
+		enabled:options.enabled,
+		maxOptionsCount:options.maxOptionsCount,
+		onSlideDown:options.onSlideDown,
+		onSlideUp:options.onSlideUp,
+		onSelect:options.onSelect,
 
-		onChange: function (o, str) {
+		onChange:function (o, str) {
 			str = str.toLowerCase();
 			var indexes = suffixTree.getPossibleIndexes(str);
 			var optionsSubArray = [];
@@ -334,47 +342,47 @@ function DynamicSelector(options) {
 	});
 
 	return {
-		appendTo: function (container) {
+		appendTo:function (container) {
 			selector.appendTo(container);
 
 			return this;
 		},
 
-		setWidth: function (width) {
+		setWidth:function (width) {
 			selector.setWidth(width);
 
 			return this;
 		},
 
-		val: function () {
+		val:function () {
 			return selector.val();
 		},
 
-		select: function (id) {
+		select:function (id) {
 			selector.select(id);
 
 			return this;
 		},
 
-		disable: function () {
+		disable:function () {
 			selector.disable();
 
 			return this;
 		},
 
-		enable: function () {
+		enable:function () {
 			selector.enable();
 
 			return this;
 		},
 
-		clear: function () {
+		clear:function () {
 			selector.clear();
 
 			return this;
 		},
 
-		text: function() {
+		text:function () {
 			return selector.inputField.value;
 		}
 	}
@@ -392,11 +400,11 @@ function DynamicSelector(options) {
  */
 function FadingImage(options) {
 	var defOptions = {
-		src: '../images/delete.png',
-		CSSClass: '',
-		animationSpeed: 400,
-		minOpacity: 0.35,
-		onclick : function () {
+		src:'../images/delete.png',
+		CSSClass:'',
+		animationSpeed:400,
+		minOpacity:0.35,
+		onclick:function () {
 			debug("action is not defined!");
 		}
 	}
@@ -405,35 +413,35 @@ function FadingImage(options) {
 	options = defOptions;
 
 	var jImg = $('<img/>', {
-		src: options.src
+		src:options.src
 	}).hover(
-		function() {
-			$(this).animate({opacity: 1}, options.animationSpeed);
+		function () {
+			$(this).animate({opacity:1}, options.animationSpeed);
 		},
-		function() {
-			$(this).animate({opacity: options.minOpacity}, options.animationSpeed);
+		function () {
+			$(this).animate({opacity:options.minOpacity}, options.animationSpeed);
 		}
 	)
-	.addClass(options.CSSClass)
-	.css({
-		opacity: options.minOpacity,
-		cursor: 'pointer'
-	})
-	.click(options.onclick);
+		.addClass(options.CSSClass)
+		.css({
+			opacity:options.minOpacity,
+			cursor:'pointer'
+		})
+		.click(options.onclick);
 
 	return {
 		/**
 		 * Don't set containerToHover if you want this object to be visible all the time!!
 		 */
-		appendTo: function (сontainerToAppend, сontainerToHover) {
+		appendTo:function (сontainerToAppend, сontainerToHover) {
 			jImg.appendTo(сontainerToAppend instanceof jQuery ? сontainerToAppend : $('#' + сontainerToAppend));
 
 			if (сontainerToHover != undefined) {
 				(сontainerToHover instanceof jQuery ? сontainerToHover : $('#' + сontainerToHover)).hover(
-					function() {
+					function () {
 						jImg.show();//fadeIn('fast');
 					},
-					function() {
+					function () {
 						jImg.hide();//fadeOut('fast');
 					}
 				);
@@ -442,13 +450,13 @@ function FadingImage(options) {
 			return this;
 		},
 
-		hide: function() {
+		hide:function () {
 			jImg().hide();
 
 			return this;
 		},
 
-		show: function() {
+		show:function () {
 			jImg().show();
 
 			return this;
@@ -469,12 +477,12 @@ function FadingImage(options) {
  */
 function FadingButton(options) {
 	var defOptions = {
-		html: 'Кнопка',
-		animationSpeed: 400,
-		minOpacity: 0.35,
-		CSSClass: '',
-		css: {},
-		onclick : function () {
+		html:'Кнопка',
+		animationSpeed:400,
+		minOpacity:0.35,
+		CSSClass:'',
+		css:{},
+		onclick:function () {
 			debug("action is not defined!");
 		}
 	}
@@ -482,27 +490,27 @@ function FadingButton(options) {
 	options = defOptions;
 
 	var jButton = $('<div/>')
-	.addClass(options.CSSClass)
-	.html('<div>' + options.html + '</div>')
-	.css({
-		opacity: options.minOpacity,
-		cursor: 'pointer'
-	})
-	.css(options.css)
-	.click(
-        options.href ?
-            function () {
-                window.location = options.href
-            } : options.onclick
-    );
+		.addClass(options.CSSClass)
+		.html('<div>' + options.html + '</div>')
+		.css({
+			opacity:options.minOpacity,
+			cursor:'pointer'
+		})
+		.css(options.css)
+		.click(
+		options.href ?
+			function () {
+				window.location = options.href
+			} : options.onclick
+	);
 
-	var bindHover = function() {
+	var bindHover = function () {
 		jButton.hover(
-			function() {
-				$(this).animate({opacity: 1}, options.animationSpeed);
+			function () {
+				$(this).animate({opacity:1}, options.animationSpeed);
 			},
-			function() {
-				$(this).animate({opacity: options.minOpacity}, options.animationSpeed);
+			function () {
+				$(this).animate({opacity:options.minOpacity}, options.animationSpeed);
 			}
 		)
 	}
@@ -512,15 +520,15 @@ function FadingButton(options) {
 		/**
 		 * Don't set containerToHover if you want this object to be visible all the time!!
 		 */
-		appendTo: function (сontainerToAppend, сontainerToHover) {
+		appendTo:function (сontainerToAppend, сontainerToHover) {
 			jButton.appendTo(сontainerToAppend instanceof jQuery ? сontainerToAppend : $('#' + сontainerToAppend));
 
 			if (сontainerToHover != undefined) {
 				(сontainerToHover instanceof jQuery ? сontainerToHover : $('#' + сontainerToHover)).hover(
-					function() {
+					function () {
 						jButton.show();//fadeIn('fast');
 					},
-					function() {
+					function () {
 						jButton.hide();//fadeOut('fast');
 					}
 				);
@@ -529,46 +537,46 @@ function FadingButton(options) {
 			return this;
 		},
 
-		hide: function() {
+		hide:function () {
 			jButton.hide();
 			return this;
 		},
 
-		show: function() {
+		show:function () {
 			jButton.show();
 
 			return this;
 		},
 
-		css: function(CSSoptions) {
+		css:function (CSSoptions) {
 			jButton.css(CSSoptions);
 
 			return this;
 		},
 
-		enable: function () {
+		enable:function () {
 			jButton.click(options.onClick).css({
-				cursor: 'pointer',
-				opacity: options.minOpacity
+				cursor:'pointer',
+				opacity:options.minOpacity
 			});
 			bindHover();
 
 			return this;
 		},
 
-		disable: function () {
+		disable:function () {
 			jButton.unbind().css({
-				cursor: 'default',
-				opacity: options.minOpacity
+				cursor:'default',
+				opacity:options.minOpacity
 			});
 
 			return this;
 		},
 
-		content: function(content) {
+		content:function (content) {
 			var contentToAdd = typeof content == 'jQuery' ? content : $('<div/>').html(content);
 
-			jButton.children().fadeOut('fast', function() {
+			jButton.children().fadeOut('fast', function () {
 				contentToAdd.hide();
 				jButton.append(contentToAdd);
 				contentToAdd.fadeIn();
@@ -577,7 +585,7 @@ function FadingButton(options) {
 			return this;
 		},
 
-		click: function(fn) {
+		click:function (fn) {
 			if (fn == undefined)
 				jButton.click();
 			else
@@ -608,35 +616,37 @@ function AddCupPanel(options) {
 		return undefined;
 	}
 	var defOptions = {
-		parentCupId: 0,
-		onCancel: function() {}
+		parentCupId:0,
+		onCancel:function () {
+		}
 	}
-	
+
 	$.extend(defOptions, options);
 	options = defOptions;
 
 	var jPanel = $('<div/>', {
-		id: 'create_cup_panel'
+		id:'create_cup_panel'
 	});
 
 	var jName = $('<input/>', {
-		id: "create_cup_name",
-		type: "text",
-		value: options.parentCupId != 0 ? "Введите название для турнира" : "Турнир"
+		id:"create_cup_name",
+		type:"text",
+		value:options.parentCupId != 0 ? "Введите название для турнира" : "Турнир"
 	}).addClass("create_cup_content");
 
 	if (options.parentCupId != 0) {
-		jName.focus(function() {
-			if (jName.val() == 'Введите название для турнира')
-				jName.val('Группа ')
-				.css("color", "black");
+		jName.focus(
+			function () {
+				if (jName.val() == 'Введите название для турнира')
+					jName.val('Группа ')
+						.css("color", "black");
 			}
-		).blur(function() {
-			if (jName.val() == '') {
-				jName.val('Введите название для турнира')
-				.css("color", "gray");
-			}
-		});
+		).blur(function () {
+				if (jName.val() == '') {
+					jName.val('Введите название для турнира')
+						.css("color", "gray");
+				}
+			});
 	} else {
 		jName.attr('disabled', 'disabled');
 	}
@@ -644,18 +654,18 @@ function AddCupPanel(options) {
 	var jType = $('<div/>').addClass("create_cup_content");
 
 	var typeSelector = new Selector({
-		content: [
+		content:[
 			{
-				id: 'playoff',
-				value: 'кубок по олимпийской системе'
+				id:'playoff',
+				value:'кубок по олимпийской системе'
 			},
 			{
-				id: 'one-lap',
-				value: 'чемпионат в один круг'
+				id:'one-lap',
+				value:'чемпионат в один круг'
 			},
 			{
-				id: 'two-laps',
-				value: 'чемпионат в два круга'
+				id:'two-laps',
+				value:'чемпионат в два круга'
 			}
 		]
 	});
@@ -664,24 +674,24 @@ function AddCupPanel(options) {
 	typeSelector.appendTo(jType);
 
 	var jSave = $('<input/>', {
-		type: "button",
-		value: "Создать"
+		type:"button",
+		value:"Создать"
 	}).addClass('create_cup_content')
-	.click(function() {
-		cup.createCup(options.compId, options.parentCupId, jName.val(), typeSelector.val(), function() {
-			jPanel.slideUp(options.speed);
+		.click(function () {
+			cup.createCup(options.compId, options.parentCupId, jName.val(), typeSelector.val(), function () {
+				jPanel.slideUp(options.speed);
+			});
 		});
-	});
 
 	var jCancel = $('<input/>', {
-		type: "button",
-		value: "Отмена"
+		type:"button",
+		value:"Отмена"
 	}).addClass('create_cup_content')
-	.click(function() {
-		jPanel.slideUp(options.speed, function() {
-			options.onCancel();
+		.click(function () {
+			jPanel.slideUp(options.speed, function () {
+				options.onCancel();
+			});
 		});
-	});
 
 	jPanel.append(jName);
 	jPanel.append(jType);
@@ -696,32 +706,32 @@ function AddCupPanel(options) {
 	}
 
 	return {
-		slideDown: function() {
+		slideDown:function () {
 			jPanel.slideDown(options.speed, options.callback);
 			jName.focus();
 
 			return this;
 		},
 
-		slideUp: function() {
+		slideUp:function () {
 			jPanel.slideUp(options.speed, options.callback);
 
 			return this;
 		},
 
-		hide: function() {
+		hide:function () {
 			jPanel.hide();
 
 			return this;
 		},
 
-		show: function() {
+		show:function () {
 			jPanel.show();
 
 			return this;
 		},
 
-		appendTo: function(container) {
+		appendTo:function (container) {
 			jPanel.appendTo($('#' + container));
 
 			return this;
@@ -738,8 +748,9 @@ function CheckBox(_options) {
 		 * @param checked boolean
 		 * @param id Numeric
 		 */
-		onCheck: function (checked, id) {},
-		id: 0
+		onCheck:function (checked, id) {
+		},
+		id:0
 	};
 
 	$.extend(options, _options);
@@ -757,16 +768,16 @@ function CheckBox(_options) {
 	});
 
 	return {
-		id: options.id,
-		state: false,
+		id:options.id,
+		state:false,
 
-		appendTo: function (container) {
+		appendTo:function (container) {
 			container.append(checkbox);
 
 			return this;
 		},
 
-		setState: function (value) {
+		setState:function (value) {
 			if (value != undefined) {
 				if (value) {
 					$(checkbox).addClass('on');
@@ -792,44 +803,45 @@ function CheckBox(_options) {
  */
 function Button(options) {
 	var defaultOptions = {
-		onClick: function () {},
-		container: null,
-		CSSClass: '',
-		html: 'Text'
+		onClick:function () {
+		},
+		container:null,
+		CSSClass:'',
+		html:'Text'
 	};
 
 	$.extend(defaultOptions, options);
 	options = defaultOptions;
 
 	var jOuterDiv = $('<div/>')
-						.addClass(options.CSSClass)
-						.addClass('default_button')
-						.click(options.onClick)
-						.append(
-							$('<div/>')
-								.addClass('button_inner')
-								.html(options.html)
-						);
+		.addClass(options.CSSClass)
+		.addClass('default_button')
+		.click(options.onClick)
+		.append(
+		$('<div/>')
+			.addClass('button_inner')
+			.html(options.html)
+	);
 
 	if (options.container != null) {
 		var jContainer = (options.container instanceof jQuery) ? options.container : $('#' + options.container);
 		jContainer.append(jOuterDiv);
-	}	
+	}
 
 	return {
-		enable: function () {
+		enable:function () {
 			jOuterDiv.click(options.onClick);
 
 			return this;
 		},
 
-		disable: function () {
+		disable:function () {
 			jOuterDiv.unbind('click', options.onClick);
 
 			return this;
 		},
 
-		appendTo: function (container) {
+		appendTo:function (container) {
 			var jContainer = (container instanceof jQuery) ? container : $('#' + container);
 			jContainer.append(jOuterDiv);
 
@@ -840,38 +852,39 @@ function Button(options) {
 
 function PeopleListItem(options) {
 	var defaultOptions = {
-		targetId: 0,
-		personId: 0,
-		personName: 'undefined',
-		onClick: function () {},
-		canDelete: false
+		targetId:0,
+		personId:0,
+		personName:'undefined',
+		onClick:function () {
+		},
+		canDelete:false
 	};
 
 	$.extend(defaultOptions, options);
 	options = defaultOptions;
 
 	var jLi = $('<li/>', {
-		id: 'person_' + options.personId
+		id:'person_' + options.personId
 	}).addClass('leaf')
-	.appendTo('.people')
-	.fadeIn('slow');
+		.appendTo('.people')
+		.fadeIn('slow');
 
 	var jContent = $('<div/>').appendTo(jLi);
 
 	$('<div/>', {
-		text: options.personName
+		text:options.personName
 	}).appendTo(jContent);
 
 	var jImageDiv = $('<div/>', {
-		id: 'person_' + options.personId + '_image'
+		id:'person_' + options.personId + '_image'
 	}).appendTo(jContent);
 
 	$('<div/>').addClass('clear').appendTo(jLi);
 
 	if (options.canDelete) {
 		FadingImage({
-			CSSClass: 'fading_image',
-			onclick: function(e) {
+			CSSClass:'fading_image',
+			onclick:function (e) {
 				options.onClick(options.personId, options.targetId);
 				e.stopPropagation();
 			}
@@ -885,17 +898,17 @@ function PeopleListItem(options) {
 
 function PopUp(options) {
 	var defaultOptions = {
-		x: 690, y: 200,
-		html: 'DefaultHTML',
-		id: tm() + '_' +  Math.round(Math.random() * 1000),
-		delay: 200
+		x:690, y:200,
+		html:'DefaultHTML',
+		id:tm() + '_' + Math.round(Math.random() * 1000),
+		delay:200
 	}
 
 	$.extend(defaultOptions, options);
 	options = defaultOptions;
 	if (options.recalcCoords == undefined) {
 		options.recalcCoords = function (id) {
-			return {x: options.x, y: options.y};
+			return {x:options.x, y:options.y};
 		};
 	}
 
@@ -907,39 +920,39 @@ function PopUp(options) {
 	p.append(c).append(a);
 
 	p.css({
-		top: options.y - p.outerHeight() + 'px',
-		left: options.x - p.outerWidth() / 2 + 'px',
-		zIndex: 69
+		top:options.y - p.outerHeight() + 'px',
+		left:options.x - p.outerWidth() / 2 + 'px',
+		zIndex:69
 	});
 
 	a.css({
-		top: p.outerHeight() - 4 + 'px',
-		left: p.outerWidth() / 2 - 5 + 'px',
-		zIndex: 70
+		top:p.outerHeight() - 4 + 'px',
+		left:p.outerWidth() / 2 - 5 + 'px',
+		zIndex:70
 	});
 
 	p.attr('id', options.id).data('over', false);
 
 	$('body').append(p);
-	
+
 	var returnObject = {
-		__options: options,
-		
-		position: function (x, y) {
+		__options:options,
+
+		position:function (x, y) {
 			p.css({
-				top: y - p.innerHeight() + 'px',
-				left: x - p.outerWidth() / 2 + 'px'
+				top:y - p.innerHeight() + 'px',
+				left:x - p.outerWidth() / 2 + 'px'
 			});
 
 			a.css({
-				top: p.outerHeight() - 4 + 'px',
-				left: p.outerWidth() / 2 - 5 + 'px'
+				top:p.outerHeight() - 4 + 'px',
+				left:p.outerWidth() / 2 - 5 + 'px'
 			});
 
 			return this;
 		},
 
-		show: function () {
+		show:function () {
 			//debug('popup show');
 			var coords = options.recalcCoords(options.id);
 			//debug(coords);
@@ -949,24 +962,24 @@ function PopUp(options) {
 			return this;
 		},
 
-		hide: function () {
+		hide:function () {
 			var id = p.attr('id');
 			setTimeout(function () {
-				if ($('#'+id).data('over')) return;
+				if ($('#' + id).data('over')) return;
 				//debug('popup hide');
-				$('#'+id).fadeOut().data('over', false);
+				$('#' + id).fadeOut().data('over', false);
 			}, options.delay);
 
 			return this;
 		},
 
-		append: function(container) {
+		append:function (container) {
 			c.append(container);
 
 			return this;
 		}
 	};
-	
+
 	p.hover(
 		function () {
 			$(this).data('over', true);
@@ -984,7 +997,8 @@ function PopUp(options) {
 
 function DateSelector(options) {
 	var date = options.date,
-		onSelect = options.onSelect ? options.onSelect : function (date) {},
+		onSelect = options.onSelect ? options.onSelect : function (date) {
+		},
 		anchor = options.anchor ? options.anchor : false,
 		select = options.select ? options.select : false,
 		dateChecked = options.dateChecked ?
@@ -1001,9 +1015,9 @@ function DateSelector(options) {
 
 	var minDate = options.minDate || {},
 		maxDate = options.maxDate || {};
-	
+
 	var id = tm() + '_';
-		jContainer = $('<div/>').addClass('ui-date-selector').attr('id', id),
+	jContainer = $('<div/>').addClass('ui-date-selector').attr('id', id),
 		jDate = $('<div/>').addClass('date'),
 		jGrid = $('<div/>').addClass('grid').hide();
 
@@ -1014,8 +1028,10 @@ function DateSelector(options) {
 	var grid_showing = false;
 
 	var dateSetter = function (d, m, y) {
-		day = myParseInt(d);month = myParseInt(m);year = myParseInt(y);
-		d = day >= 10 ? day : '0'+day;
+		day = myParseInt(d);
+		month = myParseInt(m);
+		year = myParseInt(y);
+		d = day >= 10 ? day : '0' + day;
 		jDate.html(d + '&nbsp;' + common.months[month - 1].name_gen + '&nbsp;' + y);
 		onSelect(dateGetter());
 		if (options.hideOnSelect) {
@@ -1025,21 +1041,22 @@ function DateSelector(options) {
 	};
 
 	var dateGetter = function () {
-		var m = month >= 10 ? month : '0'+month,
-			d = day >= 10 ? day : '0'+day;
+		var m = month >= 10 ? month : '0' + month,
+			d = day >= 10 ? day : '0' + day;
 		return year + '-' + m + '-' + d;
 	};
 
 	var viewed = {
-		month: month,
-		year: year
+		month:month,
+		year:year
 	};
 
 	var dateOff = function (d, m, y) {
-		m = m ? myParseInt(m) : false;d = d ? myParseInt(d) : false;
+		m = m ? myParseInt(m) : false;
+		d = d ? myParseInt(d) : false;
 		//debug(d + ' ' + m + ' ' + y);
 		return datecmp(d, m, y, minDate.d, minDate.m, minDate.y) >= 0 &&
-			   datecmp(d, m, y, maxDate.d, maxDate.m, maxDate.y) <= 0 ? '' : ' off';
+			datecmp(d, m, y, maxDate.d, maxDate.m, maxDate.y) <= 0 ? '' : ' off';
 	};
 
 	var dateSelected = function (d, m, y) {
@@ -1049,12 +1066,12 @@ function DateSelector(options) {
 	var showMonthGrid = function (m, y) {
 		viewed.year = y;
 		viewed.month = m;
-		
+
 		var first = (new Date(y, m - 1, 1)).getDay();
-			first = (first == 0) ? 7 : first;
+		first = (first == 0) ? 7 : first;
 		var str = '';
-		var days = y % 4 == 0 ? common.months[m-1].length_leap : common.months[m-1].length;
-		str += '<table><thead><th class="m_h" colspan="7">'+common.months[m-1].name+'&nbsp;'+y+'</th></thead><tbody>';
+		var days = y % 4 == 0 ? common.months[m - 1].length_leap : common.months[m - 1].length;
+		str += '<table><thead><th class="m_h" colspan="7">' + common.months[m - 1].name + '&nbsp;' + y + '</th></thead><tbody>';
 		for (var row = 0; row < 6; ++row) {
 			str += '<tr>';
 			for (var col = 1; col <= 7; ++col) {
@@ -1075,7 +1092,7 @@ function DateSelector(options) {
 		str += '</tbody></table>';
 		jGrid.html(str);
 
-		$('#'+id+' .d').not('.off').bind('click', function () {
+		$('#' + id + ' .d').not('.off').bind('click', function () {
 			var d = parseInt($(this).html());
 			dateSetter(d, viewed.month, viewed.year);
 			//debug(dateGetter());
@@ -1083,12 +1100,12 @@ function DateSelector(options) {
 				setAnchorParam('date', dateGetter());
 			}
 			if (select) {
-				$('#'+id+' .d').removeClass('selected');
+				$('#' + id + ' .d').removeClass('selected');
 				$(this).addClass('selected');
 			}
 		});
 
-		$('#'+id+' .m_h').bind('click', function () {
+		$('#' + id + ' .m_h').bind('click', function () {
 			showYearGrid(viewed.year);
 		});
 	};
@@ -1096,13 +1113,13 @@ function DateSelector(options) {
 	var showYearGrid = function (y) {
 		viewed.year = y;
 
-		var str = '<table><thead><th class="y_h" colspan="4">'+y+'</th></thead><tbody>';
+		var str = '<table><thead><th class="y_h" colspan="4">' + y + '</th></thead><tbody>';
 
 		for (var row = 0; row < 3; ++row) {
 			str += '<tr>';
 			for (var col = 0; col < 4; ++col) {
 				var m = row * 4 + col;
-				str += '<td class="m'+dateOff(undefined, m+1, y)+'" id="'+id+''+(m+1)+'">' + common.months[m].name_short + '</td>';
+				str += '<td class="m' + dateOff(undefined, m + 1, y) + '" id="' + id + '' + (m + 1) + '">' + common.months[m].name_short + '</td>';
 			}
 			str += '</tr>';
 		}
@@ -1110,12 +1127,12 @@ function DateSelector(options) {
 		str += '</tbody></table>';
 		jGrid.html(str);
 
-		$('#'+id+' .m').not('.off').bind('click', function () {
+		$('#' + id + ' .m').not('.off').bind('click', function () {
 			var ida = $(this).attr('id').split('_'), m = ida[1];
 			showMonthGrid(m, viewed.year);
 		});
 
-		$('#'+id+' .y_h').bind('click', function () {
+		$('#' + id + ' .y_h').bind('click', function () {
 			showTwentyYearsGrid(viewed.year);
 		});
 	};
@@ -1124,15 +1141,15 @@ function DateSelector(options) {
 		viewed.year = y;
 
 		var firstYear = Math.floor(y / 20) * 20;
-		var str = '<table><thead><th class="y20_h" colspan="5">'+
-			(minDate.y ? Math.max(firstYear, minDate.y) : firstYear)+' &mdash; '+
-			(maxDate.y ? Math.min(firstYear+19, maxDate.y) : firstYear+19)+'</th></thead><tbody>';
+		var str = '<table><thead><th class="y20_h" colspan="5">' +
+			(minDate.y ? Math.max(firstYear, minDate.y) : firstYear) + ' &mdash; ' +
+			(maxDate.y ? Math.min(firstYear + 19, maxDate.y) : firstYear + 19) + '</th></thead><tbody>';
 
 		for (var row = 0; row < 4; ++row) {
 			str += '<tr>';
 			for (var col = 0; col < 5; ++col) {
 				var yr = firstYear + row * 5 + col;
-				str += '<td class="y'+dateOff(undefined, undefined, yr)+'" id="'+id+''+yr+'">' + yr + '</td>';
+				str += '<td class="y' + dateOff(undefined, undefined, yr) + '" id="' + id + '' + yr + '">' + yr + '</td>';
 			}
 			str += '</tr>';
 		}
@@ -1140,12 +1157,12 @@ function DateSelector(options) {
 		str += '</tbody></table>';
 		jGrid.html(str);
 
-		$('#'+id+' .y').not('.off').bind('click', function () {
+		$('#' + id + ' .y').not('.off').bind('click', function () {
 			var ida = $(this).attr('id').split('_'), y = ida[1];
 			showYearGrid(y);
 		});
 
-		$('#'+id+' .y20_h').bind('click', function () {
+		$('#' + id + ' .y20_h').bind('click', function () {
 			showAllGrid();
 		});
 	};
@@ -1153,15 +1170,15 @@ function DateSelector(options) {
 	var showAllGrid = function () {
 		var firstYear = 1900;
 
-		var str = '<table><thead><th class="off" colspan="5">'+
-			(minDate.y ? Math.max(firstYear, minDate.y) : firstYear)+' &mdash; '+
-			(maxDate.y ? Math.min(firstYear+399, maxDate.y) : firstYear+399)+'</th></thead><tbody>';
+		var str = '<table><thead><th class="off" colspan="5">' +
+			(minDate.y ? Math.max(firstYear, minDate.y) : firstYear) + ' &mdash; ' +
+			(maxDate.y ? Math.min(firstYear + 399, maxDate.y) : firstYear + 399) + '</th></thead><tbody>';
 
 		for (var row = 0; row < 3; ++row) {
 			str += '<tr>';
 			for (var col = 0; col < 5; ++col) {
 				var yr = firstYear + (row * 5 + col) * 20;
-				str += '<td class="y20 '+((minDate && yr + 19 < minDate.y) || (maxDate && yr > maxDate.y) ? ' off' : '')+'" id="'+id+''+yr+'">' + yr + ' ' + (yr+19) + '</td>';
+				str += '<td class="y20 ' + ((minDate && yr + 19 < minDate.y) || (maxDate && yr > maxDate.y) ? ' off' : '') + '" id="' + id + '' + yr + '">' + yr + ' ' + (yr + 19) + '</td>';
 			}
 			str += '</tr>';
 		}
@@ -1169,17 +1186,17 @@ function DateSelector(options) {
 		str += '</tbody></table>';
 		jGrid.html(str);
 
-		$('#'+id+' .y20').not('.off').bind('click', function () {
+		$('#' + id + ' .y20').not('.off').bind('click', function () {
 			var ida = $(this).attr('id').split('_'), y = ida[1];
 			showTwentyYearsGrid(y);
 		});
-	};	
+	};
 
 	if (!date) {
 		jDate.html('выберите дату');
 	} else {
 		debug(day);
-		var dn = (day >= 10) ? day : '0'+day;
+		var dn = (day >= 10) ? day : '0' + day;
 		jDate.html(dn + '&nbsp;' + common.months[month - 1].name_gen + '&nbsp;' + year);
 	}
 
@@ -1195,29 +1212,158 @@ function DateSelector(options) {
 	});
 
 	return {
-		appendTo: function (container) {
+		appendTo:function (container) {
 			container.append(jContainer);
 		},
-		hideGrid: function () {
+		hideGrid:function () {
 			jGrid.fadeOut();
 			grid_showing = false;
 		},
-		showGrid: function () {
+		showGrid:function () {
 			showMonthGrid(viewed.month, viewed.year);
 			jGrid.fadeIn();
 			grid_showing = true;
 		},
-		val: function () {
+		val:function () {
 			return dateGetter();
 		},
-		setBounds: function (begin, end) {
+		setBounds:function (begin, end) {
 			var bd = begin.split('-'),
 				ed = end.split('-');
-			minDate = {y: myParseInt(bd[0]), m: myParseInt(bd[1]), d: myParseInt(bd[2])};
-			maxDate = {y: myParseInt(ed[0]), m: myParseInt(ed[1]), d: myParseInt(ed[2])};
+			minDate = {y:myParseInt(bd[0]), m:myParseInt(bd[1]), d:myParseInt(bd[2])};
+			maxDate = {y:myParseInt(ed[0]), m:myParseInt(ed[1]), d:myParseInt(ed[2])};
 		},
-		clear: function() {
+		clear:function () {
 			//TODO implement!!
 		}
 	};
 }
+
+function Timeline(options) {
+
+	const DAY_IN_MS = 24 * 60 * 60 * 1000;
+
+	var defaultOptions = {
+		delta: 7,
+		centerDate: Math.floor(new Date().getTime() / DAY_IN_MS),
+		commonW: 30
+	};
+
+	$.extend(defaultOptions, options);
+	options = defaultOptions;
+
+	debug(options);
+
+	var jContainer = $('<div/>').addClass('ui-timeline');
+	var dateContainers = [];
+
+	var convert = function (centerDate, i) {
+		var ts = (centerDate + i) * DAY_IN_MS;
+		return new Date(ts);
+	};
+
+	for (var i = -options.delta; i <= options.delta; ++i) {
+		var date = convert(options.centerDate, i),
+			d = date.getDate(),
+			j = dateContainers[options.delta + i] =
+					$('<div/>')
+						.addClass('date day-' + i)
+						.html(d)
+						.data('ms', date.getTime())
+						.appendTo(jContainer);
+		if (i == 0) {
+			j.addClass('center');
+		}
+	}
+
+	jContainer.append($('<div class="month_name m1"></div>'));
+	jContainer.append($('<div class="month_name m2"></div>'));
+
+	var setCenterDay = function (day) {
+		jContainer.children('.month_name.m2').hide();
+		for (var i = -options.delta; i <= options.delta; ++i) {
+			var date = convert(day, i),
+				d = date.getDate(),
+				j = dateContainers[options.delta + i]
+					.html(d)
+					.data('ms', date.getTime());
+
+			if (i == -options.delta) {
+				jContainer.children('.month_name.m1')
+					.css({
+						left: j.offset().left
+					})
+					.html(common.monthName(date) + "'" + new String(date.getFullYear()).substring(2));
+			}
+
+			if(d == 1 && i > -options.delta) {
+				jContainer.children('.month_name.m2')
+					.show()
+					.css({
+						left: j.offset().left
+					})
+					.html(common.monthName(date) + "'" + new String(date.getFullYear()).substring(2));
+			}
+		}
+	};
+
+	var listeners = [];
+
+	var setCenterDayMs = function (ms, notify) {
+		setCenterDay(Math.floor(ms / DAY_IN_MS));
+		if (notify) {
+			for (var i = 0; i < listeners.length; ++i) {
+				listeners[i](ms);
+			}
+		}
+	};
+
+	var redraw = function (container) {
+		var w = container.width(),
+			dw = w / (2 * options.delta + 1);
+
+		jContainer.children('.date')
+			.width(dw - options.commonW)
+			.each(function (i) {
+				var x = (i - options.delta) / options.delta * 2;
+				$(this).css({
+					left:i * dw,
+					opacity:Math.exp(-x * x / 2)
+				});
+			})
+			.click(function () {
+				var ms = $(this).data('ms');
+				setCenterDayMs(ms, true);
+			});
+
+		jContainer.children('.month_name').css({
+			width:dw - options.commonW + 20
+		});
+	};
+
+	return {
+		getByContainer: function (container) {
+
+			redraw(container);
+
+			$(window).resize(function () {
+				redraw($(jContainer).parent());
+			});
+
+			return jContainer;
+		},
+
+		scrollTo: function (ms) {
+			setCenterDayMs(ms, true);
+		},
+
+		silentScrollTo: function (ms) {
+			setCenterDayMs(ms);
+		},
+
+		onChange: function (f) {
+			listeners.push(f);
+		}
+	};
+}
+

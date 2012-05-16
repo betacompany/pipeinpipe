@@ -2,21 +2,19 @@
 
 require_once dirname(__FILE__) . '/../../includes/assertion.php';
 require_once dirname(__FILE__) . '/../../includes/security.php';
+require_once dirname(__FILE__) . '/../../includes/import.php';
+require_once dirname(__FILE__) . '/../../includes/log.php';
 
-require_once dirname(__FILE__) . '/../db/ItemDBClient.php';
-require_once dirname(__FILE__) . '/../db/ItemDBClient.php';
-require_once dirname(__FILE__) . '/../db/ContentViewDBClient.php';
-
-require_once dirname(__FILE__) . '/../media/Photo.php';
-require_once dirname(__FILE__) . '/../media/Video.php';
-require_once dirname(__FILE__) . '/../forum/ForumTopic.php';
-
-require_once dirname(__FILE__) . '/../blog/BlogPost.php';
-
-require_once dirname(__FILE__) . '/../life/Event.php';
-
-require_once dirname(__FILE__) . '/Action.php';
-require_once dirname(__FILE__) . '/Tag.php';
+import("db/ItemDBClient");
+import("db/ContentViewDBClient");
+import("media/Photo");
+import("media/Video");
+import("forum/ForumTopic");
+import("blog/BlogPost");
+import("life/Event");
+import("social/CrossPost");
+import("content/Action");
+import("content/Tag");
 
 /**
  * @author Artyom Grigoriev
@@ -29,15 +27,24 @@ class Item {
 	const VIDEO = 'video';
 	const INTERVIEW_QUESTION = 'interview_question';
 	const EVENT = 'event';
+	const CROSS_POST = 'cross_post';
 
 	const ID = 'id';
 	const LAST_COMMENT = 'last_comment_timestamp';
 	const CREATION = 'creation_timestamp';
 
 	public static function isCorrectType($type) {
-		return $type == self::BLOG_POST || self::EVENT || self::FORUM_TOPIC
-				|| self::INTERVIEW_QUESTION || self::PHOTO || self::VIDEO;
+		return
+			$type == self::BLOG_POST ||
+			$type == self::EVENT ||
+			$type == self::FORUM_TOPIC ||
+			$type == self::INTERVIEW_QUESTION ||
+			$type == self::PHOTO ||
+			$type == self::VIDEO ||
+			$type == self::CROSS_POST;
 	}
+
+	protected $creationTimestamp;
 
 	protected $id;
 	protected $type;
@@ -50,7 +57,6 @@ class Item {
 	protected $user;
 	protected $userLoaded = false;
 
-	protected $creationTimestamp;
 	protected $lastCommentTimestamp;
 	protected $contentTitle;
 	protected $contentSource;
@@ -430,6 +436,14 @@ class Item {
 	}
 
 	/**
+	 * Sets the value of comments count
+	 * @param $count
+	 */
+	public function setCommentsCountForLite($count) {
+		$this->commentsCount = $count;
+	}
+
+	/**
 	 * Checks if new for $user comments appeared since his last view
 	 * @param mixed $user (User or int)
 	 * @return boolean
@@ -480,11 +494,11 @@ class Item {
 	 * @param string $type
 	 * @return boolean
 	 */
-	public function isActedBy($user, $type) {
-		if ($user == null) return false;
+	public function isActedBy($user, $type = Action::EVALUATION) {
+		if (!($user instanceof User)) return false;
 		$actions = $this->getActions();
 		foreach ($actions as $action) {
-			if ($action->getType() == Action::EVALUATION) {
+			if ($action->getType() == $type) {
 				if ($action->getUID() == $user->getId()) {
 					return true;
 				}
@@ -504,6 +518,10 @@ class Item {
 	public function removeTags() {
 		TagDBClient::removeTagsFor($this->getId());
 	}
+
+    public function removeTag($tag) {
+        TagDBClient::removeTag($this->getId(), $tag->getId());
+    }
 
 	/**
 	 * Wrapper for native function "clone"
@@ -540,14 +558,24 @@ class Item {
 		switch ($item->getType()) {
 		case self::BLOG_POST: $item = BlogPost::valueOf($item); break;
 		case self::FORUM_TOPIC: $item = ForumTopic::valueOf($item); break;
-		case self::INTERVIEW_QUESTION: $item = InterviewQuestion::valueOf($item); break;
+//		case self::INTERVIEW_QUESTION: $item = InterviewQuestion::valueOf($item); break;
 		case self::PHOTO: $item = Photo::valueOf($item); break;
 		case self::VIDEO: $item = Video::valueOf($item); break;
 		case self::EVENT: $item = Event::valueOf($item); break;
+		case self::CROSS_POST: $item = CrossPost::valueOf($item); break;
 		}
 
 		return $item;
 	}
+
+    public static function getByDataIterator($iterator) {
+        $items = array();
+        while ($iterator->valid()) {
+            $items[] = Item::getByData($iterator->current());
+            $iterator->next();
+        }
+        return $items;
+    }
 
 	/**
 	 * Constructs new item by its ID loading data from DB.
@@ -562,10 +590,11 @@ class Item {
 		switch ($item->getType()) {
 		case self::BLOG_POST: $item = BlogPost::valueOf($item); break;
 		case self::FORUM_TOPIC: $item = ForumTopic::valueOf($item); break;
-		case self::INTERVIEW_QUESTION: $item = InterviewQuestion::valueOf($item); break;
+//		case self::INTERVIEW_QUESTION: $item = InterviewQuestion::valueOf($item); break;
 		case self::PHOTO: $item = Photo::valueOf($item); break;
 		case self::VIDEO: $item = Video::valueOf($item); break;
 		case self::EVENT: $item = Event::valueOf($item); break;
+		case self::CROSS_POST: $item = CrossPost::valueOf($item); break;
 		}
 
 		return self::$items[$id] = $item;
@@ -647,8 +676,8 @@ class Item {
 	 * @param int $limit
 	 * @return array
 	 */
-	protected static function getByRating($type, $limit) {
-		$iterator = ItemDBClient::getAllByRating($type, $limit);
+	public static function getByRating($type, $limit, $groupId = 0) {
+		$iterator = ItemDBClient::getAllByRating($type, $limit, $groupId);
 		return self::makeArray($iterator);
 	}
 
@@ -676,7 +705,7 @@ class Item {
 		return self::makeArray($iterator);
 	}
 
-	public static function getAllByTypeAndTag($type, $tag, $from, $limit, $descendive = false, $orderByCreation = false) {
+	public static function getAllByTypeAndTag($type, $tag, $from = 0, $limit = 0, $descendive = false, $orderByCreation = false) {
 		$tagId = $tag;
 		if ($tag instanceof Tag) {
 			$tagId = $tag->getId();
@@ -725,6 +754,15 @@ class Item {
 
 	public static function iterator() {
 
+	}
+
+	public static function cache(array $ids) {
+		$iterator = ItemDBClient::getByIds($ids);
+		while ($iterator->valid()) {
+			$data = $iterator->current();
+			self::$items[$data['id']] = Item::getByData($data);
+			$iterator->next();
+		}
 	}
 
 }

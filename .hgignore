@@ -1,5 +1,7 @@
 main/config/my-properties.php
 main/logs
 main/temp
+main/content/*
 pipev4.iml
 .idea/
+.DS_Store

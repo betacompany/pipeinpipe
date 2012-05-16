@@ -239,7 +239,7 @@ function league_show_news(League $league) {
 }
 
 function league_show_photos(League $league) {
-	$photos = array_reverse(Connection::getTaggedTypifiedContentItemsFor($league, Item::PHOTO));
+	$photos = array_reverse(Connection::getTypifiedContentItemsFor($league, Item::PHOTO));
 ?>
 				<div id="league_photos" class="slide_block">
 					<div class="title opened">
@@ -262,7 +262,7 @@ function league_show_photos(League $league) {
 	foreach ($photos as $photo) {
 ?>
 
-							<a href="/media/photo/album<?=$album->getId()?>/<?=$photo->getId()?>"><img src="<?=$photo->getPreviewUrl()?>" alt="<?=$photo->getTitle()?>" /></a>
+							<a href="/media/photo/album<?=$photo->getGroupId()?>/<?=$photo->getId()?>"><img src="<?=$photo->getPreviewUrl()?>" alt="<?=$photo->getTitle()?>" /></a>
 <?
 	}
 ?>

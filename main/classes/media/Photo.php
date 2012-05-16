@@ -1,11 +1,12 @@
 <?php
 
 require_once dirname(__FILE__) . '/../content/Item.php';
+require_once dirname(__FILE__) . '/../utils/IJsonSerializable.php';
 
 /**
  * @author Artyom Grigoriev
  */
-class Photo extends Item {
+class Photo extends Item implements IJsonSerializable {
 
 	private $urls = array();
 	private $availableSizes = array();
@@ -68,7 +69,7 @@ class Photo extends Item {
 	}
 
 	/**
-	 * Return size (in described blelow format) the nearest by square above
+	 * Return size (in described below format) the nearest by square above
 	 * the $size.
 	 * @param string $size
 	 * @return string 
@@ -147,6 +148,18 @@ class Photo extends Item {
 		return ($count == 0) ? 0 : ($value / $count);
 	}
 
+	public function toJson() {
+		return json(array (
+			'id' => $this->getId(),
+			'album_id' => $this->getGroupId(),
+			'title' => $this->getTitle(),
+			'preview_url' => $this->getPreviewUrl(),
+			'main_url' => $this->getUrl(),
+			'all_urls' => $this->urls,
+			'tags' => $this->getTags()
+		));
+	}
+
 	/**
 	 * Creates new photo in DB
 	 * @param int $albumId group ID of the album
@@ -164,8 +177,8 @@ class Photo extends Item {
 	 * @param int $limit
 	 * @return array
 	 */
-	public static function getAllByRating($limit) {
-		return parent::getByRating(Item::PHOTO, $limit);
+	public static function getAllByRating($limit, $groupId = 0) {
+		return parent::getByRating(Item::PHOTO, $limit, $groupId);
 	}
 
 	private function parseAndSetContent() {

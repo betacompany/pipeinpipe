@@ -47,7 +47,14 @@ $PROPERTIES = array (
 	'closure_compiler_enabled' => true,
 
 	// YUI Compiler
-	'yui_compiler_enabled' => true
+	'yui_compiler_enabled' => true,
+
+	'version' => 1,
+
+	'content' => array(
+		'social_photo_album_id' => 89,
+		'social_photo_author_id' => 69
+	)
 );
 
 ?>

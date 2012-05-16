@@ -124,8 +124,13 @@ function document_title() {
 
 		switch (param('part')) {
 		case 'photo':
-			if (!issetParam('group_id')) {
+			if (!issetParam('group_id') && !issetParam('tag_id')) {
 				return 'Фотогалерея сайта про пайп';
+			}
+
+			if (issetParam('tag_id')) {
+				$tag = Tag::getById(intparam('tag_id'));
+				return 'Фотографии с тегом &laquo;' . $tag->getValue() . '&raquo;';
 			}
 
 			try {
@@ -142,7 +147,7 @@ function document_title() {
 				break;
 			}
 
-		case 'photo':
+		case 'video':
 			if (!issetParam('group_id')) {
 				return 'Видеогалерея сайта про пайп';
 			}
@@ -150,8 +155,13 @@ function document_title() {
 			try {
 				$album = Group::getById(param('group_id'));
 
-				if (!issetParam('item_id')) {
+				if (!issetParam('item_id') && !issetParam('tag_id')) {
 					return 'Видеоальбом &laquo;' . $album->getTitle() . '&raquo; на сайте про пайп';
+				}
+
+				if (issetParam('tag_id')) {
+					$tag = Tag::getById(intparam('tag_id'));
+					return 'Видеозаписи с тегом &laquo;' . $tag->getValue() . '&raquo;';
 				}
 
 				$item = Item::getById(param('item_id'));
@@ -185,9 +195,6 @@ function document_title() {
 		} catch (Exception $e) {
 			break;
 		}
-
-		return 'Форум про пайп';
-
 	}
 
 	return 'Сайт про pipe-in-pipe, одномерный спорт';
@@ -224,7 +231,7 @@ if ($_SERVER['SCRIPT_NAME'] == '/life.php') {
 		<meta name="copyright" content="International Federation of Pipe-in-pipe" />
 		<meta name="keywords" content="pipe-in-pipe, пайп, пайпмен, спорт, труба-в-трубе" />
 		<meta name="publisher-email" content="info@pipeinpipe.info" />
-		<meta name="generator" content="NetBeans 6.9" />
+		<meta name="generator" content="NetBeans 6.9, IntelliJ IDEA 11" />
 
 		<link rel="search" type="application/opensearchdescription+xml" title="pipeinpipe.info" href="/static/opensearch.xml" />
 		<link rel="apple-touch-icon" type="image/png" href="/images/icons/apple-icon.png" />
@@ -232,12 +239,12 @@ if ($_SERVER['SCRIPT_NAME'] == '/life.php') {
 		<link rel="image_src" href="/images/logo/pipe200.jpg" />
 
 		<? if (YUI_COMPILER_ENABLED): ?>
-		<link rel="stylesheet" href="/css/all.css" type="text/css" />
+		<link rel="stylesheet" href="/css/all.css?<?=VERSION?>" type="text/css" />
 		<? else: ?>
-		<link rel="stylesheet" href="/css/main.css" type="text/css" />
-		<link rel="stylesheet" href="/css/menu.css" type="text/css" />
-		<link rel="stylesheet" href="/css/icons.css" type="text/css" />
-		<link rel="stylesheet" href="/css/ui-controls.css" type="text/css" />
+		<link rel="stylesheet" href="/css/main.css?<?=VERSION?>" type="text/css" />
+		<link rel="stylesheet" href="/css/menu.css?<?=VERSION?>" type="text/css" />
+		<link rel="stylesheet" href="/css/icons.css?<?=VERSION?>" type="text/css" />
+		<link rel="stylesheet" href="/css/ui-controls.css?<?=VERSION?>" type="text/css" />
 		<? endif; ?>
 
 <?
@@ -248,21 +255,20 @@ $script_name = substr($script_name, 1);
 if (file_exists(dirname(__FILE__).'/../css/'.$script_name.'.css')) {
 ?>
 
-		<link rel="stylesheet" href="/css/<?=$script_name?>.css" type="text/css" />
+		<link rel="stylesheet" href="/css/<?=$script_name?>.css?<?=VERSION?>" type="text/css" />
 <?
 }
 
 if (isset ($_REQUEST['part']) && file_exists(dirname(__FILE__).'/../css/'.$script_name.'_'.$_REQUEST['part'].'.css')) {
 ?>
 
-		<link rel="stylesheet" href="/css/<?=$script_name.'_'.$_REQUEST['part']?>.css" type="text/css" />
+		<link rel="stylesheet" href="/css/<?=$script_name.'_'.$_REQUEST['part']?>.css?<?=VERSION?>" type="text/css" />
 <?
 }
 
 if (isset ($_REQUEST['part']) && $_SERVER['SCRIPT_NAME'] == '/sport.php' && isset($_REQUEST['part']) && $_REQUEST['part'] == 'league') {
 ?>
-
-		<link rel="stylesheet" href="/css/life.css" type="text/css" />
+		<link rel="stylesheet" href="/css/life.css?<?=VERSION?>" type="text/css" />
 <?
 }
 ?>
@@ -284,6 +290,26 @@ if (isset ($_REQUEST['part']) && $_SERVER['SCRIPT_NAME'] == '/sport.php' && isse
 		</script>
 	</head>
 	<body>
+<?
+if ($auth->isAuth() && $user->needAccessToken()) {
+?>
+
+		<script type="text/javascript">
+			$$(function () {
+				window.open(
+					'http://oauth.vk.com/authorize?client_id=<?=Vkontakte::VK_APP_ID?>' +
+					'&scope=wall,friends,offline,notes,photos' +
+					'&redirect_uri=http%3A%2F%2F<?=MAIN_SITE_URL?>%2Fprocs%2Fproc_vk_access.php' +
+					'&response_type=code',
+					'VK Authorization',
+					'width=800,height=500,location=yes,menubar=no,left=100,top=100'
+				);
+			});
+		</script>
+<?
+}
+?>
+
 		<!--[if lte IE 7]>
 		<iframe id="old_browser" src="/static/old_browser.html" />
 		<![endif]-->

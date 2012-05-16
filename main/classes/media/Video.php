@@ -7,6 +7,14 @@ require_once dirname(__FILE__) . '/../content/Item.php';
  */
 class Video extends Item {
 
+    private static $VIDEO_CODE_PREFIXES = array(
+        "<iframe ",
+        "<object "
+    );
+
+    const LINK_REGEX_VIDEO_ID_MASK_NAME = "video_id";
+    const LINK_REGEX_YOUTUBE = "/(http\:\/\/|)(www.|)(youtube\.com)\/(v\/|watch\?v\=)(?<video_id>(\w|\-){7,}).*/";
+
 	protected function  __construct($id, $item = null) {
 		parent::__construct($id, $item);
 		if ($this->type != Item::VIDEO) throw new Exception('Item is not video!');
@@ -20,9 +28,18 @@ class Video extends Item {
 	 * Returns HTML-code for pasting into page
 	 * @return string
 	 */
-	public function getHTML() {
+	public function getSource() {
 		return $this->getContentSource();
 	}
+
+    public function isVideoCode() {
+        $source = $this->getSource();
+        foreach (self::$VIDEO_CODE_PREFIXES as $prefix) {
+            if (string_starts_with($source, $prefix)) {
+                return true;
+            }
+        }
+    }
 
 	/**
 	 * Returns title of this video
@@ -31,6 +48,11 @@ class Video extends Item {
 	public function getTitle() {
 		return $this->getContentParsed();
 	}
+
+    public function setTitle($title) {
+        $this->contentParsed = Parser::parseSource($title);
+        $this->update();
+    }
 
 	/**
 	 * Returns URL of preview image
@@ -62,8 +84,8 @@ class Video extends Item {
 		return ($count == 0) ? 0 : ($value / $count);
 	}
 
-	public static function create($albumId, $uid, $title, $html) {
-		return Item::create(Item::VIDEO, $albumId, $uid, time(), $html, $title);
+	public static function create($albumId, $uid, $title, $source) {
+		return Item::create(Item::VIDEO, $albumId, $uid, time(), $source, $title);
 	}
 
 	/**
@@ -71,9 +93,13 @@ class Video extends Item {
 	 * @param int $limit
 	 * @return array
 	 */
-	public static function getAllByRating($limit) {
-		return parent::getByRating(Item::VIDEO, $limit);
+	public static function getAllByRating($limit, $groupId = 0) {
+		return parent::getByRating(Item::VIDEO, $limit, $groupId);
 	}
 
+    public static function parseLink($videoLink) {
+        preg_match(self::LINK_REGEX_YOUTUBE, $videoLink, $matches);
+        return $matches[self::LINK_REGEX_VIDEO_ID_MASK_NAME];
+    }
 }
 ?>

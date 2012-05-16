@@ -13,14 +13,15 @@ require_once 'includes/log.php';
 try {
 	include 'includes/authorize.php';
 	include 'views/header.php';
+
+	if (!issetParam('part')) {
+		include 'views/life_main2.php';
+	} else {
 ?>
 
 <div id="life_container" class="body_container">
 
 <?
-	if (!issetParam('part')) {
-		include 'views/life_main.php';
-	} else {
 		switch (param('part')) {
 		case 'comments':
 			include 'views/life_comments.php';

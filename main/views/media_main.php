@@ -17,6 +17,9 @@ try {
 
 ?>
 
+
+<div id="media_container" class="body_container">
+
 <div class="media_album_preview">
 	<h1>Лучшие <a href="/media/photo">фотографии</a></h1>
 	<div class="preview">
@@ -44,6 +47,8 @@ try {
 <?
 	media_slideshow_block();
 ?>
+
+</div>
 
 <script type="text/javascript">
 	$$(function () {
