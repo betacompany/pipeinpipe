@@ -1,0 +1,5 @@
+MAILTO=dev@pipeinpipe.info
+0 12 * * * root curl http://pipeinpipe.info/cron/cron_factor_dates.php?factor_file=/home/ortemij/aggregator/aggregator/src/main/resources/date_factor.data&password=TYtyBhBHYUbjnjjhJYYEISAWEPpppllcF
+
+MAILTO=dev@pipeinpipe.info
+30 12 * * * root curl http://pipeinpipe.info/cron/cron_factor_dates.php?factor_file=/home/ortemij/aggregator/aggregator/src/main/resources/pipemen_names_factor.data&password=EoPpLpnxcvjnfdNJJKNugngyfiughvTT
