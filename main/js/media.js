@@ -324,7 +324,7 @@ var media = {
 						},
 						success: function(json) {
 							if (!json || !json.status || json.status != 'ok') {
-								main.showErrorText('Не удалось :(');
+								main.showErrorText(json.message ? json.message : 'Не удалось :(');
 								console.debug(json);
 							} else {
 								title.html(newTitle);
@@ -383,7 +383,8 @@ var media = {
 
 				toggleEditLink(startEditing, function() {
 					slideToggle(titleInputWrapper, title, function() {
-						slideToggle(tagCreator, tagsContainer);
+						tagCreator.slideUp(speed);
+						tagsContainer.show();
 					});
 				});
 			}
