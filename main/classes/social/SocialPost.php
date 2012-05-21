@@ -78,7 +78,7 @@ class SocialPost {
 	public function getUrl() {
 		switch ($this->socialWebType) {
 		case ISocialWeb::TWITTER:
-			return "http://twitter.com/{$this->socialWebAuthorId}";
+			return "http://twitter.com/{$this->socialWebAuthorId}/status/{$this->outerId}";
 		case ISocialWeb::VKONTAKTE:
 			return "http://vk.com/wall{$this->socialWebOwnerId}_{$this->outerId}";
 		}
