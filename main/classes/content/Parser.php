@@ -79,7 +79,7 @@ class Parser {
 		$text = self::parseStrict($source);
 		switch ($socialWebType) {
 		case ISocialWeb::VKONTAKTE:
-			return mb_ereg_replace('\[((id|club|event)[0-9]+)\|(.+)\]', '<a href="http://vk.com/\\1">\\3</a>', $text);
+			return mb_ereg_replace('\[((id|club|event)[0-9]+)\|([^\]]+)\]', '<a href="http://vk.com/\\1">\\3</a>', $text);
 		case ISocialWeb::TWITTER:
 			$text = mb_ereg_replace("@([a-zA-Z0-9_]+)", "<a href=\"http://twitter.com/\\1\">@\\1</a>", $text);
 			return mb_ereg_replace("#([а-яА-Яa-zA-Z0-9_]+)", "<a href=\"http://twitter.com/#!/search/%23\\1\">#\\1</a>", $text);
