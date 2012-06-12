@@ -16,6 +16,8 @@ require_once dirname(__FILE__) . '/../classes/db/UserDBClient.php';
 
 require_once dirname(__FILE__) . '/../classes/db/UserDataDBClient.php';
 
+require_once dirname(__FILE__) . '/../../auth/common-auth.php';
+
 try {
 
 	assertIsset($_REQUEST['method']);
@@ -246,7 +248,6 @@ try {
 			assertIsset($_REQUEST['password']);
 
 			$uid = intval($_REQUEST['uid']);
-			$ucode = md5($_REQUEST['password']);
 
 			switch ($_REQUEST['social']) {
 			case ISocialWeb::VKONTAKTE:
@@ -256,15 +257,15 @@ try {
 				}
 
 				if ($auth->isVkontakteAuth()) {
-					if ($uid = $auth->loginUidPass($uid, $ucode)) {
-						$user = $auth->getCurrentUser();
-						$user->put('vkid', $auth->getVkid());
-						Header('Location: /id'.$user->getId());
-						exit(0);
-					} else {
+					CommonAuth::signIn($uid, $_REQUEST['password']);
+					if (!$auth->isAuth()) {
 						Header('Location: ' . $_SERVER['HTTP_REFERER'] . '#error');
 						exit(0);
 					}
+					$user = $auth->getCurrentUser();
+					$user->put('vkid', $auth->getVkid());
+					Header('Location: /id'.$user->getId());
+					exit(0);
 				}
 				break;
 			}
