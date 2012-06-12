@@ -22,7 +22,7 @@ if (!isset($COMMON_AUTH_PROPERTIES['tokens_table'])) {
 }
 
 if (!isset($COMMON_AUTH_PROPERTIES['cookie_name'])) {
-	$COMMON_AUTH_PROPERTIES['cookie_name'] = 'auth_token';
+	$COMMON_AUTH_PROPERTIES['cookie_name'] = 'at';
 }
 
 foreach ($COMMON_AUTH_PROPERTIES as $key => $value) {
@@ -46,8 +46,9 @@ mysqli_real_connect(
 function select_uid($login, $hash) {
 	global $mysqli_link;
 	$lg = mysqli_real_escape_string($mysqli_link, $login);
-	$ps = mysql_real_escape_string($mysqli_link, $hash);
-	$result = mysqli_query($mysqli_link, 'SELECT * FROM ' . COMMON_AUTH_USERS_TABLE . ' WHERE login=' . $lg . ' AND password=' . $ps);
+	$ps = mysqli_real_escape_string($mysqli_link, $hash);
+	$query = 'SELECT * FROM ' . COMMON_AUTH_USERS_TABLE . ' WHERE `login`=\'' . $lg . '\' AND `hash`=\'' . $ps . '\'';
+	$result = mysqli_query($mysqli_link, $query);
 	if (!mysqli_num_rows($result)) {
 		return 0;
 	}
@@ -62,20 +63,58 @@ function select_uid($login, $hash) {
 function get_uid($token) {
 	global $mysqli_link;
 	$tk = mysqli_real_escape_string($mysqli_link, $token);
-	$result = mysqli_query($mysqli_link, 'SELECT uid FROM ' . COMMON_AUTH_TOKENS_TABLE . ' WHERE token=' . $tk);
+	$result = mysqli_query($mysqli_link, 'SELECT uid FROM ' . COMMON_AUTH_TOKENS_TABLE . ' WHERE token=\'' . $tk . '\'');
 	if (!mysqli_num_rows($result)) {
 		return 0;
 	}
 	$row = mysqli_fetch_assoc($result);
-	return $result['uid'];
+	return $row['uid'];
+}
+
+function get_user($uid) {
+	global $mysqli_link;
+	$query = 'SELECT * FROM ' . COMMON_AUTH_USERS_TABLE . ' WHERE id=' . intval($uid);
+	$result = mysqli_query($mysqli_link, $query);
+	if (!mysqli_num_rows($result)) {
+		return null;
+	}
+	return mysqli_fetch_assoc($result);
 }
 
 function get_token() {
 	return $_COOKIE[COMMON_AUTH_COOKIE_NAME];
 }
 
+function set_token($uid, $token, $is_session = false) {
+	$_COOKIE[COMMON_AUTH_COOKIE_NAME] = $token;
+	setcookie(COMMON_AUTH_COOKIE_NAME, $token, $is_session ? null : time() + COMMON_AUTH_EXPIRING_PERIOD, "/", COMMON_AUTH_DOMAIN, false, true);
+	if ($is_session) {
+		setcookie(COMMON_AUTH_COOKIE_NAME . "_s", "y", null, "/", COMMON_AUTH_DOMAIN, false, true);
+	} else {
+		setcookie(COMMON_AUTH_COOKIE_NAME . "_s", "n", 69, "/", COMMON_AUTH_DOMAIN, false, true);
+	}
+
+	global $mysqli_link;
+	$ip = mysqli_real_escape_string($mysqli_link, $_SERVER['REMOTE_ADDR']);
+	mysqli_query($mysqli_link, 'INSERT IGNORE INTO ' . COMMON_AUTH_TOKENS_TABLE .
+		" SET uid='$uid', token='$token', ip_address='$ip'");
+}
+
+function delete_token($token) {
+	setcookie(COMMON_AUTH_COOKIE_NAME, $token, 69, "/", COMMON_AUTH_DOMAIN, false, true);
+	setcookie(COMMON_AUTH_COOKIE_NAME . "_s", $token, 69, "/", COMMON_AUTH_DOMAIN, false, true);
+
+	global $mysqli_link;
+	$tk = mysqli_real_escape_string($mysqli_link, $token);
+	mysqli_query($mysqli_link, 'DELETE FROM ' . COMMON_AUTH_TOKENS_TABLE . ' WHERE token=\'' . $tk . '\'');
+}
+
 function get_secret() {
 	return COMMON_AUTH_SECRET;
+}
+
+function is_session_only() {
+	return isset($_COOKIE[COMMON_AUTH_COOKIE_NAME . "_s"]);
 }
 
 function filter_chars($str) {
