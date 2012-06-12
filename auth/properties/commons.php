@@ -71,10 +71,9 @@ function get_uid($token) {
 	return $row['uid'];
 }
 
-function get_user($uid) {
+function get_login_password($uid) {
 	global $mysqli_link;
-	$query = 'SELECT * FROM ' . COMMON_AUTH_USERS_TABLE . ' WHERE id=' . intval($uid);
-	$result = mysqli_query($mysqli_link, $query);
+	$result = mysqli_query($mysqli_link, 'SELECT `login`, `hash` FROM ' . COMMON_AUTH_USERS_TABLE . ' WHERE `id`=' . intval($uid));
 	if (!mysqli_num_rows($result)) {
 		return null;
 	}
