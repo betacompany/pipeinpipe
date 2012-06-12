@@ -1,4 +1,5 @@
 main/config/my-properties.php
+auth/properties/local-properties.php
 main/logs
 main/temp
 main/content/*

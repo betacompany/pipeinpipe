@@ -1,0 +1,5 @@
+<?php
+
+$COMMON_AUTH_PROPERTIES = array();
+
+$COMMON_AUTH_PROPERTIES['secret'] = 'f803d4d192a731d454b1a0d8cf66437d';
