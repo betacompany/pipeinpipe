@@ -25,11 +25,6 @@ try {
 
 		switch ($_REQUEST['method']) {
 
-		case 'sign_out':
-			$auth->logOut();
-			Header('Location: ' . $_SERVER['HTTP_REFERER']);
-			exit(0);
-
 		case 'profile_update':
 			assertIsset('key');
 			assertIsset('value');
@@ -220,23 +215,6 @@ try {
 	} else {
 
 		switch ($_REQUEST['method']) {
-		case 'sign_in':
-			$login = $_REQUEST['sign_in_login'];
-			$md5pass = md5($_REQUEST['sign_in_password']);
-			$auth->login($login, $md5pass, true);
-			if ($auth->isAuth()) {
-				$user = $auth->getCurrentUser();
-				if (!issetParam('mobile')) {
-					Header('Location: /id' . $user->getId());
-				} else {
-					redirect_back('ok');
-				}
-				exit(0);
-			} else {
-				Header('Location: ' . $_SERVER['HTTP_REFERER']);
-				exit(0);
-			}
-			break;
 			
 		case 'login_vk':
 			$status = $auth->loginVkontakte();

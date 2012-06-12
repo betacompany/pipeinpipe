@@ -9,6 +9,8 @@ require_once dirname(__FILE__) . '/../main/views/life_view.php';
 
 require_once dirname(__FILE__) . '/templates/mobile_view.php';
 
+require_once dirname(__FILE__) . '/../auth/common-auth.php';
+
 $PATH = "";
 
 define('ITEMS_PER_PAGE', 10);
@@ -117,7 +119,7 @@ define('CURRENT_TITLE', $title);
 if (!issetParam('part')) {
 	if (!$auth->isAuth()) {
 ?>
-			<form action="/procs/proc_main.php" method="POST">
+			<form action="http://<?=MAIN_SITE_URL?>/authorize.php" method="POST">
 				<input type="hidden" name="method" value="sign_in"/>
 <?
 		begin_block('Авторизация');
@@ -125,11 +127,11 @@ if (!issetParam('part')) {
 			
 			<tr>
 				<td>Логин:</td>
-				<td class="w"><input style="width: 90%;" type="text" name="sign_in_login"/></td>
+				<td class="w"><input style="width: 90%;" type="text" name="login"/></td>
 			</tr>
 			<tr>
 				<td>Пароль:</td>
-				<td class="w"><input style="width: 90%;" type="password" name="sign_in_password"/></td>
+				<td class="w"><input style="width: 90%;" type="password" name="password"/></td>
 			</tr>
 			<tr>
 				<td></td>

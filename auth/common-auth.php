@@ -62,6 +62,15 @@ class CommonAuth {
 		return true;
 	}
 
+	public static function forceSignIn($uid, $short_session = false) {
+		global $_COMMON_USER_ID;
+		$_COMMON_USER_ID = $uid;
+
+		$d = get_login_password($uid);
+		$token = self::token($d['login'], $d['hash']);
+		set_token($uid, $token, $short_session);
+	}
+
 	/**
 	 * @static
 	 *
@@ -85,5 +94,18 @@ class CommonAuth {
 }
 
 CommonAuth::authorize();
+
+if ($_SERVER['SCRIPT_NAME'] === COMMON_AUTH_SIGN_IN_SCRIPT_NAME) {
+	switch ($_REQUEST['method']) {
+		case 'sign_in':
+			CommonAuth::signIn($_REQUEST['login'], $_REQUEST['password'], !isset($_REQUEST['remember']));
+			Header('Location: ' . $_SERVER['HTTP_REFERER']);
+			exit(0);
+		case 'sign_out':
+			CommonAuth::signOut();
+			Header('Location: ' . $_SERVER['HTTP_REFERER']);
+			exit(0);
+	}
+}
 
 
