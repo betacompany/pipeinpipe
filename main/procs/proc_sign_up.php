@@ -148,7 +148,8 @@ try {
 			CommonAuth::signIn($d['login'], md5($d['password1']));
 			if (issetParam('ret')) {
 				$location = urldecode(param('ret'));
-				if (substr($location, 0, 6) === '/sport') {
+				$totalizator = 'http://total.' . MAIN_SITE_URL;
+				if (substr($location, 0, 6) === '/sport' || $location === $totalizator) {
 					Header('Location: ' . $location);
 				}
 			} else {
