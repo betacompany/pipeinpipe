@@ -14,18 +14,18 @@ class UserDataDBClient {
 
     public static function update($uid, $key, $value) {
 		if ($key == User::KEY_LOGIN) {
-			mysql_qw('UPDATE `common_user` SET `login`=? WHERE `uid`=?', $value, $uid);
+			mysql_qw('UPDATE `common_user` SET `login`=? WHERE `id`=?', $value, $uid);
 		} elseif ($key == User::KEY_PASSHASH) {
-			mysql_qw('UPDATE `common_user` SET `hash`=? WHERE `uid`=?', $value, $uid);
+			mysql_qw('UPDATE `common_user` SET `hash`=? WHERE `id`=?', $value, $uid);
 		}
         return mysql_qw('UPDATE `p_user_data` SET `value`=? WHERE `uid`=? and `key`=?', $value, $uid, $key);
     }
 
     public static function insert($uid, $key, $value) {
 		if ($key == User::KEY_LOGIN) {
-			mysql_qw('UPDATE `common_user` SET `login`=? WHERE `uid`=?', $value, $uid);
+			mysql_qw('UPDATE `common_user` SET `login`=? WHERE `id`=?', $value, $uid);
 		} elseif ($key == User::KEY_PASSHASH) {
-			mysql_qw('UPDATE `common_user` SET `hash`=? WHERE `uid`=?', $value, $uid);
+			mysql_qw('UPDATE `common_user` SET `hash`=? WHERE `id`=?', $value, $uid);
 		}
         return mysql_qw('INSERT INTO `p_user_data` SET `uid`=?, `key`=?, `value`=?', $uid, $key, $value);
     }

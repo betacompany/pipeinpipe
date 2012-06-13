@@ -145,7 +145,7 @@ try {
 				$u->put('vkid', $vkid);
 			}
 
-			CommonAuth::signIn($d['login'], md5($d['password1']));
+			CommonAuth::signIn($d['login'], $d['password1']);
 			if (issetParam('ret')) {
 				$location = urldecode(param('ret'));
 				$totalizator = 'http://total.' . MAIN_SITE_URL;
