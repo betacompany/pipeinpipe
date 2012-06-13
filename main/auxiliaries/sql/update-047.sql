@@ -17,7 +17,7 @@ CREATE TABLE `common_user` (
   `disabled` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `disabled` (`disabled`)
-) ENGINE=MyISAM AUTO_INCREMENT=281 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 insert into `common_user` (`id`, `name`, `surname`, `login`, `hash`, `disabled`)
 select
