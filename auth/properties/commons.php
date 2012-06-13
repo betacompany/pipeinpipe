@@ -38,6 +38,8 @@ mysqli_real_connect(
 	COMMON_AUTH_DATABASE_NAME
 ) or die("Could not connect to database");
 
+mysqli_set_charset($mysqli_link, "utf8");
+
 /**
  * @param $login
  * @param $hash
