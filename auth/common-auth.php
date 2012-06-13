@@ -13,6 +13,16 @@ $_COMMON_USER_ID = 0;
 class CommonAuth {
 
 	/**
+	 * Returns associative array with data from users DB table
+	 * @static
+	 * @param $uid
+	 * @return array
+	 */
+	public static function getData($uid) {
+		return get_data($uid);
+	}
+
+	/**
 	 * Defines global variable <code>$_COMMON_USER_ID</code>
 	 * @static
 	 */
@@ -40,10 +50,11 @@ class CommonAuth {
 	}
 
 	/**
+	 * Authorizes user by login-password pair
 	 * @static
 	 * @param string $login
 	 * @param string $password
-	 * @param bool $short_session
+	 * @param bool $short_session true if persistent authorization is not needed
 	 * @return bool
 	 */
 	public static function signIn($login, $password, $short_session = false) {
@@ -62,6 +73,12 @@ class CommonAuth {
 		return true;
 	}
 
+	/**
+	 * Authorizes user by uid, does not verifies any data!
+	 * @static
+	 * @param $uid
+	 * @param bool $short_session
+	 */
 	public static function forceSignIn($uid, $short_session = false) {
 		global $_COMMON_USER_ID;
 		$_COMMON_USER_ID = $uid;
@@ -72,8 +89,8 @@ class CommonAuth {
 	}
 
 	/**
+	 * Deauthorizes current user
 	 * @static
-	 *
 	 */
 	public static function signOut() {
 		delete_token(get_token());

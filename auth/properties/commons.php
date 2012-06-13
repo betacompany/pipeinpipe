@@ -80,6 +80,15 @@ function get_login_password($uid) {
 	return mysqli_fetch_assoc($result);
 }
 
+function get_data($uid) {
+	global $mysqli_link;
+	$result = mysqli_query($mysqli_link, 'SELECT * FROM ' . COMMON_AUTH_USERS_TABLE . ' WHERE `id`=' . intval($uid));
+	if (!mysqli_num_rows($result)) {
+		return null;
+	}
+	return mysqli_fetch_assoc($result);
+}
+
 function get_token() {
 	return $_COOKIE[COMMON_AUTH_COOKIE_NAME];
 }
