@@ -15,12 +15,7 @@ if ($auth->isAuth()) {
 	exit(0);
 }
 
-if ($auth->loginCookie()) {
-	Header ('Location: /main.php');
-	exit(0);
-}
-
-?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="ru">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -35,10 +30,10 @@ if ($auth->loginCookie()) {
     <body>
         <div id="loginForm">
 			<img src="images/logo320.png" alt="CupMS 3.0" />
-			<form action="proc_main.php" method="post">
+			<form action="<?=MAIN_URL?>/authorize.php" method="post">
                 <input type="hidden" name="method" value="sign_in" />
-				<input type="text" name="login_login" />
-				<input type="password" name="login_password" />
+				<input type="text" name="login" />
+				<input type="password" name="password" />
 				<input type="submit" name="login_submit" value="Войти" />
 			</form>
 		</div>

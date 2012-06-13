@@ -13,7 +13,7 @@ require_once '../main/classes/user/Auth.php';
 
 $auth = new Auth();
 if (!$auth->isAuth()) {
-	Header('Location: index.php');
+	Header('Location: /index.php');
 	exit(0);
 }
 
@@ -69,8 +69,8 @@ $user = $auth->getCurrentUser();
                         <div class="text"></div>
                     </div>
 			<div id="header">                            
-                            <a href="http://pipeinpipe.info/id<?=$user->uid()?>"><?=$user->getFullName()?></a>
-                            (<a href="proc_main.php?method=sign_out">выйти</a>)
+                            <a href="<?=MAIN_URL?>/id<?=$user->uid()?>"><?=$user->getFullName()?></a>
+                            (<a href="<?=MAIN_URL?>/authorize.php?method=sign_out">выйти</a>)
 			</div>                    
 			<div id="body">
 				<div id="left_column">

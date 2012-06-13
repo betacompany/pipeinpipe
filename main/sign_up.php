@@ -9,7 +9,6 @@ try {
 	include 'includes/authorize.php';
 	
 	$auth = new Auth();
-	$auth->loginCookie();
 	if ($auth->isAuth()) {
 		$uid = $auth->getCurrentUser()->getId();
 		Header('Location: /id' . $uid);

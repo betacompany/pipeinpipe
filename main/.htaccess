@@ -83,8 +83,8 @@ RewriteRule ^about$ /page.php?part=about [L]
 RewriteRule ^about/$ /page.php?part=about [L]
 
 # signing out
-RewriteRule ^sign_out$ /procs/proc_main.php?method=sign_out [L]
-RewriteRule ^sign_out/$ /procs/proc_main.php?method=sign_out [L]
+RewriteRule ^sign_out$ /authorize.php?method=sign_out [L]
+RewriteRule ^sign_out/$ /authorize.php?method=sign_out [L]
 
 # signing up
 RewriteRule ^sign_up$ /sign_up.php [QSA,L]

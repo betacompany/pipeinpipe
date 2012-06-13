@@ -7,12 +7,13 @@ function show_block_sign_in() {
 
 						<div id="sign_in_block">
 							<div style="float: left;">
-								<form id="sign_in_form" action="/procs/proc_main.php" method="post">
+								<form id="sign_in_form" action="/authorize.php" method="post">
 									<input type="hidden" name="method" value="sign_in" />
+									<input type="hidden" name="remember" value="true" />
 									<label for="sign_in_login">Логин:</label>
-									<input id="sign_in_login" type="text" name="sign_in_login" />
+									<input id="sign_in_login" type="text" name="login" />
 									<label for="sign_in_login">Пароль:</label>
-									<input id="sign_in_password" type="password" name="sign_in_password" />
+									<input id="sign_in_password" type="password" name="password" />
 									<label id="sign_in_button_txt" for="sign_in_button">Войти</label>									
 								</form>
 							</div>

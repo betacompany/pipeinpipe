@@ -16,6 +16,8 @@ require_once dirname(__FILE__) . '/../classes/db/UserDBClient.php';
 
 require_once dirname(__FILE__) . '/../classes/db/UserDataDBClient.php';
 
+require_once dirname(__FILE__) . '/../../auth/common-auth.php';
+
 try {
 
 	assertIsset($_REQUEST['method']);
@@ -24,11 +26,6 @@ try {
 	if ($auth->isAuth()) {
 
 		switch ($_REQUEST['method']) {
-
-		case 'sign_out':
-			$auth->logOut();
-			Header('Location: ' . $_SERVER['HTTP_REFERER']);
-			exit(0);
 
 		case 'profile_update':
 			assertIsset('key');
@@ -220,23 +217,6 @@ try {
 	} else {
 
 		switch ($_REQUEST['method']) {
-		case 'sign_in':
-			$login = $_REQUEST['sign_in_login'];
-			$md5pass = md5($_REQUEST['sign_in_password']);
-			$auth->login($login, $md5pass, true);
-			if ($auth->isAuth()) {
-				$user = $auth->getCurrentUser();
-				if (!issetParam('mobile')) {
-					Header('Location: /id' . $user->getId());
-				} else {
-					redirect_back('ok');
-				}
-				exit(0);
-			} else {
-				Header('Location: ' . $_SERVER['HTTP_REFERER']);
-				exit(0);
-			}
-			break;
 			
 		case 'login_vk':
 			$status = $auth->loginVkontakte();
@@ -268,7 +248,6 @@ try {
 			assertIsset($_REQUEST['password']);
 
 			$uid = intval($_REQUEST['uid']);
-			$ucode = md5($_REQUEST['password']);
 
 			switch ($_REQUEST['social']) {
 			case ISocialWeb::VKONTAKTE:
@@ -278,15 +257,15 @@ try {
 				}
 
 				if ($auth->isVkontakteAuth()) {
-					if ($uid = $auth->loginUidPass($uid, $ucode)) {
-						$user = $auth->getCurrentUser();
-						$user->put('vkid', $auth->getVkid());
-						Header('Location: /id'.$user->getId());
-						exit(0);
-					} else {
+					CommonAuth::signIn($uid, $_REQUEST['password']);
+					if (!$auth->isAuth()) {
 						Header('Location: ' . $_SERVER['HTTP_REFERER'] . '#error');
 						exit(0);
 					}
+					$user = $auth->getCurrentUser();
+					$user->put('vkid', $auth->getVkid());
+					Header('Location: /id'.$user->getId());
+					exit(0);
 				}
 				break;
 			}

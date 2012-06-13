@@ -116,14 +116,18 @@ class Feed {
 			$itemsArray = array();
 			foreach ($grouped as $id) {
 				$byId = Item::getById($id);
+
+                // for cross photos (they will be attached to cross posts)
 				if ($byId instanceof Photo && $byId->getContentValue() > 0) {
 					continue;
 				}
-				$itemsArray[] = $byId;
+
+                $itemsArray[] = $byId;
 			}
 
 			if (count($itemsArray) > 5 && date('Y-m-d', $itemsArray[0]->getTimestamp()) == '2011-04-07' ||
-				count($itemsArray) == 1 && $itemsArray[0]->getId() == 1672) {
+				count($itemsArray) == 1 && $itemsArray[0]->getId() == 1672)
+            {
 				// nothing: hack for first site convertations made on the 7th of April
 			} elseif (count($itemsArray) > 1) {
 				if ($itemsArray[0] instanceof CrossPost) {

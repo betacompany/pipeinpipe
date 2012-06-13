@@ -19,25 +19,6 @@ try {
 
 	switch ($_REQUEST['method']) {
 
-	case 'sign_in':
-		assertIsset($_REQUEST['login_login']);
-		assertIsset($_REQUEST['login_password']);
-
-		$success = $auth->login($_REQUEST['login_login'], md5($_REQUEST['login_password']));
-		if (!$success) {
-			Header('Location: '.$_SERVER['HTTP_REFERER'].'#wrong_password');
-			exit(0);
-		}
-            
-        //TODO return the page which the user tried to access before logging in
-		Header('Location: main.php');
-		exit(0);
-
-	case 'sign_out':
-		$auth->logOut();
-		Header('Location: index.php');
-		exit(0);
-
 	case 'side_menu':
 		getSideMenu($user);
 		exit(0);
