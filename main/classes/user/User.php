@@ -109,6 +109,11 @@ class User {
 		$this->surname = $data['surname'];
     }
 
+	/**
+	 * @static
+	 * @param $id
+	 * @return User
+	 */
 	public static function getById($id) {
 		if ($id <= 0) return null;
 		if (isset (self::$users[$id])) return self::$users[$id];
