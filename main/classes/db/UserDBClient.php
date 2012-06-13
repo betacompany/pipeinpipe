@@ -79,7 +79,7 @@ class UserDBClient {
 	}
 
 	public static function insert($name, $surname) {
-		mysql_qw('INSERT INTO `p_user` SET `name`=?, `surname`=?', $name, $surname);
+		mysql_qw('INSERT INTO `common_user` SET `name`=?, `surname`=?', $name, $surname);
 		return mysql_insert_id();
 	}
 
