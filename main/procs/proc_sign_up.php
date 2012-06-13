@@ -5,6 +5,8 @@ require_once dirname(__FILE__) . '/../includes/assertion.php';
 
 require_once dirname(__FILE__) . '/../classes/user/Auth.php';
 
+require_once dirname(__FILE__) . '/../../auth/common-auth.php';
+
 $d = array();
 
 function sign_up_error_redirect($error) {
@@ -143,7 +145,7 @@ try {
 				$u->put('vkid', $vkid);
 			}
 
-			$auth->login($d['login'], md5($d['password1']), true);
+			CommonAuth::signIn($d['login'], md5($d['password1']));
 			if (issetParam('ret')) {
 				$location = urldecode(param('ret'));
 				if (substr($location, 0, 6) === '/sport') {

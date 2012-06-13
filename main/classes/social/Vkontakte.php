@@ -80,7 +80,8 @@ class Vkontakte implements ISocialWeb {
 				return self::SUCCESS;
 			}
 
-			$_SESSION['uid'] = $uid;
+			global $_COMMON_USER_ID;
+			$_COMMON_USER_ID = $uid;
 			$this->authorized = true;
 			
 			return self::FULL_SUCCESS;
