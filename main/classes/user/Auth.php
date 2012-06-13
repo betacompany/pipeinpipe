@@ -21,14 +21,39 @@ class Auth {
 	const KEY_USE_MOBILE = 'use_mobile';
 	const KEY_USE_MOBILE_SESSION = 'use_mobile_session';
 
+	/**
+	 * @var User
+	 */
 	private $currentUser;
 	private $currentUserLoaded = false;
 
+	/**
+	 * @var Vkontakte
+	 */
 	private $vk;
 
+	/**
+	 * @var Mobile_Detect
+	 */
 	private $mobileDetector;
 
     public function __construct() {
+		// backward compatibility:
+		{
+			//print_r($_COOKIE);
+			if (isset($_COOKIE['uid']) && isset($_COOKIE['ucode'])) {
+				$uid = $_COOKIE['uid'];
+				$hash = $_COOKIE['ucode'];
+				setcookie('uid', '', 69);
+				setcookie('ucode', '', 69);
+				setcookie('utcode', '', 69);
+				$u = User::getById($uid);
+				if ($u->get(User::KEY_PASSHASH) === $hash) {
+					CommonAuth::forceSignIn($uid);
+				}
+			}
+		}
+
         $this->mobileDetector = new Mobile_Detect();
     }
 
