@@ -18,8 +18,7 @@ require_once dirname(__FILE__) . '/../../../auth/common-auth.php';
  */
 class Auth {
 
-	const KEY_USE_MOBILE = 'use_mobile';
-	const KEY_USE_MOBILE_SESSION = 'use_mobile_session';
+	const KEY_USE_MOBILE_SESSION = 'ums';
 
 	/**
 	 * @var User
@@ -118,12 +117,12 @@ class Auth {
 		// TODO implement this method
 	}
 
-	public function sessionPut($key, $value) {
-		$_SESSION[$key] = $value;
+	public function sessionCookiePut($key, $value) {
+		setcookie($key, $value, null, "/", COOKIES_DOMAIN, false, false);
 	}
 
-	public function sessionGet($key) {
-		return $_SESSION[$key];
+	public function sessionCookieGet($key) {
+		return $_COOKIE[$key];
 	}
 
 	private function generatePassword() {
