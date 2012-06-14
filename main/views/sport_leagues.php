@@ -11,7 +11,7 @@ require_once dirname(__FILE__).'/../classes/cupms/League.php';
 require_once dirname(__FILE__).'/sport_league_functions.php';
 require_once dirname(__FILE__).'/../includes/security.php';
 
-$auth = new Auth();
+global $auth;
 $user = $auth->getCurrentUser();
 
 foreach (League::getTopLeagues($user) as $league) {

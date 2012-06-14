@@ -32,7 +32,7 @@ foreach ($COMMON_AUTH_PROPERTIES as $key => $value) {
 $mysqli_link = mysqli_init();
 mysqli_real_connect(
 	$mysqli_link,
-	COMMON_AUTH_DATABASE_HOST,
+	"p:" . COMMON_AUTH_DATABASE_HOST,
 	COMMON_AUTH_DATABASE_USER,
 	COMMON_AUTH_DATABASE_PASSWORD,
 	COMMON_AUTH_DATABASE_NAME

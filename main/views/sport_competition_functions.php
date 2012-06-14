@@ -132,7 +132,7 @@ function sport_show_competition_registration(Competition $competition) {
 		<p><textarea  style="width: 410px;" id="reg_comment" rows="3"></textarea></p>
 	</div>
 <?
-    $auth = new Auth();
+    global $auth;
     $user = $auth->getCurrentUser();
     $isRegistered = sport_competition_is_user_registered($user, $competition);
     sport_show_competition_register_button($competition, $user, $isRegistered);
