@@ -63,7 +63,7 @@ class Tag implements IJsonSerializable {
 
 	public function getItemsTaggedByUser(User $user = null) {
         if (!$user) {
-            $auth = new Auth();
+            global $auth;
             $user = $auth->getCurrentUser();
         }
 		$iterator = TagDBClient::getItemsTaggedByUser($this->id, $user->getId());

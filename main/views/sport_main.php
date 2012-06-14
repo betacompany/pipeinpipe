@@ -27,7 +27,7 @@ $bestLeagueSettings = array(
 );
 
 try {
-	$auth = new Auth();
+	global $auth;
 	$user = $auth->getCurrentUser();
 	$leagues = League::getTopLeagues($user);
 ?>
