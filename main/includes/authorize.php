@@ -8,7 +8,7 @@ require_once dirname(__FILE__) . '/config-local.php';
 $auth = new Auth();
 $user = $auth->getCurrentUser();
 
-$use_mobile = $auth->sessionGet(Auth::KEY_USE_MOBILE_SESSION);
+$use_mobile = $auth->sessionCookieGet(Auth::KEY_USE_MOBILE_SESSION);
 
 if ($_SERVER['HTTP_HOST'] != MOBILE_SITE_URL && $auth->isMobile()) {
 

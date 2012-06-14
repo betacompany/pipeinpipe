@@ -7,11 +7,11 @@ define('EXECUTION_TIME', round(microtime(true) * 1000));
 define('API_DEBUG_MODE', true);
 
 $auth = new Auth();
-$last_execution_time = $auth->sessionGet('LAST_EXECUTION_TIME');
-$last_execution_query = $auth->sessionGet('LAST_EXECUTION_QUERY');
+$last_execution_time = $auth->sessionCookieGet('LAST_EXECUTION_TIME');
+$last_execution_query = $auth->sessionCookieGet('LAST_EXECUTION_QUERY');
 
-$auth->sessionPut('LAST_EXECUTION_TIME', EXECUTION_TIME);
-$auth->sessionPut('LAST_EXECUTION_QUERY', $_SERVER['QUERY_STRING']);
+$auth->sessionCookiePut('LAST_EXECUTION_TIME', EXECUTION_TIME);
+$auth->sessionCookiePut('LAST_EXECUTION_QUERY', $_SERVER['QUERY_STRING']);
 
 if (
 	isset($last_execution_time) &&
