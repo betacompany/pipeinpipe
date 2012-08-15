@@ -324,7 +324,7 @@ class ContentViewDBClient {
 
 		$query = mysql_qw($req, $uid, $uid, $uid);
 
-		if (mysql_num_rows($query) == 0) return 0;
+		// if (mysql_num_rows($query) == 0) return 0;
 		return mysql_result($query, 0, 'count');
 	}
 	
