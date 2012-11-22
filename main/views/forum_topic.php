@@ -56,7 +56,8 @@ try {
 			</div>
 
 <?
-		if ($auth->isAuth() && !$topic->isClosed()) {
+		if ($auth->isAuth()) {
+			if(!$topic->isClosed()) {
 ?>
 
 			<div id="new_message" onkeypress="javascript: keyPressHandler(event);">
@@ -83,7 +84,7 @@ try {
 				};
 			</script>
 <?
-		} elseif ($topic->isClosed() && $auth->isAuth()) {
+			} elseif (!$topic->hasNextTopic()) {
 ?>
 
 			<div style="margin: 10px 5px 5px 5px;">
@@ -92,6 +93,16 @@ try {
 				<a href="/procs/proc_forum.php?method=create_continuation&topic_id=<?=$topic->getId()?>">создайте его продолжение</a>.
 			</div>
 <?
+			} else {
+				$nextTopicId = $topic->getNextTopicId();
+?>
+
+				<div style="margin: 10px 5px 5px 5px;">
+					Эта тема закрыта, поэтому сюда уже нельзя писать новые сообщения.<br/>
+					Однако, у этой темы есть <a href="/forum/part<?=$topic->getPartId()?>/topic<?=$nextTopicId?>">продолжение</a>.
+				</div>
+<?
+			}
 		}
 	}
 
