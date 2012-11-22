@@ -349,9 +349,10 @@ try {
 					global $LOG;
 					@$LOG->exception($e);
 				}
+				Header("Location: /forum/part$partId/topic$newTopicId");
+			} else {
+				Header("Location: " . $_SERVER['HTTP_REFERER']);
 			}
-
-			Header("Location: /forum/part$partId/topic$newTopicId");
 		}
 		
 		break;
