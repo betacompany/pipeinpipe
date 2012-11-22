@@ -517,11 +517,13 @@ class StatsCounter {
 		$result = array();
 
 		while ($iterator->valid()) {
-			$row = $iterator->current();
-			if ($row['victories'] < 69 && $counter >= 10) {
+			if ($counter >= 5) {
 				break;
 			}
-			$counter++;
+			$row = $iterator->current();
+			if ($row['victories'] < 69) {
+				$counter++;
+			}
 			$result[$row['id']] = $row['victories'];
 			$iterator->next();
 		}
