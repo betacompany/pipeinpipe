@@ -20,7 +20,8 @@ $items = Feed::getNear(time());
 	$$(function () {
 		var container = $('#timeline_dates'),
 			offset = container.offset(),
-			heighter = $('#timeline_height')
+			heighter = $('#timeline_height'),
+			counter = 0
 			;
 
 		life.timeline = new Timeline({
@@ -73,9 +74,9 @@ $items = Feed::getNear(time());
 				feed.recalc();
 			}
 
-//			if (++counter % 10 != 0) {
-//				return;
-//			}
+			if (++counter % 10 != 0) {
+				return;
+			}
 			feed.redrawTimeline();
 		});
 	});
