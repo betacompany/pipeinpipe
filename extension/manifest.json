@@ -1,12 +1,16 @@
 {
-  "name": "pipeinpipe.info",
-  "version": "1.2",
-  "description": "Notifications from pipeinpipe.info",
-  "background_page": "background.html",
-  "browser_action": {
-    "default_icon": "icon.png"
-  },
-  "permissions": [
-    "tabs", "http://pipeinpipe.info/"
-  ]
+    "name":"pipeinpipe.info",
+    "version":"1.3",
+    "description":"Notifications from pipeinpipe.info",
+
+    "permissions":[
+        "tabs", "http://pipeinpipe.info/"
+    ],
+
+    "browser_action":{
+        "default_title":"pipe-in-pipe",
+        "default_icon":"icon.png"
+    },
+
+    "background_page":"background.html"
 }
