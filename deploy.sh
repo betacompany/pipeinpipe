@@ -16,4 +16,4 @@ sh compile.sh
 cd ../../js/closure
 sh compile.sh
 
-cd pwd
+cd $WD
