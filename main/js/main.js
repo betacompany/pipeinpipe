@@ -49,7 +49,7 @@ var main = {
 		var speed = 'fast';
 
 		var alert = $('<div/>', {
-			class: 'custom_alert'
+			"class": 'custom_alert'
 		}).hide()
 				.appendTo($('html'));
 
@@ -57,12 +57,12 @@ var main = {
 			textOrJQueryElement.appendTo(alert);
 		} else {
 			$('<div/>', {
-				class:'custom_alert_text',
+				"class":'custom_alert_text',
 				html: textOrJQueryElement
 			}).appendTo(alert);
 
 			$('<div/>', {
-				class: 'custom_alert_btn button',
+				"class": 'custom_alert_btn button',
 				text: 'Ok'
 			}).appendTo(alert)
 					.click(function () {

@@ -348,9 +348,9 @@ var content = {
 		}).appendTo(parent);
 
 		$('<div/>', {
-			class:'tag',
-			id:'tag' + id,
-			text:value
+			"class": 'tag',
+			id: 'tag' + id,
+			text: value
 		}).appendTo(link);
 	}
 };
