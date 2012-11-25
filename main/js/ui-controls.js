@@ -1241,7 +1241,7 @@ function DateSelector(options) {
 
 function Timeline(options) {
 
-	const DAY_IN_MS = 24 * 60 * 60 * 1000;
+	var DAY_IN_MS = 24 * 60 * 60 * 1000;
 
 	var defaultOptions = {
 		delta: 7,
