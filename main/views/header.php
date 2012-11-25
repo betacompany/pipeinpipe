@@ -233,6 +233,10 @@ if ($_SERVER['SCRIPT_NAME'] == '/life.php') {
 		<meta name="publisher-email" content="info@pipeinpipe.info" />
 		<meta name="generator" content="NetBeans 6.9, IntelliJ IDEA 11" />
 
+		<meta name="og:image" content="http://pipeinpipe.info/images/logo/pipe200.jpg"/>
+		<meta name="og:title" content="<?=$title?>"/>
+<!--		<meta name="og:description" content=""/>-->
+
 		<link rel="search" type="application/opensearchdescription+xml" title="pipeinpipe.info" href="/static/opensearch.xml" />
 		<link rel="apple-touch-icon" type="image/png" href="/images/icons/apple-icon.png" />
 
