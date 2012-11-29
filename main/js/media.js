@@ -958,6 +958,7 @@ var media = {
 							return;
 						}
 						data.response.concat(window.groupAlbums);
+						console.log(data);
 						show(data, buildAlbum, 'Выберите альбом');
 						albumsData = data;
 						currentAid = 0;
