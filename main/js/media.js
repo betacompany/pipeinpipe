@@ -983,7 +983,7 @@ var media = {
 					};
 
 					window.checkMember = function (data) {
-						if (data.member) {
+						if (data.response == '1') {
 							sendApiRequest('photos.getAlbums', 'saveAlbums', {need_covers:1, gid:pipeinpipeGroupId});
 						} else {
 							sendApiRequest('photos.getAlbums', 'showAlbums', {need_covers:1});
