@@ -957,8 +957,9 @@ var media = {
 							checkPopup();
 							return;
 						}
-						data.response.concat(window.groupAlbums);
-						console.log(data);
+						for (var i = 0; i < window.groupAlbums.length; ++i) {
+							data.response.push(window.groupAlbums[i]);
+						}
 						show(data, buildAlbum, 'Выберите альбом');
 						albumsData = data;
 						currentAid = 0;
