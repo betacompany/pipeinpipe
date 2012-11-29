@@ -715,7 +715,7 @@ var media = {
 						var imgWidth = data.width;
 						var imgHeight = data.height;
 
-						var properties = {src: imgWidth > imgHeight ? data.src : data.src_big};
+						var properties = {src: imgWidth > imgHeight ? data.src_small : data.src};
 
 						if (imgWidth / imgHeight >= containerWidth / containerHeight) {
 							properties.height = containerHeight;
