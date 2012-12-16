@@ -47,8 +47,9 @@ function mysql_make_qw() {
 $user = DB_USERNAME;
 $pass = DB_PASSWORD;
 $db = DB_DATABASE;
+$srv = DB_SERVER;
 
-mysql_pconnect("localhost", $user, $pass)
+mysql_pconnect($srv, $user, $pass)
 		or die("COULD NOT CONNECT: " . mysql_error());
 
 mysql_select_db($db)
