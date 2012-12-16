@@ -48,7 +48,7 @@ class ContentStatsCounter {
 			$iterator->next();
 		}
 
-		rsort(&$result);
+		rsort($result);
 		return $result;
 	}
 
