@@ -78,12 +78,12 @@ location /search {
     return 404;
 }
 
-redirect "/sport/wpr/([0-9]+)$" /pm$1 permanent;
-redirect "/people/([0-9]+)$" /id$1 permanent;
-redirect "/sport/cups/([0-9]+)$" /sport/league/1 permanent;
+rewrite "/sport/wpr/([0-9]+)$" /pm$1 permanent;
+rewrite "/people/([0-9]+)$" /id$1 permanent;
+rewrite "/sport/cups/([0-9]+)$" /sport/league/1 permanent;
 
-redirect /sport/league/([0-9]+)/competition$" /sport/league/$1 permanent;
-redirect /sport/league/([0-9]+)/competition/$" /sport/league/$1 permanent;
+rewrite /sport/league/([0-9]+)/competition$" /sport/league/$1 permanent;
+rewrite /sport/league/([0-9]+)/competition/$" /sport/league/$1 permanent;
 
 error_page 404 /error_docs/404.html
 error_page 403 /error_docs/403.html
