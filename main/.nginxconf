@@ -32,7 +32,7 @@ location /life {
     rewrite "^life/blog/?$" /life.php?part=blog last;
     rewrite "^life/blog/([0-9]+)/?$" /life.php?part=blog&post_id=$1 last;
     rewrite "^life/blog/([0-9]+)/edit/?$" /life.php?part=blog_editor&post_id=$1 last;
-    rewrite "^life/blog/new /life.php?part=blog_editor last;
+    rewrite "^life/blog/new$" /life.php?part=blog_editor last;
     rewrite "^life/comments/?$" /life.php?part=comments last;
     rewrite "^life/people/?$" /life.php?part=people last;
     return 404;
