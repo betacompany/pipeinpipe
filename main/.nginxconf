@@ -85,8 +85,6 @@ rewrite "/sport/cups/([0-9]+)$" /sport/league/1 permanent;
 rewrite /sport/league/([0-9]+)/competition$" /sport/league/$1 permanent;
 rewrite /sport/league/([0-9]+)/competition/$" /sport/league/$1 permanent;
 
-error_page 404 /error_docs/404.html
-error_page 403 /error_docs/403.html
-error_page 500 /error_docs/500.html
-
-
+error_page 404 /error_docs/404.html;
+error_page 403 /error_docs/403.html;
+error_page 500 /error_docs/500.html;
