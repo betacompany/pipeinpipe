@@ -5,7 +5,8 @@ $PROPERTIES = array (
 	'db' => array (
 		'username' => 'root',
 		'password' => '',
-		'database' => 'ortemij_pipeinpipe'
+		'database' => 'ortemij_pipeinpipe',
+		'server' => 'localhost'
 	),
 	
 	// Cookies settings. Think twice before changing

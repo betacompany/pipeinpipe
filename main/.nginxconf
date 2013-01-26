@@ -1,0 +1,93 @@
+location ~ /(id|pm) {
+    rewrite "^/id([0-9]+)$" /profile.php?user_id=$1 last;
+    rewrite "^/pm([0-9]+)$" /profile.php?player_id=$1 last;
+    return 404;
+}
+
+location /profile {
+    rewrite "^/profile$" /profile.php last;
+    rewrite "^/profile/edit$" /profile.php?edit=1 last;
+    return 404;
+}
+
+location /sport {
+    rewrite "^/sport/?$" /sport.php last;
+    rewrite "^/sport/rules/?$" /sport.php?part=rules last;
+    rewrite "^/sport/faq/?$" /sport.php?part=faq last;
+    rewrite "^/sport/league/?$" /sport.php?part=league last;
+    rewrite "^/sport/league/([0-9]+)/?$" /sport.php?part=league&league_id=$1 last;
+    rewrite "^/sport/league/([0-9]+)/competition/?$" /sport.php?part=competition&league_id=$1 last;
+    rewrite "^/sport/league/([0-9]+)/competition/([0-9]+)/?$" /sport.php?part=competition&league_id=$1&comp_id=$2 last;
+    rewrite "^/sport/rating/?$" /sport.php?part=rating last;
+    rewrite "^/sport/rating/formula/?$" /sport.php?part=formula last;
+    rewrite "^/sport/rating/formula/([^/]*)/?$" /sport.php?part=formula&formula=$1 last;
+    rewrite "^/sport/statistics/?$" /sport.php?part=statistics last;
+    rewrite "^/sport/pipemen/?$" /sport.php?part=pipemen last;
+    rewrite "^/sport/rating/([0-9]+)-([0-9|-]+).csv$" /procs/proc_sport_rating.php?method=get_rating_csv&league_id=$1&date=$2 last;
+
+    rewrite /sport/league/([0-9]+)/competition$" /sport/league/$1 permanent;
+    rewrite /sport/league/([0-9]+)/competition/$" /sport/league/$1 permanent;
+    rewrite "/sport/wpr/([0-9]+)$" /pm$1 permanent;
+    rewrite "/sport/cups/([0-9]+)$" /sport/league/1 permanent;
+
+    return 404;
+}
+
+location /life {
+    rewrite "^/life/?$" /life.php last;
+    rewrite "^/life/blog/?$" /life.php?part=blog last;
+    rewrite "^/life/blog/([0-9]+)/?$" /life.php?part=blog&post_id=$1 last;
+    rewrite "^/life/blog/([0-9]+)/edit/?$" /life.php?part=blog_editor&post_id=$1 last;
+    rewrite "^/life/blog/new$" /life.php?part=blog_editor last;
+    rewrite "^/life/comments/?$" /life.php?part=comments last;
+    rewrite "^/life/people/?$" /life.php?part=people last;
+    return 404;
+}
+
+location /media {
+    rewrite "^/media/?$" /media.php last;
+    rewrite "^/media/photo/?$" /media.php?part=photo last;
+    rewrite "^/media/video/?$" /media.php?part=video last;
+    rewrite "^/media/(photo|video)/album([0-9]+)/?$" /media.php?part=$1&group_id=$2 last;
+    rewrite "^/media/(photo|video)/album([0-9]+)/([0-9]+)$" /media.php?part=$1&group_id=$2&item_id=$3 last;
+    rewrite "^/media/(photo|video)/tag([0-9]+)$" /media.php?part=$1&tag_id=$2 last;
+    rewrite "^/media/(photo|video)/tag([0-9]+)/([0-9]+)$" /media.php?part=$1&tag_id=$2&item_id=$3 last;
+    rewrite "^/media/download$" /media.php?part=download last;
+    rewrite "^/media/upload$" /media.php?part=upload last;
+    rewrite "^/media/upload/video_youtube$" /media.php?part=upload&subpart=video_youtube last;
+    rewrite "^/media/upload/video_vkontakte$" /media.php?part=upload&subpart=video_vkontakte last;
+    rewrite "^/media/upload/photo_files$" /media.php?part=upload&subpart=photo_files last;
+    rewrite "^/media/upload/photo_vkontakte$" /media.php?part=upload&subpart=photo_vkontakte last;
+    return 404;
+}
+
+location /forum {
+    rewrite "^/forum/?$" /forum.php last;
+    rewrite "^/forum/part([0-9]+)/?$" /forum.php?forum_action=part&part_id=$1 last;
+    rewrite "^/forum/part([0-9]+)/topic([0-9]+)/?$" /forum.php?forum_action=topic&part_id=$1&topic_id=$2 last;
+    return 404;
+}
+
+location /about {
+    rewrite "^/about/?$" /page.php?part=about last;
+    return 404;
+}
+
+location /sign_ {
+    rewrite "^/sign_out/?$" /authorize.php?method=sign_out last;
+    rewrite "^/sign_up/?$" /sign_up.php last;
+    return 404;
+}
+
+location /search {
+    rewrite "^/search$" /page.php?part=search last;
+    return 404;
+}
+
+location /people {
+    rewrite "^/people/([0-9]+)$" /id$1 permanent;
+}
+
+error_page 404 /error_docs/404.html;
+error_page 403 /error_docs/403.html;
+error_page 500 /error_docs/500.html;

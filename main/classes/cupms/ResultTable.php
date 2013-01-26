@@ -308,8 +308,8 @@ class ResultTable implements IComparable {
                 $negate = true;
             }
 
-            $thisValue =    call_user_method('get' . $attr, &$this);
-            $otherValue =   call_user_method('get' . $attr, &$other);
+            $thisValue =    call_user_method('get' . $attr, $this);
+            $otherValue =   call_user_method('get' . $attr, $other);
 
             $cmpResult = ($thisValue == $otherValue) ? 0 :
                             (($thisValue < $otherValue) ? 1 : -1);
