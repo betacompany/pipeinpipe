@@ -1,3 +1,11 @@
+location /auxiliaries {
+    return 403;
+}
+
+location /cron {
+    return 403;
+}
+
 location ~ /(id|pm) {
     rewrite "^/id([0-9]+)$" /profile.php?user_id=$1 last;
     rewrite "^/pm([0-9]+)$" /profile.php?player_id=$1 last;

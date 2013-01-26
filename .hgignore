@@ -1,4 +1,10 @@
 main/config/my-properties.php
+main/images/competitions/*
+main/images/pipemen/*
+main/images/users/*
+main/images/leagues/*
+main/css/all.css
+main/js/all.js
 auth/properties/local-properties.php
 main/logs
 main/temp
