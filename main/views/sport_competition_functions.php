@@ -171,7 +171,7 @@ function sport_show_competition_register_button(Competition $competition, $user,
 				'text-align':'center'
 			}
 		}))
-			.appendTo('competition_registration')
+			.appendTo('login_or_register_panel')
 			.click(function () {<?
 		if ($user) {?>
 			competition.registration(<?=$competition->getId()?>);
