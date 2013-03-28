@@ -614,8 +614,8 @@ class Competition implements IComparable {
 	}
 	
 	public function getStatusImageURL() {
-		if ($this->isRunning()) return '/images/competitions/running.png';
-		elseif ($this->isRegistering()) return '/images/competitions/registering.png';
+//		if ($this->isRunning()) return '/images/competitions/running.png';
+		if ($this->isRegistering()) return '/images/competitions/registering.png';
 		return '';
 	}
 
