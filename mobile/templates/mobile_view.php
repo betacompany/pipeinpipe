@@ -266,8 +266,11 @@ C;
 
 function mobile_show_competition_info(Competition $competition) {
 	$pm_count = lang_number_sclon( $competition->countPlayers(), "пайпмен", "пайпмена", "пайпменов" );
-	$winner = $competition->getVictor();
-	$verb = $winner->isMale() ? 'Выиграл' : 'Выиграла';
+	$winner = false;
+        if ($competition->isFinished()) {
+		$winner = $competition->getVictor();
+		$verb = $winner->isMale() ? 'Выиграл' : 'Выиграла';
+	}
 	$date = date_local(strtotime($competition->getDate()), DATE_LOCAL_FULL_DATE);
 	$image_url = "http://" . MAIN_SITE_URL . $competition->getImageURL(Competition::IMAGE_SMALL);
 
@@ -283,9 +286,15 @@ function mobile_show_competition_info(Competition $competition) {
 	<tr>
 	    <td class="w">Участвовало $pm_count</td>
 	</tr>
+C;
+	if ($winner) {
+		echo <<< C
 	<tr>
 	    <td class="w">$verb {$winner->getFullName()}</td>
 	</tr>
+C;
+	}
+	echo <<< C
 	<tr>
 		<td class="w" colspan="2">{$competition->getDescription()}</a>
 	</tr>
