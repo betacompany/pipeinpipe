@@ -675,7 +675,7 @@ function sport_competition_show_cup_children_preview($childCups) {
 <?
 		foreach ($childCups as $i => $childCup) {
 			if ($childCup instanceof CupOneLap) {
-				sport_show_score_table($childCup, false, $i + 3, $maxCount);
+				sport_show_score_table($childCup, false, $i + 3, false, $maxCount);
 			}
 		}
 ?>
