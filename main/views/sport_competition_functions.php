@@ -658,7 +658,7 @@ function sport_competition_show_cup_children_preview($childCups) {
 		$maxCount = 0;
 		foreach ($childCups as $childCup) {
 		 	if ($childCup instanceof CupOneLap) {
-		 		$n = $childCup->getPlayers();
+		 		$n = count($childCup->getPlayers());
 		 		$maxCount = max($maxCount, $n);
 		 	}
 		}
