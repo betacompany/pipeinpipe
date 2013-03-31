@@ -497,7 +497,7 @@ function sport_show_score_table(CupOneLap $cup, $full = true, $tableNumber = 1, 
 	$empty = $row->getPoints() === 0;
 	$columnNumber = 1;
 
-	$marginBottom = $maxLines > 0 ? "margin-bottom: " . (30 * ($maxLines - count($resultTable))) . "px" : "";
+	$marginBottom = $maxLines > 0 ? sprintf("margin-bottom: %dpx", (30 * ($maxLines - count($resultTable)))) : "";
 ?>
 <table style="<?=$marginBottom?>" class="competition_cup_score competition_table<?if (!$full){?> competition_cup_preview<?}?> round_border">
 	<thead>
