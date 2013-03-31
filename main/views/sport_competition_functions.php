@@ -490,14 +490,16 @@ function sport_show_cup_one_lap(CupOneLap $cup) {
 	}
 }
 
-function sport_show_score_table(CupOneLap $cup, $full = true, $tableNumber = 1, $mobile = false) {
+function sport_show_score_table(CupOneLap $cup, $full = true, $tableNumber = 1, $mobile = false, $maxLines = -1) {
 	$resultTable = ResultTable::getForCup($cup);
 	$row = $resultTable[0];
 	if (!$row) return;
 	$empty = $row->getPoints() === 0;
 	$columnNumber = 1;
+
+	$marginBottom = $maxLines > 0 ? "margin-bottom: " . (30 * ($maxLines - count($resultTable))) . "px" : "";
 ?>
-<table class="competition_cup_score competition_table<?if (!$full){?> competition_cup_preview<?}?> round_border">
+<table style="<?=$marginBottom?>" class="competition_cup_score competition_table<?if (!$full){?> competition_cup_preview<?}?> round_border">
 	<thead>
 		<th<?=($full ? '>пайп-мен' : ' onclick="javascript: competition.loadCup(' . $cup->getId() . ')">' . $cup->getName())?></th>
 <?
@@ -653,6 +655,13 @@ function sport_show_matches_table(CupOneLap $cup, $mobile = false) {
 
 function sport_competition_show_cup_children_preview($childCups) {
 	if (!empty($childCups)) {
+		$maxCount = 0;
+		foreach ($childCups as $childCup) {
+		 	if ($childCup instanceof CupOneLap) {
+		 		$n = $childCup->getPlayers();
+		 		$maxCount = max($maxCount, $n);
+		 	}
+		}
 ?>
 <div class="title opened">
 	<div class="left">Подтурниры</div>
@@ -664,9 +673,11 @@ function sport_competition_show_cup_children_preview($childCups) {
 <div class="body hidden" style="display: block">
 	<div>
 <?
-		foreach ($childCups as $i => $childCup)
-			if ($childCup instanceof CupOneLap)
-				sport_show_score_table($childCup, false, $i + 3);
+		foreach ($childCups as $i => $childCup) {
+			if ($childCup instanceof CupOneLap) {
+				sport_show_score_table($childCup, false, $i + 3, $maxCount);
+			}
+		}
 ?>
 	</div>
 	<div class="clear"></div>
