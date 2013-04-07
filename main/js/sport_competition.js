@@ -55,30 +55,13 @@ var competition = {
 		}
 	},
 
-	_getGridCellsForPlayer: function (tableIndex, playerIndex) {
-		function getHorizontalCell(i) {
-			return $('#grid_' + tableIndex + '_' + playerIndex + '_' + i);
-		}
-
-		function getVerticalCell(i) {
-			return $('#grid_' + tableIndex + '_' + i + '_' + playerIndex);
-		}
-
+    _getGridCellsForPlayer: function(tableIndex, playerIndex, tableSize) {
         var result = $();
-
-		function addCells(fn) {
-			var i = 1;
-			var cell = fn(i);
-			while (cell.length > 0) {
-				result = result.add(cell);
-				cell = fn(++i);
-			}
-		}
-
-		addCells(getHorizontalCell);
-		addCells(getVerticalCell);
-
-		return result;
+        for (var i = 1; i <= tableSize; i++) {
+            result = result.add($('#grid_' + tableIndex + '_' + playerIndex + '_' + i));
+            result = result.add($('#grid_' + tableIndex + '_' + i + '_' + playerIndex));
+        }
+        return result;
     },
 
 	bindGridEvents: function () {
@@ -99,11 +82,12 @@ var competition = {
             if (id[1] == 2) {
                 //highlighting the second player or the matching player if the column's title is hovered
                 target = target.add($('#grid_2_' + id[3] + '_0'));
+				const tableSize = $(this).parent().children().length - 1;
                 if (id[2] == 0) {
-                    target = target.add(competition._getGridCellsForPlayer(id[1], id[3]))
+                    target = target.add(competition._getGridCellsForPlayer(id[1], id[3], tableSize))
                 }
                 if (id[3] == 0) {
-                    target = target.add(competition._getGridCellsForPlayer(id[1], id[2]))
+                    target = target.add(competition._getGridCellsForPlayer(id[1], id[2], tableSize))
                 }
             }
 
