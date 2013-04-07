@@ -21,7 +21,8 @@ var competition = {
                 success: function(data) {
                     loading(panel, false, undefined, undefined, true);
                     panel.html(data);
-                }
+					competition.bindGridEvents();
+				}
             });
         };
 
@@ -31,8 +32,6 @@ var competition = {
         $('#cup' + competition.selectedCupId).removeClass('selected');
         $('#cup' + cupId).addClass('selected');
         competition.selectedCupId = cupId;
-
-		competition.bindGridEvents();
 	},
 
 	_highlightTracedGames: function(o) {
