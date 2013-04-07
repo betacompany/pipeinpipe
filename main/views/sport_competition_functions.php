@@ -349,6 +349,12 @@ function sport_competition_show_cup_body(Cup $cup) {
 }
 
 function sport_show_cup_playoff(CupPlayoff $cup) {
+    $final = $cup->getFinalGame();
+
+    if (!$final) {
+        return;
+    }
+
 	$horizontalSpaceCoef = 1/6;
 	$gameDivHeightCoef = 1/4;
 	$verticalSpaceCoef = 1/2;
@@ -363,7 +369,6 @@ function sport_show_cup_playoff(CupPlayoff $cup) {
 	$maxStage = $cup->getMaxStage();
 	$depth = log($maxStage, 2);
 
-	$final = $cup->getFinalGame();
 	$bronze = $cup->getBronzeGame();
 
     $top = ($maxStage - 1) / 2 * $gameDivHeightWithSpace;
@@ -374,28 +379,27 @@ function sport_show_cup_playoff(CupPlayoff $cup) {
 
     $games = array();
 
-    if ($final != null)
     sport_calculate_playoff_game(
-			$games,
-			$final,
-			$top,
-			$left,
-			$depth,
-			$maxStage,
-			$gameDivWidthWithSpace,
-			$gameDivHeightWithSpace
-		);
+        $games,
+        $final,
+        $top,
+        $left,
+        $depth,
+        $maxStage,
+        $gameDivWidthWithSpace,
+        $gameDivHeightWithSpace
+    );
     if ($bronze != null) {
         sport_calculate_playoff_game(
-			$games,
-			$bronze,
-			$maxStage > 4 ? $top + $gameDivHeightWithSpace: $playoffHeight - $gameDivHeightWithSpace,
-			$left - ($maxStage == 1 && $bronze ? 2 : 1) * $bronzeGameOffset * $gameDivWidthWithSpace,
-			$depth,
-			$maxStage,
-			$gameDivWidthWithSpace,
-			$gameDivHeightWithSpace
-		);
+            $games,
+            $bronze,
+            $maxStage > 4 ? $top + $gameDivHeightWithSpace : $playoffHeight - $gameDivHeightWithSpace,
+            $left - ($maxStage == 1 && $bronze ? 2 : 1) * $bronzeGameOffset * $gameDivWidthWithSpace,
+            $depth,
+            $maxStage,
+            $gameDivWidthWithSpace,
+            $gameDivHeightWithSpace
+        );
 	}
 ?>
 <script type="text/javascript">
@@ -474,7 +478,9 @@ function sport_show_cup_one_lap(CupOneLap $cup) {
 	$grid = $cup->getGameGrid();
 	if ($grid && !empty($grid)) {
 		sport_show_score_table($cup);
-		sport_show_matches_table($cup);
+        if ($cup->hasGames()) {
+            sport_show_matches_table($cup);
+        }
 ?>
 <script type="text/javascript">
 	$$(function () { competition.bindGridEvents(<?=count($grid)?>); });

@@ -363,5 +363,10 @@ abstract class Cup {
 			'value' => $this->getName()
 		);
 	}
+
+    public final function hasGames() {
+        $req = GameDBClient::selectCountGamesForCup($this->getId());
+        return mysql_result($req, 0, 0) > 0;
+    }
 }
 ?>

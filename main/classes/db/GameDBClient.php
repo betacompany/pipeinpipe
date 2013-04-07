@@ -148,6 +148,13 @@ class GameDBClient {
                 $pmid1, $pmid2, $cupId);
     }
 
+    public static function selectCountGamesForCup($cupId) {
+        return mysql_qw(
+            'SELECT COUNT(*) FROM `p_game` WHERE `cup_id`=?',
+            $cupId
+        );
+    }
+
     public static function selectCountGamesFor($pmid, $cupId = 0) {
         if ($cupId == 0) {
             return mysql_qw('SELECT COUNT(*) FROM `p_game` WHERE `pmid1`=? or `pmid2`=?',
