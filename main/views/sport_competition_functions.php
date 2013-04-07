@@ -276,7 +276,11 @@ function sport_competition_show_cup(Cup $cup) {
     if (!empty($childCups)) {
         sport_competition_show_children($cup, $childCups);
     }
-}
+?>
+<script type="text/javascript">
+    $$(function () { competition.bindGridEvents(); });
+</script>
+<?}
 
 function sport_competition_show_children(Cup $cup, $childCups) {
 ?>
@@ -481,11 +485,6 @@ function sport_show_cup_one_lap(CupOneLap $cup) {
         if ($cup->hasGames()) {
             sport_show_matches_table($cup);
         }
-?>
-<script type="text/javascript">
-	$$(function () { competition.bindGridEvents(<?=count($grid)?>); });
-</script>
-<?
 	} elseif (!$cup->getCompetition()->isRegistering()) {
 ?>
 <div>
@@ -689,9 +688,6 @@ function sport_competition_show_cup_children_preview($childCups) {
 	</div>
 	<div class="clear"></div>
 </div>
-<script type="text/javascript">
-	$$(function () { competition.bindGridEvents(); });
-</script>
 <?
 	}
 }

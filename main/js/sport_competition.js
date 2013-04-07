@@ -23,7 +23,7 @@ var competition = {
                     panel.html(data);
                 }
             });
-        }
+        };
 
         ajax('load_cup', $('#competition_cup'));
         ajax('load_children', $('#competition_children_preview'));
@@ -31,6 +31,8 @@ var competition = {
         $('#cup' + competition.selectedCupId).removeClass('selected');
         $('#cup' + cupId).addClass('selected');
         competition.selectedCupId = cupId;
+
+		competition.bindGridEvents();
 	},
 
 	_highlightTracedGames: function(o) {
@@ -54,16 +56,33 @@ var competition = {
 		}
 	},
 
-    _getGridCellsForPlayer: function(tableIndex, playerIndex, tableSize) {
+	_getGridCellsForPlayer: function (tableIndex, playerIndex) {
+		function getHorizontalCell(i) {
+			return $('#grid_' + tableIndex + '_' + playerIndex + '_' + i);
+		}
+
+		function getVerticalCell(i) {
+			return $('#grid_' + tableIndex + '_' + i + '_' + playerIndex);
+		}
+
         var result = $();
-        for (var i = 1; i <= tableSize; i++) {
-            result = result.add($('#grid_' + tableIndex + '_' + playerIndex + '_' + i));
-            result = result.add($('#grid_' + tableIndex + '_' + i + '_' + playerIndex));
-        }
-        return result;
+
+		function addCells(fn) {
+			var i = 1;
+			var cell = fn(i);
+			while (cell.length > 0) {
+				result = result.add(cell);
+				cell = fn(++i);
+			}
+		}
+
+		addCells(getHorizontalCell);
+		addCells(getVerticalCell);
+
+		return result;
     },
 
-	bindGridEvents: function(tableSize) {
+	bindGridEvents: function () {
 		$('.competition_cup td, .competition_cup th').each(function() {
 			var target = $(this);
             var id = target.attr('id').split('_');
@@ -82,10 +101,10 @@ var competition = {
                 //highlighting the second player or the matching player if the column's title is hovered
                 target = target.add($('#grid_2_' + id[3] + '_0'));
                 if (id[2] == 0) {
-                    target = target.add(competition._getGridCellsForPlayer(id[1], id[3], tableSize))
+                    target = target.add(competition._getGridCellsForPlayer(id[1], id[3]))
                 }
                 if (id[3] == 0) {
-                    target = target.add(competition._getGridCellsForPlayer(id[1], id[2], tableSize))
+                    target = target.add(competition._getGridCellsForPlayer(id[1], id[2]))
                 }
             }
 
