@@ -6,7 +6,8 @@ var competition = {
 	selectedCupId: 0,
 
 	loadCup: function(cupId) {
-        var ajax = function(method, panel) {
+
+        var ajax = function(method, panel, callback) {
             $.ajax({
                 url: '/procs/proc_sport_competition.php',
                 data: {
@@ -21,17 +22,24 @@ var competition = {
                 success: function(data) {
                     loading(panel, false, undefined, undefined, true);
                     panel.html(data);
-					competition.bindGridEvents();
+					callback && callback();
 				}
             });
         };
 
-        ajax('load_cup', $('#competition_cup'));
-        ajax('load_children', $('#competition_children_preview'));
+		competition._setSelectedCup(cupId);
 
-        $('#cup' + competition.selectedCupId).removeClass('selected');
-        $('#cup' + cupId).addClass('selected');
-        competition.selectedCupId = cupId;
+        ajax('load_cup', $('#competition_cup'), function() {
+			ajax('load_children', $('#competition_children_preview'), function() {
+				competition.bindGridEvents();
+			});
+		});
+	},
+
+	_setSelectedCup: function (cupId) {
+		$('#cup' + competition.selectedCupId).removeClass('selected');
+		$('#cup' + cupId).addClass('selected');
+		competition.selectedCupId = cupId;
 	},
 
 	_highlightTracedGames: function(o) {
@@ -91,9 +99,11 @@ var competition = {
                 }
             }
 
-            $(this).hover(function() {
-                target.toggleClass('hl');
-            });
+			$(this).hover(function () {
+				target.addClass('hl');
+			}, function () {
+				target.removeClass('hl');
+			});
 		});
 	},
 
