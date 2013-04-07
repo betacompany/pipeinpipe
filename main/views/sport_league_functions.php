@@ -17,7 +17,7 @@ function league_show_competition_preview_full(Competition $competition, $pmCount
 		<div>
 			<img alt="<?=$competition->getName()?>" src="<?=$competition->getImageURL(Competition::IMAGE_SMALL)?>"/>
 <?
-	if ($competition->isRunning() || $competition->isRegistering()) {
+	if (/*$competition->isRunning() || */$competition->isRegistering()) {
 ?>
 			<img class="competition_status" alt="<?=$competition->getStatus()?>" src="<?=$competition->getStatusImageURL()?>"/>
 <?
@@ -61,7 +61,7 @@ function league_show_competition_preview_short(Competition $competition) {
                 title="<?=$competition->getName()?>"
                 src="<?=$competition->getImageURL(Competition::IMAGE_SMALL)?>"/>
 <?
-	if ($competition->isRunning() || $competition->isRegistering()) {
+	if (/*$competition->isRunning() || */$competition->isRegistering()) {
 ?>
 			<img class="competition_status" alt="<?=$competition->getStatus()?>" src="<?=$competition->getStatusImageURL()?>"/>
 <?
