@@ -1,1 +1,1 @@
-0 0 * * * root rm -rf /var/www/pipeinpipe.info/main/temp/cache/api && php /var/www/pipeinpipe.info/main/cron/cron_sport_rating.php
+0 0 * * ? root rm -rf /var/www/pipeinpipe.info/main/temp/cache/api && php /var/www/pipeinpipe.info/main/cron/cron_sport_rating.php
