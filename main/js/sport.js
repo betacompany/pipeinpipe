@@ -151,7 +151,7 @@ sportTimeline = {
 		.addClass("comp_name")
 		.appendTo(compLink);
 
-		if (competition.status) {
+		if (competition.status_image) {
 			var compStatusImage = $('<img/>', {
 				id: 'status' + competition.id,
 				alt: competition.name,

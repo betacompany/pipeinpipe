@@ -15,7 +15,11 @@ if ($auth->isAuth()) {
 
 define('END_TIME', microtime(true));
 
-$ya_params['time'] = sprintf("%.4f", END_TIME-BEGIN_TIME);
+$exec_time = END_TIME - BEGIN_TIME;
+$ya_params['time'] = sprintf("%.4f", $exec_time);
+if ($exec_time > 0.2) {
+	$ya_params['slow_page'] = $_SERVER['SCRIPT_NAME'] . " / " . BEGIN_TIME;
+}
 
 ?>
 
