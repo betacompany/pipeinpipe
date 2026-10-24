@@ -47,6 +47,10 @@ Uploaded content goes to `/srv/pipeinpipe/<instance>/content/` (rsync), and the
 prebuilt `main/css/all.css` and `main/js/all.js`, which aren't in git, into
 each pipeinpipe checkout.
 
+## Moving the live sites here
+
+See [CUTOVER.md](CUTOVER.md) and `cutover.sh`.
+
 ## Deploying
 
 ```sh
