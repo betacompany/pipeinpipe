@@ -7,7 +7,8 @@
 
 require_once dirname(__FILE__) . '/../includes/common.php';
 
-if (param('password') != 'yreutywerUIUihkhsdjahsduhweuUUUUU') {
+// cron runs it as a CLI script; over HTTP (blocked by nginx anyway) it needs the password
+if (PHP_SAPI != 'cli' && param('password') != 'yreutywerUIUihkhsdjahsduhweuUUUUU') {
 	echo 'ACCESS DENIED!';
 	exit(0);
 }
