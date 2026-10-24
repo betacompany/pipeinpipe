@@ -45,6 +45,22 @@ Both repos run on PHP 8.5 and still run on PHP 5.5.
 | 13 | pipeinpipe | Compile-time deprecations | 36 `(boolean)` casts; `#[\ReturnTypeWillChange]` on the Iterator methods (a comment on 5.5); `final private`; optional parameter before a required one in `ItemDBClient::insert()` |
 | 14 | pipeinpipe | `PlayerComparator::getPlayer(int $which)`: `int` is a class name on PHP 5, so every call fails today | Type hint removed |
 | 15 | pipeinpipe | The page cache never worked on prod (`main/temp` not writable by PHP), and its keys were unsafe to enable: `api.php` would serve uncached-TTL methods (incl. writes) from cache forever, and the home page and closed forum topics were cached across users | `api.php` caches only methods with a TTL (none while `API_DEBUG_MODE` is on); home page and closed topics are cached per user. Prod got a `www-data`-owned `temp/cache` on 2026-10-24: `/sport/pipemen` went from 40 s to 0.24 s |
+| 16 | pipeinpipe | `Logger` with an unwritable `main/logs` (as on both servers): `fwrite(false)` is a `TypeError` since 8.0, which cut `/life` off mid-page | Skips the write when the file can't be opened |
+
+## MariaDB 11.8 instead of MySQL 5.5
+
+The new server runs Ubuntu 26.04's MariaDB. Replaying the sites' queries on
+both engines found:
+
+- **`ResultCupDBClient::getCompetitionPlaces()`** (places on player pages): a
+  `GROUP BY` over an ordered `FROM` subquery, which MariaDB doesn't keep
+  ordered, so it picked an arbitrary cup per competition. Rewritten with a
+  correlated subquery; identical to MySQL 5.5 for all 344 players.
+- **`Feed`:** `IF(uid=0, UUID(), uid)` fails because MariaDB's `UUID()` has its
+  own type. Cast to `CHAR`.
+- **`GROUP_CONCAT`:** MariaDB cuts results at 1 MB instead of 1024 bytes. Kept.
+- **Failed queries** are now logged (`db_qw: ...` in the PHP error log) in both
+  repos, since the callers only see `false`.
 
 ## Left for after the cutover
 
@@ -66,6 +82,8 @@ Both repos run on PHP 8.5 and still run on PHP 5.5.
 - **Decide on GD (`php8.5-gd`):** with it, the photo background, avatar and
   photo upload code would start working, but that code has not run on prod
   for years.
+- **nginx `fastcgi_read_timeout 120s`:** a cold `/sport/pipemen` renders for
+  about 60 s, nginx's default.
 
 ## Behaviour changes to check by eye
 
@@ -91,6 +109,8 @@ Both repos run on PHP 8.5 and still run on PHP 5.5.
   throws. Prod returns the identical page.
 - **Photo viewer:** `main/views/media_photo_viewer.php:33` calls a method on
   null for some photos.
+- **`CommentDBClient::getByItemType()`:** builds `SELECT ... .* AS item_type`,
+  invalid on both MySQL and MariaDB.
 - **Dead media:** album photos hosted on VK's old CDN no longer load, and the
   home page video is a Flash embed.
 - **Cron jobs:** the two jobs in `cron/` use `?` in the day-of-week field.
