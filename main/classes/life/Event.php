@@ -24,7 +24,7 @@ class Event extends Item {
 		$contentParsed = Parser::parseEvent($contentSource);
 		$timestamp = strtotime($date . ' ' . $startTime);
 
-		return parent::create(
+		return parent::createItem(
 			Item::EVENT,
 			0,
 			$uid,

@@ -144,7 +144,7 @@ try {
             $contentParsed = Parser::parseDescription($contentSource);
 
             if ($holder->getId() == $user->getId()) {
-                $blog = Group::create(Group::BLOG, 0, $title, $contentSource, $contentParsed);
+                $blog = Group::createGroup(Group::BLOG, 0, $title, $contentSource, $contentParsed);
                 Connection::bind($blog, $user);
                 echo json(array (
                     'status' => 'ok'

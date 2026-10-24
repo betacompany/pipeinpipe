@@ -14,8 +14,8 @@ class CupTwoLaps extends CupOneLap {
     /**
      * @return array of ResultTable
      */
-    public function getGameGrid() {
-        if ($this->gameGridLoaded) return $this->gameGrid;
+    public function getGameGrid($reload = false) {
+        if ($this->gameGridLoaded && !$reload) return $this->gameGrid;
 
         $players = $this->getPlayers();
         foreach ($players as $player1) {

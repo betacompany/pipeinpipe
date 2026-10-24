@@ -147,7 +147,7 @@ function forum_show_message($uid, ForumTopic $topic, ForumMessage $msg) {
 					<div class="actions">
 <?
 	foreach (Action::forumTypes() as $type) {
-		$count = count($actions[$type]);
+		$count = isset($actions[$type]) ? count($actions[$type]) : 0;
 		$possibility = $msg->canBeActedBy($type, $uid);
 		$yours = false;
 		if ($possibility && isset($actions[$type])) {

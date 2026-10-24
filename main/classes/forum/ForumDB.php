@@ -171,9 +171,9 @@ class ForumDB {
 													   `title`=?,
 													   `closed`=?
 												   WHERE `id`=?',
-					$this->getPartId(), $this->getPrevTopicId(),
-					$this->getUID(), $this->getTitle(),
-					$this->isClosed() ? 1 : 0, $this->getId()
+					$topic->getPartId(), $topic->getPrevTopicId(),
+					$topic->getUID(), $topic->getTitle(),
+					$topic->isClosed() ? 1 : 0, $topic->getId()
 				);
 	}
 

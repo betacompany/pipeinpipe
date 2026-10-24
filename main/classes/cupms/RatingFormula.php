@@ -15,8 +15,8 @@ class RatingFormula {
 
 	private function __construct() {
 		$this->formulae = array(
-			ShuvalovRatingFormula::getName() => new ShuvalovRatingFormula(),
-			GrigorievRatingFormula::getName() => new GrigorievRatingFormula()
+			ShuvalovRatingFormula::NAME => new ShuvalovRatingFormula(),
+			GrigorievRatingFormula::NAME => new GrigorievRatingFormula()
 			
 		);
 	}

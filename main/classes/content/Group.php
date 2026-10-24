@@ -377,7 +377,7 @@ class Group {
 		return GroupDBClient::countByParentGroupId($groupId);
 	}
 
-	public static function create($type, $parentGroupId, $title, $contentSource, $contentParsed) {
+	public static function createGroup($type, $parentGroupId, $title, $contentSource, $contentParsed) {
 		$id = GroupDBClient::insert($type, $parentGroupId, $title, $contentSource, $contentParsed);
 		try {
 			return Group::getById($id);

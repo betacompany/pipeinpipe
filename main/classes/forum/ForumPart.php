@@ -128,7 +128,7 @@ class ForumPart extends Group {
 
 		assertTrue('There is no forum with id=' . $forumId, ForumForum::existsById($forumId));
 
-		return parent::create(Group::FORUM_PART, $forumId, $title, $description, $description);
+		return parent::createGroup(Group::FORUM_PART, $forumId, $title, $description, $description);
 	}
 
 	public static function existsById($id) {

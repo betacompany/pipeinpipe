@@ -49,7 +49,7 @@ while ($v = db_fetch_assoc($req)) {
 	if (isset($albums[$hash])) {
 		$albumid = $albums[$hash];
 	} else {
-		$album = Group::create(Group::VIDEO_ALBUM, 0, $v['part'], '', '');
+		$album = Group::createGroup(Group::VIDEO_ALBUM, 0, $v['part'], '', '');
 		$albumid = $album->getId();
 		echo "Group id=$albumid created\n";
 		$albums[$hash] = $albumid;

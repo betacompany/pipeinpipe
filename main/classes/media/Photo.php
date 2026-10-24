@@ -169,7 +169,7 @@ class Photo extends Item implements IJsonSerializable {
 	 * @return Photo
 	 */
 	public static function create($albumId, $uid, $title, $urls) {
-		return parent::create(Item::PHOTO, $albumId, $uid, time(), serialize($urls), $title);
+		return parent::createItem(Item::PHOTO, $albumId, $uid, time(), serialize($urls), $title);
 	}
 
 	/**

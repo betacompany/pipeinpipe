@@ -179,7 +179,7 @@ class ItemsContainer extends Item {
 		throw new BadFunctionCallException();
 	}
 
-	public function isActedBy($user, $type) {
+	public function isActedBy($user, $type = Action::EVALUATION) {
 		throw new BadFunctionCallException();
 	}
 

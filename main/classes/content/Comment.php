@@ -375,7 +375,7 @@ class Comment {
 	 * @param string $contentParsed
 	 * @return mixed
 	 */
-	public static function create($type, $itemId, $uid, $timestamp, $contentSource, $contentParsed) {
+	public static function createComment($type, $itemId, $uid, $timestamp, $contentSource, $contentParsed) {
 		$id = CommentDBClient::insert($type, $itemId, $uid, $timestamp, $contentSource, $contentParsed);
 		try {
 			return Comment::getById($id);

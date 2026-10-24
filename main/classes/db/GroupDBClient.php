@@ -68,13 +68,13 @@ class GroupDBClient {
 		return db_insert_id();
 	}
 
-	public function remove($groupId) {
+	public static function remove($groupId) {
 		return (boolean) db_qw(
 			'UPDATE `p_content_group` SET `removed`=1 WHERE `id`=?', $groupId
 		);
 	}
 
-	public function getAllByType($type) {
+	public static function getAllByType($type) {
 		return new MySQLResultIterator(
 			db_qw(
 				'SELECT * FROM `pv_content_group` WHERE `type`=?', $type

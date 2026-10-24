@@ -58,13 +58,13 @@ while ($post = db_fetch_assoc($req)) {
 	$tgs = explode(', ', $post['tags']);
 	
 	if (!isset($blogs[$uid])) {
-		$blogs[$uid] = Group::create(Group::BLOG, 0, $user->getFullName(), '', '');
+		$blogs[$uid] = Group::createGroup(Group::BLOG, 0, $user->getFullName(), '', '');
 		Connection::bind($blogs[$uid], $user);
 		echo "Blog created with id=".$blogs[$uid]->getId()."\n";
 		flush();
 	}
 
-	$p = Item::create(Item::BLOG_POST, $blogs[$uid]->getId(), $uid, strtotime($post['date']),
+	$p = Item::createItem(Item::BLOG_POST, $blogs[$uid]->getId(), $uid, strtotime($post['date']),
 			$post['short'] . BlogPost::DELIMITER . $post['text'],
 			Parser::parseBlogPost($post['short']) . BlogPost::DELIMITER . Parser::parseBlogPost($post['text']),
 			$post['title']);

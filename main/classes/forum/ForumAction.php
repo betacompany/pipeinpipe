@@ -50,7 +50,7 @@ class ForumAction extends Action {
 			}
 		}
 
-		parent::create($type, $type, $messageId, $uid, $timestamp, $value);
+		parent::createAction($type, $type, $messageId, $uid, $timestamp, $value);
 	}
 
 }

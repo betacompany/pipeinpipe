@@ -168,7 +168,7 @@ try {
 
 			$topic = Item::getById($topicId);
 			if ($topic instanceof ForumTopic) {
-				if ($msg = $topic->addComment($uid, $html, $timestamp)) {
+				if ($msg = $topic->addMessage($uid, $html, $timestamp)) {
 					if (!$mobile) {
 						echo json_encode(array(
 							'status' => 'ok',

@@ -103,7 +103,7 @@ class ForumMessage extends Comment {
 			throw new Exception('Unsupported type of forum action! ' . $type);
 		}
 
-		Action::create($type, Action::TARGET_COMMENT, $this->getId(), $user->getId(), time(), $value);
+		Action::createAction($type, Action::TARGET_COMMENT, $this->getId(), $user->getId(), time(), $value);
 		$this->actionsLoaded = false;
 		$this->actions = array();
 
@@ -123,7 +123,7 @@ class ForumMessage extends Comment {
 		$text = Parser::parseSource($html);
 		$html = Parser::parseForumMessage($text);
 
-		$id = parent::create(parent::FORUM_MESSAGE, $topicId, $uid, $timestamp, $text, $html);
+		$id = parent::createComment(parent::FORUM_MESSAGE, $topicId, $uid, $timestamp, $text, $html);
 
 		$message = null;
 		try {

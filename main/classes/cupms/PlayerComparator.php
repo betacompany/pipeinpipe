@@ -353,13 +353,13 @@ class PlayerComparator {
 	public function getSecondPlayerId() {
 		return $this->pmId2;
 	}
-	public function getPlayer(int $which) {
+	public function getPlayer($which) {
 		if ($which == 1)
 			return $this->pm1;
 		else
 			return $this->pm2;
 	}
-	public function getPlayerId(int $which) {
+	public function getPlayerId($which) {
 		if ($which == 1)
 			return $this->pmId1;
 		else
