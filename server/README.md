@@ -1,0 +1,66 @@
+# Server
+
+Sets up the Ubuntu 26.04 server for pipeinpipe.info and total.pipeinpipe.info:
+nginx, PHP 8.5-FPM and MariaDB, with two instances of the sites.
+
+| Instance | Hostnames | Code | Databases |
+| --- | --- | --- | --- |
+| prod | `pipeinpipe.info`, `m.`, `cupms.`, `total.` (and `www.` → redirect) | `/var/www/pipeinpipe.info`, `/var/www/total.pipeinpipe.info` | `pipeinpipe`, `totalizator` |
+| dev | `dev.pipeinpipe.info`, `m.dev.`, `cupms.dev.`, `total.dev.` | `/var/www/dev.pipeinpipe.info`, `/var/www/total.dev.pipeinpipe.info` | `pipeinpipe_dev`, `totalizator_dev` |
+
+Each instance has its own config in `/etc/pipeinpipe/<instance>/` (symlinked
+into the checkouts at the git-ignored paths the code expects), uploaded content
+in `/srv/pipeinpipe/<instance>/content` and a page cache in
+`/srv/pipeinpipe/<instance>/temp/cache` (the only part of `temp/` PHP can write).
+
+dev is behind HTTP basic auth (user `pipe`), tells search engines not to index it
+and uses its own login cookie (`at_dev`), so prod logins don't carry over.
+
+Secrets (database passwords, totalizator's `ACCESS_KEY`, the dev basic auth
+password) are generated on first run into `/etc/pipeinpipe/secrets.env`, readable
+by root only:
+
+```sh
+sudo grep DEV_BASIC_AUTH_PASS /etc/pipeinpipe/secrets.env
+```
+
+## Setting up a server
+
+As a user with sudo (`ortemij`), from a copy of this directory:
+
+```sh
+# prod's totalizator ACCESS_KEY is shared with the external caller of api_proc.php,
+# so it has to be the old one, not a generated one
+echo 'PROD_TOTAL_ACCESS_KEY=...' | sudo tee -a /etc/pipeinpipe/secrets.env
+
+sudo ./provision.sh        # safe to re-run
+```
+
+Then load the data. Databases, one at a time, from a single-database dump:
+
+```sh
+ssh OLD 'sudo mysqldump --defaults-file=/etc/mysql/debian.cnf --default-character-set=utf8 \
+    --quick --routines --triggers pipeinpipe | gzip' | ssh NEW 'sudo ./import-db.sh pipeinpipe'
+```
+
+Uploaded content goes to `/srv/pipeinpipe/<instance>/content/` (rsync), and the
+prebuilt `main/css/all.css` and `main/js/all.js`, which aren't in git, into
+each pipeinpipe checkout.
+
+## Deploying
+
+```sh
+sudo ./deploy.sh prod      # or dev: git pull both checkouts, reload PHP
+```
+
+## Notes
+
+- PHP errors go to the per-site nginx error logs in `/var/log/nginx/`, as on
+  the old server. Failed SQL queries are logged there too (`db_qw: ...`).
+- MariaDB runs without strict mode and with utf8mb3 tables, like the old MySQL
+  5.5. Queries that relied on MySQL 5 specifics were rewritten; see
+  `dev/PHP85-FINDINGS.md`.
+- HTTPS isn't set up yet. nginx already serves `/.well-known/acme-challenge/`
+  from `/var/www/letsencrypt` for `certbot certonly --webroot`.
+- Connections from Yandex Cloud to github.com fail now and then; the scripts
+  retry them.

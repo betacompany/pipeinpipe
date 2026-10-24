@@ -1,0 +1,12 @@
+[mysqld]
+# Same behaviour as the old MySQL 5.5: no strict mode, 3-byte utf8 tables
+sql_mode = ''
+character-set-server = utf8mb3
+collation-server = utf8mb3_general_ci
+
+bind-address = 127.0.0.1
+skip-name-resolve
+
+# 2 GB RAM, shared with PHP
+innodb_buffer_pool_size = 256M
+max_connections = 100
