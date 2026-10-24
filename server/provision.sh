@@ -52,7 +52,7 @@ secret() {
 render() {
 	local tmp; tmp=$(mktemp)
 	sed -e "s|@NAME@|$NAME|g" -e "s|@HOST@|$HOST|g" -e "s|@AUTH_COOKIE@|$AUTH_COOKIE|g" \
-		-e "s|@PIPE_ROOT@|$PIPE_ROOT|g" -e "s|@TOTAL_ROOT@|$TOTAL_ROOT|g" \
+		-e "s|@PIPE_ROOT@|$PIPE_ROOT|g" -e "s|@TOTAL_ROOT@|$TOTAL_ROOT|g" -e "s|@DATA@|$DATA|g" \
 		-e "s|@PIPE_DB@|$PIPE_DB|g" -e "s|@PIPE_DB_USER@|$PIPE_DB_USER|g" -e "s|@PIPE_DB_PASS@|$PIPE_DB_PASS|g" \
 		-e "s|@TOTAL_DB@|$TOTAL_DB|g" -e "s|@TOTAL_DB_USER@|$TOTAL_DB_USER|g" -e "s|@TOTAL_DB_PASS@|$TOTAL_DB_PASS|g" \
 		-e "s|@TOTAL_ACCESS_KEY@|$TOTAL_ACCESS_KEY|g" "$1" > "$tmp"
@@ -83,7 +83,7 @@ echo "== Packages"
 apt-get update -q
 DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
 	nginx mariadb-server php8.5-fpm php8.5-cli php8.5-mysql php8.5-mbstring \
-	git rsync ufw unattended-upgrades
+	git rsync ufw unattended-upgrades cron logrotate
 
 echo "== Swap"
 if ! swapon --show | grep -q /swapfile; then
@@ -133,8 +133,9 @@ for NAME in $INSTANCES; do
 	for d in users competitions pipemen leagues photos videos download; do
 		install -d -o "$DEPLOY_USER" -g "$DEPLOY_USER" -m 0755 "$DATA/content/$d"
 	done
-	# Only the page cache is writable by PHP; the rest of temp/ isn't, as on the old server
-	install -d -o www-data -g www-data -m 0755 "$DATA/temp/cache"
+	# PHP can write the page cache, the crons' locks and the logs (main/logs);
+	# the rest of temp/ stays read-only, as on the old server
+	install -d -o www-data -g www-data -m 0755 "$DATA/temp/cache" "$DATA/temp/locks" "$DATA/logs"
 
 	for pair in "$PIPE_ROOT $PIPE_REPO $PIPE_BRANCH" "$TOTAL_ROOT $TOTAL_REPO $TOTAL_BRANCH"; do
 		set -- $pair
@@ -161,6 +162,7 @@ for NAME in $INSTANCES; do
 		as_deploy ln -sfn "$DATA/content/$d" "$PIPE_ROOT/main/content/$d"
 	done
 	as_deploy ln -sfn "$DATA/temp" "$PIPE_ROOT/main/temp"
+	as_deploy ln -sfn "$DATA/logs" "$PIPE_ROOT/main/logs"
 
 	if [ "$NAME" = prod ]; then
 		echo "# prod: open to everyone" > "/etc/nginx/snippets/pipeinpipe-$NAME-access.conf"
@@ -177,7 +179,13 @@ for NAME in $INSTANCES; do
 	fi
 	render "$HERE/nginx/site.conf" "/etc/nginx/sites-available/pipeinpipe-$NAME.conf" root:root 0644
 	ln -sfn "/etc/nginx/sites-available/pipeinpipe-$NAME.conf" "/etc/nginx/sites-enabled/pipeinpipe-$NAME.conf"
+
+	# cron ignores files in /etc/cron.d that aren't regular, root-owned files
+	# (the old server's symlinks into the repo never ran)
+	render "$HERE/cron/site.cron" "/etc/cron.d/pipeinpipe-$NAME" root:root 0644
 done
+
+put "$HERE/logrotate/pipeinpipe" /etc/logrotate.d/pipeinpipe || true
 
 put "$HERE/nginx/common.conf" /etc/nginx/snippets/pipeinpipe-common.conf || true
 put "$HERE/nginx/default.conf" /etc/nginx/sites-available/pipeinpipe-default.conf || true

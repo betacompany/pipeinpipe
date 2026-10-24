@@ -53,6 +53,19 @@ each pipeinpipe checkout.
 sudo ./deploy.sh prod      # or dev: git pull both checkouts, reload PHP
 ```
 
+## Crons
+
+`/etc/cron.d/pipeinpipe-<instance>`, from `cron/site.cron`, run as `www-data`:
+
+| When | What |
+| --- | --- |
+| daily, 00:00 UTC | `main/cron/cron_sport_rating.php`: recomputes the ratings of the last and next 5 days (about 2 s) |
+| every 5 minutes | `main/cron/cron_crossposting.php`: publishes collected VK/Twitter posts; nothing has been collected since 2013, so it's a no-op |
+
+Their output goes to `/srv/pipeinpipe/<instance>/logs/cron.log`; the scripts'
+own logs (`cross_posting.log`) and the app's `custom.log` sit next to it,
+rotated weekly by `/etc/logrotate.d/pipeinpipe`.
+
 ## Notes
 
 - PHP errors go to the per-site nginx error logs in `/var/log/nginx/`, as on
