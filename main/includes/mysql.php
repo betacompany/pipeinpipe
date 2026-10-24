@@ -52,7 +52,12 @@ function db_qw() {
 		@$MYSQL_LOGGER->sql($query);
 	}
 
-	return mysqli_query(db_link(), $query);
+	$result = mysqli_query(db_link(), $query);
+	if ($result === false) {
+		// Callers only see false, so log why
+		error_log("db_qw: " . mysqli_error(db_link()) . " in: " . substr($query, 0, 500));
+	}
+	return $result;
 }
 
 function db_make_qw() {
