@@ -3,11 +3,11 @@
 require_once '../../includes/mysql.php';
 require_once 'converter_library.php';
 
-$btc_head = mysql_result(mysql_qw('SELECT `parent_cup_id` FROM `p_cup` WHERE `id`=1'), 0, 0);
+$btc_head = db_result(db_qw('SELECT `parent_cup_id` FROM `p_cup` WHERE `id`=1'), 0, 0);
 
 echo $btc_head . ' ';
 
-mysql_qw('DELETE FROM `p_man_cup_result` WHERE `cup_id` IN (1, '.$btc_head.') AND `pmid` IN (11, 3, 2, 8)');
+db_qw('DELETE FROM `p_man_cup_result` WHERE `cup_id` IN (1, '.$btc_head.') AND `pmid` IN (11, 3, 2, 8)');
 
 $reqs = array (
 	'INSERT INTO `p_man_cup_result` SET  `points`=605.55555555556, `pmid`=11, `cup_id`=1, `date`=\'2008-11-01\', `place`=4',
@@ -21,7 +21,7 @@ $reqs = array (
 );
 
 foreach ($reqs as $req) {
-	mysql_qw($req);
+	db_qw($req);
 }
 
 echo 'DONE in ' . save_results() . 'ms';

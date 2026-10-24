@@ -36,7 +36,7 @@ class ContentStatsDBClient {
 		if ($uid != 0) {
 			$query .= ' WHERE `uid` = ' . intval($uid);
 		}
-		return new MySQLResultIterator(mysql_qw($query, $actionType, $commentType));
+		return new MySQLResultIterator(db_qw($query, $actionType, $commentType));
 	}
 
 	/**
@@ -76,12 +76,12 @@ class ContentStatsDBClient {
 			$query .= ' WHERE `uid` = ' . intval($uid);
 		}
 
-		return new MySQLResultIterator(mysql_qw($query));
+		return new MySQLResultIterator(db_qw($query));
 	}
 
 	public static function countCommentsIterator() {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT
 					`pv_content_comment`.`uid`, `pv_content_item`.`type`, COUNT(`pv_content_comment`.`id`) AS `count`,
 					CONCAT(`pv_content_comment`.`uid`, \'_\', `pv_content_item`.`type`) AS `ut`
@@ -96,7 +96,7 @@ class ContentStatsDBClient {
 
 	public static function countMessagesIterator() {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT
 						`pv_content_comment`.`uid`, COUNT(`pv_content_comment`.`id`) AS `count`
 					FROM
@@ -142,7 +142,7 @@ class ContentStatsDBClient {
 			$query .= 'WHERE `uid` = ' . intval($uid);
 		}
 
-		return new MySQLResultIterator(mysql_qw($query));
+		return new MySQLResultIterator(db_qw($query));
 	}
 
 	/**
@@ -170,7 +170,7 @@ class ContentStatsDBClient {
 			$query .= 'WHERE `uid` = ' . intval($uid);
 		}
 
-		return new MySQLResultIterator(mysql_qw($query, $actionType, $commentType));
+		return new MySQLResultIterator(db_qw($query, $actionType, $commentType));
 	}
 
 	/**
@@ -202,7 +202,7 @@ class ContentStatsDBClient {
 			$query .= ' WHERE `object` = ' . intval($objectId);
 		}
 
-		return new MySQLResultIterator(mysql_qw($query, $actionType));
+		return new MySQLResultIterator(db_qw($query, $actionType));
 	}
 }
 ?>

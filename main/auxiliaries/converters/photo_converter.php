@@ -12,11 +12,11 @@ $PF = dirname(__FILE__) . '/../../content/photos';
 
 echo "<pre>\n";
 
-mysql_qw('DELETE FROM `p_content_group` WHERE `type`=\'photo_album\'');
+db_qw('DELETE FROM `p_content_group` WHERE `type`=\'photo_album\'');
 echo "Albums deleted from DB\n";
 flush();
 
-mysql_qw('DELETE FROM `p_content_item` WHERE `type`=\'photo\'');
+db_qw('DELETE FROM `p_content_item` WHERE `type`=\'photo\'');
 echo "Photos deleted from DB\n";
 flush();
 
@@ -28,30 +28,30 @@ foreach (glob(dirname(__FILE__) . '/../../content/photos/*.jpg') as $photo) {
 echo "\nAll photos removed from file system\n";
 flush();
 
-$aii = mysql_result(mysql_qw('SELECT MAX(`id`) + 1 FROM `p_content_item`'), 0, 0);
-mysql_qw('ALTER TABLE  `p_content_item` AUTO_INCREMENT=' . $aii);
+$aii = db_result(db_qw('SELECT MAX(`id`) + 1 FROM `p_content_item`'), 0, 0);
+db_qw('ALTER TABLE  `p_content_item` AUTO_INCREMENT=' . $aii);
 echo "Auto increment for `p_content_item` set to value of $aii\n";
 flush();
 
-$aig = mysql_result(mysql_qw('SELECT MAX(`id`) + 1 FROM `p_content_group`'), 0, 0);
-mysql_qw('ALTER TABLE  `p_content_group` AUTO_INCREMENT=' . $aig);
+$aig = db_result(db_qw('SELECT MAX(`id`) + 1 FROM `p_content_group`'), 0, 0);
+db_qw('ALTER TABLE  `p_content_group` AUTO_INCREMENT=' . $aig);
 echo "Auto increment for `p_content_group` set to value of $aig\n\n";
 flush();
 
-$req = mysql_qw('SELECT * FROM `pipe_albums` ORDER BY `id`');
+$req = db_qw('SELECT * FROM `pipe_albums` ORDER BY `id`');
 
-while ($album = mysql_fetch_assoc($req)) {
-	mysql_qw('INSERT INTO `p_content_group` SET `type`=?, `title`=?, `content_source`=?, `content_parsed`=?',
+while ($album = db_fetch_assoc($req)) {
+	db_qw('INSERT INTO `p_content_group` SET `type`=?, `title`=?, `content_source`=?, `content_parsed`=?',
 			'photo_album', $album['name'], $album['desсription'], $album['desсription']);
 
 	echo "\nALBUM: ";
 	print_r($album);
 	echo "\n";
-	$albumId = mysql_insert_id();
+	$albumId = db_insert_id();
 
-	$reqp = mysql_qw('SELECT * FROM `pipe_photos` WHERE `albumid`=?', $album['id']);
+	$reqp = db_qw('SELECT * FROM `pipe_photos` WHERE `albumid`=?', $album['id']);
 
-	while ($photo = mysql_fetch_assoc($reqp)) {
+	while ($photo = db_fetch_assoc($reqp)) {
 		$pid = $photo['id'];
 		$pfile_main = dirname(__FILE__) . '/../../../' . FOLDER_OLD_SITE . '/photos/' . $pid . '.jpg';
 		if (file_exists($pfile_main)) {
@@ -113,8 +113,8 @@ while ($album = mysql_fetch_assoc($req)) {
 
 			$p->update();
 
-			$reqc = mysql_qw('SELECT * FROM `pipe_comments` WHERE `type`=3 AND `cid`=?', $pid);
-			while ($com = mysql_fetch_assoc($reqc)) {
+			$reqc = db_qw('SELECT * FROM `pipe_comments` WHERE `type`=3 AND `cid`=?', $pid);
+			while ($com = db_fetch_assoc($reqc)) {
 				$c = $p->addComment(Comment::BASIC_COMMENT, $com['authorid'], 0, $com['text'], '');
 				echo "\tComment " . $com['id'] . " added with id=" . $c->getId() . "\n";
 			}

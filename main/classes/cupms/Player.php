@@ -330,7 +330,7 @@ class Player {
 
 	private function __construct($id, $row = null) {
 		if ($row == null) {
-			$row = mysql_fetch_assoc(PlayerDBClient::selectById($id));
+			$row = db_fetch_assoc(PlayerDBClient::selectById($id));
 			if (!$row) throw new InvalidIdException("Incorrect player id=$id");
 		}
 
@@ -393,7 +393,7 @@ class Player {
 		PlayerDBClient::insert($name, $surname, $gender, $country, $city,
 								$email, $description);
 
-		return Player::getById(mysql_insert_id());
+		return Player::getById(db_insert_id());
 	}
 
 	/**
@@ -409,7 +409,7 @@ class Player {
 	 */
 	public function loadInfo() {
 		$req = PlayerDBClient::selectById($this->id);
-		if ($pm = mysql_fetch_assoc($req))
+		if ($pm = db_fetch_assoc($req))
 			$this->init(
                 $pm[self::INFO_KEYS_ID], 
                 $pm[self::INFO_KEYS_NAME], 
@@ -435,7 +435,7 @@ class Player {
 		if (!$this->cupsLoaded) {
 			$req = ResultCupDBClient::selectCups($this->id);
 			$this->cups = array();
-			while ($cupResult = mysql_fetch_assoc($req))
+			while ($cupResult = db_fetch_assoc($req))
 				$this->cups[] = $cupResult;
 			$this->cupsLoaded = true;
 		}
@@ -449,7 +449,7 @@ class Player {
 	public function getLeaguesInfo() {
 		if (!$this->leaguesLoaded) {
 			$req = LeagueDBClient::selectLeaguesForPlayer($this->id);
-			while ($lg = mysql_fetch_assoc($req)) {
+			while ($lg = db_fetch_assoc($req)) {
 				// preloading current rating if neccessary
 				RatingTable::getInstance($lg['league_id']);
 				$today = date("Y-m-d");
@@ -542,7 +542,7 @@ class Player {
 			$req = GameDBClient::selectGames($this->id);
 
 			$firstLine = true;
-			while ($game = mysql_fetch_assoc($req)) {
+			while ($game = db_fetch_assoc($req)) {
 				if ($firstLine) {
 					$this->resetStats($game['stage']);
 					$firstLine = false;
@@ -889,7 +889,7 @@ class Player {
 		$req = GameDBClient::selectOpponentsAndScore($this->id);
 
 		$firstLine = true;
-		while ($game = mysql_fetch_assoc($req)) {
+		while ($game = db_fetch_assoc($req)) {
 			if ($firstLine) {
 				for ($i = 0; $i <= $game['opp_id']; $i++) {
 					$this->defeatedOpponentIds[$i] = 0;
@@ -920,7 +920,7 @@ class Player {
 	}
 
 	public static function existsById($id) {
-		return (boolean) mysql_num_rows(PlayerDBClient::selectById($id));
+		return (boolean) db_num_rows(PlayerDBClient::selectById($id));
 	}
 
 	public function toArray() {
@@ -982,7 +982,7 @@ class Player {
 	public static function getAll() {
 		$result = array();
 		$req = PlayerDBClient::getAll();
-		while ($row = mysql_fetch_assoc($req)) {
+		while ($row = db_fetch_assoc($req)) {
 			try {
 				$result[] = new Player(-1, $row);
 			} catch (Exception $e) {

@@ -14,12 +14,12 @@ ORDER BY  `d` DESC
 ) AS  `r`
 WHERE  `r`.`d` >1";
 
-$req = mysql_qw($sql);
+$req = db_qw($sql);
 
-while ($line = mysql_fetch_assoc($req)) {
-	mysql_qw('DELETE FROM `p_content_view` WHERE `target_type`=? AND `target_id`=? AND `uid`=?',
+while ($line = db_fetch_assoc($req)) {
+	db_qw('DELETE FROM `p_content_view` WHERE `target_type`=? AND `target_id`=? AND `uid`=?',
 			$line['target_type'], $line['target_id'], $line['uid']);
-	echo mysql_affected_rows(), "\n";
+	echo db_affected_rows(), "\n";
 }
 
 

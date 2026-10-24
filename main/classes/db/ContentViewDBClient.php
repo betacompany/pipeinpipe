@@ -19,16 +19,16 @@ class ContentViewDBClient {
 	 * @return boolean
 	 */
 	public static function refresh($contentType, $contentId, $uid, $timestamp) {
-		mysql_qw(
+		db_qw(
 			'UPDATE `p_content_view` SET `timestamp`=? WHERE `target_type`=? and `target_id`=? and `uid`=?',
 			$timestamp, $contentType, $contentId, $uid
 		);
 
-		if (mysql_affected_rows() > 0) {
+		if (db_affected_rows() > 0) {
 			return true;
 		}
 
-		return (boolean) mysql_qw(
+		return (boolean) db_qw(
 			'INSERT INTO `p_content_view` SET `target_type`=?, `target_id`=?, `uid`=?, `timestamp`=?',
 			$contentType, $contentId, $uid, $timestamp
 		);
@@ -36,7 +36,7 @@ class ContentViewDBClient {
 
 	public static function getByContentAndUser($contentType, $contentId, $uid) {
 		if ($contentType == ContentViewDBClient::CONTENT_ITEM) {
-			$req = mysql_qw(
+			$req = db_qw(
 				'
 					SELECT `timestamp` FROM (
 						# last group view for specified content item
@@ -92,15 +92,15 @@ class ContentViewDBClient {
 				$uid, $uid, $contentId, $uid, $contentId
 			);
 		} else {
-			$req = mysql_qw(
+			$req = db_qw(
 						'SELECT `timestamp` FROM `p_content_view` WHERE `target_type`=? AND `target_id`=? AND `uid`=?',
 						$contentType, $contentId, $uid
 					);
 		}
 
-		if (mysql_num_rows($req) == 0) return 0;
+		if (db_num_rows($req) == 0) return 0;
 
-		$result = mysql_result($req, 0, 0);
+		$result = db_result($req, 0, 0);
 		return intval($result);
 	}
 
@@ -109,7 +109,7 @@ class ContentViewDBClient {
 	 */
 	public static function getOpenedItemViewsByUser($uid) {
 		return new MySQLResultIterator(
-			mysql_qw('
+			db_qw('
 				SELECT MAX(`timestamp`) AS `timestamp`, `target_id` FROM (
 						# last group view for specified content item
 						(
@@ -239,7 +239,7 @@ class ContentViewDBClient {
 				LIMIT ?, ?
 		';
 
-		return new MySQLResultIterator(mysql_qw($req, $uid, $uid, $uid, intval($from), intval($limit)));
+		return new MySQLResultIterator(db_qw($req, $uid, $uid, $uid, intval($from), intval($limit)));
 	}
 
 	public static function countForumNewMessages($uid) {
@@ -322,10 +322,10 @@ class ContentViewDBClient {
 
 		';
 
-		$query = mysql_qw($req, $uid, $uid, $uid);
+		$query = db_qw($req, $uid, $uid, $uid);
 
-		// if (mysql_num_rows($query) == 0) return 0;
-		return mysql_result($query, 0, 'count');
+		// if (db_num_rows($query) == 0) return 0;
+		return db_result($query, 0, 'count');
 	}
 	
 }

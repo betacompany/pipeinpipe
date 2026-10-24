@@ -11,11 +11,11 @@ $player = new Player(11);
 function getCups($player) {
     $cups = $player->getCups();
     foreach ($cups as $cup) {
-        $req = mysql_qw('SELECT `name`, `competition_id` FROM `p_cup` WHERE `id` = ?', $cup['cup_id']);
-        $line = mysql_fetch_assoc($req);
+        $req = db_qw('SELECT `name`, `competition_id` FROM `p_cup` WHERE `id` = ?', $cup['cup_id']);
+        $line = db_fetch_assoc($req);
 
-        $req2 = mysql_qw("SELECT `name` FROM `p_competition` WHERE `id` = ?", $line['competition_id']);
-        $line2 = mysql_fetch_assoc($req2);
+        $req2 = db_qw("SELECT `name` FROM `p_competition` WHERE `id` = ?", $line['competition_id']);
+        $line2 = db_fetch_assoc($req2);
 
         $name = $line['name'];
         $name2 = $line2['name'];
@@ -27,8 +27,8 @@ function getCups($player) {
 function getDefeatedOpponentIds($player) {
     $defOpp = $player->getDefeatedOpponentIds();
     foreach ($defOpp as $key => $value) {
-        $req = mysql_qw('SELECT `surname` FROM `p_man` WHERE `id` = ?', $key);
-        if($line = mysql_fetch_assoc($req))
+        $req = db_qw('SELECT `surname` FROM `p_man` WHERE `id` = ?', $key);
+        if($line = db_fetch_assoc($req))
             $name = $line['surname'];
         echo "$name - $value\n";
     }
@@ -37,9 +37,9 @@ function getDefeatedOpponentIds($player) {
 function selectOpponentsAndScore($player) {
     $req = GameDBClient::selectOpponentsAndScore($player->getId());
 
-    while($game = mysql_fetch_assoc($req)) {
-        $currReq = mysql_qw('SELECT `surname` FROM `p_man` WHERE `id` = ?', $game['opp_id']);
-        $line = mysql_fetch_assoc($currReq);
+    while($game = db_fetch_assoc($req)) {
+        $currReq = db_qw('SELECT `surname` FROM `p_man` WHERE `id` = ?', $game['opp_id']);
+        $line = db_fetch_assoc($currReq);
         $name = $line['surname'];
         $my_score = $game['my_score'];
         $opp_score = $game['opp_score'];

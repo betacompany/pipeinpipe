@@ -42,7 +42,7 @@ class League implements IComparable {
     private function  __construct($id, $data = null) {
 		if($data == null) {
 			$req = LeagueDBClient::selectById($id);
-			if (!($data = mysql_fetch_assoc($req))) {
+			if (!($data = db_fetch_assoc($req))) {
 				throw new InvalidArgumentException("There is no league with id=$id");
 			}
 		}
@@ -109,7 +109,7 @@ class League implements IComparable {
 	 */
 	public static function create($name, $description, $formula) {
 		LeagueDBClient::insert($name, $description, $formula);
-		$temp = mysql_insert_id();
+		$temp = db_insert_id();
 		if ($temp <= 0) {
 			// TODO make more complicated exceptions
 			throw new Exception("Unable to create new record in database");
@@ -220,7 +220,7 @@ class League implements IComparable {
 	public function getAdmins() {
 		$req = UserPermissionDBClient::selectByLeague($this->getId());
 		$admins = array();
-		while ($u = mysql_fetch_assoc($req)) {
+		while ($u = db_fetch_assoc($req)) {
 			try {
 				$admins[] = User::getById($u['uid']);
 			} catch (InvalidArgumentException $e) {
@@ -243,7 +243,7 @@ class League implements IComparable {
 
 	public static function isSuchName($name) {
 		$req = LeagueDBClient::selectByName($name);
-		return (mysql_num_rows($req) > 0);
+		return (db_num_rows($req) > 0);
 	}
 
 	const IMAGE_NORMAL = '.jpg';

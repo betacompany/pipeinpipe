@@ -27,7 +27,7 @@ class CupFactory {
 		
 		$req = CupDBClient::selectTypeFor($id);
 		try {
-			if ($c = mysql_fetch_assoc($req)) {
+			if ($c = db_fetch_assoc($req)) {
 				switch ($c['type']) {
 				case Cup::TYPE_PLAYOFF:
 					$cup = new CupPlayOff($id);
@@ -69,13 +69,13 @@ class CupFactory {
 
         CupDBClient::insert($competitionId, $parentCupId, $name, $type);
 
-		return self::getCupById(mysql_insert_id());
+		return self::getCupById(db_insert_id());
     }
 
     public static function getAllRegular() {
         $result = array();
         $req = CupDBClient::selectAllRegular();
-        while ($c = mysql_fetch_assoc($req)) {
+        while ($c = db_fetch_assoc($req)) {
             switch ($c['type']) {
             case Cup::TYPE_ONE_LAP:
                 $result[] = new CupOneLap($c['id']);

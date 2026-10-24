@@ -16,13 +16,13 @@ class MySQLResultIterator implements DBResultIterator {
 
 	public function  __construct($resource) {
 		$this->resource = $resource;
-		$this->count = $resource ? mysql_num_rows($this->resource) : 0;
+		$this->count = $resource ? db_num_rows($this->resource) : 0;
 	}
 
 	public function current() {
 		if (isset($this->results[$this->index])) return $this->results[$this->index];
 
-		$this->results[$this->index] = mysql_fetch_assoc($this->resource);
+		$this->results[$this->index] = db_fetch_assoc($this->resource);
 		return $this->results[$this->index];
 	}
 
@@ -48,7 +48,7 @@ class MySQLResultIterator implements DBResultIterator {
 	}
 
 	private function all() {
-		while ($result = mysql_fetch_assoc($this->resource)) {
+		while ($result = db_fetch_assoc($this->resource)) {
 			$this->results[] = $result;
 		}
 	}

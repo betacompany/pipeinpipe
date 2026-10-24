@@ -17,7 +17,7 @@ $urldecoded = urldecode('http://' . MAIN_SITE_URL . $PATH);
 		<br/>
 		<small style="color: #aaa;">
 			<?printf("%.4f", END_TIME-BEGIN_TIME)?> сек.
-			<?=(MYSQL_DEBUG_MODE ? ' | ' . mysql_qw() . ' ' . lang_sclon(mysql_qw(), 'запрос', 'запроса', 'запросов') : '')?>
+			<?=(MYSQL_DEBUG_MODE ? ' | ' . db_qw() . ' ' . lang_sclon(db_qw(), 'запрос', 'запроса', 'запросов') : '')?>
 		</small>
 	</div>
 

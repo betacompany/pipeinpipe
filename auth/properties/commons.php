@@ -29,6 +29,9 @@ foreach ($COMMON_AUTH_PROPERTIES as $key => $value) {
 	define('COMMON_AUTH_' . strtoupper($key), $value);
 }
 
+// Since PHP 8.1 mysqli throws on every error by default; this code checks return values
+mysqli_report(MYSQLI_REPORT_OFF);
+
 $mysqli_link = mysqli_init();
 mysqli_real_connect(
 	$mysqli_link,

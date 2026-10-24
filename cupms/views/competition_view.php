@@ -606,7 +606,7 @@ function competition_delete_confirmation ($comp_id) {
 function competition_get_results_for(Cup $cup, &$storage, $stage) {
 	$req = ResultCupDBClient::selectByCupId($cup->getId());
 	$result = array();
-	while ($d = mysql_fetch_assoc($req)) {
+	while ($d = db_fetch_assoc($req)) {
 		$result[] = $d;
 	}
 	$storage[$stage] = !isset ($storage[$stage]) ? $result : array_merge($storage[$stage], $result);

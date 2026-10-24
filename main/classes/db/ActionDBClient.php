@@ -11,7 +11,7 @@ class ActionDBClient {
 
 	public static function getById($id) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT * FROM `p_content_action` WHERE `id`=?', $id
 			)
 		);
@@ -19,7 +19,7 @@ class ActionDBClient {
 
 	public static function getByTarget($targetType, $targetId) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT * FROM `p_content_action` WHERE `target_type`=? and `target_id`=?',
 				$targetType, $targetId
 			)
@@ -27,17 +27,17 @@ class ActionDBClient {
 	}
 
 	public static function insert($type, $targetType, $targetId, $uid, $timestamp, $value) {
-		mysql_qw(
+		db_qw(
 			'INSERT INTO `p_content_action` SET `type`=?, `target_type`=?, `target_id`=?, `uid`=?, `timestamp`=?, `value`=?',
 			$type, $targetType, $targetId, $uid, $timestamp, $value
 		);
 
-		return mysql_insert_id();
+		return db_insert_id();
 	}
 
 	public static function countActive($type, $uid = 0) {
-		return intval(mysql_result(
-			mysql_qw(
+		return intval(db_result(
+			db_qw(
 				'SELECT COUNT(*) FROM `p_content_action` WHERE `type`=?' . ($uid ? ' AND `uid`='.intval($uid) : ''),
 				$type
 			), 0, 0

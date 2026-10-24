@@ -100,7 +100,7 @@ class CupOneLap extends Cup {
 
         $this->players = array();
 		$req = ResultTableDBClient::selectPmidsForCup($this->getId());
-		while ($p = mysql_fetch_assoc($req)) {
+		while ($p = db_fetch_assoc($req)) {
 			try {
 				$this->players[] = Player::getById($p['pmid']);
 				$this->playerIndexes[$p['pmid']] = count($this->players) - 1;

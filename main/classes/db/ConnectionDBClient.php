@@ -5,7 +5,7 @@
 class ConnectionDBClient {
     public static function getById($id) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT * FROM `p_content_connection` WHERE `id`=?',
 				$id
 			)
@@ -14,7 +14,7 @@ class ConnectionDBClient {
 
 	public static function getByContent($contentType, $contentId) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT * FROM `p_content_connection` WHERE `content_type`=? AND `content_id`=?',
 				$contentType, $contentId
 			)
@@ -23,7 +23,7 @@ class ConnectionDBClient {
 
 	public static function getByHolder($holderType, $holderId) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT * FROM `p_content_connection` WHERE `holder_type`=? AND `holder_id`=?',
 				$holderType, $holderId
 			)
@@ -31,7 +31,7 @@ class ConnectionDBClient {
 	}
 
 	public static function insert($holderType, $holderId, $contentType, $contentId) {
-		mysql_qw(
+		db_qw(
 			'INSERT INTO
 				`p_content_connection`
 			SET
@@ -46,13 +46,13 @@ class ConnectionDBClient {
 			$contentId
 		);
 
-		return mysql_insert_id();
+		return db_insert_id();
 	}
 
 	public static function getTypifiedContentGroups($holderType, $holderId, $contentTypeExtended) {
 		
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT * FROM
 						(
 							SELECT
@@ -77,7 +77,7 @@ class ConnectionDBClient {
 	public static function getTypifiedContentItemsRecursive($holderType, $holderId, $contentTypeExtended) {
 
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'
 					SELECT * FROM
 					(

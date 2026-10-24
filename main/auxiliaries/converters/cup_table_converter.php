@@ -9,7 +9,7 @@ require_once '../../classes/cupms/CupFactory.php';
 echo "<pre>Convertion started\n";
 flush();
 
-mysql_qw('TRUNCATE TABLE `p_man_cup_table`');
+db_qw('TRUNCATE TABLE `p_man_cup_table`');
 echo "`p_man_cup_table` truncated.\n";
 
 foreach (CupFactory::getAllRegular() as $cup) {

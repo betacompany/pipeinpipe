@@ -9,7 +9,7 @@ class TagDBClient {
 
 	public static function selectById($id) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT * FROM `p_content_tag` WHERE `id`=?', $id
 			)
 		);
@@ -17,19 +17,19 @@ class TagDBClient {
 
 	public static function selectByItem($itemId) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT * FROM `p_content_tag` WHERE `target_type`=\'item\' AND `target_id`=?', $itemId
 			)
 		);
 	}
 
 	public static function insert($uid, $value) {
-		mysql_qw('INSERT INTO `p_content_tag` SET `uid`=?, `value`=?', $uid, $value);
-		return mysql_insert_id();
+		db_qw('INSERT INTO `p_content_tag` SET `uid`=?, `value`=?', $uid, $value);
+		return db_insert_id();
 	}
 
 	public static function bind($itemId, $tagId, $uid, $timestamp) {
-		return (boolean) mysql_qw(
+		return (boolean) db_qw(
 			'INSERT INTO `p_content_tag_target` SET
 				`target_type`=\'item\',
 				`target_id`=?,
@@ -42,7 +42,7 @@ class TagDBClient {
 
 	public static function getAll() {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT * FROM `p_content_tag`'
 			)
 		);
@@ -50,7 +50,7 @@ class TagDBClient {
 
 	public static function getAllByTypeWithCounts($itemType, $descendive = false) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT `tags`.*, COUNT(*) AS `count` FROM (
 						SELECT `p_content_tag`.*, `target_id`, `target_type` FROM (
 							`p_content_tag` LEFT JOIN `p_content_tag_target`
@@ -71,7 +71,7 @@ class TagDBClient {
 
 	public static function getByItemId($itemId) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT `p_content_tag`.* FROM
 					`p_content_tag`
 					INNER JOIN
@@ -87,7 +87,7 @@ class TagDBClient {
 
 	public static function getItemsByTagId($tagId, $type) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT `p_content_item`.* FROM
 					`p_content_item`
 					INNER JOIN
@@ -102,7 +102,7 @@ class TagDBClient {
 
 	public static function getItemsTaggedByUser($tagId, $uid) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT `p_content_item`.* FROM
 					`p_content_item`
 					INNER JOIN
@@ -116,11 +116,11 @@ class TagDBClient {
 	}
 
 	public static function removeTagsFor($itemId) {
-		mysql_qw('DELETE FROM `p_content_tag_target` WHERE `target_type`=\'item\' AND `target_id`=?', $itemId);
+		db_qw('DELETE FROM `p_content_tag_target` WHERE `target_type`=\'item\' AND `target_id`=?', $itemId);
 	}
 
     public static function removeTag($itemId, $tagId) {
-        mysql_qw('DELETE FROM `p_content_tag_target` WHERE `target_type`=\'item\' AND `target_id`=? AND tag_id=?', $itemId, $tagId);
+        db_qw('DELETE FROM `p_content_tag_target` WHERE `target_type`=\'item\' AND `target_id`=? AND tag_id=?', $itemId, $tagId);
     }
 }
 ?>

@@ -28,10 +28,10 @@
 
 	try{
 			$query = "SELECT DISTINCT date FROM p_rating ORDER BY date";
-			$result = mysql_query($query);
-			$rows = mysql_num_rows($result);
+			$result = db_query($query);
+			$rows = db_num_rows($result);
 			while ($checkDate < $now){
-				$row = mysql_fetch_assoc($result);
+				$row = db_fetch_assoc($result);
 				$date_elements  = explode("-", $row['date']);	//converting recieved date into int
 				$dbDate = mktime(0,0,0,$date_elements[1], $date_elements[2], $date_elements[0]);
 				while($dbDate != $checkDate) {

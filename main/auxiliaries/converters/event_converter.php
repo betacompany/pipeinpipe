@@ -11,20 +11,20 @@ require_once '../../classes/blog/BlogPost.php';
 
 echo '<pre>';
 
-mysql_qw('DELETE FROM `p_content_item` WHERE `type`=\'event\'');
+db_qw('DELETE FROM `p_content_item` WHERE `type`=\'event\'');
 echo "Events deleted from DB\n";
 flush();
 
-mysql_qw('DELETE FROM `p_content_item` WHERE `type`=\'blog_post\' AND `group_id`=0');
+db_qw('DELETE FROM `p_content_item` WHERE `type`=\'blog_post\' AND `group_id`=0');
 echo "Blogs with group_id=0 deleted from DB\n";
 flush();
 
-$blogId = mysql_result(
-	mysql_qw('SELECT `id` FROM `pv_content_group` WHERE `type`=\'blog\' ORDER BY `id` ASC'), 0, 0
+$blogId = db_result(
+	db_qw('SELECT `id` FROM `pv_content_group` WHERE `type`=\'blog\' ORDER BY `id` ASC'), 0, 0
 );
 
-$req = mysql_qw('SELECT * FROM `pipe_calendar` ORDER BY `id` ASC');
-while ($ev = mysql_fetch_assoc($req)) {
+$req = db_qw('SELECT * FROM `pipe_calendar` ORDER BY `id` ASC');
+while ($ev = db_fetch_assoc($req)) {
 	$time = strtotime($ev['date']);
 	if ($ev['type'] == 2 || $ev['type'] == 3) {
 		$event = Event::create(date("Y-m-d", $time), '12:00', $ev['short'], $ev['text'], $ev['authorid']);

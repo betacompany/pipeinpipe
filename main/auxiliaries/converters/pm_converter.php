@@ -11,22 +11,22 @@ require_once 'converter_library.php';
 echo "<pre>Convertion started\n";
 flush();
 
-mysql_qw('TRUNCATE TABLE `p_man`');
+db_qw('TRUNCATE TABLE `p_man`');
 echo "`p_man` truncated.\n";
 flush();
 
-$req = mysql_qw('SELECT * FROM `pipe_men` WHERE 1=1 ORDER BY `id` ASC');
-while ($pm = mysql_fetch_assoc($req)) {
+$req = db_qw('SELECT * FROM `pipe_men` WHERE 1=1 ORDER BY `id` ASC');
+while ($pm = db_fetch_assoc($req)) {
 	$email = $pm['email'];
 
 	if (empty($email)) {
-		$r = mysql_qw('SELECT `email` FROM `pipe_users` WHERE `pmid`=?', $pm['id']);
-		if ($u = mysql_fetch_assoc($r)) {
+		$r = db_qw('SELECT `email` FROM `pipe_users` WHERE `pmid`=?', $pm['id']);
+		if ($u = db_fetch_assoc($r)) {
 			$email = $u['email'];
 		}
 	}
 
-	mysql_qw('
+	db_qw('
 		INSERT INTO `p_man` SET
 		`id`=?, `name`=?, `surname`=?, `gender`=?, `country`=?, `city`=?, `email`=?, `description`=?
 	',

@@ -23,7 +23,7 @@ class GameDBClient {
 	 * General update method.
 	 */
     public static function update($game) {
-		return (boolean) mysql_qw('UPDATE `p_game` SET `cup_id`=?, `stage`=?,
+		return (boolean) db_qw('UPDATE `p_game` SET `cup_id`=?, `stage`=?,
                     `tour`=?, `pmid1`=?, `pmid2`=?, `score1`=?, `score2`=?, `time`=?, `is_tech`=?,
                     `prev_game_id1`=?, `prev_game_id2`=? WHERE `id`=?',
                         $game->getCupId(), $game->getStage(), $game->gettour(), $game->getPmid1(),
@@ -36,7 +36,7 @@ class GameDBClient {
 	 * Score update method.
 	 */
     public static function updateScore($game) {
-		return mysql_qw('UPDATE `p_game` SET `score1`=?, `score2`=? WHERE `id`=?',
+		return db_qw('UPDATE `p_game` SET `score1`=?, `score2`=? WHERE `id`=?',
 				$game->getScore1(), $game->getScore2(), $game->getId()
 				);
     }
@@ -45,7 +45,7 @@ class GameDBClient {
 	 * Pipemans id update method.
 	 */
 	public static function updatePmid($game){
-		return mysql_qw('UPDATE `p_game` SET `pmid1`=?, `pmid2`=?, WHERE `id`=?',
+		return db_qw('UPDATE `p_game` SET `pmid1`=?, `pmid2`=?, WHERE `id`=?',
 				$game->getPmid1(), $game->getPmid2(), $game->getId()
 				);
 	}
@@ -54,7 +54,7 @@ class GameDBClient {
 	 * Game's time update method.
 	 */
 	public static function updateTime($game){
-		return mysql_qw('UPDATE `p_game` SET `time`=? WHERE `id`=?',
+		return db_qw('UPDATE `p_game` SET `time`=? WHERE `id`=?',
 				$game->getTime(), $game->getId()
 				);
 	}
@@ -63,7 +63,7 @@ class GameDBClient {
 	 * Game's state update method.
 	 */
 	public static function updateIsTech($game){
-		return mysql_qw(
+		return db_qw(
 				'UPDATE `p_game` SET `is_tech`=? WHERE `id`=?',
 				$game->getType(),
 				$game->getId()
@@ -75,18 +75,18 @@ class GameDBClient {
 	 */
 	public static function insert($cupId, $stage, $tour, $pmid1, $pmid2, $score1, $score2,
 			$time, $isTech) {
-		return mysql_qw('INSERT INTO `p_game` SET `cup_id`=?, `stage`=?,
+		return db_qw('INSERT INTO `p_game` SET `cup_id`=?, `stage`=?,
                     `tour`=?, `pmid1`=?, `pmid2`=?, `score1`=?, `score2`=?, `time`=?, `is_tech`=?',
                        $cupId, $stage, $tour, $pmid1, $pmid2, $score1, $score2,	$time, $isTech
 		);
 	}
 
 	public static function selectById($id) {
-		return mysql_qw('SELECT * FROM `p_game` WHERE `id`=?', $id);
+		return db_qw('SELECT * FROM `p_game` WHERE `id`=?', $id);
 	}
 
 	public static function selectAll() {
-		return mysql_qw('SELECT `id`, `cup_id`, `stage`, `tour`, `pmid1`, `pmid2`, `score1`,
+		return db_qw('SELECT `id`, `cup_id`, `stage`, `tour`, `pmid1`, `pmid2`, `score1`,
 			`score2`, `time`, `is_tech` FROM `p_game` WHERE 1=1 ORDER BY `id` ASC');
 	}
 
@@ -96,7 +96,7 @@ class GameDBClient {
 	 * @return resource
 	 */
 	public static function selectPlayersForCup($cupId) {
-		return new MySQLResultIterator(mysql_qw('
+		return new MySQLResultIterator(db_qw('
 						SELECT *
 						FROM
 						(
@@ -142,14 +142,14 @@ class GameDBClient {
      * @param int $cupId
      */
     public static function selectByPmidsAndCup($pmid1, $pmid2, $cupId) {
-        return mysql_qw(
+        return db_qw(
                 'SELECT `id` FROM `p_game` WHERE
                 `pmid1`=? AND `pmid2`=? AND `cup_id`=?',
                 $pmid1, $pmid2, $cupId);
     }
 
     public static function selectCountGamesForCup($cupId) {
-        return mysql_qw(
+        return db_qw(
             'SELECT COUNT(*) FROM `p_game` WHERE `cup_id`=?',
             $cupId
         );
@@ -157,18 +157,18 @@ class GameDBClient {
 
     public static function selectCountGamesFor($pmid, $cupId = 0) {
         if ($cupId == 0) {
-            return mysql_qw('SELECT COUNT(*) FROM `p_game` WHERE `pmid1`=? or `pmid2`=?',
+            return db_qw('SELECT COUNT(*) FROM `p_game` WHERE `pmid1`=? or `pmid2`=?',
                         $pmid, $pmid
                     );
         }
 
-        return mysql_qw('SELECT COUNT(*) FROM `p_game` WHERE (`pmid1`=? or `pmid2`=?) AND `cup_id`=?',
+        return db_qw('SELECT COUNT(*) FROM `p_game` WHERE (`pmid1`=? or `pmid2`=?) AND `cup_id`=?',
                     $pmid, $pmid, $cupId
                 );
     }
 
     public static function selectCountWin5For($pmid, $cupId) {
-        return mysql_qw('SELECT
+        return db_qw('SELECT
 						COUNT(*)
 					FROM
 						`p_game`
@@ -186,7 +186,7 @@ class GameDBClient {
     }
 
     public static function selectCountWin6For($pmid, $cupId) {
-        return mysql_qw('SELECT
+        return db_qw('SELECT
 						COUNT(*)
 					FROM
 						`p_game`
@@ -204,7 +204,7 @@ class GameDBClient {
     }
 
     public static function selectCountWinbFor($pmid, $cupId) {
-        return mysql_qw('SELECT
+        return db_qw('SELECT
 						COUNT(*)
 					FROM
 						`p_game`
@@ -222,7 +222,7 @@ class GameDBClient {
     }
 
     public static function selectCountLose5For($pmid, $cupId) {
-        return mysql_qw('SELECT
+        return db_qw('SELECT
 						COUNT(*)
 					FROM
 						`p_game`
@@ -240,7 +240,7 @@ class GameDBClient {
     }
 
     public static function selectCountLose6For($pmid, $cupId) {
-        return mysql_qw('SELECT
+        return db_qw('SELECT
 						COUNT(*)
 					FROM
 						`p_game`
@@ -258,7 +258,7 @@ class GameDBClient {
     }
 
     public static function selectCountLosebFor($pmid, $cupId) {
-        return mysql_qw('SELECT
+        return db_qw('SELECT
 						COUNT(*)
 					FROM
 						`p_game`
@@ -281,7 +281,7 @@ class GameDBClient {
      * @param <int> $pipeman_id
      */
     public static function selectGames($pipeman_id) {
-        return mysql_qw(' SELECT `id`,
+        return db_qw(' SELECT `id`,
                                  `pmid1`,
                                  `pmid2`,
                                  `stage`,
@@ -301,7 +301,7 @@ class GameDBClient {
      * @param <int> $pipeman_id
      */
     public static function selectOpponentsAndScore($pipeman_id) {
-        return mysql_qw(' SELECT `result`.* FROM
+        return db_qw(' SELECT `result`.* FROM
                           (
                                (     SELECT  `p_game`.`id`,
                                              `p_game`.`pmid2` AS `opp_id`,
@@ -326,7 +326,7 @@ class GameDBClient {
     }
 
     public static function selectGamesBetween($pipeman_id1, $pipeman_id2) {
-        return mysql_qw(' SELECT `id`,
+        return db_qw(' SELECT `id`,
                                  `pmid1`,
                                  `pmid2`,
                                  `score1`,
@@ -344,21 +344,21 @@ class GameDBClient {
     }
 
 	public static function removeAllWith($pmid, $cupId) {
-		return mysql_qw('DELETE FROM `p_game` WHERE `cup_id`=? AND (`pmid1`=? or `pmid2`=?)',
+		return db_qw('DELETE FROM `p_game` WHERE `cup_id`=? AND (`pmid1`=? or `pmid2`=?)',
 					$cupId, $pmid, $pmid
 				);
 	}
 
 	public static function selectFinalFor($cupId) {
-		return mysql_qw('SELECT `id` FROM `p_game` WHERE `cup_id`=? AND `stage`=1', $cupId);
+		return db_qw('SELECT `id` FROM `p_game` WHERE `cup_id`=? AND `stage`=1', $cupId);
 	}
 
 	public static function selectBronzeFor($cupId) {
-		return mysql_qw('SELECT `id` FROM `p_game` WHERE `cup_id`=? AND `stage`=3', $cupId);
+		return db_qw('SELECT `id` FROM `p_game` WHERE `cup_id`=? AND `stage`=3', $cupId);
 	}
 
 	public static function getParentGameIdFor($gameId) {
-		$req = mysql_qw('SELECT 
+		$req = db_qw('SELECT 
 							`id`, `prev_game_id1`
 						FROM
 							`p_game`
@@ -369,7 +369,7 @@ class GameDBClient {
 						$gameId
 			);
 
-		if ($r = mysql_fetch_assoc($req)) {
+		if ($r = db_fetch_assoc($req)) {
 			return $result = array(
 				'parent_id' => $r['id'],
 				'is_left' => $r['prev_game_id1'] == $gameId
@@ -378,24 +378,24 @@ class GameDBClient {
 	}
 
 	public static function getMaxStageFor($cup_id) {
-		$req = mysql_qw('SELECT MAX(`stage`) AS `max` FROM `p_game` WHERE `cup_id`=? AND `stage`!=3', $cup_id);
-		return mysql_result($req, 0, 'max');
+		$req = db_qw('SELECT MAX(`stage`) AS `max` FROM `p_game` WHERE `cup_id`=? AND `stage`!=3', $cup_id);
+		return db_result($req, 0, 'max');
 	}
 
 	public static function deleteByCupId($cup_id) {
-		return mysql_qw('DELETE FROM `p_game` WHERE `cup_id`=?', $cup_id);
+		return db_qw('DELETE FROM `p_game` WHERE `cup_id`=?', $cup_id);
 	}
 
 	public static function countAll() {
-		return mysql_result(
-			mysql_qw('SELECT COUNT(*) FROM `p_game`'),
+		return db_result(
+			db_qw('SELECT COUNT(*) FROM `p_game`'),
 			0, 0
 		);
 	}
 
 	public static function getByStageAndCupId($stage, $cup_id) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT * FROM `p_game` WHERE `stage`=? AND `cup_id`=?',
 				$stage, $cup_id
 			)

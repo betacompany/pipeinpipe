@@ -11,7 +11,7 @@ require_once dirname(__FILE__).'/../cupms/Player.php';
 class PlayerDBClient {
 
     public static function update($player) {
-        return mysql_qw('UPDATE `p_man` SET `name` = ?,
+        return db_qw('UPDATE `p_man` SET `name` = ?,
                                             `surname` = ?,
                                             `gender` = ?,
                                             `country` = ?,
@@ -33,7 +33,7 @@ class PlayerDBClient {
 
     public static function insert($name, $surname, $gender, $country, $city,
                                     $email, $description) {
-            mysql_qw('INSERT INTO `p_man` SET   `name`=?,
+            db_qw('INSERT INTO `p_man` SET   `name`=?,
                                                 `surname`=?,
                                                 `gender`=?,
                                                 `country`=?,
@@ -52,23 +52,23 @@ class PlayerDBClient {
     }
 
     public static function selectById($id) {
-		return mysql_qw('SELECT * FROM `p_man` WHERE `id`=?', $id);
+		return db_qw('SELECT * FROM `p_man` WHERE `id`=?', $id);
     }
 
 	public static function getAll() {
-		return mysql_qw('SELECT * FROM `p_man`');
+		return db_qw('SELECT * FROM `p_man`');
 	}
 
 	public static function countAll() {
-		return mysql_result(
-			mysql_qw('SELECT COUNT(*) FROM `p_man`'),
+		return db_result(
+			db_qw('SELECT COUNT(*) FROM `p_man`'),
 			0, 0
 		);
 	}
 
 	public static function getGenderByName($name) {
-		$req = mysql_qw('SELECT COUNT(*) AS `c`, `gender` FROM `p_man` WHERE `name`=? GROUP BY `gender` ORDER BY `c` DESC', $name);
-		return mysql_num_rows($req) ? mysql_result($req, 0, 0) : false;
+		$req = db_qw('SELECT COUNT(*) AS `c`, `gender` FROM `p_man` WHERE `name`=? GROUP BY `gender` ORDER BY `c` DESC', $name);
+		return db_num_rows($req) ? db_result($req, 0, 0) : false;
 	}
 }
 

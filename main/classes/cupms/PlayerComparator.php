@@ -103,7 +103,7 @@ class PlayerComparator {
             $req = GameDBClient::selectGamesBetween($this->pmId1, $this->pmId2);
             
             $firstLine = true;
-            while ($game = mysql_fetch_assoc($req)) {
+            while ($game = db_fetch_assoc($req)) {
                 if ($firstLine) {
 					$this->init($game['stage']);
                     $firstLine = false;

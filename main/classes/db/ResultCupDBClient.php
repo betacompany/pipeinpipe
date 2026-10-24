@@ -11,11 +11,11 @@ require_once dirname(__FILE__) . '/../db/MySQLResultIterator.php';
  */
 class ResultCupDBClient {
 	public static function select($cup_id, $pmid) {
-		return mysql_qw('SELECT * FROM `p_man_cup_result` WHERE `cup_id`=? and `pmid`=?', $cup_id, $pmid);
+		return db_qw('SELECT * FROM `p_man_cup_result` WHERE `cup_id`=? and `pmid`=?', $cup_id, $pmid);
 	}
 
     public static function selectPlayersForCup($cupId) {
-        return new MySQLResultIterator(mysql_qw('
+        return new MySQLResultIterator(db_qw('
 						SELECT *
 						FROM
 						(
@@ -40,14 +40,14 @@ class ResultCupDBClient {
     }
 
     public static function selectCups($pipeman_id) {
-        return mysql_qw('SELECT `cup_id`, `date`, `points`, `place`
+        return db_qw('SELECT `cup_id`, `date`, `points`, `place`
                          FROM `p_man_cup_result`
                          WHERE `pmid`=?',
                         $pipeman_id );
     }
 
 	public static function insert($pmid, $cup_id, $date, $points, $place) {
-		return mysql_qw('INSERT INTO `p_man_cup_result` SET `pmid`=?, `cup_id`=?, `date`=?, `points`=?, `place`=?',
+		return db_qw('INSERT INTO `p_man_cup_result` SET `pmid`=?, `cup_id`=?, `date`=?, `points`=?, `place`=?',
 						$pmid, $cup_id, $date, $points, $place);
 	}
 
@@ -61,31 +61,31 @@ class ResultCupDBClient {
 	 * @param <type> $place
 	 */
 	public static function update($pmid, $cup_id, $date, $points, $place) {
-		return mysql_qw('UPDATE `p_man_cup_result` SET `date`=?, `points`=?, `place`=? WHERE `pmid`=? and `cup_id`=?',
+		return db_qw('UPDATE `p_man_cup_result` SET `date`=?, `points`=?, `place`=? WHERE `pmid`=? and `cup_id`=?',
 						$date, $points, $place, $pmid, $cup_id);
 	}
 
 	public static function refresh($pmid, $cup_id, $date, $points, $place) {
 		self::update($pmid, $cup_id, $date, $points, $place);
-		if (mysql_affected_rows() > 0) return;
+		if (db_affected_rows() > 0) return;
 		self::insert($pmid, $cup_id, $date, $points, $place);
 	}
 
 	public static function deleteByCupId($cup_id) {
-		return (boolean) mysql_qw('DELETE FROM `p_man_cup_result` WHERE `cup_id`=?', $cup_id);
+		return (boolean) db_qw('DELETE FROM `p_man_cup_result` WHERE `cup_id`=?', $cup_id);
 	}
 
 	public static function rollBack($cup_id) {
-		return mysql_qw('UPDATE `p_man_cup_result` SET `date`=\'\', `points`=0, `place`=0 WHERE `cup_id`=?', $cup_id);
+		return db_qw('UPDATE `p_man_cup_result` SET `date`=\'\', `points`=0, `place`=0 WHERE `cup_id`=?', $cup_id);
 	}
 
 	public static function selectByCupId($cupId) {
-		return mysql_qw('SELECT * FROM `p_man_cup_result` WHERE `cup_id`=?', $cupId);
+		return db_qw('SELECT * FROM `p_man_cup_result` WHERE `cup_id`=?', $cupId);
 	}
 
 	public static function getCompetitionVictories($pmid) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT `p_competition`.* FROM
 					(
 						SELECT `competition_id` FROM
@@ -116,7 +116,7 @@ class ResultCupDBClient {
 
 	public static function getCompetitionPlaces($pmid) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT * FROM
 					(
 						SELECT `p_competition`.*, `place`, `parent_cup_id` FROM

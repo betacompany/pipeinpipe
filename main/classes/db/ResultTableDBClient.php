@@ -17,7 +17,7 @@ class ResultTableDBClient {
 	 * @return resource
 	 */
     public static function select($pmid, $cupId) {
-		return mysql_qw('SELECT * FROM `p_man_cup_table` WHERE `pmid`=? and `cup_id`=?', $pmid, $cupId);
+		return db_qw('SELECT * FROM `p_man_cup_table` WHERE `pmid`=? and `cup_id`=?', $pmid, $cupId);
 	}
 
 	/**
@@ -26,7 +26,7 @@ class ResultTableDBClient {
 	 * @return resource
 	 */
 	public static function update($resultTable) {
-		return mysql_qw('UPDATE `p_man_cup_table` SET `pmid`=?, `cup_id`=?, `place`=?, `games`=?, `points`=?, `win5`=?, `win6`=?, `winb`=?, `lose5`=?, `lose6`=?, `loseb`=? WHERE `id`=?',
+		return db_qw('UPDATE `p_man_cup_table` SET `pmid`=?, `cup_id`=?, `place`=?, `games`=?, `points`=?, `win5`=?, `win6`=?, `winb`=?, `lose5`=?, `lose6`=?, `loseb`=? WHERE `id`=?',
 					$resultTable->getPmid(),
 					$resultTable->getCupId(),
                     $resultTable->getPlace(),
@@ -43,7 +43,7 @@ class ResultTableDBClient {
 	}
 
     public static function insert($resultTable) {
-        return mysql_qw('INSERT INTO `p_man_cup_table` SET `pmid`=?, `cup_id`=?, `place`=?, `games`=?, `points`=?, `win5`=?, `win6`=?, `winb`=?, `lose5`=?, `lose6`=?, `loseb`=?',
+        return db_qw('INSERT INTO `p_man_cup_table` SET `pmid`=?, `cup_id`=?, `place`=?, `games`=?, `points`=?, `win5`=?, `win6`=?, `winb`=?, `lose5`=?, `lose6`=?, `loseb`=?',
 					$resultTable->getPmid(),
 					$resultTable->getCupId(),
                     $resultTable->getPlace(),
@@ -63,24 +63,24 @@ class ResultTableDBClient {
      * @return resource
      */
     public static function selectPmidsForCup($cupId) {
-        return mysql_qw('SELECT `pmid` FROM `p_man_cup_table` WHERE `cup_id`=? ORDER BY `place`, `pmid`', $cupId);
+        return db_qw('SELECT `pmid` FROM `p_man_cup_table` WHERE `cup_id`=? ORDER BY `place`, `pmid`', $cupId);
     }
 
     public static function selectPmidByPlaceInCup($place, $cupId) {
-        return mysql_qw('SELECT `pmid` FROM `p_man_cup_table` WHERE `place`=? and `cup_id`=?', $place, $cupId);
+        return db_qw('SELECT `pmid` FROM `p_man_cup_table` WHERE `place`=? and `cup_id`=?', $place, $cupId);
     }
 
 	public static function insertPmidInCup($pmid, $cupId) {
-		$place = mysql_num_rows(self::selectPmidsForCup($cupId)) + 1;
-		return (boolean) mysql_qw('INSERT INTO `p_man_cup_table` SET `pmid`=?, `cup_id`=?, `place`=?', $pmid, $cupId, $place);
+		$place = db_num_rows(self::selectPmidsForCup($cupId)) + 1;
+		return (boolean) db_qw('INSERT INTO `p_man_cup_table` SET `pmid`=?, `cup_id`=?, `place`=?', $pmid, $cupId, $place);
 	}
 
 	public static function deleteByCupId($cup_id) {
-		return mysql_qw('DELETE FROM `p_man_cup_table` WHERE `cup_id`=?', $cup_id);
+		return db_qw('DELETE FROM `p_man_cup_table` WHERE `cup_id`=?', $cup_id);
 	}
 
 	public static function deletePlayer($cupId, $pmid) {
-		return (boolean) mysql_qw('DELETE FROM `p_man_cup_table` WHERE `cup_id`=? and `pmid`=?', $cupId, $pmid);
+		return (boolean) db_qw('DELETE FROM `p_man_cup_table` WHERE `cup_id`=? and `pmid`=?', $cupId, $pmid);
 	}
 }
 ?>

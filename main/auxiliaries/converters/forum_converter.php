@@ -17,16 +17,16 @@ $queries = array(
 echo '<pre>';
 
 foreach ($queries as $query) {
-	mysql_qw($query);
+	db_qw($query);
 	echo $query . "\n";
 	flush();
 }
 
 // --------------------------------------
 
-$req = mysql_qw('SELECT * FROM `pipe_forum_topics` ORDER BY `id`');
-while ($t = mysql_fetch_assoc($req)) {
-	mysql_qw('INSERT INTO `p_content_item` SET
+$req = db_qw('SELECT * FROM `pipe_forum_topics` ORDER BY `id`');
+while ($t = db_fetch_assoc($req)) {
+	db_qw('INSERT INTO `p_content_item` SET
 				`id`=?,
 				`type`=?,
 				`group_id`=?,
@@ -49,7 +49,7 @@ while ($t = mysql_fetch_assoc($req)) {
 			);
 
 	if ($t['contid'] != 0) {
-		mysql_qw('UPDATE `p_content_item` SET `content_value`=? WHERE `id`=?', $t['id'], $t['contid']);
+		db_qw('UPDATE `p_content_item` SET `content_value`=? WHERE `id`=?', $t['id'], $t['contid']);
 	}
 
 	echo 'topic ' . $t['id'] . " handled\n";
@@ -62,12 +62,12 @@ flush();
 
 // -------------------------------------------
 
-$req = mysql_qw('SELECT MAX(`id`) FROM `pipe_forum_parts`');
-$max = mysql_result($req, 0, 0);
+$req = db_qw('SELECT MAX(`id`) FROM `pipe_forum_parts`');
+$max = db_result($req, 0, 0);
 
-$req = mysql_qw('SELECT * FROM `pipe_forum_parts` ORDER BY `id`');
-while ($p = mysql_fetch_assoc($req)) {
-	mysql_qw('INSERT INTO `p_content_group` SET
+$req = db_qw('SELECT * FROM `pipe_forum_parts` ORDER BY `id`');
+while ($p = db_fetch_assoc($req)) {
+	db_qw('INSERT INTO `p_content_group` SET
 				`id`=?,
 				`type`=?,
 				`parent_group_id`=?,
@@ -90,9 +90,9 @@ while ($p = mysql_fetch_assoc($req)) {
 echo "ALL PARTS HANDLED\n\n";
 flush();
 
-$req = mysql_qw('SELECT * FROM `pipe_forum_forums` ORDER BY `id`');
-while ($f = mysql_fetch_assoc($req)) {
-	mysql_qw(
+$req = db_qw('SELECT * FROM `pipe_forum_forums` ORDER BY `id`');
+while ($f = db_fetch_assoc($req)) {
+	db_qw(
 		'INSERT INTO `p_content_group` SET
 			`id`=?,
 			`type`=?,
@@ -115,11 +115,11 @@ while ($f = mysql_fetch_assoc($req)) {
 echo "ALL FORUMS HANDLED\n\n";
 flush();
 
-$req = mysql_qw('SELECT * FROM `pipe_forum_messages` ORDER BY `id`');
-while ($m = mysql_fetch_assoc($req)) {
+$req = db_qw('SELECT * FROM `pipe_forum_messages` ORDER BY `id`');
+while ($m = db_fetch_assoc($req)) {
 	$source = preg_replace('/\[quote=([^]]*)\]/', '[quote name="$1"]', $m['text']);
 
-	mysql_qw(
+	db_qw(
 		'INSERT INTO `p_content_comment` SET
 			`id`=?,
 			`type`=?,
@@ -144,9 +144,9 @@ while ($m = mysql_fetch_assoc($req)) {
 echo "ALL MESSAGES HANDLED\n\n";
 flush();
 
-$req = mysql_qw('SELECT * FROM `pipe_forum_agreements` ORDER BY `id`');
-while ($a = mysql_fetch_assoc($req)) {
-	mysql_qw(
+$req = db_qw('SELECT * FROM `pipe_forum_agreements` ORDER BY `id`');
+while ($a = db_fetch_assoc($req)) {
+	db_qw(
 		'INSERT INTO `p_content_action` SET
 			`target_type`=\'comment\',
 			`target_id`=?,
@@ -163,9 +163,9 @@ while ($a = mysql_fetch_assoc($req)) {
 	flush();
 }
 
-$req = mysql_qw('SELECT * FROM `pipe_forum_romanments` ORDER BY `id`');
-while ($a = mysql_fetch_assoc($req)) {
-	mysql_qw(
+$req = db_qw('SELECT * FROM `pipe_forum_romanments` ORDER BY `id`');
+while ($a = db_fetch_assoc($req)) {
+	db_qw(
 		'INSERT INTO `p_content_action` SET
 			`target_type`=\'comment\',
 			`target_id`=?,

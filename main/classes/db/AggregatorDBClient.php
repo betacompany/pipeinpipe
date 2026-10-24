@@ -31,29 +31,29 @@ class AggregatorDBClient {
 				ON `agg_post`.`source`=`agg_user`.`source` AND `agg_post`.`author_id`=`agg_user`.`id`';
 
 	public static function getPostById($id) {
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 			self::QUERY . ' WHERE `agg_post`.`id`=?', intval($id)
 		));
 	}
 
 	public static function setPostHandled($id) {
-		return mysql_qw('UPDATE `agg_post` SET `viewed`=? WHERE `id`=?', 1, intval($id));
+		return db_qw('UPDATE `agg_post` SET `viewed`=? WHERE `id`=?', 1, intval($id));
 	}
 
 	public static function getAllUnhandledPosts() {
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 			self::QUERY . ' WHERE `viewed`=0'
 		));
 	}
 
 	public static function getPhotoById($id) {
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 			'SELECT * FROM `agg_photo` WHERE `id`=?', intval($id)
 		));
 	}
 
 	public static function getPhotoByPostId($agg_post_id) {
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 			'SELECT * FROM `agg_photo` WHERE `agg_post_id`=?', intval($agg_post_id)
 		));
 	}

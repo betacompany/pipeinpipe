@@ -97,7 +97,7 @@ class User {
     private function  __construct($uid, $data = null) {
 		if ($data == null) {
 			$req = UserDBClient::selectById($uid);
-			if ($data = mysql_fetch_assoc($req)) {
+			if ($data = db_fetch_assoc($req)) {
 
 			} else {
 				throw new InvalidArgumentException('There is no user with id='.$uid);
@@ -142,7 +142,7 @@ class User {
 	public static function getAll() {
 		$req = UserDBClient::selectAll();
 		$result = array();
-		while ($data = mysql_fetch_assoc($req)) {
+		while ($data = db_fetch_assoc($req)) {
 			$result[] = User::getByData($data);
 		}
 		return $result;
@@ -692,7 +692,7 @@ class User {
 	}
 
 	public static function existsById($id) {
-		return mysql_num_rows(UserDBClient::selectById($id)) > 0;
+		return db_num_rows(UserDBClient::selectById($id)) > 0;
 	}
 
 	public static function getByPmid($pmid) {
@@ -744,7 +744,7 @@ class User {
         if ($this->dataLoaded) return;
 
         $reqd = UserDataDBClient::selectByUID($this->uid());
-        while ($d = mysql_fetch_assoc($reqd)) {
+        while ($d = db_fetch_assoc($reqd)) {
             $this->data[$d['key']] = $d['value'];
         }
 
@@ -755,7 +755,7 @@ class User {
         if ($this->permissionsLoaded) return;
 
         $reqp = UserPermissionDBClient::selectByUID($this->uid());
-        while ($p = mysql_fetch_assoc($reqp)) {
+        while ($p = db_fetch_assoc($reqp)) {
             switch ($p['status']) {
             case 'TA': // total admin
                 $this->TA = true;
