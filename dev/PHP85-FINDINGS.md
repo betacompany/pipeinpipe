@@ -44,6 +44,7 @@ Both repos run on PHP 8.5 and still run on PHP 5.5.
 | 12 | pipeinpipe | Runtime deprecations | `trim()`/`htmlspecialchars()`/`mb_strlen()` with null, `setcookie()` with null expiry, dynamic `Cup::$pmids`/`$pmidsLoaded`, float modulo in `Logger` |
 | 13 | pipeinpipe | Compile-time deprecations | 36 `(boolean)` casts; `#[\ReturnTypeWillChange]` on the Iterator methods (a comment on 5.5); `final private`; optional parameter before a required one in `ItemDBClient::insert()` |
 | 14 | pipeinpipe | `PlayerComparator::getPlayer(int $which)`: `int` is a class name on PHP 5, so every call fails today | Type hint removed |
+| 15 | pipeinpipe | The page cache never worked on prod (`main/temp` not writable by PHP), and its keys were unsafe to enable: `api.php` would serve uncached-TTL methods (incl. writes) from cache forever, and the home page and closed forum topics were cached across users | `api.php` caches only methods with a TTL (none while `API_DEBUG_MODE` is on); home page and closed topics are cached per user. Prod got a `www-data`-owned `temp/cache` on 2026-10-24: `/sport/pipemen` went from 40 s to 0.24 s |
 
 ## Left for after the cutover
 
@@ -59,6 +60,9 @@ Both repos run on PHP 8.5 and still run on PHP 5.5.
   does.** In particular, keep `request_order = "GP"`: the API echoes
   `$_REQUEST` in error responses and would include the login cookie otherwise.
   Also set `short_open_tag = On`.
+- **Page cache directory:** `main/temp/cache` must be writable by PHP
+  (`www-data`); `main/temp` itself stays read-only, as on prod, so the lock
+  and per-user `temp/user_*` files keep behaving as they do today.
 - **Decide on GD (`php8.5-gd`):** with it, the photo background, avatar and
   photo upload code would start working, but that code has not run on prod
   for years.
