@@ -96,9 +96,15 @@ if (!API_DEBUG_MODE) {
 
 $cache_key = 'api/' . $_REQUEST['handler'] . '/' . $_REQUEST['method'];
 $cache = ResponseCache::getInstance($cache_key);
-$cache->echoByPolitics($cache_store_policy);
 
-$cache->start();
+// Only methods with a TTL are cached. The cache file is per handler/method and
+// ignores the other parameters, and echoByPolitics() serves a method without a
+// TTL forever, including ones that write (life/add_post etc.)
+$cache_ttl = isset($cache_store_policy[$cache_key]) ? $cache_store_policy[$cache_key] : 0;
+if ($cache_ttl > 0) {
+	$cache->echoByPolitics($cache_store_policy);
+	$cache->start();
+}
 
 // Please, note that all catched exceptions are handled with exit(0)!
 // Therefore exceptions won't be cached
@@ -130,6 +136,8 @@ default:
 	));
 }
 
-$cache->store();
+if ($cache_ttl > 0) {
+	$cache->store();
+}
 
 ?>
