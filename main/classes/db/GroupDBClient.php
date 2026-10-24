@@ -69,7 +69,7 @@ class GroupDBClient {
 	}
 
 	public static function remove($groupId) {
-		return (boolean) db_qw(
+		return (bool) db_qw(
 			'UPDATE `p_content_group` SET `removed`=1 WHERE `id`=?', $groupId
 		);
 	}

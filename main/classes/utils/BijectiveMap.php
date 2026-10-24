@@ -4,6 +4,8 @@
  *
  * @author ortemij
  */
+// #[\ReturnTypeWillChange] keeps PHP 8.1+ from asking for return types on the
+// Iterator methods; PHP 5 reads the line as a comment.
 class BijectiveMap implements IteratorAggregate {
 	private $direct = array();
 	private $reversed = array();
@@ -41,6 +43,7 @@ class BijectiveMap implements IteratorAggregate {
 		return array_values($this->direct);
 	}
 
+	#[\ReturnTypeWillChange]
 	public function getIterator() {
 		return new BijectiveMapIterator($this);
 	}
@@ -62,6 +65,7 @@ class BijectiveMapIterator implements Iterator {
 	 *
 	 * @return array ('key' => ..., 'value' => ...)
 	 */
+	#[\ReturnTypeWillChange]
 	public function current() {
 		$pair = array (
 			'key' => $this->map->getKey($this->values[$index]),
@@ -71,18 +75,22 @@ class BijectiveMapIterator implements Iterator {
 		return $pair;
 	}
 
+	#[\ReturnTypeWillChange]
 	public function key() {
 		throw new BadMethodCallException('Method BijectiveMapIterator::key() is unsupported');
 	}
 
+	#[\ReturnTypeWillChange]
 	public function next() {
 		$this->index++;
 	}
 
+	#[\ReturnTypeWillChange]
 	public function rewind() {
 		$this->index = 0;
 	}
 
+	#[\ReturnTypeWillChange]
 	public function valid() {
 		return $this->index < count($this->values);
 	}

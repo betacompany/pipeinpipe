@@ -28,7 +28,7 @@ class ContentViewDBClient {
 			return true;
 		}
 
-		return (boolean) db_qw(
+		return (bool) db_qw(
 			'INSERT INTO `p_content_view` SET `target_type`=?, `target_id`=?, `uid`=?, `timestamp`=?',
 			$contentType, $contentId, $uid, $timestamp
 		);

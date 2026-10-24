@@ -11,7 +11,7 @@ require_once dirname(__FILE__).'/../../includes/mysql.php';
 class CupDBClient {
 
 	public static function update(Cup $cup){
-		return (boolean) db_qw('UPDATE `p_cup` SET
+		return (bool) db_qw('UPDATE `p_cup` SET
 		                            `competition_id`=?,
 		                            `parent_cup_id`=?,
 		                            `name`=?,
@@ -71,12 +71,12 @@ class CupDBClient {
 
 	//возвращает true, если удаление прошло удачно, при неудаче - false
 	public static function deleteById($cup_id) {
-		return (boolean) db_qw('DELETE FROM `p_cup` WHERE `id`=?', $cup_id);
+		return (bool) db_qw('DELETE FROM `p_cup` WHERE `id`=?', $cup_id);
 	}
 
 	//возвращает true, если удаление прошло удачно, при неудаче - false
 	public static function deleteByCompetitionId($comp_id) {
-		return (boolean) db_qw('DELETE FROM `p_cup` WHERE `competition_id`=?', $comp_id);
+		return (bool) db_qw('DELETE FROM `p_cup` WHERE `competition_id`=?', $comp_id);
 	}
 
 	public static function selectByName($comp_id, $cup_name) {

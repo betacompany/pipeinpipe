@@ -222,7 +222,7 @@ function substring($str, $start, $length) {
  * @return int
  */
 function strlength($str) {
-	return mb_strlen($str, "UTF-8");
+	return mb_strlen((string) $str, "UTF-8");
 }
 
 function string_convert($str) {

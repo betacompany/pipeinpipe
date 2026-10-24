@@ -25,7 +25,7 @@ class RatingDBClient {
 	}
 
 	public static function insert($leagueId, $date, $pmid, $score, $place) {
-		return (boolean) db_qw(
+		return (bool) db_qw(
 					'INSERT INTO `p_rating` SET `league_id`=?, `date`=?, `pmid`=?, `points`=?, `rating_place`=?',
 					$leagueId, $date, $pmid, $score, $place
 				);
@@ -33,12 +33,12 @@ class RatingDBClient {
 
 	public static function removeFuture($date, $leagueId) {
 		if ($leagueId == 0) {
-			return (boolean) db_qw(
+			return (bool) db_qw(
 					'DELETE FROM `p_rating` WHERE `date`>=?', $date
 				);
 		}
 
-		return (boolean) db_qw(
+		return (bool) db_qw(
 					'DELETE FROM `p_rating` WHERE `date`>=? and `league_id`=?', $date, $leagueId
 				);
 	}

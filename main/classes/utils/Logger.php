@@ -50,7 +50,7 @@ class Logger {
 		return sprintf(
 			"%s:%s\t[%s]\t%s\t%s?%s",
 			date("Y/m/d H:i:s", floor($tm)),
-			preg_replace("/ /", "0", sprintf("%3d", ($tm * 1000) % 1000)),
+			preg_replace("/ /", "0", sprintf("%3d", ((int) ($tm * 1000)) % 1000)),
 			$layer,
 			$userid,
 			$_SERVER['SCRIPT_NAME'],

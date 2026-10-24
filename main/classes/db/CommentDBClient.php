@@ -108,7 +108,7 @@ class CommentDBClient {
 	}
 
 	public static function remove($commentId) {
-		return (boolean) db_qw(
+		return (bool) db_qw(
 			'UPDATE `p_content_comment` SET `removed`=1 WHERE `id`=?', $commentId
 		);
 	}

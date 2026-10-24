@@ -23,7 +23,7 @@ class GameDBClient {
 	 * General update method.
 	 */
     public static function update($game) {
-		return (boolean) db_qw('UPDATE `p_game` SET `cup_id`=?, `stage`=?,
+		return (bool) db_qw('UPDATE `p_game` SET `cup_id`=?, `stage`=?,
                     `tour`=?, `pmid1`=?, `pmid2`=?, `score1`=?, `score2`=?, `time`=?, `is_tech`=?,
                     `prev_game_id1`=?, `prev_game_id2`=? WHERE `id`=?',
                         $game->getCupId(), $game->getStage(), $game->gettour(), $game->getPmid1(),

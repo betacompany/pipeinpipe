@@ -29,7 +29,7 @@ class TagDBClient {
 	}
 
 	public static function bind($itemId, $tagId, $uid, $timestamp) {
-		return (boolean) db_qw(
+		return (bool) db_qw(
 			'INSERT INTO `p_content_tag_target` SET
 				`target_type`=\'item\',
 				`target_id`=?,

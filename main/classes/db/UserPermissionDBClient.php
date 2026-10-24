@@ -17,13 +17,13 @@ class UserPermissionDBClient {
 	}
 
 	public static function insert($uid, $status, $targetId) {
-		return (boolean) db_qw('INSERT INTO `p_user_permission` SET `uid`=?, `status`=?, `target_id`=?',
+		return (bool) db_qw('INSERT INTO `p_user_permission` SET `uid`=?, `status`=?, `target_id`=?',
 					$uid, $status, $targetId
 				);
 	}
 
 	public static function delete($uid, $status, $targetId) {
-		return (boolean) db_qw('DELETE FROM `p_user_permission` WHERE `uid`=? AND `status`=? AND `target_id`=?',
+		return (bool) db_qw('DELETE FROM `p_user_permission` WHERE `uid`=? AND `status`=? AND `target_id`=?',
 					$uid, $status, $targetId
 				);
 	}

@@ -118,7 +118,7 @@ class Auth {
 	}
 
 	public function sessionCookiePut($key, $value) {
-		setcookie($key, $value, null, "/", COOKIES_DOMAIN, false, false);
+		setcookie($key, $value, 0, "/", COOKIES_DOMAIN, false, false);
 	}
 
 	public function sessionCookieGet($key) {

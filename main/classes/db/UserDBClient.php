@@ -90,7 +90,7 @@ class UserDBClient {
 	}
 
 	public static function deleteFavourite($uid, $target) {
-		return (boolean) db_qw('DELETE FROM `p_user_favourite` WHERE `uid`=? AND `target`=?',
+		return (bool) db_qw('DELETE FROM `p_user_favourite` WHERE `uid`=? AND `target`=?',
 				$uid, $target);
 	}
 

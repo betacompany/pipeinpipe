@@ -72,7 +72,7 @@ class ResultTableDBClient {
 
 	public static function insertPmidInCup($pmid, $cupId) {
 		$place = db_num_rows(self::selectPmidsForCup($cupId)) + 1;
-		return (boolean) db_qw('INSERT INTO `p_man_cup_table` SET `pmid`=?, `cup_id`=?, `place`=?', $pmid, $cupId, $place);
+		return (bool) db_qw('INSERT INTO `p_man_cup_table` SET `pmid`=?, `cup_id`=?, `place`=?', $pmid, $cupId, $place);
 	}
 
 	public static function deleteByCupId($cup_id) {
@@ -80,7 +80,7 @@ class ResultTableDBClient {
 	}
 
 	public static function deletePlayer($cupId, $pmid) {
-		return (boolean) db_qw('DELETE FROM `p_man_cup_table` WHERE `cup_id`=? and `pmid`=?', $cupId, $pmid);
+		return (bool) db_qw('DELETE FROM `p_man_cup_table` WHERE `cup_id`=? and `pmid`=?', $cupId, $pmid);
 	}
 }
 ?>

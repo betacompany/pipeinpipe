@@ -121,7 +121,7 @@ class ItemDBClient {
 		return db_affected_rows();
 	}
 
-	public static function insert($type, $groupId, $uid, $creationTimestamp, $contentSource, $contentParsed, $contentTitle = '', $contentValue) {
+	public static function insert($type, $groupId, $uid, $creationTimestamp, $contentSource, $contentParsed, $contentTitle, $contentValue) {
 		db_qw(
 			'INSERT INTO `p_content_item` SET   `type`=?,
 												`group_id`=?,
@@ -183,7 +183,7 @@ class ItemDBClient {
 	}
 
 	public static function remove($itemId) {
-		return (boolean) db_qw(
+		return (bool) db_qw(
 			'UPDATE `p_content_item` SET `removed`=1 WHERE `id`=?', $itemId
 		);
 	}

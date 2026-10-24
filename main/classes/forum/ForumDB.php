@@ -64,7 +64,7 @@ class ForumDB {
 	 * @return boolean
 	 */
 	public static function updateMessageText(ForumMessage $msg) {
-		return (boolean) db_qw(
+		return (bool) db_qw(
 					'UPDATE `' . self::MESSAGES . '` SET `text`=? WHERE `id`=?',
 					$msg->getText(), $msg->getId()
 				);
@@ -98,7 +98,7 @@ class ForumDB {
 	 * @return boolean
 	 */
 	public static function updateMessage(ForumMessage $message) {
-		return (boolean) db_qw(
+		return (bool) db_qw(
 					'UPDATE `' . self::MESSAGES . '` SET `topic_id`=?,
 						                                      `uid`=?,
 															  `timestamp`=?,
@@ -164,7 +164,7 @@ class ForumDB {
 	 * @return boolean
 	 */
 	public static function updateTopic(ForumTopic $topic) {
-		return (boolean) db_qw(
+		return (bool) db_qw(
 					'UPDATE `' . self::TOPICS . '` SET `part_id`=?,
 													   `prev_topic_id`=?,
 													   `uid`=?,
@@ -315,7 +315,7 @@ class ForumDB {
 
 		if (db_affected_rows() > 0) return true;
 		
-		return (boolean) db_qw(
+		return (bool) db_qw(
 					'INSERT INTO `' . self::LAST_REFRESH . '` SET `target_type`=?, `target_id`=?, `timestamp`=?',
 					$targetType, $targetId, $timestamp
 				);
@@ -328,7 +328,7 @@ class ForumDB {
 	 * @result boolean
 	 */
 	public static function updateLast($targetType, $targetId, $timestamp) {
-		return (boolean) db_qw(
+		return (bool) db_qw(
 					'UPDATE `' . self::LAST_REFRESH . '` SET `timestamp`=? WHERE `target_type`=? and `target_id`=?',
 					$timestamp, $targetType, $targetId
 				);
@@ -345,14 +345,14 @@ class ForumDB {
 		$lastVisitTimestamp = ForumDB::getLastVisit($uid, $targetType, $targetId);
 		
 		if ($lastVisitTimestamp != 0) {
-			return (boolean) db_qw(
+			return (bool) db_qw(
 						'UPDATE `' . self::LAST_VISIT . '` SET `timestamp`=? 
 							WHERE `target_type`=? and `target_id`=? and `uid`=?',
 						$timestamp, $targetType, $targetId, $uid
 					);
 		}
 
-		return (boolean) db_qw(
+		return (bool) db_qw(
 					'INSERT INTO `' . self::LAST_VISIT . '` SET `target_type`=?, `target_id`=?, `uid`=?, `timestamp`=?',
 					$targetType, $targetId, $uid, $timestamp
 				);
@@ -383,7 +383,7 @@ class ForumDB {
 	}
 
 	public static function insertAction($msgId, $uid, $type, $timestamp, $value) {
-		return (boolean) db_qw(
+		return (bool) db_qw(
 					'INSERT INTO `' . self::ACTIONS . '` SET `message_id`=?, `uid`=?, `type`=?, `timestamp`=?, `value`=?',
 					$msgId, $uid, $type, $timestamp, $value
 				);

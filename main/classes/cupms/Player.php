@@ -920,7 +920,7 @@ class Player {
 	}
 
 	public static function existsById($id) {
-		return (boolean) db_num_rows(PlayerDBClient::selectById($id));
+		return (bool) db_num_rows(PlayerDBClient::selectById($id));
 	}
 
 	public function toArray() {

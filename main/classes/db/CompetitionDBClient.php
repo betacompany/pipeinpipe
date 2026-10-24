@@ -23,7 +23,7 @@ class CompetitionDBClient {
 	}
 
 	public static function update(Competition $competition) {
-		return (boolean) db_qw('UPDATE `p_competition` SET
+		return (bool) db_qw('UPDATE `p_competition` SET
 							`league_id`=?,
 							`tournament_id`=?,
 							`name`=?,
@@ -97,12 +97,12 @@ class CompetitionDBClient {
 	 * @return boolean
 	 */
 	public static function existsById($id) {
-		return (boolean) db_num_rows(db_qw('SELECT `id` FROM `p_competition` WHERE `id`=?', $id));
+		return (bool) db_num_rows(db_qw('SELECT `id` FROM `p_competition` WHERE `id`=?', $id));
 	}
 
 	//возвращает true, если удаление прошло удачно, при неудаче - false
 	public static function deleteById($id) {
-		return (boolean) db_qw('DELETE FROM `p_competition` WHERE `id`=?', $id);
+		return (bool) db_qw('DELETE FROM `p_competition` WHERE `id`=?', $id);
 	}
 
 	/**

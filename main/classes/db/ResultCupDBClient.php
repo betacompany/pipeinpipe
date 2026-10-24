@@ -72,7 +72,7 @@ class ResultCupDBClient {
 	}
 
 	public static function deleteByCupId($cup_id) {
-		return (boolean) db_qw('DELETE FROM `p_man_cup_result` WHERE `cup_id`=?', $cup_id);
+		return (bool) db_qw('DELETE FROM `p_man_cup_result` WHERE `cup_id`=?', $cup_id);
 	}
 
 	public static function rollBack($cup_id) {

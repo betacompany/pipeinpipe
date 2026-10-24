@@ -47,7 +47,7 @@ class LeagueDBClient {
 	}
 
 	public static function existsById($id) {
-		return (boolean) db_num_rows(db_qw('SELECT `id` FROM `p_league` WHERE `id`=?', $id));
+		return (bool) db_num_rows(db_qw('SELECT `id` FROM `p_league` WHERE `id`=?', $id));
 	}
 
 	public static function selectById($id) {
@@ -69,17 +69,17 @@ class LeagueDBClient {
 	}
 
 	public static function setName($leagueId, $name) {
-		return (boolean) db_qw('UPDATE `p_league` SET `name`=? WHERE `id`=?', $name, $leagueId);
+		return (bool) db_qw('UPDATE `p_league` SET `name`=? WHERE `id`=?', $name, $leagueId);
 	}
 
 	public static function setDescr($leagueId, $description) {
-		return (boolean) db_qw('UPDATE `p_league` SET `description`=? WHERE `id`=?', $description, $leagueId);;
+		return (bool) db_qw('UPDATE `p_league` SET `description`=? WHERE `id`=?', $description, $leagueId);;
 	}
 
 	public static function setFormula($leagueId, $formula) {
 		if ($formula instanceof RatingFormula)
 			$formula = $formula->getName();
-		return (boolean) db_qw('UPDATE `p_league` SET `formula`=? WHERE `id`=?', $formula, $leagueId);;
+		return (bool) db_qw('UPDATE `p_league` SET `formula`=? WHERE `id`=?', $formula, $leagueId);;
 	}
 
 	public static function selectPlayers($leagueId) {
