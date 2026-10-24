@@ -1,0 +1,112 @@
+# Local dev stand for pipeinpipe.info + total.pipeinpipe.info.
+#
+#   http://pipeinpipe.localhost:8085   -> PHP 8.5 (upgrade target)
+#   http://pipeinpipe.localhost:8055   -> PHP 5.5 (prod baseline, same code and DB)
+#
+# Also m., cupms. and total.pipeinpipe.localhost on both ports. See dev/README.md.
+
+name: pipeinpipe-dev
+
+services:
+  mariadb:
+    image: mariadb:11.8
+    environment:
+      MARIADB_ROOT_PASSWORD: dev
+    volumes:
+      - ./mariadb/my.cnf:/etc/mysql/conf.d/zz-dev.cnf:ro
+      - dbdata:/var/lib/mysql
+      # Shared so PHP can reach the DB as "localhost", like on prod
+      - dbsocket:/run/mysqld
+    ports:
+      - "127.0.0.1:3307:3306"
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      retries: 20
+
+  php85:
+    build:
+      context: .
+      dockerfile: php85/Dockerfile
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    volumes:
+      - dbsocket:/run/mysqld
+      - ./data/php85/log:/var/log/php
+      - ./data/php85/temp:/var/www/pipeinpipe.info/main/temp
+      - ./data/php85/logs:/var/www/pipeinpipe.info/main/logs
+      - ..:/var/www/pipeinpipe.info
+      - ./config/pipeinpipe/my-properties.php:/var/www/pipeinpipe.info/main/config/my-properties.php:ro
+      - ./config/pipeinpipe/auth-local-properties.php:/var/www/pipeinpipe.info/auth/properties/local-properties.php:ro
+      - ./data/content/users:/var/www/pipeinpipe.info/main/images/users
+      - ./data/content/competitions:/var/www/pipeinpipe.info/main/images/competitions
+      - ./data/content/pipemen:/var/www/pipeinpipe.info/main/images/pipemen
+      - ./data/content/leagues:/var/www/pipeinpipe.info/main/images/leagues
+      - ./data/content/photos:/var/www/pipeinpipe.info/main/content/photos
+      - ./data/content/videos:/var/www/pipeinpipe.info/main/content/videos
+      - ./data/content/download:/var/www/pipeinpipe.info/main/content/download
+      - ${TOTALIZATOR_DIR:?set TOTALIZATOR_DIR in dev/.env}:/var/www/total.pipeinpipe.info
+      - ./config/totalizator/local-properties.php:/var/www/total.pipeinpipe.info/lib/local-properties.php:ro
+
+  php55:
+    build:
+      context: .
+      dockerfile: php55/Dockerfile
+    platform: linux/amd64
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    volumes:
+      - dbsocket:/run/mysqld
+      - ./data/php55/log:/var/log/php
+      - ./data/php55/temp:/var/www/pipeinpipe.info/main/temp
+      - ./data/php55/logs:/var/www/pipeinpipe.info/main/logs
+      - ..:/var/www/pipeinpipe.info
+      - ./config/pipeinpipe/my-properties.php:/var/www/pipeinpipe.info/main/config/my-properties.php:ro
+      - ./config/pipeinpipe/auth-local-properties.php:/var/www/pipeinpipe.info/auth/properties/local-properties.php:ro
+      - ./data/content/users:/var/www/pipeinpipe.info/main/images/users
+      - ./data/content/competitions:/var/www/pipeinpipe.info/main/images/competitions
+      - ./data/content/pipemen:/var/www/pipeinpipe.info/main/images/pipemen
+      - ./data/content/leagues:/var/www/pipeinpipe.info/main/images/leagues
+      - ./data/content/photos:/var/www/pipeinpipe.info/main/content/photos
+      - ./data/content/videos:/var/www/pipeinpipe.info/main/content/videos
+      - ./data/content/download:/var/www/pipeinpipe.info/main/content/download
+      - ${TOTALIZATOR_DIR:?set TOTALIZATOR_DIR in dev/.env}:/var/www/total.pipeinpipe.info
+      - ./config/totalizator/local-properties.php:/var/www/total.pipeinpipe.info/lib/local-properties.php:ro
+
+  nginx:
+    image: nginx:1.28-alpine
+    depends_on:
+      - php85
+      - php55
+    ports:
+      - "127.0.0.1:8085:8085"
+      - "127.0.0.1:8055:8055"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ..:/var/www/pipeinpipe.info:ro
+      - ./data/content/users:/var/www/pipeinpipe.info/main/images/users:ro
+      - ./data/content/competitions:/var/www/pipeinpipe.info/main/images/competitions:ro
+      - ./data/content/pipemen:/var/www/pipeinpipe.info/main/images/pipemen:ro
+      - ./data/content/leagues:/var/www/pipeinpipe.info/main/images/leagues:ro
+      - ./data/content/photos:/var/www/pipeinpipe.info/main/content/photos:ro
+      - ./data/content/videos:/var/www/pipeinpipe.info/main/content/videos:ro
+      - ./data/content/download:/var/www/pipeinpipe.info/main/content/download:ro
+      - ./data/assets:/srv/assets:ro
+      - ${TOTALIZATOR_DIR:?set TOTALIZATOR_DIR in dev/.env}:/var/www/total.pipeinpipe.info:ro
+
+  # Static analysis only (php -l, PHPCompatibility); started by scripts/scan.sh
+  tools:
+    build:
+      context: .
+      dockerfile: tools/Dockerfile
+    profiles: ["tools"]
+    volumes:
+      - ..:/src/pipeinpipe:ro
+      - ${TOTALIZATOR_DIR:?set TOTALIZATOR_DIR in dev/.env}:/src/totalizator:ro
+      - ./data/scan:/out
+
+volumes:
+  dbdata:
+  dbsocket:

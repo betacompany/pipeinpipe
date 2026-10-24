@@ -1,0 +1,3 @@
+# Local-only: prod data copies, logs, caches, machine-specific paths
+data/
+.env
