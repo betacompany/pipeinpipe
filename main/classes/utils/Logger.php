@@ -57,7 +57,7 @@ class Logger {
 			$layer,
 			$userid,
 			$_SERVER['SCRIPT_NAME'],
-			$_SERVER['QUERY_STRING']
+			isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '' // unset when run by cron
 		);
 	}
 
