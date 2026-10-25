@@ -43,8 +43,16 @@ ssh OLD 'sudo mysqldump --defaults-file=/etc/mysql/debian.cnf --default-characte
     --quick --routines --triggers pipeinpipe | gzip' | ssh NEW 'sudo ./import-db.sh pipeinpipe'
 ```
 
-Uploaded content goes to `/srv/pipeinpipe/<instance>/content/` (rsync). The
-first deploy from GitHub Actions (below) installs `main/css/all.css` and
+Uploaded content goes to `/srv/pipeinpipe/<instance>/content/` (rsync). Pages
+would make missing avatar miniatures on the fly, but PHP can't write to the
+content, so make them once after copying it (it skips the ones that exist):
+
+```sh
+sudo -u ortemij php /var/www/pipeinpipe.info/server/make-miniatures.php /var/www/pipeinpipe.info
+sudo -u ortemij php /var/www/dev.pipeinpipe.info/server/make-miniatures.php /var/www/dev.pipeinpipe.info
+```
+
+The first deploy from GitHub Actions (below) installs `main/css/all.css` and
 `main/js/all.js`, which aren't in git.
 
 ## Moving the live sites here
