@@ -23,8 +23,8 @@ echo "Starting<br/>";
 while ($cur_date <= END_DATE) {
 	$start_time = microtime(true);
 
-	$req = mysql_qw('SELECT COUNT(DISTINCT(`league_id`)) FROM `p_rating` WHERE `date`=?', $cur_date);
-	if (!$req || mysql_result($req, 0, 0) == 0) {
+	$req = db_qw('SELECT COUNT(DISTINCT(`league_id`)) FROM `p_rating` WHERE `date`=?', $cur_date);
+	if (!$req || db_result($req, 0, 0) == 0) {
 		foreach (League::getAllIds() as $league_id) {
 			RatingTable::getInstanceByDate($league_id, $cur_date);
 			echo "$sum_time: league_id=$league_id, date=$cur_date added<br/>";

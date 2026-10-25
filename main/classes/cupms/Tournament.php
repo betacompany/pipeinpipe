@@ -24,7 +24,7 @@ class Tournament {
 			throw new Exception("Incorrect id = ?", $id);
         } else {
             $req = TournamentDBClient::selectById($id);
-            if ($tournament = mysql_fetch_assoc($req)) {
+            if ($tournament = db_fetch_assoc($req)) {
                 $this->id =     $tournament['id'];
                 $this->name =   $tournament['name'];
                 $this->description =   $tournament['description'];
@@ -36,7 +36,7 @@ class Tournament {
 
 	public static function create($name, $description = "") {
 		TournamentDBClient::insert($name, $description);
-        return new Tournament(mysql_insert_id());
+        return new Tournament(db_insert_id());
 	}
 
 	/**
@@ -65,7 +65,7 @@ class Tournament {
 
         // else load them from database
         $req = CompetitionDBClient::selectByTournamentId($this->getId());
-        while ($comp = mysql_fetch_assoc($req)) {
+        while ($comp = db_fetch_assoc($req)) {
             try {
                 $this->competitions[] = Competition::getById($comp['id']);
             } catch (Exception $e) {
@@ -88,7 +88,7 @@ class Tournament {
     public static function getAll() {
         $result = array();
         $req = TournamentDBClient::selectAll();
-        while ($tournament = mysql_fetch_assoc($req)) {
+        while ($tournament = db_fetch_assoc($req)) {
             try {
                 $result[] = new Tournament($tournament['id']);
             } catch (Exception $e) {

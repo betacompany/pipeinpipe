@@ -41,7 +41,7 @@ class BijectiveMap implements IteratorAggregate {
 		return array_values($this->direct);
 	}
 
-	public function getIterator() {
+	public function getIterator(): Iterator {
 		return new BijectiveMapIterator($this);
 	}
 }
@@ -62,7 +62,7 @@ class BijectiveMapIterator implements Iterator {
 	 *
 	 * @return array ('key' => ..., 'value' => ...)
 	 */
-	public function current() {
+	public function current(): mixed {
 		$pair = array (
 			'key' => $this->map->getKey($this->values[$index]),
 			'value' => $this->values[$index]
@@ -71,19 +71,19 @@ class BijectiveMapIterator implements Iterator {
 		return $pair;
 	}
 
-	public function key() {
+	public function key(): mixed {
 		throw new BadMethodCallException('Method BijectiveMapIterator::key() is unsupported');
 	}
 
-	public function next() {
+	public function next(): void {
 		$this->index++;
 	}
 
-	public function rewind() {
+	public function rewind(): void {
 		$this->index = 0;
 	}
 
-	public function valid() {
+	public function valid(): bool {
 		return $this->index < count($this->values);
 	}
 }

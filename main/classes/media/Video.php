@@ -85,7 +85,7 @@ class Video extends Item {
 	}
 
 	public static function create($albumId, $uid, $title, $source) {
-		return Item::create(Item::VIDEO, $albumId, $uid, time(), $source, $title);
+		return Item::createItem(Item::VIDEO, $albumId, $uid, time(), $source, $title);
 	}
 
 	/**

@@ -61,7 +61,7 @@ class Tag implements IJsonSerializable {
         return Item::getByDataIterator($iterator);
 	}
 
-	public function getItemsTaggedByUser(User $user = null) {
+	public function getItemsTaggedByUser(?User $user = null) {
         if (!$user) {
             global $auth;
             $user = $auth->getCurrentUser();
@@ -74,7 +74,7 @@ class Tag implements IJsonSerializable {
         return array_contains($this->getTaggedItems($item->getType()), $item);
     }
 
-    public function hasItemTaggedByUser(Item $item, User $user = null) {
+    public function hasItemTaggedByUser(Item $item, ?User $user = null) {
         return array_contains($this->getItemsTaggedByUser($user), $item);
     }
 

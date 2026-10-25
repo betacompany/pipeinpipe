@@ -35,9 +35,6 @@ class DummyAvatarsMinifier implements IAvatarsMinifier {
 		}
 
 		imagejpeg($dst_image, $pathToDestinationImage);
-
-		imagedestroy($dst_image);
-		imagedestroy($src_image);
 	}
 
 	private function __construct() {}

@@ -144,10 +144,6 @@ try {
 
 			@$LOG->info("new miniatures by user creation finished");
 
-			imagedestroy($img);
-			imagedestroy($small_img);
-			imagedestroy($supersmall_img);
-
 			exit(0);
 
 		case 'unlink_miniatures':

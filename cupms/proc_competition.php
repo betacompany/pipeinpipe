@@ -259,12 +259,12 @@ try {
 
 			case 'delete_admin':
 			case 'make_admin':
-				if ( ($_REQUEST[method] == 'delete_admin' && $user->hasPermission($competition, 'delete_admin')) ||
-					 ($_REQUEST[method] == 'make_admin' && $user->hasPermission($competition, 'add_admin')) ) {
+				if ( ($_REQUEST['method'] == 'delete_admin' && $user->hasPermission($competition, 'delete_admin')) ||
+					 ($_REQUEST['method'] == 'make_admin' && $user->hasPermission($competition, 'add_admin')) ) {
 					assertIsset($_REQUEST['uid']);
 					$admin = User::getById($_REQUEST['uid']);
-					if ( ($_REQUEST[method] == 'delete_admin' && $admin->deleteCA($competition->getId())) ||
-						 ($_REQUEST[method] == 'make_admin' && $admin->makeCA($competition->getId())) )
+					if ( ($_REQUEST['method'] == 'delete_admin' && $admin->deleteCA($competition->getId())) ||
+						 ($_REQUEST['method'] == 'make_admin' && $admin->makeCA($competition->getId())) )
 						response_success(array(
 							'name' => $admin->getFullName()
 						));

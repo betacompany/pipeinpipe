@@ -7,7 +7,8 @@
 
 require_once dirname(__FILE__) . '/../includes/common.php';
 
-if (param('password') != 'yreutywerUIUihkhsdjahsduhweuUUUUU') {
+// cron runs it as a CLI script; over HTTP (blocked by nginx anyway) it needs the password
+if (PHP_SAPI != 'cli' && param('password') != 'yreutywerUIUihkhsdjahsduhweuUUUUU') {
 	echo 'ACCESS DENIED!';
 	exit(0);
 }
@@ -36,7 +37,7 @@ if ($lock->isLocked()) {
 			$logger->info("Cross post [id={$crossPost->getId()}] created from social post [id={$socialPost->getId()}]");
 			$socialPhotos = SocialPhoto::getBySocialPost($socialPost);
 			foreach ($socialPhotos as $socialPhoto) {
-				$photo = CrossPhoto::create($socialPhoto, $crossPost);
+				$photo = CrossPhoto::createFromSocialPhoto($socialPhoto, $crossPost);
 				$logger->info("Cross photo [id={$photo->getId()}] created from social photo [id={$socialPhoto->getId()}]");
 			}
 		}

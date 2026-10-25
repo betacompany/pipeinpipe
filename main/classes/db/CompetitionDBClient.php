@@ -17,13 +17,13 @@ class CompetitionDBClient {
 	public static function insert($leagueId = 0, $tournamentId = 0, $name = "",
 	                            $date = "", $coef = 0, $description = "",
 								$status = Competition::STATUS_DISABLED) {
-		return mysql_qw('INSERT INTO `p_competition` SET `league_id`=?, `tournament_id`=?,
+		return db_qw('INSERT INTO `p_competition` SET `league_id`=?, `tournament_id`=?,
                     `name`=?, `date`=?, `coef`=?, `description`=?, `status`=?',
 			   $leagueId, $tournamentId, $name, $date, $coef, $description, $status);
 	}
 
 	public static function update(Competition $competition) {
-		return (boolean) mysql_qw('UPDATE `p_competition` SET
+		return (bool) db_qw('UPDATE `p_competition` SET
 							`league_id`=?,
 							`tournament_id`=?,
 							`name`=?,
@@ -44,7 +44,7 @@ class CompetitionDBClient {
 	}
 
 	public static function selectAll() {
-		return new MySQLResultIterator(mysql_qw('SELECT * FROM `p_competition` WHERE 1=1 ORDER BY `id` ASC'));
+		return new MySQLResultIterator(db_qw('SELECT * FROM `p_competition` WHERE 1=1 ORDER BY `id` ASC'));
 	}
 
 	/**
@@ -54,7 +54,7 @@ class CompetitionDBClient {
 	 */
 	public static function getByLeagueIdChronologically($leagueId, $descendive = true) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT * FROM `p_competition` WHERE `league_id`=? ORDER BY `date` ' . ($descendive ? 'DESC' : 'ASC'),
 				$leagueId
 			)
@@ -63,7 +63,7 @@ class CompetitionDBClient {
 
 	public static function selectByLeagueId($leagueId) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT * FROM p_competition WHERE league_id=? ORDER BY id ASC',
 				$leagueId
 			)
@@ -71,16 +71,16 @@ class CompetitionDBClient {
 	}
 
 	public static function selectById($id){
-		return mysql_qw('SELECT * FROM `p_competition` WHERE `id`=?', $id);
+		return db_qw('SELECT * FROM `p_competition` WHERE `id`=?', $id);
 	}
 
 	public static function selectByTournamentId($tournamentId) {
-		return mysql_qw('SELECT `id` FROM `p_competition` WHERE `tournament_id`=? ORDER BY `id` ASC', $tournamentId);
+		return db_qw('SELECT `id` FROM `p_competition` WHERE `tournament_id`=? ORDER BY `id` ASC', $tournamentId);
 	}
 
 	public static function selectByName($name) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT `id` FROM `p_competition` WHERE `name`=?',
 				$name
 			)
@@ -88,7 +88,7 @@ class CompetitionDBClient {
 	}
 
 	public static function selectBefore($date, $leagueId) {
-		return mysql_qw('SELECT `id` FROM `p_competition` WHERE `date`<=? and `league_id`=?', $date, $leagueId);
+		return db_qw('SELECT `id` FROM `p_competition` WHERE `date`<=? and `league_id`=?', $date, $leagueId);
 	}
 
 	/**
@@ -97,12 +97,12 @@ class CompetitionDBClient {
 	 * @return boolean
 	 */
 	public static function existsById($id) {
-		return (boolean) mysql_num_rows(mysql_qw('SELECT `id` FROM `p_competition` WHERE `id`=?', $id));
+		return (bool) db_num_rows(db_qw('SELECT `id` FROM `p_competition` WHERE `id`=?', $id));
 	}
 
 	//возвращает true, если удаление прошло удачно, при неудаче - false
 	public static function deleteById($id) {
-		return (boolean) mysql_qw('DELETE FROM `p_competition` WHERE `id`=?', $id);
+		return (bool) db_qw('DELETE FROM `p_competition` WHERE `id`=?', $id);
 	}
 
 	/**
@@ -111,7 +111,7 @@ class CompetitionDBClient {
 	 */
 	public static function countPipemen() {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT
 					`competition_id` AS `comp_id`,
 					COUNT(DISTINCT(`pmid`)) AS `count`
@@ -127,7 +127,7 @@ class CompetitionDBClient {
 	}
 
 	public static function insertRegistration($compId, $uid, $pmid, $comment) {
-		return mysql_qw('INSERT INTO `p_competition_register` SET `comp_id`=?, `uid`=?, `pmid`=?, `comment`=?',
+		return db_qw('INSERT INTO `p_competition_register` SET `comp_id`=?, `uid`=?, `pmid`=?, `comment`=?',
 						$compId,
 						$uid,
 						$pmid,
@@ -135,15 +135,15 @@ class CompetitionDBClient {
 	}
 
 	public static function deleteRegistration($compId, $uid) {
-		return mysql_qw('DELETE FROM `p_competition_register` WHERE `comp_id`=? AND `uid`=?', $compId, $uid);
+		return db_qw('DELETE FROM `p_competition_register` WHERE `comp_id`=? AND `uid`=?', $compId, $uid);
 	}
 
 	public static function deleteRawRegistration($compId, $pmid, $uid) {
-		return mysql_qw('DELETE FROM `p_competition_register` WHERE `comp_id`=? AND `pmid`=? AND `uid`=?', $compId, $pmid, $uid);
+		return db_qw('DELETE FROM `p_competition_register` WHERE `comp_id`=? AND `pmid`=? AND `uid`=?', $compId, $pmid, $uid);
 	}
 
 	public static function selectRegisteredUsers($compId) {
-		return new MySQLResultIterator(mysql_qw('SELECT * FROM
+		return new MySQLResultIterator(db_qw('SELECT * FROM
 													`p_competition_register`
 													INNER JOIN
 													`p_user`
@@ -154,7 +154,7 @@ class CompetitionDBClient {
 
 	public static function selectRegistered($compId) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT
 					`pcid`,`comp_id`,`pmid`,`uid`,`u_name`,`u_surname`,`name` AS `p_name`,`surname` AS `p_surname`
 				FROM (
@@ -178,8 +178,8 @@ class CompetitionDBClient {
 	}
 
 	public static function countAll() {
-		return mysql_result(
-			mysql_qw('SELECT COUNT(*) FROM `p_competition`'),
+		return db_result(
+			db_qw('SELECT COUNT(*) FROM `p_competition`'),
 			0, 0
 		);
 	}

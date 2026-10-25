@@ -33,21 +33,21 @@ function string_process($str, $mode = 'strict') {
 
 	switch ($mode) {
 	case SECURITY_STRICT:
-		$result = trim($str);
+		$result = trim((string) $str);
 		$result = strip_tags($result);
 		$result = htmlspecialchars($result);
 		//$result = string_insert_br($result);
 		return $result;
 
 	case SECURITY_DESCRIPTION:
-		$result = trim($str);
+		$result = trim((string) $str);
 		$result = strip_tags($result, ALLOWED_DESCRIPTION_TAGS);
 		//$result = htmlspecialchars($result);
 		//$result = string_insert_br($result);
 		return $result;
 
 	case SECURITY_FORUM:
-		$result = trim($str);
+		$result = trim((string) $str);
 		$result = strip_tags($result, ALLOWED_FORUM_TAGS);
 		$result = string_insert_br($result);
 		$result = string_replace_script($result);
@@ -55,12 +55,12 @@ function string_process($str, $mode = 'strict') {
 
 
 	case SECURITY_HTML:
-		$result = trim($str);
-		$result = htmlspecialchars($str);
+		$result = trim((string) $str);
+		$result = htmlspecialchars((string) $str);
 		return $result;
 
 	case SECURITY_JSON:
-		$result = htmlspecialchars($str);
+		$result = htmlspecialchars((string) $str);
 		return $result;
 
 	default:

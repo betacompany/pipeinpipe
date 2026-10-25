@@ -88,7 +88,7 @@ class Action {
 		return $this->value;
 	}
 
-	public static function create($type, $targetType, $targetId, $uid, $timestamp, $value) {
+	public static function createAction($type, $targetType, $targetId, $uid, $timestamp, $value) {
 		$id = ActionDBClient::insert($type, $targetType, $targetId, $uid, $timestamp, $value);
 		try {
 			return new Action($id);

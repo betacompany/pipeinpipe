@@ -37,8 +37,8 @@ class RatingTable {
 		$this->date = $date;
 
 		$req = RatingDBClient::select($leagueId, $date);
-		if (mysql_num_rows($req)) {
-			while ($row = mysql_fetch_assoc($req)) {
+		if (db_num_rows($req)) {
+			while ($row = db_fetch_assoc($req)) {
 				$this->map[$row['pmid']] = $row['points'];
 				$this->data[] = array(
 					'pmid' => $row['pmid'],
@@ -115,7 +115,7 @@ class RatingTable {
 		);
 
 		$req = CompetitionDBClient::selectBefore($date, $leagueId);
-		while ($row = mysql_fetch_assoc($req)) {
+		while ($row = db_fetch_assoc($req)) {
 			try {
 				$competition = Competition::getById($row['id']);
 				foreach ($competition->getCupsList() as $cup) {
@@ -123,7 +123,7 @@ class RatingTable {
 					foreach ($cup->getPlayers() as $pm) {
 						$pmid = $pm->getId();
 						$r = ResultCupDBClient::select($cup->getId(), $pmid);
-						if ($result = mysql_fetch_assoc($r)) {
+						if ($result = db_fetch_assoc($r)) {
 							$delta = $result['points'] / $competition->getCoefDivider($date);
 							$name = $pm->getFullName();
 
@@ -180,7 +180,7 @@ class RatingTable {
 	public static function getRatingMovement($leagueId, $pmid) {
 		$result = array();
 		$req = RatingDBClient::selectByPmid($leagueId, $pmid);
-		while ($row = mysql_fetch_assoc($req)) {
+		while ($row = db_fetch_assoc($req)) {
 			$result[] = array(
 				'date' => $row['date'],
 				'place' => $row['rating_place'],
@@ -194,7 +194,7 @@ class RatingTable {
 	public static function getRatingMovementInterval($begin, $end, $leagueId, $pmid) {
 		$result = array();
 		$req = RatingDBClient::selectByPmidInterval($begin, $end, $leagueId, $pmid);
-		while ($row = mysql_fetch_assoc($req)) {
+		while ($row = db_fetch_assoc($req)) {
 			$result[] = array(
                 'date' => $row['date'],
 				'place' => $row['rating_place'],

@@ -16,7 +16,7 @@ class Feed {
 	const SELECT = 'SELECT
 						GROUP_CONCAT(`id`) as `ids`,
 						DATE(FROM_UNIXTIME(`creation_timestamp`)) as `d`,
-					    IF(`uid`=0, UUID(), `uid`) as `uid`
+					    IF(`uid`=0, CAST(UUID() AS CHAR), `uid`) as `uid`
 					FROM
 						`pv_content_item`';
 
@@ -42,7 +42,7 @@ class Feed {
 
 	private static function selectByLimits($from, $to) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				self::SELECT . self::GROUP . ' LIMIT ?, ?',
 				$from, $to - $from + 1
 			)
@@ -51,7 +51,7 @@ class Feed {
 
 	private static function selectBefore($id, $ts, $count) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				self::SELECT .
 					' WHERE `creation_timestamp` != 0
 						 AND (
@@ -70,7 +70,7 @@ class Feed {
 
 	private static function selectAfter($id, $ts, $count) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				self::SELECT .
 					' WHERE `creation_timestamp` != 0 AND (DATE(FROM_UNIXTIME(`creation_timestamp`)) > ? OR DATE(FROM_UNIXTIME(`creation_timestamp`)) = ? AND `id` > ?)' .
 					self::GROUP .
@@ -82,7 +82,7 @@ class Feed {
 
 	private static function selectNear($ts, $count) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				self::SELECT . ' WHERE `creation_timestamp` != 0 AND `creation_timestamp` <= ? ' . self::GROUP .' LIMIT ?',
 				$ts, $count
 			)

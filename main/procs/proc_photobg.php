@@ -42,8 +42,6 @@ foreach ($all as $imgfile) {
 		'left_side' => $leftSide,
 		'right_side' => $rightSide
 	);
-
-	imagedestroy($img);
 }
 
 if (empty ($result)) exit(0);

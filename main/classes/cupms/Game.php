@@ -89,7 +89,7 @@ class Game {
             $c = $data;
 			if ($data == null) {
 				$req = GameDBClient::selectById($id);
-				$c = mysql_fetch_assoc($req);
+				$c = db_fetch_assoc($req);
 			}
 			if ($c) {
                 $this->id =             $c['id'];
@@ -535,7 +535,7 @@ class Game {
     public static function getFinalFor($cupId) {
         $req = GameDBClient::selectFinalFor($cupId);
 		$result = null;
-		if ($g = mysql_fetch_assoc($req)) {
+		if ($g = db_fetch_assoc($req)) {
 			try {
 				$result = new Game($g['id']);
 			} catch (InvalidArgumentException $e) {
@@ -554,7 +554,7 @@ class Game {
     public static function getBronzeFor($cupId) {
         $req = GameDBClient::selectBronzeFor($cupId);
 		$result = null;
-        if ($g = mysql_fetch_assoc($req)) {
+        if ($g = db_fetch_assoc($req)) {
             try {
                 $result = new Game($g['id']);
 			} catch (InvalidArgumentException $e) {
@@ -568,7 +568,7 @@ class Game {
     public static function getByPmidsAndCup($pmid1, $pmid2, $cupId) {
         $req = GameDBClient::selectByPmidsAndCup($pmid1, $pmid2, $cupId);
 		$result = array();
-        if ($g = mysql_fetch_assoc($req)) {
+        if ($g = db_fetch_assoc($req)) {
             try {
                 $result = new Game($g['id']);
             } catch (Exception $e) {
@@ -584,7 +584,7 @@ class Game {
         $cupId = intval($cupId);
 
         $req = GameDBClient::selectCountGamesFor($pmid, $cupId);
-        return mysql_result($req, 0, 0);
+        return db_result($req, 0, 0);
     }
 
     public static function countWin5For($pmid, $cupId) {
@@ -592,7 +592,7 @@ class Game {
         $cupId = intval($cupId);
 
         $req = GameDBClient::selectCountWin5For($pmid, $cupId);
-        return mysql_result($req, 0, 0);
+        return db_result($req, 0, 0);
     }
 
     public static function countWin6For($pmid, $cupId) {
@@ -600,7 +600,7 @@ class Game {
         $cupId = intval($cupId);
 
         $req = GameDBClient::selectCountWin6For($pmid, $cupId);
-        return mysql_result($req, 0, 0);
+        return db_result($req, 0, 0);
     }
 
     public static function countWinbFor($pmid, $cupId) {
@@ -608,7 +608,7 @@ class Game {
         $cupId = intval($cupId);
 
         $req = GameDBClient::selectCountWinbFor($pmid, $cupId);
-        return mysql_result($req, 0, 0);
+        return db_result($req, 0, 0);
     }
 
     public static function countLose5For($pmid, $cupId) {
@@ -616,7 +616,7 @@ class Game {
         $cupId = intval($cupId);
 
         $req = GameDBClient::selectCountLose5For($pmid, $cupId);
-        return mysql_result($req, 0, 0);
+        return db_result($req, 0, 0);
     }
 
     public static function countLose6For($pmid, $cupId) {
@@ -624,7 +624,7 @@ class Game {
         $cupId = intval($cupId);
 
         $req = GameDBClient::selectCountLose6For($pmid, $cupId);
-        return mysql_result($req, 0, 0);
+        return db_result($req, 0, 0);
     }
 
     public static function countLosebFor($pmid, $cupId) {
@@ -632,7 +632,7 @@ class Game {
         $cupId = intval($cupId);
 
         $req = GameDBClient::selectCountLosebFor($pmid, $cupId);
-        return mysql_result($req, 0, 0);
+        return db_result($req, 0, 0);
     }
 
 
@@ -662,7 +662,7 @@ class Game {
 			
 		}
 	
-		return new Game(mysql_insert_id());
+		return new Game(db_insert_id());
 	}
 
 	public static function getByStageAndCup($stage, CupPlayoff $playoff) {

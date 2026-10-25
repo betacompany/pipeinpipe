@@ -13,7 +13,7 @@ class ItemDBClient {
 
 	public static function getById($id) {
 		return new MySQLResultIterator(
-			mysql_qw('SELECT * FROM `p_content_item` WHERE `id`=? AND `removed`=0', $id)
+			db_qw('SELECT * FROM `p_content_item` WHERE `id`=? AND `removed`=0', $id)
 		);
 	}
 
@@ -23,20 +23,20 @@ class ItemDBClient {
 			$in[] = intval($id);
 		}
 		return new MySQLResultIterator(
-			mysql_qw('SELECT * FROM `p_content_item` WHERE `id` IN ('.implode(",", $in).')')
+			db_qw('SELECT * FROM `p_content_item` WHERE `id` IN ('.implode(",", $in).')')
 		);
 	}
 
 	public static function getByGroupId($groupId, $from, $limit, $descendive = false, $orderBy = 'id') {
 		$req = null;
 		if ($limit == 0) {
-			$req = mysql_qw(
+			$req = db_qw(
 				'SELECT * FROM `pv_content_item` WHERE `group_id`=? ORDER BY '.
 					'`' . $orderBy . '` ' . ($descendive ? 'DESC' : 'ASC'),
 				$groupId
 			);
 		} else {
-			$req = mysql_qw(
+			$req = db_qw(
 				'SELECT * FROM `pv_content_item` WHERE `group_id`=? ORDER BY '.
 					'`' . $orderBy . '` ' . ($descendive ? 'DESC' : 'ASC') . ' LIMIT ?, ?',
 				$groupId, intval($from), intval($limit)
@@ -49,14 +49,14 @@ class ItemDBClient {
 	public static function getAllByType($type, $from = 0, $limit = 0, $descendive = false, $orderByCreation = false) {
 		if ($limit == 0) {
 			return new MySQLResultIterator(
-				mysql_qw('SELECT * FROM `pv_content_item` WHERE `type`=? ORDER BY '.
+				db_qw('SELECT * FROM `pv_content_item` WHERE `type`=? ORDER BY '.
 					(!$orderByCreation ? '`id`' : '`creation_timestamp`').' ' .
 					($descendive ? 'DESC' : 'ASC'), $type)
 			);
 		}
 
 		return new MySQLResultIterator(
-			mysql_qw('SELECT * FROM `pv_content_item` WHERE `type`=? ORDER BY '.
+			db_qw('SELECT * FROM `pv_content_item` WHERE `type`=? ORDER BY '.
 				(!$orderByCreation ? '`id`' : '`creation_timestamp`').' ' .
 				($descendive ? 'DESC' : 'ASC') . ' LIMIT ?, ?',
 					$type, intval($from), intval($limit))
@@ -65,13 +65,13 @@ class ItemDBClient {
 
 	public static function getOpenedByType($type) {
 		return new MySQLResultIterator(
-			mysql_qw('SELECT * FROM `pv_content_item_opened` WHERE `type`=?', $type)
+			db_qw('SELECT * FROM `pv_content_item_opened` WHERE `type`=?', $type)
 		);
 	}
 
 	public static function countByGroupId($groupId) {
-		return intval(mysql_result(
-			mysql_qw(
+		return intval(db_result(
+			db_qw(
 				'SELECT COUNT(*) FROM `pv_content_item` WHERE `group_id`=?',
 				$groupId
 			), 0, 0
@@ -79,8 +79,8 @@ class ItemDBClient {
 	}
 
 	public static function countByType($type, $uid = 0) {
-		return intval(mysql_result(
-			mysql_qw(
+		return intval(db_result(
+			db_qw(
 				'SELECT COUNT(*) FROM `pv_content_item` WHERE `type`=?' . ($uid ? ' AND `uid`='.intval($uid) : ''),
 				$type
 			), 0, 0
@@ -93,7 +93,7 @@ class ItemDBClient {
 	 * @return integer
 	 */
 	public static function update(Item $item) {
-		mysql_qw(
+		db_qw(
 			'UPDATE `p_content_item` SET 
 				`type`=?,
 				`group_id`=?,
@@ -118,11 +118,11 @@ class ItemDBClient {
 			$item->getId()
 		);
 
-		return mysql_affected_rows();
+		return db_affected_rows();
 	}
 
-	public static function insert($type, $groupId, $uid, $creationTimestamp, $contentSource, $contentParsed, $contentTitle = '', $contentValue) {
-		mysql_qw(
+	public static function insert($type, $groupId, $uid, $creationTimestamp, $contentSource, $contentParsed, $contentTitle, $contentValue) {
+		db_qw(
 			'INSERT INTO `p_content_item` SET   `type`=?,
 												`group_id`=?,
 												`uid`=?,
@@ -135,18 +135,18 @@ class ItemDBClient {
 			$type, $groupId, $uid, $creationTimestamp, $contentSource, $contentParsed, $contentTitle, $contentValue
 		);
 
-		return mysql_insert_id();
+		return db_insert_id();
 	}
 
 	public static function getAll($limit = 0, $descendive = false) {
 		if ($limit == 0) return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT * FROM `pv_content_item` ORDER BY `id` '.($descendive ? 'DESC' : 'ASC')
 			)
 		);
 
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT * FROM `pv_content_item` ORDER BY `id` '.($descendive ? 'DESC' : 'ASC').' LIMIT ?', intval($limit)
 			)
 		);
@@ -154,7 +154,7 @@ class ItemDBClient {
 
 	public static function getAllByRating($type, $limit, $groupId = 0) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT * FROM (
 
 					(
@@ -183,14 +183,14 @@ class ItemDBClient {
 	}
 
 	public static function remove($itemId) {
-		return (boolean) mysql_qw(
+		return (bool) db_qw(
 			'UPDATE `p_content_item` SET `removed`=1 WHERE `id`=?', $itemId
 		);
 	}
 
 	public static function getAllByTypeAndTag($type, $tagId, $from, $limit, $descendive = false, $orderByCreation = false) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT `pv_content_item`.* FROM
 					`pv_content_item` INNER JOIN `p_content_tag_target`
 					ON `pv_content_item`.`id`=`p_content_tag_target`.`target_id`
@@ -207,14 +207,14 @@ class ItemDBClient {
 	}
 
 	public static function getByPeriod($begin, $end, $type = '') {
-		if (!$type) return new MySQLResultIterator(mysql_qw(
+		if (!$type) return new MySQLResultIterator(db_qw(
 			'SELECT * FROM `pv_content_item` 
 			WHERE `creation_timestamp`>=? AND `creation_timestamp`<=?
 			ORDER BY `content_value` ASC',
 			$begin, $end
 		));
 
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 			'SELECT * FROM `pv_content_item` 
 			WHERE `type`=? AND `creation_timestamp`>=? AND `creation_timestamp`<=?
 			ORDER BY `content_value` ASC',
@@ -223,14 +223,14 @@ class ItemDBClient {
 	}
 
 	public static function getByPeriodValues($begin, $end, $type = '') {
-		if (!$type) return new MySQLResultIterator(mysql_qw(
+		if (!$type) return new MySQLResultIterator(db_qw(
 			'SELECT * FROM `pv_content_item`
 			WHERE `content_value`>=? AND `content_value`<=?
 			ORDER BY `content_value` ASC',
 			$begin, $end
 		));
 
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 			'SELECT * FROM `pv_content_item`
 			WHERE `type`=? AND `content_value`>=? AND `content_value`<=?
 			ORDER BY `content_value` ASC',
@@ -240,7 +240,7 @@ class ItemDBClient {
 
 	public static function getDates() {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT `time`, COUNT(*) AS `count` FROM
 					(SELECT DATE(FROM_UNIXTIME(`creation_timestamp`)) AS `time`, `id`
 					FROM `pv_content_item` WHERE `type`!=\'event\'
@@ -254,7 +254,7 @@ class ItemDBClient {
 
 	public static function getByTypeAndContentSource($type, $src) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT * FROM `pv_content_item` WHERE `type`=? AND `content_source`=?',
 				$type, $src
 			)
@@ -263,7 +263,7 @@ class ItemDBClient {
 
 	public static function getAllByTypeAndValue($type, $value) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT * FROM `pv_content_item` WHERE `type`=? AND `content_value`=?',
 				$type, $value
 			)

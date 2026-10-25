@@ -81,7 +81,7 @@ class BlogPost extends Item {
 
 	public static function create($blogId, $uid, $title, $contentShortSource, $contentFullSource, $time = 0) {
 		try {
-			$post = parent::create(parent::BLOG_POST, $blogId, $uid, $time ? $time : time(), "", "", $title);
+			$post = parent::createItem(parent::BLOG_POST, $blogId, $uid, $time ? $time : time(), "", "", $title);
 			if ($post instanceof BlogPost) {
 				$contentShortSource = Parser::parseSource($contentShortSource);
 				$contentFullSource = Parser::parseSource($contentFullSource);

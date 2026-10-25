@@ -1,0 +1,79 @@
+# <host> <path> [auth] [status], GET requests. "auth" signs in first (see
+# scripts/smoke.sh); status is the expected one when it isn't 200.
+# IDs exist in the 2026-10-24 prod copy. Only read-only requests: no stakes, no admin actions.
+
+# pipeinpipe.info
+pipeinpipe.localhost /
+pipeinpipe.localhost /sport
+pipeinpipe.localhost /sport/rules
+pipeinpipe.localhost /sport/faq
+pipeinpipe.localhost /sport/league
+pipeinpipe.localhost /sport/league/1
+pipeinpipe.localhost /sport/league/1/competition/41
+pipeinpipe.localhost /sport/league/2/competition/42
+pipeinpipe.localhost /sport/rating
+pipeinpipe.localhost /sport/rating/formula
+pipeinpipe.localhost /sport/statistics
+pipeinpipe.localhost /sport/pipemen
+pipeinpipe.localhost /sport/rating/1-2026-10-01.csv
+pipeinpipe.localhost /pm1
+pipeinpipe.localhost /pm2
+pipeinpipe.localhost /id1
+pipeinpipe.localhost /life
+pipeinpipe.localhost /life/blog
+pipeinpipe.localhost /life/blog/1866
+pipeinpipe.localhost /life/comments
+pipeinpipe.localhost /life/people
+pipeinpipe.localhost /media
+pipeinpipe.localhost /media/photo
+pipeinpipe.localhost /media/video
+pipeinpipe.localhost /media/photo/album140
+pipeinpipe.localhost /media/photo/album140/2825
+pipeinpipe.localhost /media/video/album141
+pipeinpipe.localhost /media/photo/tag1
+pipeinpipe.localhost /media/download
+pipeinpipe.localhost /forum
+pipeinpipe.localhost /forum/part1
+pipeinpipe.localhost /forum/part1/topic2847
+pipeinpipe.localhost /about
+pipeinpipe.localhost /search?q=pipe
+pipeinpipe.localhost /sign_up
+pipeinpipe.localhost /api.php
+pipeinpipe.localhost /does-not-exist 404
+pipeinpipe.localhost / auth
+pipeinpipe.localhost /profile auth
+pipeinpipe.localhost /profile/edit auth
+pipeinpipe.localhost /id1 auth
+pipeinpipe.localhost /life/blog/new auth
+pipeinpipe.localhost /media/upload auth
+
+# m.pipeinpipe.info
+m.pipeinpipe.localhost /
+m.pipeinpipe.localhost /sport
+m.pipeinpipe.localhost /forum
+m.pipeinpipe.localhost /sport_league/1
+m.pipeinpipe.localhost /sport_competition/41
+m.pipeinpipe.localhost /sport_rating/1
+m.pipeinpipe.localhost /forum_part/1
+m.pipeinpipe.localhost /forum_topic/2847
+
+# cupms.pipeinpipe.info
+cupms.pipeinpipe.localhost /
+cupms.pipeinpipe.localhost /main.php 302
+cupms.pipeinpipe.localhost /main.php auth
+
+# total.pipeinpipe.info (everything but / needs a signed-in user)
+total.pipeinpipe.localhost /
+total.pipeinpipe.localhost /main.php 302
+total.pipeinpipe.localhost / auth 302
+total.pipeinpipe.localhost /main.php auth
+total.pipeinpipe.localhost /rating.php auth
+total.pipeinpipe.localhost /rules.php auth
+total.pipeinpipe.localhost /gloryhall.php auth
+total.pipeinpipe.localhost /archive.php auth
+total.pipeinpipe.localhost /cpanel.php auth
+total.pipeinpipe.localhost /processor.php?action=get_matches&type=played auth
+total.pipeinpipe.localhost /processor.php?action=get_matches&type=available auth
+total.pipeinpipe.localhost /processor.php?action=get_stakes&match_id=2700 auth
+total.pipeinpipe.localhost /processor.php?action=load_rating&comp_id=41 auth
+total.pipeinpipe.localhost /processor.php?action=load_stakes_for_uid&quid=1&comp_id=41 auth

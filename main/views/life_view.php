@@ -167,7 +167,7 @@ function life_show_posts($posts, $user, $showBlog = false, $showComments = true)
 function life_get_day_feed($date) {
 	$begin = strtotime($date . ' 00:00:00');
 	$end = strtotime($date . ' 23:59:59');
-	$items = Item::getByPeriod($begin, $end);
+	$items = Item::getItemsByPeriod($begin, $end);
 	$events = Event::getByPeriod($begin, $end);
 	$merged = array();
 

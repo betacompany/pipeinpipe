@@ -35,7 +35,7 @@ class ContentFactory {
 	}
 
 	public static function items() {
-		return Item::getAll(true);
+		return Item::getAllItems(true);
 	}
 
 	public static function comments() {

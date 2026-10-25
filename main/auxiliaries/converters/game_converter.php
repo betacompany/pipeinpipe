@@ -60,13 +60,13 @@ function convert_is_tech($old) {
 echo "<pre>Convertion started\n";
 flush();
 
-mysql_qw('TRUNCATE TABLE `p_game`');
+db_qw('TRUNCATE TABLE `p_game`');
 echo "`p_game` truncated\n";
 flush();
 
-$req = mysql_qw('SELECT * FROM `pipe_games` WHERE 1=1 ORDER BY `id`');
-while ($g = mysql_fetch_assoc($req)) {
-	mysql_qw('INSERT INTO `p_game` SET	`id`=?,
+$req = db_qw('SELECT * FROM `pipe_games` WHERE 1=1 ORDER BY `id`');
+while ($g = db_fetch_assoc($req)) {
+	db_qw('INSERT INTO `p_game` SET	`id`=?,
 										`cup_id`=?,
 										`stage`=?,
 										`tour`=?,

@@ -68,7 +68,7 @@ class Competition implements IComparable {
 	private function __construct($id, $data = null) {
 		if ($data == null) {
 			$req = CompetitionDBClient::selectById($id);
-			$data = mysql_fetch_assoc($req);
+			$data = db_fetch_assoc($req);
 			if (!$data) {
 				throw new InvalidIdException("Invalid competition id=$id");
 			}
@@ -122,7 +122,7 @@ class Competition implements IComparable {
 
 		CompetitionDBClient::insert($leagueId, $tournamentId, $name, $date, $coef, $description, $status);
 
-		$temp = mysql_insert_id();
+		$temp = db_insert_id();
 		if($temp <= 0) {
 			throw new Exception("Unable to create new record in database");
 		}
@@ -218,7 +218,7 @@ class Competition implements IComparable {
 			return false;
 		}
 
-		if ($c = mysql_fetch_assoc($req)) {
+		if ($c = db_fetch_assoc($req)) {
 			$this->mainCupId = $c['id'];
 		} else {
 			$this->mainCupId = 0;
@@ -254,7 +254,7 @@ class Competition implements IComparable {
 
 		$this->cupsList = array();
 		$req = CupDBClient::selectByCompetitionId($this->getId());
-		while ($cup = mysql_fetch_assoc($req)) {
+		while ($cup = db_fetch_assoc($req)) {
 			try {
 				$this->cupsList[] = CupFactory::getCupById($cup['id']);
 			} catch (Exception $e) {

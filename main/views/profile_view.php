@@ -340,7 +340,7 @@ function profile_show_player($person, Player $player, $tabs) {
 		$league = League::getById($leagueInfo['league_id']);
 ?>
 
-				<div class="league<?=(count($trophies[$league->getId()]) ? ' large' : '')?>">
+				<div class="league<?=(!empty($trophies[$league->getId()]) ? ' large' : '')?>">
 					<div class="legend">
 						<a href="/sport/league/<?=$league->getId()?>"><?=string_short($league->getName(), 15, 20)?></a>
 					</div>

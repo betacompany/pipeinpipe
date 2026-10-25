@@ -16,7 +16,7 @@ function stdoutlog($msg) {
 
 echo "<pre>";
 
-mysql_qw('DELETE FROM `p_rating` WHERE `date`>=?', date('Y-m-d', strtotime("-5 day")));
+db_qw('DELETE FROM `p_rating` WHERE `date`>=?', date('Y-m-d', strtotime("-5 day")));
 stdoutlog("Database cleaned\n");
 
 for ($i = -5; $i <= 5; $i++) {

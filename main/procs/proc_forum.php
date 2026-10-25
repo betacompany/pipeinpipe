@@ -88,12 +88,14 @@ try {
 			$topic = new ForumTopic($topicId);
 
 			if ($topic->isClosed()) {
-				// Enabling caching for closed topics
+				// Enabling caching for closed topics, per user: the messages
+				// show the viewer's votes and edit links
 				$cache = new ResponseCache(
 					"forum/topic$topicId/messages/",
 					array (
 						'limit' => $limit,
-						'from' => $from
+						'from' => $from,
+						'uid' => $auth->uid()
 					)
 				);
 				$cache->echoAndExit();
@@ -168,7 +170,7 @@ try {
 
 			$topic = Item::getById($topicId);
 			if ($topic instanceof ForumTopic) {
-				if ($msg = $topic->addComment($uid, $html, $timestamp)) {
+				if ($msg = $topic->addMessage($uid, $html, $timestamp)) {
 					if (!$mobile) {
 						echo json_encode(array(
 							'status' => 'ok',

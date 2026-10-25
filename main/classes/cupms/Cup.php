@@ -48,6 +48,8 @@ abstract class Cup {
 	private $childrenLoaded = false;
 
 	protected $players = array(); // array of players
+	protected $pmids = array();
+	protected $pmidsLoaded = false;
 	protected $playerIndexes = array(); // array of player indexes in $players array
 	protected $playersLoaded = false;
 
@@ -60,7 +62,7 @@ abstract class Cup {
 		assertPositive('Cup does not support construction. Please use CupFactory::create()', $id);
         
 		$req = CupDBClient::selectById($id);
-		if ($c = mysql_fetch_assoc($req)) {
+		if ($c = db_fetch_assoc($req)) {
 			$this->id =             $c['id'];
 			$this->competitionId =  $c['competition_id'];
 			$this->parentCupId =    $c['parent_cup_id'];
@@ -132,7 +134,7 @@ abstract class Cup {
 
 		$this->children = array();
 		$req = CupDBClient::selectChildrenFor($this->id);
-		while ($c = mysql_fetch_assoc($req)) {
+		while ($c = db_fetch_assoc($req)) {
 			$this->children[] = CupFactory::getCupById($c['id']);
 		}
 
@@ -156,7 +158,7 @@ abstract class Cup {
 		return $this->type == self::TYPE_UNDEFINED;
 	}
 	
-	private final function safeUpdateDetail(&$detail, $newData, $update = true) {
+	private function safeUpdateDetail(&$detail, $newData, $update = true) {
 		$copy = $detail;
 		$detail = $newData;
 		if ($update) {
@@ -211,7 +213,7 @@ abstract class Cup {
 	public final function getPlayersHard() {
 		$this->players = array();
 		$req = GameDBClient::selectPlayersForCup($this->getId());
-		while ($p = mysql_fetch_assoc($req)) {
+		while ($p = db_fetch_assoc($req)) {
 			try {
 				//FIXME use getById(null, $row) function
 				$this->players[] = Player::getByData($p);
@@ -335,7 +337,7 @@ abstract class Cup {
 	 * @return boolean
 	 */
 	public static final function existsById($id) {
-		return (boolean) mysql_num_rows(CupDBClient::selectById($id));
+		return (bool) db_num_rows(CupDBClient::selectById($id));
 	}
 
 	/**
@@ -352,7 +354,7 @@ abstract class Cup {
 	}
 
 	public static function isCorrectName($comp_id, $name) {
-		return (boolean) mysql_num_rows(CupDBClient::selectByName($comp_id, $name)) > 0 ? false : true;
+		return (bool) db_num_rows(CupDBClient::selectByName($comp_id, $name)) > 0 ? false : true;
 	}
 
 	public abstract function getVictor();
@@ -366,7 +368,7 @@ abstract class Cup {
 
     public final function hasGames() {
         $req = GameDBClient::selectCountGamesForCup($this->getId());
-        return mysql_result($req, 0, 0) > 0;
+        return db_result($req, 0, 0) > 0;
     }
 }
 ?>

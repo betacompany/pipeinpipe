@@ -64,12 +64,12 @@ try {
 			case 'delete_admin':
 			case 'make_admin':
 
-				if ( ($_REQUEST[method] == 'delete_admin' && $user->hasPermission($league, 'delete_admin')) ||
-					 ($_REQUEST[method] == 'make_admin' && $user->hasPermission($league, 'add_admin')) ) {
+				if ( ($_REQUEST['method'] == 'delete_admin' && $user->hasPermission($league, 'delete_admin')) ||
+					 ($_REQUEST['method'] == 'make_admin' && $user->hasPermission($league, 'add_admin')) ) {
 					assertIsset($_REQUEST['uid']);
 					$admin = User::getById($_REQUEST['uid']);
-					if ( ($_REQUEST[method] == 'delete_admin' && $admin->deleteLA($league->getId())) ||
-						 ($_REQUEST[method] == 'make_admin' && $admin->makeLA($league->getId())) ) {
+					if ( ($_REQUEST['method'] == 'delete_admin' && $admin->deleteLA($league->getId())) ||
+						 ($_REQUEST['method'] == 'make_admin' && $admin->makeLA($league->getId())) ) {
 						response_success(array(
 							'name' => $admin->getFullName()
 						));

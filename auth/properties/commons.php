@@ -29,6 +29,9 @@ foreach ($COMMON_AUTH_PROPERTIES as $key => $value) {
 	define('COMMON_AUTH_' . strtoupper($key), $value);
 }
 
+// Since PHP 8.1 mysqli throws on every error by default; this code checks return values
+mysqli_report(MYSQLI_REPORT_OFF);
+
 $mysqli_link = mysqli_init();
 mysqli_real_connect(
 	$mysqli_link,
@@ -97,9 +100,9 @@ function get_token() {
 
 function set_token($uid, $token, $is_session = false) {
 	$_COOKIE[COMMON_AUTH_COOKIE_NAME] = $token;
-	setcookie(COMMON_AUTH_COOKIE_NAME, $token, $is_session ? null : time() + COMMON_AUTH_EXPIRING_PERIOD, "/", COMMON_AUTH_DOMAIN, false, true);
+	setcookie(COMMON_AUTH_COOKIE_NAME, $token, $is_session ? 0 : time() + COMMON_AUTH_EXPIRING_PERIOD, "/", COMMON_AUTH_DOMAIN, false, true);
 	if ($is_session) {
-		setcookie(COMMON_AUTH_COOKIE_NAME . "_s", "y", null, "/", COMMON_AUTH_DOMAIN, false, true);
+		setcookie(COMMON_AUTH_COOKIE_NAME . "_s", "y", 0, "/", COMMON_AUTH_DOMAIN, false, true);
 	} else {
 		setcookie(COMMON_AUTH_COOKIE_NAME . "_s", "n", 69, "/", COMMON_AUTH_DOMAIN, false, true);
 	}

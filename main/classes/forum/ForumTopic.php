@@ -95,7 +95,7 @@ class ForumTopic extends Item {
 	}
 
 
-	public function addComment($uid, $html, $timestamp) {
+	public function addMessage($uid, $html, $timestamp) {
 		if ($this->isClosed()) return false;
 		if (!$this->isAvailableFor($uid)) return false;
 		$msg = ForumMessage::create($this->getId(), $uid, $html, $timestamp);
@@ -130,7 +130,7 @@ class ForumTopic extends Item {
 		assertTrue('There is no part with id=' . $partId, ForumPart::existsById($partId));
 		assertTrue('There is no user with id=' . $uid, User::existsById($uid));
 
-		return parent::create(Item::FORUM_TOPIC, $partId, $uid, time(), $title, '');
+		return parent::createItem(Item::FORUM_TOPIC, $partId, $uid, time(), $title, '');
 	}
 
 	public static function valueOf($time) {

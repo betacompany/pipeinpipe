@@ -7,7 +7,7 @@ require_once dirname(__FILE__).'/../../includes/mysql.php';
 class LeagueDBClient {
 
     public static function selectLeaguesForPlayer($pmid) {
-        return mysql_qw('SELECT DISTINCT(`league_id`)
+        return db_qw('SELECT DISTINCT(`league_id`)
                          FROM `p_rating`
                          WHERE `pmid`=? ORDER BY `league_id` ASC',
                         $pmid);
@@ -15,7 +15,7 @@ class LeagueDBClient {
 
 	//TODO delete or implement this method (it's more like a pattern now)
     public static function selectLeaguesForUser($uid) {
-        return mysql_qw('
+        return db_qw('
 						SELECT * FROM
 						(
 							(
@@ -43,19 +43,19 @@ class LeagueDBClient {
     }
 
 	public static function insert($name, $description, $formula) {
-		return mysql_qw('INSERT INTO `p_league` SET `name`=?, `description`=?, `formula`=?', $name, $description, $formula);
+		return db_qw('INSERT INTO `p_league` SET `name`=?, `description`=?, `formula`=?', $name, $description, $formula);
 	}
 
 	public static function existsById($id) {
-		return (boolean) mysql_num_rows(mysql_qw('SELECT `id` FROM `p_league` WHERE `id`=?', $id));
+		return (bool) db_num_rows(db_qw('SELECT `id` FROM `p_league` WHERE `id`=?', $id));
 	}
 
 	public static function selectById($id) {
-		return mysql_qw('SELECT * FROM `p_league` WHERE `id`=?', $id);
+		return db_qw('SELECT * FROM `p_league` WHERE `id`=?', $id);
 	}
 
 	public static function selectByName($name) {
-		return mysql_qw('SELECT `id` FROM `p_league` WHERE `name`=?', $name);
+		return db_qw('SELECT `id` FROM `p_league` WHERE `name`=?', $name);
 	}
 
 	/**
@@ -65,26 +65,26 @@ class LeagueDBClient {
 	 * @return mysql resource
 	 */
 	public static function selectAll() {
-		return new MySQLResultIterator(mysql_qw('SELECT * FROM `p_league` ORDER BY `id` ASC'));
+		return new MySQLResultIterator(db_qw('SELECT * FROM `p_league` ORDER BY `id` ASC'));
 	}
 
 	public static function setName($leagueId, $name) {
-		return (boolean) mysql_qw('UPDATE `p_league` SET `name`=? WHERE `id`=?', $name, $leagueId);
+		return (bool) db_qw('UPDATE `p_league` SET `name`=? WHERE `id`=?', $name, $leagueId);
 	}
 
 	public static function setDescr($leagueId, $description) {
-		return (boolean) mysql_qw('UPDATE `p_league` SET `description`=? WHERE `id`=?', $description, $leagueId);;
+		return (bool) db_qw('UPDATE `p_league` SET `description`=? WHERE `id`=?', $description, $leagueId);;
 	}
 
 	public static function setFormula($leagueId, $formula) {
 		if ($formula instanceof RatingFormula)
 			$formula = $formula->getName();
-		return (boolean) mysql_qw('UPDATE `p_league` SET `formula`=? WHERE `id`=?', $formula, $leagueId);;
+		return (bool) db_qw('UPDATE `p_league` SET `formula`=? WHERE `id`=?', $formula, $leagueId);;
 	}
 
 	public static function selectPlayers($leagueId) {
 		return new MySQLResultIterator(
-				mysql_qw(
+				db_qw(
 					'SELECT *
 					FROM (
 							SELECT DISTINCT(`pmid`) AS `id`
@@ -102,8 +102,8 @@ class LeagueDBClient {
 	}
 
 	public static function countAll() {
-		return mysql_result(
-			mysql_qw('SELECT COUNT(*) FROM `p_league`'),
+		return db_result(
+			db_qw('SELECT COUNT(*) FROM `p_league`'),
 			0, 0
 		);
 	}

@@ -11,7 +11,7 @@ class GroupDBClient {
 
 	public static function getById($id) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT * FROM `pv_content_group` WHERE `id`=?', $id
 			)
 		);
@@ -19,7 +19,7 @@ class GroupDBClient {
 
 	public static function getRootsByType($type, $descendive = false) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT * FROM `pv_content_group` WHERE `parent_group_id`=0 AND `type`=? ORDER BY `id` ' .
 				($descendive ? 'DESC' : 'ASC'),
 				$type
@@ -29,7 +29,7 @@ class GroupDBClient {
 
 	public static function getByParentGroupId($groupId) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT * FROM `pv_content_group` WHERE `parent_group_id`=? ORDER BY `id` ASC',
 				$groupId
 			)
@@ -38,8 +38,8 @@ class GroupDBClient {
 
 	public static function countByParentGroupId($groupId) {
 		return intval(
-			mysql_result(
-				mysql_qw('SELECT COUNT(*) FROM `pv_content_group` WHERE `parent_group_id`=?', $groupId),
+			db_result(
+				db_qw('SELECT COUNT(*) FROM `pv_content_group` WHERE `parent_group_id`=?', $groupId),
 				0, 0
 			)
 		);
@@ -47,15 +47,15 @@ class GroupDBClient {
 
 	public static function countByType($type) {
 		return intval(
-			mysql_result(
-				mysql_qw('SELECT COUNT(*) FROM `pv_content_group` WHERE `type`=?', $type),
+			db_result(
+				db_qw('SELECT COUNT(*) FROM `pv_content_group` WHERE `type`=?', $type),
 				0, 0
 			)
 		);
 	}
 
 	public static function insert($type, $parentGroupId, $title, $contentSource, $contentParsed) {
-		mysql_qw('INSERT INTO
+		db_qw('INSERT INTO
 						`p_content_group`
 					SET
 						`type`=?,
@@ -65,18 +65,18 @@ class GroupDBClient {
 						`content_parsed`=?',
 				$type, $parentGroupId, $title, $contentSource, $contentParsed);
 
-		return mysql_insert_id();
+		return db_insert_id();
 	}
 
-	public function remove($groupId) {
-		return (boolean) mysql_qw(
+	public static function remove($groupId) {
+		return (bool) db_qw(
 			'UPDATE `p_content_group` SET `removed`=1 WHERE `id`=?', $groupId
 		);
 	}
 
-	public function getAllByType($type) {
+	public static function getAllByType($type) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT * FROM `pv_content_group` WHERE `type`=?', $type
 			)
 		);
@@ -87,7 +87,7 @@ class GroupDBClient {
 	 */
 	public static function getCommentCounts() {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT `group_id`, COUNT(*) AS `count`
 					FROM `pv_content_item` INNER JOIN `pv_content_comment`
 					ON `pv_content_item`.`id`=`pv_content_comment`.`item_id`
@@ -98,7 +98,7 @@ class GroupDBClient {
 
 	public static function getNewItemsCountFor($uid) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT `group_id`, COUNT(*) AS `count` FROM (
 
 					`pv_content_item`

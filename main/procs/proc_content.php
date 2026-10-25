@@ -170,7 +170,7 @@ try {
 			}
 
 			if ($topic) {
-				$topic->addComment($auth->uid(), textparam('text'), time());
+				$topic->addMessage($auth->uid(), textparam('text'), time());
 				echo json(array(
 					'status' => 'ok',
 					'topic' => '/forum/part' . $topic->getPartId() . '/topic' . $topic->getId()

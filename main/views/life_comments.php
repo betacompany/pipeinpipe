@@ -21,7 +21,7 @@ $types = array(
 );
 
 // in assumption that most commented items are new
-Item::getAll(COMMENTS_NUMBER, true);
+Item::getAllItems(COMMENTS_NUMBER, true);
 
 $comments = Comment::getByItemType(array_keys($types), 0, COMMENTS_NUMBER, true);
 

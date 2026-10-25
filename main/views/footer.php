@@ -30,7 +30,7 @@ if ($exec_time > 0.2) {
 						&copy; Сделано в <a href="http://betacompany.spb.ru" target="_blank">betacompany</a> /
 						2008 &ndash; <?=date("Y")?> /
 						<?=$ya_params['time']?> сек.
-						<?=(MYSQL_DEBUG_MODE ? ' / ' . mysql_qw() . ' ' . lang_sclon(mysql_qw(), 'запрос', 'запроса', 'запросов') : '')?>
+						<?=(MYSQL_DEBUG_MODE ? ' / ' . db_qw() . ' ' . lang_sclon(db_qw(), 'запрос', 'запроса', 'запросов') : '')?>
 					</div>
 					<ul id="footer_menu">
 						<li><a href="/about">О сайте</a></li>

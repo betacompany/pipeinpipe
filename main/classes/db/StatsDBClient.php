@@ -10,7 +10,7 @@ require_once dirname(__FILE__).'/MySQLResultIterator.php';
 class StatsDBClient {
 
 	public static function getMaxWinPerc() {
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 		'SELECT *
 		FROM (
 
@@ -131,7 +131,7 @@ class StatsDBClient {
 
 	public static function getMaxLossPerc() {
 
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 		'SELECT *
 		FROM (
 
@@ -251,7 +251,7 @@ class StatsDBClient {
 	}
 
 	public static function getMaxAve() {
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 		'SELECT t11.pmid, ave
 		FROM (
 			(
@@ -311,7 +311,7 @@ class StatsDBClient {
 	}
 
 	public static function getMaxCompetitionsWon() {
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 		'SELECT * FROM (
 
 			SELECT pmid, COUNT(*) AS comp_won FROM (
@@ -347,7 +347,7 @@ class StatsDBClient {
 	 * @return MySQLResultIterator
 	 */
 	public static function getMaxCompPerc() {
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 		'SELECT * FROM
 		(
 			SELECT nt.pmid, comp_won / comp_num * 100 AS percentage
@@ -434,7 +434,7 @@ class StatsDBClient {
 	}
 
 	public static function getMaxComps() {
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 		'SELECT * FROM
 		(
 			SELECT pmid, COUNT( DISTINCT competition_id ) AS comp_num
@@ -476,7 +476,7 @@ class StatsDBClient {
 	}
 	
 	public static function getMaxPoints() {
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 		'SELECT * 
 		FROM (
 
@@ -504,7 +504,7 @@ class StatsDBClient {
 	}
 
 	public static function getMaxDaysOnTop() {
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 		'SELECT * FROM (
 			SELECT pmid, COUNT(DISTINCT `date`) AS days
 			FROM (
@@ -532,7 +532,7 @@ class StatsDBClient {
 	}
 
 	public static function getClub69() {
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 			'SELECT id, COUNT( * ) AS victories
 			FROM (
 				SELECT pmid1 AS id
@@ -548,7 +548,7 @@ class StatsDBClient {
 	}
 
 	public static function getCompWithMaxMatches() {
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 			'SELECT competition_id, game_num
 			FROM (
 				SELECT competition_id, COUNT(*) AS game_num
@@ -583,7 +583,7 @@ class StatsDBClient {
 	 * @return MySQLResultIterator
 	 */
 	public static function getCompsWithMaxPman() {
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 			'SELECT `comp_id`, `count` FROM (
 				SELECT `competition_id` AS `comp_id`, COUNT(DISTINCT(`pmid`)) AS `count`
 				FROM `p_man_cup_result`

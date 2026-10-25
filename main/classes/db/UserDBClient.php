@@ -10,11 +10,11 @@ require_once dirname(__FILE__) . '/MySQLResultIterator.php';
  */
 class UserDBClient {
     public static function selectById($id) {
-        return mysql_qw('SELECT `id`, `name`, `surname` FROM `p_user` WHERE `id`=?', $id);
+        return db_qw('SELECT `id`, `name`, `surname` FROM `p_user` WHERE `id`=?', $id);
     }
 
 	public static function selectAll() {
-		return mysql_qw('SELECT * FROM `p_user`');
+		return db_qw('SELECT * FROM `p_user`');
 	}
 
 	public static function getNearTo($userData) {
@@ -23,13 +23,13 @@ class UserDBClient {
 
 		if (array_key_exists('name', $userData)) {
 			if ($needAnd) $req .= ' AND ';
-			$req .= ' `p_user`.`name`=\''.mysql_escape_string($userData['name']).'\' ';
+			$req .= ' `p_user`.`name`=\''.db_escape($userData['name']).'\' ';
 			$needAnd = true;
 		}
 
 		if (array_key_exists('surname', $userData)) {
 			if ($needAnd) $req .= ' AND ';
-			$req .= ' `p_user`.`surname`=\''.mysql_escape_string($userData['surname']).'\' ';
+			$req .= ' `p_user`.`surname`=\''.db_escape($userData['surname']).'\' ';
 			$needAnd = true;
 		}
 
@@ -43,7 +43,7 @@ class UserDBClient {
 				if ($key == 'name' || $key == 'surname') continue;
 
 				if ($needOr) $req .= ' OR ';
-				$req .= '(`p_user_data`.`key`=\''.mysql_escape_string($key).'\' AND `p_user_data`.`value`=\''.mysql_escape_string($value).'\')';
+				$req .= '(`p_user_data`.`key`=\''.db_escape($key).'\' AND `p_user_data`.`value`=\''.db_escape($value).'\')';
 			}
 
 			$req .= ')';
@@ -52,13 +52,13 @@ class UserDBClient {
 		$req .= ' GROUP BY `uid`';
 
 		return new MySQLResultIterator(
-			mysql_qw($req)
+			db_qw($req)
 		);
 	}
 
 	public static function getByKey($key, $value) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT `p_user`.* FROM (
 					`p_user`
 					INNER JOIN
@@ -79,24 +79,24 @@ class UserDBClient {
 	}
 
 	public static function insert($name, $surname) {
-		mysql_qw('INSERT INTO `common_user` SET `name`=?, `surname`=?', $name, $surname);
-		return mysql_insert_id();
+		db_qw('INSERT INTO `common_user` SET `name`=?, `surname`=?', $name, $surname);
+		return db_insert_id();
 	}
 
 	public static function insertFavourite($uid, $target, $title) {
-		mysql_qw('INSERT INTO `p_user_favourite` SET `uid`=?, `target`=?, `title`=?',
+		db_qw('INSERT INTO `p_user_favourite` SET `uid`=?, `target`=?, `title`=?',
 				$uid, $target, $title);
-		return mysql_insert_id();
+		return db_insert_id();
 	}
 
 	public static function deleteFavourite($uid, $target) {
-		return (boolean) mysql_qw('DELETE FROM `p_user_favourite` WHERE `uid`=? AND `target`=?',
+		return (bool) db_qw('DELETE FROM `p_user_favourite` WHERE `uid`=? AND `target`=?',
 				$uid, $target);
 	}
 
 	public static function getFavourites($uid, $like = false) {
 		return new MySQLResultIterator(
-			mysql_qw(
+			db_qw(
 				'SELECT * FROM `p_user_favourite` WHERE `uid`=?'.
 				($like ? ' AND `target` LIKE ? ORDER BY `id`' : ' ORDER BY `id` --?'),
 				$uid, $like
@@ -105,8 +105,8 @@ class UserDBClient {
 	}
 
 	public static function checkFavourite($uid, $target) {
-		return mysql_num_rows(
-			mysql_qw(
+		return db_num_rows(
+			db_qw(
 				'SELECT * FROM `p_user_favourite` WHERE `uid`=? AND `target`=?',
 				$uid, $target
 			)
@@ -119,7 +119,7 @@ class UserDBClient {
 			$in[] = intval($id);
 		}
 		return new MySQLResultIterator(
-			mysql_qw('SELECT * FROM `p_user` WHERE `id` IN ('.implode(",", $in).')')
+			db_qw('SELECT * FROM `p_user` WHERE `id` IN ('.implode(",", $in).')')
 		);
 	}
 }

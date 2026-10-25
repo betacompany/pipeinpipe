@@ -27,7 +27,7 @@ class ForumDB {
 	 * @return DBResultIterator
 	 */
 	public static function selectMessage($id) {
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 						'SELECT * FROM `' . self::MESSAGES . '` WHERE `id`=? ORDER BY `id`',
 						$id
 					));
@@ -43,7 +43,7 @@ class ForumDB {
 		$request = 'SELECT * FROM `' . self::MESSAGES . '` WHERE ';
 		$request .= ($topicId == 0) ? '1=1 ' : '`topic_id`='.intval($topicId).' ';
 		$request .= ($limit == 0) ? '' : 'LIMIT ' . intval($from). ', ' . intval($limit);
-		$resource = mysql_qw($request);
+		$resource = db_qw($request);
 		return new MySQLResultIterator($resource);
 	}
 
@@ -55,8 +55,8 @@ class ForumDB {
 	public static function countMessages($topicId = 0) {
 		$request = 'SELECT COUNT(*) FROM `' . self::MESSAGES . '` WHERE ';
 		$request .= ($topicId == 0) ? '1=1' : '`topic_id`='.intval($topicId);
-		$resource = mysql_qw($request);
-		return mysql_result($resource, 0, 0);
+		$resource = db_qw($request);
+		return db_result($resource, 0, 0);
 	}
 
 	/**
@@ -64,7 +64,7 @@ class ForumDB {
 	 * @return boolean
 	 */
 	public static function updateMessageText(ForumMessage $msg) {
-		return (boolean) mysql_qw(
+		return (bool) db_qw(
 					'UPDATE `' . self::MESSAGES . '` SET `text`=? WHERE `id`=?',
 					$msg->getText(), $msg->getId()
 				);
@@ -80,7 +80,7 @@ class ForumDB {
 	 * @return integer
 	 */
 	public static function insertMessage($topicId, $uid, $timestamp, $text, $html) {
-		mysql_qw(
+		db_qw(
 			'INSERT INTO `' . self::MESSAGES . '` SET `topic_id`=?,
 													  `uid`=?,
 													  `timestamp`=?,
@@ -89,7 +89,7 @@ class ForumDB {
 			$topicId, $uid, $timestamp, $text, $html
 		);
 
-		return mysql_insert_id();
+		return db_insert_id();
 	}
 
 	/**
@@ -98,7 +98,7 @@ class ForumDB {
 	 * @return boolean
 	 */
 	public static function updateMessage(ForumMessage $message) {
-		return (boolean) mysql_qw(
+		return (bool) db_qw(
 					'UPDATE `' . self::MESSAGES . '` SET `topic_id`=?,
 						                                      `uid`=?,
 															  `timestamp`=?,
@@ -119,8 +119,8 @@ class ForumDB {
 	 * @return integer
 	 */
 	public static function getLastMessageTimestamp($topicId) {
-		$resource = mysql_qw('SELECT `timestamp` FROM `' . self::MESSAGES . '` WHERE `topic_id`=? ORDER BY `id` LIMIT 1', $topicId);
-		if ($msg = mysql_fetch_assoc($resource)) {
+		$resource = db_qw('SELECT `timestamp` FROM `' . self::MESSAGES . '` WHERE `topic_id`=? ORDER BY `id` LIMIT 1', $topicId);
+		if ($msg = db_fetch_assoc($resource)) {
 			return $msg['timestamp'];
 		}
 
@@ -135,12 +135,12 @@ class ForumDB {
 	 */
 	public static function selectTopics($partId = 0) {
 		if ($partId == 0) {
-			return new MySQLResultIterator(mysql_qw(
+			return new MySQLResultIterator(db_qw(
 						'SELECT * FROM `' . self::TOPICS . '` WHERE 1=1 ORDER BY `id` ASC'
 					));
 		}
 
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 						'SELECT * FROM `' . self::TOPICS . '` WHERE `part_id`=? ORDER BY `id` DESC',
 						$partId
 					));
@@ -152,7 +152,7 @@ class ForumDB {
 	 * @return DBResultIterator
 	 */
 	public static function selectTopic($id) {
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 					'SELECT * FROM `' . self::TOPICS . '` WHERE `id`=?',
 					$id
 				));
@@ -164,16 +164,16 @@ class ForumDB {
 	 * @return boolean
 	 */
 	public static function updateTopic(ForumTopic $topic) {
-		return (boolean) mysql_qw(
+		return (bool) db_qw(
 					'UPDATE `' . self::TOPICS . '` SET `part_id`=?,
 													   `prev_topic_id`=?,
 													   `uid`=?,
 													   `title`=?,
 													   `closed`=?
 												   WHERE `id`=?',
-					$this->getPartId(), $this->getPrevTopicId(),
-					$this->getUID(), $this->getTitle(),
-					$this->isClosed() ? 1 : 0, $this->getId()
+					$topic->getPartId(), $topic->getPrevTopicId(),
+					$topic->getUID(), $topic->getTitle(),
+					$topic->isClosed() ? 1 : 0, $topic->getId()
 				);
 	}
 
@@ -187,7 +187,7 @@ class ForumDB {
 	 * @return integer
 	 */
 	public static function insertTopic($partId, $uid, $title, $closed = false, $prevTopicId = 0) {
-		$resource = mysql_qw(
+		$resource = db_qw(
 					'INSERT INTO `' . self::TOPICS . '` SET `part_id`=?,
 															`prev_topic_id`=?,
 															`uid`=?,
@@ -196,7 +196,7 @@ class ForumDB {
 					$partId, $prevTopicId, $uid, $title, $closed ? 1 : 0
 				);
 
-		return mysql_insert_id();
+		return db_insert_id();
 	}
 
 	/**
@@ -204,7 +204,7 @@ class ForumDB {
 	 * @return integer
 	 */
 	public static function getLastTopicTimestamp($partId) {
-		$resource = mysql_qw(
+		$resource = db_qw(
 					'SELECT MAX(`timestamp`) FROM (`' . 
 						self::LAST_REFRESH . 
 					'` LEFT JOIN `' . 
@@ -214,7 +214,7 @@ class ForumDB {
 					WHERE `part_id`=?', $partId
 				);
 
-		if ($msg = mysql_fetch_assoc($resource)) {
+		if ($msg = db_fetch_assoc($resource)) {
 			return $msg['timestamp'];
 		}
 
@@ -228,12 +228,12 @@ class ForumDB {
 	 */
 	public static function selectParts($forumId = 0) {
 		if ($forumId == 0) {
-			return new MySQLResultIterator(mysql_qw(
+			return new MySQLResultIterator(db_qw(
 						'SELECT * FROM `' . self::PARTS . '` WHERE 1=1 ORDER BY `id` ASC'
 					));
 		}
 
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 						'SELECT * FROM `' . self::PARTS . '` WHERE `forum_id`=? ORDER BY `id` DESC',
 						$forumId
 					));
@@ -245,7 +245,7 @@ class ForumDB {
 	 * @return DBResultIterator
 	 */
 	public static function selectPart($id) {
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 					'SELECT * FROM `' . self::PARTS . '` WHERE `id`=?',
 					$id
 				));
@@ -256,7 +256,7 @@ class ForumDB {
 	 * @return integer
 	 */
 	public static function getLastPartTimestamp($forumId) {
-		$resource = mysql_qw(
+		$resource = db_qw(
 					'SELECT MAX(`timestamp`) FROM (`' .
 						self::LAST_REFRESH .
 					'` LEFT JOIN `' .
@@ -266,7 +266,7 @@ class ForumDB {
 					WHERE `part_id`=?', $forumId
 				);
 
-		if ($msg = mysql_fetch_assoc($resource)) {
+		if ($msg = db_fetch_assoc($resource)) {
 			return $msg['timestamp'];
 		}
 
@@ -274,7 +274,7 @@ class ForumDB {
 	}
 
 	public static function selectForums() {
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 					'SELECT * FROM `' . self::FORUMS . '` WHERE 1=1 ORDER BY `id` ASC'
 				));
 	}
@@ -285,7 +285,7 @@ class ForumDB {
 	 * @return DBResultIterator
 	 */
 	public static function selectForum($id) {
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 					'SELECT * FROM `' . self::FORUMS . '` WHERE `id`=?',
 					$id
 				));
@@ -298,7 +298,7 @@ class ForumDB {
 	 * @return DBResultIterator
 	 */
 	public static function selectLast($targetType, $targetId) {
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 					'SELECT * FROM `' . self::LAST_REFRESH . '` WHERE `target_type`=? and `target_id`=?',
 					$targetType, $targetId
 				));
@@ -313,9 +313,9 @@ class ForumDB {
 	public static function insertLast($targetType, $targetId, $timestamp) {
 		self::updateLast($targetType, $targetId, $timestamp);
 
-		if (mysql_affected_rows() > 0) return true;
+		if (db_affected_rows() > 0) return true;
 		
-		return (boolean) mysql_qw(
+		return (bool) db_qw(
 					'INSERT INTO `' . self::LAST_REFRESH . '` SET `target_type`=?, `target_id`=?, `timestamp`=?',
 					$targetType, $targetId, $timestamp
 				);
@@ -328,14 +328,14 @@ class ForumDB {
 	 * @result boolean
 	 */
 	public static function updateLast($targetType, $targetId, $timestamp) {
-		return (boolean) mysql_qw(
+		return (bool) db_qw(
 					'UPDATE `' . self::LAST_REFRESH . '` SET `timestamp`=? WHERE `target_type`=? and `target_id`=?',
 					$timestamp, $targetType, $targetId
 				);
 	}
 
 	public static function selectVisit($uid, $targetType, $targetId) {
-		return new MySQLResultIterator(mysql_qw(
+		return new MySQLResultIterator(db_qw(
 					'SELECT * FROM `' . self::LAST_VISIT . '` WHERE `uid`=? and `target_type`=? and `target_id`=?',
 					$uid, $targetType, $targetId
 				));
@@ -345,14 +345,14 @@ class ForumDB {
 		$lastVisitTimestamp = ForumDB::getLastVisit($uid, $targetType, $targetId);
 		
 		if ($lastVisitTimestamp != 0) {
-			return (boolean) mysql_qw(
+			return (bool) db_qw(
 						'UPDATE `' . self::LAST_VISIT . '` SET `timestamp`=? 
 							WHERE `target_type`=? and `target_id`=? and `uid`=?',
 						$timestamp, $targetType, $targetId, $uid
 					);
 		}
 
-		return (boolean) mysql_qw(
+		return (bool) db_qw(
 					'INSERT INTO `' . self::LAST_VISIT . '` SET `target_type`=?, `target_id`=?, `uid`=?, `timestamp`=?',
 					$targetType, $targetId, $uid, $timestamp
 				);
@@ -367,7 +367,7 @@ class ForumDB {
 
 	public static function selectAction($id) {
 		return new MySQLResultIterator(
-					mysql_qw(
+					db_qw(
 						'SELECT * FROM `' . self::ACTIONS . '` WHERE `id`=?', $id
 					)
 				);
@@ -375,7 +375,7 @@ class ForumDB {
 
 	public static function selectActions($msgid) {
 		return new MySQLResultIterator(
-					mysql_qw(
+					db_qw(
 						'SELECT * FROM `' . self::ACTIONS . '` WHERE `message_id`=? ORDER BY `id`',
 						$msgid
 					)
@@ -383,7 +383,7 @@ class ForumDB {
 	}
 
 	public static function insertAction($msgId, $uid, $type, $timestamp, $value) {
-		return (boolean) mysql_qw(
+		return (bool) db_qw(
 					'INSERT INTO `' . self::ACTIONS . '` SET `message_id`=?, `uid`=?, `type`=?, `timestamp`=?, `value`=?',
 					$msgId, $uid, $type, $timestamp, $value
 				);

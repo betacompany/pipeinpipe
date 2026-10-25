@@ -20,7 +20,8 @@ try {
 	include 'includes/authorize.php';
 	include 'views/header.php';
 
-	$cache = new ResponseCache('index', array('uid'));
+	// One cache per user: the block below differs for guests and signed-in users
+	$cache = new ResponseCache('index', array('uid' => $auth->uid()));
 	if ($cache->getAge() < 60 * 60) {
 		echo $cache->get();
 	} else {

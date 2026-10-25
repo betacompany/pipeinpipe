@@ -145,7 +145,10 @@ class ResponseCache {
 	}
 
 	public function  __construct($key, $request = null) {
-		$request = ($request == null) ? array_diff_key(
+		// Nothing calls session_start(), so $_SESSION is never set and the request
+		// is empty: one cache file per key
+		if ($request == null) {
+			$request = !isset($_SESSION) ? array() : array_diff_key(
 						$_REQUEST,
 						array_merge(
 							array(
@@ -159,7 +162,8 @@ class ResponseCache {
 							$_COOKIE,
 							$_SESSION
 						)
-					) : $request;
+					);
+		}
 
 		$this->key = $key;
 

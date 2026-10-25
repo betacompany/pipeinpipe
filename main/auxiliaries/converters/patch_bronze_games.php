@@ -6,7 +6,7 @@
 require_once dirname(__FILE__) . "/../../classes/cupms/Game.php";
 require_once dirname(__FILE__) . "/../../classes/db/MySQLResultIterator.php";
 
-$iterator = new MySQLResultIterator(mysql_qw("SELECT `id` FROM `p_game` WHERE `stage`=3"));
+$iterator = new MySQLResultIterator(db_qw("SELECT `id` FROM `p_game` WHERE `stage`=3"));
 echo '<pre>';
 echo "adding semi-finals as previous matches for bronze games\n";
 echo "games selected, " . count($iterator->getResults()) . " entries found.\n\n";

@@ -34,6 +34,9 @@ class Logger {
 	
 	private function writeln($line = '') {
 		$this->fp = fopen($this->filename, 'a+');
+		// Without a writable main/logs the fwrite() below would throw and kill
+		// the request being logged
+		if ($this->fp === false) return;
 		fwrite(
 			$this->fp,
 			$line . "\n"
@@ -50,11 +53,11 @@ class Logger {
 		return sprintf(
 			"%s:%s\t[%s]\t%s\t%s?%s",
 			date("Y/m/d H:i:s", floor($tm)),
-			preg_replace("/ /", "0", sprintf("%3d", ($tm * 1000) % 1000)),
+			preg_replace("/ /", "0", sprintf("%3d", ((int) ($tm * 1000)) % 1000)),
 			$layer,
 			$userid,
 			$_SERVER['SCRIPT_NAME'],
-			$_SERVER['QUERY_STRING']
+			isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '' // unset when run by cron
 		);
 	}
 

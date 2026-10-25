@@ -344,7 +344,7 @@ class Item {
 	public function addComment($type, $uid, $timestamp, $contentSource, $contentParsed) {
 		if ($this->isClosed()) return false;
 		if (!$this->isAvailableFor($uid)) return false;
-		$comment = Comment::create($type, $this->getId(), $uid, $timestamp, $contentSource, $contentParsed);
+		$comment = Comment::createComment($type, $this->getId(), $uid, $timestamp, $contentSource, $contentParsed);
 		if ($comment != null) {
 			$this->setLastCommentTimestamp($timestamp);
 		}
@@ -485,7 +485,7 @@ class Item {
 		if (!$this->isAvailableFor($user)) return false;
 		if ($this->isActedBy($user, $type)) return false;
 
-		return Action::create($type, Action::TARGET_ITEM, $this->id, $user->getId(), time(), $value);
+		return Action::createAction($type, Action::TARGET_ITEM, $this->id, $user->getId(), time(), $value);
 	}
 
 	/**
@@ -615,7 +615,7 @@ class Item {
 		return self::makeArray($iterator);
 	}
 
-	public static function getByPeriod($begin, $end, $type = '') {
+	public static function getItemsByPeriod($begin, $end, $type = '') {
 		$iterator = ItemDBClient::getByPeriod($begin, $end, $type);
 		return self::makeArray($iterator);
 	}
@@ -647,7 +647,7 @@ class Item {
 	 * @param string $contentParsed parsed source of content
 	 * @return Item (its children)
 	 */
-	public static function create($type, $groupId, $uid, $creationTimestamp, $contentSource, $contentParsed, $contentTitle = "", $contentValue = 0) {
+	public static function createItem($type, $groupId, $uid, $creationTimestamp, $contentSource, $contentParsed, $contentTitle = "", $contentValue = 0) {
 		$id = ItemDBClient::insert($type, $groupId, $uid, $creationTimestamp, $contentSource, $contentParsed, $contentTitle, $contentValue);
 		try {
 			$item = Item::getById($id);
@@ -664,7 +664,7 @@ class Item {
 	 * Returns all items
 	 * @return array
 	 */
-	public static function getAll($limit = 0, $descendive = false) {
+	public static function getAllItems($limit = 0, $descendive = false) {
 		$iterator = ItemDBClient::getAll($limit, $descendive);
 		return self::makeArray($iterator);
 	}

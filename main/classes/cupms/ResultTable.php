@@ -47,7 +47,7 @@ class ResultTable implements IComparable {
 		assertTrue('Invalid cupId='.$cupId, Cup::existsById($cupId));
 
 		$req = ResultTableDBClient::select($pmid, $cupId);
-		if ($result = mysql_fetch_assoc($req)) {
+		if ($result = db_fetch_assoc($req)) {
             if ($create) {
                 throw new Exception("Results for pmid=$pmid and cupId=$cupId already exists");
             }
@@ -79,7 +79,7 @@ class ResultTable implements IComparable {
 
     public function store() {
         ResultTableDBClient::insert($this);
-        $this->id = mysql_insert_id();
+        $this->id = db_insert_id();
     }
 
     public function getId() {
@@ -237,7 +237,7 @@ class ResultTable implements IComparable {
         $result = array();
         for ($place = 1; $place <= $count; $place++) {
             $req = ResultTableDBClient::selectPmidByPlaceInCup($place, $cup->getId());
-            if ($pm = mysql_fetch_assoc($req)) {
+            if ($pm = db_fetch_assoc($req)) {
                 $result[] = new ResultTable($pm['pmid'], $cup->getId());
             }
         }
@@ -308,8 +308,8 @@ class ResultTable implements IComparable {
                 $negate = true;
             }
 
-            $thisValue =    call_user_method('get' . $attr, $this);
-            $otherValue =   call_user_method('get' . $attr, $other);
+            $thisValue =    call_user_func(array($this, 'get' . $attr));
+            $otherValue =   call_user_func(array($other, 'get' . $attr));
 
             $cmpResult = ($thisValue == $otherValue) ? 0 :
                             (($thisValue < $otherValue) ? 1 : -1);

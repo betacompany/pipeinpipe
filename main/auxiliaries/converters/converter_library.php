@@ -9,10 +9,10 @@ function save_results() {
 	$ex = explode('/', $_SERVER['SCRIPT_NAME']);
 	$script = $ex[count($ex) - 1];
 
-	mysql_qw('UPDATE `p_converter` SET `time`=? WHERE `script`=?',
+	db_qw('UPDATE `p_converter` SET `time`=? WHERE `script`=?',
 			$ms, $script);
-	if (mysql_affected_rows () == 0) {
-		mysql_qw('INSERT INTO `p_converter` SET `time`=? ,`script`=?',
+	if (db_affected_rows () == 0) {
+		db_qw('INSERT INTO `p_converter` SET `time`=? ,`script`=?',
 			$ms, $script);
 	}
 
