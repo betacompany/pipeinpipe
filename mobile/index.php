@@ -93,10 +93,10 @@ define('CURRENT_TITLE', $title);
 		<title><?=CURRENT_TITLE?></title>
 		<link rel="stylesheet" type="text/css" href="/css/main.css" charset="UTF-8"/>
 
-		<script src="http://<?=MAIN_SITE_URL?>/js/jquery-1.5.1.min.js" type="text/javascript"></script>
+		<script src="//<?=MAIN_SITE_URL?>/js/jquery-1.5.1.min.js" type="text/javascript"></script>
 <? if (param('part') == ''): ?>
-		<script src="http://<?=MAIN_SITE_URL?>/js/login_vk.js" type="text/javascript"></script>
-		<script src="http://vkontakte.ru/js/api/openapi.js" type="text/javascript" charset="windows-1251"></script>
+		<script src="//<?=MAIN_SITE_URL?>/js/login_vk.js" type="text/javascript"></script>
+		<script src="https://vk.com/js/api/openapi.js" type="text/javascript"></script>
 <? endif; ?>
 
 	</head>
@@ -119,7 +119,7 @@ define('CURRENT_TITLE', $title);
 if (!issetParam('part')) {
 	if (!$auth->isAuth()) {
 ?>
-			<form action="http://<?=MAIN_SITE_URL?>/authorize.php" method="POST">
+			<form action="//<?=MAIN_SITE_URL?>/authorize.php" method="POST">
 				<input type="hidden" name="method" value="sign_in"/>
 <?
 		begin_block('Авторизация');

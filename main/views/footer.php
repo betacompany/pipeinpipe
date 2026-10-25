@@ -34,7 +34,7 @@ if ($exec_time > 0.2) {
 					</div>
 					<ul id="footer_menu">
 						<li><a href="/about">О сайте</a></li>
-						<li><a href="http://<?=MOBILE_SITE_URL?>">Мобильная версия</a></li>
+						<li><a href="//<?=MOBILE_SITE_URL?>">Мобильная версия</a></li>
 						<li><a href="http://пайп.рф">Пайп.рф</a></li>
 						<li><a href="http://cupms.pipeinpipe.info">CupMS</a></li>
 						<?
@@ -77,9 +77,9 @@ $script_name = substr($script_name, 1);
 
 <script type="text/javascript" src="/js/fullajax.js"></script>
 
-<script src="http://vkontakte.ru/js/api/openapi.js" type="text/javascript" charset="windows-1251"></script>
+<script src="https://vk.com/js/api/openapi.js" type="text/javascript"></script>
 <!--<script src="http://connect.facebook.net/en_US/all.js" type="text/javascript"></script>-->
-<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+<script src="https://platform.twitter.com/widgets.js" type="text/javascript"></script>
 
 <?
 if (file_exists(dirname(__FILE__).'/../js/'.$script_name.'.js')) {

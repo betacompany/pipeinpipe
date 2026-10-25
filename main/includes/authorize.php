@@ -49,7 +49,7 @@ if ($_SERVER['HTTP_HOST'] != MOBILE_SITE_URL && $auth->isMobile()) {
 		}
 	}
 
-	$mobile_url = 'http://' . MOBILE_SITE_URL . $path;
+	$mobile_url = '//' . MOBILE_SITE_URL . $path;
 	if (isset($use_mobile)) {
 		if ($use_mobile == '1') {
 			Header('Location: ' . $mobile_url);

@@ -52,7 +52,7 @@ function mobile_show_message(ForumMessage $message, $user) {
 	$author = $message->getAuthor();
 	$text   = $message->getParsed();
 
-	$photo_url = "http://" . MAIN_SITE_URL . $author->getImageURL(User::IMAGE_SQUARE_SMALL);
+	$photo_url = "//" . MAIN_SITE_URL . $author->getImageURL(User::IMAGE_SQUARE_SMALL);
 	$date = str_replace(' ', '&nbsp;', date_local($message->getTimestamp(), DATE_LOCAL_SUPER_SHORT));
 
 	$can_agree = $message->canBeActedBy(Action::AGREE, $user) ? "can" : "";
@@ -96,7 +96,7 @@ DATA;
 
 	echo "<td class=\"roman $can_roman $romaned\">";
 	if ($can_roman) {
-		echo "<a href=\"http://".MAIN_SITE_URL.
+		echo "<a href=\"//".MAIN_SITE_URL.
 			 "/procs/proc_forum.php?mobile=1&method=act&msg_id={$message->getId()}&action=".
 			 Action::ROMAN."\">";
 	}
@@ -110,7 +110,7 @@ DATA;
 
 	echo "<td class=\"agree $can_agree $agreed\">";
 	if ($can_agree) {
-		echo "<a href=\"http://".MAIN_SITE_URL.
+		echo "<a href=\"//".MAIN_SITE_URL.
 			 "/procs/proc_forum.php?mobile=1&method=act&msg_id={$message->getId()}&action=".
 			 Action::AGREE."\">";
 	}
@@ -183,7 +183,7 @@ function mobile_show_textarea($params) {
 }
 
 function mobile_show_rating_row($place, $name, $surname, $img, $points) {
-	$img_url = "http://" . MAIN_SITE_URL . $img;
+	$img_url = "//" . MAIN_SITE_URL . $img;
 	$points = sprintf("%.2f", $points);
 	echo <<< ROW
 	<tr class="vam">
@@ -198,7 +198,7 @@ ROW;
 }
 
 function mobile_show_league_row($place, League $league) {
-	$image_url = "http://" . MAIN_SITE_URL . $league->getImageURL(League::IMAGE_SMALL);
+	$image_url = "//" . MAIN_SITE_URL . $league->getImageURL(League::IMAGE_SMALL);
 	echo <<< ROW
 	<tr class="vam">
 		<td>$place</td>
@@ -227,7 +227,7 @@ function end_block() {
 function mobile_show_league_info(League $league) {
 	$pm_count = lang_number_sclon( count ($league->getPlayers()), 'пайпмен', 'пайпмена', 'пайпменов' );
 	$cp_count = lang_number_sclon( count ($league->getCompetitions()), 'турнир', 'турнира', 'турниров' );
-	$image_url = "http://" . MAIN_SITE_URL . $league->getImageURL(League::IMAGE_SMALL);
+	$image_url = "//" . MAIN_SITE_URL . $league->getImageURL(League::IMAGE_SMALL);
 
 	echo <<< L
 	<tr>
@@ -251,7 +251,7 @@ L;
 }
 
 function mobile_show_competition(Competition $competition) {
-	$image_url = "http://" . MAIN_SITE_URL . $competition->getImageURL(Competition::IMAGE_SMALL);
+	$image_url = "//" . MAIN_SITE_URL . $competition->getImageURL(Competition::IMAGE_SMALL);
 	echo <<< C
 	<tr>
 	    <td>
@@ -272,7 +272,7 @@ function mobile_show_competition_info(Competition $competition) {
 		$verb = $winner->isMale() ? 'Выиграл' : 'Выиграла';
 	}
 	$date = date_local(strtotime($competition->getDate()), DATE_LOCAL_FULL_DATE);
-	$image_url = "http://" . MAIN_SITE_URL . $competition->getImageURL(Competition::IMAGE_SMALL);
+	$image_url = "//" . MAIN_SITE_URL . $competition->getImageURL(Competition::IMAGE_SMALL);
 
 	echo <<< C
 	<tr>
