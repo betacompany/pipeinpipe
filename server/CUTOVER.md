@@ -4,6 +4,11 @@ Moves pipeinpipe.info, `m.`, `cupms.` and `total.` from the old server
 (Ubuntu 14.04, PHP 5.5) to the new one by moving the old server's public
 address, 158.160.188.92, to the new VM. The live sites' DNS doesn't change.
 
+**Done on 2026-10-25.** The data was copied at 23:34 UTC on the 24th behind the
+maintenance page, and the address moved at about 10:20 UTC. The old VM is
+stopped. The new server is now at 158.160.188.92, so the script's defaults
+(the old server as a jump host) no longer apply.
+
 `server/cutover.sh` does the data side from a laptop that can SSH to both
 servers. The console steps are yours. Expect about 10 minutes of downtime: a
 couple of minutes for the script, the rest for moving the address.

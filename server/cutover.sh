@@ -245,8 +245,10 @@ check() {
 	done < <(new 'for d in /var/www/pipeinpipe.info /var/www/total.pipeinpipe.info /var/www/dev.pipeinpipe.info /var/www/total.dev.pipeinpipe.info; do
 		echo "$d $(git -C $d rev-parse --abbrev-ref HEAD) $(git -C $d rev-parse HEAD) $(git -C $d status --porcelain | wc -l)"
 	done')
-	if ! new 'for h in pipeinpipe.info dev.pipeinpipe.info; do test -s /var/www/$h/main/css/all.css -a -s /var/www/$h/main/js/all.js || exit 1; done'; then
-		echo "  all.css or all.js is missing in a checkout (see server/README.md)"; problems=$((problems + 1))
+	# The old top-level deploy.sh rebuilds them, which without Java leaves an
+	# empty all.css and a stub all.js; the real ones are 18 and 38 KB
+	if ! new 'for f in /var/www/{,dev.}pipeinpipe.info/main/{css/all.css,js/all.js}; do [ "$(stat -c %s $f 2>/dev/null || echo 0)" -gt 10000 ] || exit 1; done'; then
+		echo "  all.css or all.js is missing or broken in a checkout (see server/README.md)"; problems=$((problems + 1))
 	fi
 
 	step "Totalizator's ACCESS_KEY"
