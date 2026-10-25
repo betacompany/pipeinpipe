@@ -10,3 +10,5 @@ $COMMON_AUTH_PROPERTIES['tokens_table'] = 'common_token';
 $COMMON_AUTH_PROPERTIES['domain'] = '.@HOST@';
 // dev uses its own name, so prod's login cookie (sent to *.dev too) is ignored there
 $COMMON_AUTH_PROPERTIES['cookie_name'] = '@AUTH_COOKIE@';
+// nginx sends every page to HTTPS, so the login cookie never has to go over HTTP
+$COMMON_AUTH_PROPERTIES['secure'] = true;

@@ -72,7 +72,9 @@ put() {
 as_deploy() { sudo -u "$DEPLOY_USER" "$@"; }
 
 # HTTPS for the instance's sites (included by site.conf), once it has a
-# certificate from the HTTPS step below
+# certificate from the HTTPS step below. Plain HTTP then redirects to it
+# (exceptions in nginx/https-redirect.conf), and browsers are told to stick to
+# HTTPS for a day (HSTS; raise max-age once it has run fine for a while).
 https_snippet() {
 	local cert=/etc/letsencrypt/live/pipeinpipe-$NAME
 	if [ -s "$cert/fullchain.pem" ]; then
@@ -83,6 +85,10 @@ https_snippet() {
 			ssl_certificate $cert/fullchain.pem;
 			ssl_certificate_key $cert/privkey.pem;
 			include /etc/nginx/snippets/pipeinpipe-tls.conf;
+			if (\$pipeinpipe_to_https) {
+				return 301 https://\$host\$request_uri;
+			}
+			add_header Strict-Transport-Security "max-age=86400" always;
 		EOF
 	else
 		echo "# No certificate for $NAME yet: HTTP only"
@@ -213,6 +219,7 @@ put "$HERE/logrotate/pipeinpipe" /etc/logrotate.d/pipeinpipe || true
 
 put "$HERE/nginx/common.conf" /etc/nginx/snippets/pipeinpipe-common.conf || true
 put "$HERE/nginx/tls.conf" /etc/nginx/snippets/pipeinpipe-tls.conf || true
+put "$HERE/nginx/https-redirect.conf" /etc/nginx/conf.d/pipeinpipe-https.conf || true
 put "$HERE/nginx/default.conf" /etc/nginx/sites-available/pipeinpipe-default.conf || true
 ln -sfn /etc/nginx/sites-available/pipeinpipe-default.conf /etc/nginx/sites-enabled/pipeinpipe-default.conf
 rm -f /etc/nginx/sites-enabled/default

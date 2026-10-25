@@ -25,6 +25,11 @@ if (!isset($COMMON_AUTH_PROPERTIES['cookie_name'])) {
 	$COMMON_AUTH_PROPERTIES['cookie_name'] = 'at';
 }
 
+// Login cookies only over HTTPS; the server turns it on, the HTTP-only dev stand can't
+if (!isset($COMMON_AUTH_PROPERTIES['secure'])) {
+	$COMMON_AUTH_PROPERTIES['secure'] = false;
+}
+
 foreach ($COMMON_AUTH_PROPERTIES as $key => $value) {
 	define('COMMON_AUTH_' . strtoupper($key), $value);
 }
@@ -100,11 +105,11 @@ function get_token() {
 
 function set_token($uid, $token, $is_session = false) {
 	$_COOKIE[COMMON_AUTH_COOKIE_NAME] = $token;
-	setcookie(COMMON_AUTH_COOKIE_NAME, $token, $is_session ? 0 : time() + COMMON_AUTH_EXPIRING_PERIOD, "/", COMMON_AUTH_DOMAIN, false, true);
+	setcookie(COMMON_AUTH_COOKIE_NAME, $token, $is_session ? 0 : time() + COMMON_AUTH_EXPIRING_PERIOD, "/", COMMON_AUTH_DOMAIN, COMMON_AUTH_SECURE, true);
 	if ($is_session) {
-		setcookie(COMMON_AUTH_COOKIE_NAME . "_s", "y", 0, "/", COMMON_AUTH_DOMAIN, false, true);
+		setcookie(COMMON_AUTH_COOKIE_NAME . "_s", "y", 0, "/", COMMON_AUTH_DOMAIN, COMMON_AUTH_SECURE, true);
 	} else {
-		setcookie(COMMON_AUTH_COOKIE_NAME . "_s", "n", 69, "/", COMMON_AUTH_DOMAIN, false, true);
+		setcookie(COMMON_AUTH_COOKIE_NAME . "_s", "n", 69, "/", COMMON_AUTH_DOMAIN, COMMON_AUTH_SECURE, true);
 	}
 
 	global $mysqli_link;
@@ -114,8 +119,8 @@ function set_token($uid, $token, $is_session = false) {
 }
 
 function delete_token($token) {
-	setcookie(COMMON_AUTH_COOKIE_NAME, $token, 69, "/", COMMON_AUTH_DOMAIN, false, true);
-	setcookie(COMMON_AUTH_COOKIE_NAME . "_s", $token, 69, "/", COMMON_AUTH_DOMAIN, false, true);
+	setcookie(COMMON_AUTH_COOKIE_NAME, $token, 69, "/", COMMON_AUTH_DOMAIN, COMMON_AUTH_SECURE, true);
+	setcookie(COMMON_AUTH_COOKIE_NAME . "_s", $token, 69, "/", COMMON_AUTH_DOMAIN, COMMON_AUTH_SECURE, true);
 
 	global $mysqli_link;
 	$tk = mysqli_real_escape_string($mysqli_link, $token);

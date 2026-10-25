@@ -6,6 +6,7 @@ $PROPERTIES['db']['password']  = "@PIPE_DB_PASS@";
 $PROPERTIES['db']['database']  = "@PIPE_DB@";
 $PROPERTIES['db']['server']    = "localhost";
 $PROPERTIES['cookies']['domain'] = ".@HOST@";
+$PROPERTIES['cookies']['secure'] = true;
 $PROPERTIES['main_site_url']   = "@HOST@";
 $PROPERTIES['cupms_site_url']  = "cupms.@HOST@";
 $PROPERTIES['mobile_site_url'] = "m.@HOST@";
