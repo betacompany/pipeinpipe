@@ -13,10 +13,9 @@ HERE=$(cd "$(dirname "$0")" && pwd)
 DEPLOY_USER=${DEPLOY_USER:-ortemij}
 PIPE_REPO=https://github.com/betacompany/pipeinpipe.git
 TOTAL_REPO=https://github.com/betacompany/totalizator.git
-# The PHP 8 code is still in betacompany/pipeinpipe#1 and betacompany/totalizator#19;
-# switch to master and develop once they are merged. Only used for new checkouts.
-PIPE_BRANCH=${PIPE_BRANCH:-claude/pipeinpipe-php-upgrade-5b51c9}
-TOTAL_BRANCH=${TOTAL_BRANCH:-claude/php-upgrade}
+# Only used for new checkouts
+PIPE_BRANCH=${PIPE_BRANCH:-master}
+TOTAL_BRANCH=${TOTAL_BRANCH:-develop}
 
 INSTANCES="prod dev"
 SECRETS=/etc/pipeinpipe/secrets.env
