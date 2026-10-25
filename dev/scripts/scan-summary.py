@@ -1,5 +1,5 @@
-"""Summarises the output of scan.sh: lint failures and PHPCompatibility findings
-grouped by sniff and by top-level directory."""
+"""Summarises the output of scan.sh: PHP 8.5 lint failures and PHPCompatibility
+findings grouped by sniff and by top-level directory."""
 
 import collections
 import json
@@ -8,14 +8,6 @@ import re
 import sys
 
 out = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else "data/scan")
-
-lint55 = out / "lint55.txt"
-if lint55.exists():
-    lines = sorted(set(lint55.read_text().splitlines()))
-    print(f"######## PHP 5.5 lint: {len(lines)} errors (both repos)")
-    for line in lines:
-        print("   ", line)
-
 
 def message_kind(message):
     """Strips the names out of a PHP message so that repeats group together."""

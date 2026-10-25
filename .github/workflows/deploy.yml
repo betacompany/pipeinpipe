@@ -6,7 +6,7 @@
 # Deploying needs the DEPLOY_SSH_KEY secret, a key the server only lets run
 # server/ci-deploy.sh (see server/README.md).
 name: Deploy
-run-name: ${{ inputs.instance && format('Deploy {0} to {1}', github.ref_name, inputs.instance) || format('Build {0}', github.ref_name) }}
+run-name: ${{ inputs.instance && format('Deploy {0} to {1}', github.ref_name, inputs.instance) || format('Build {0}', github.head_ref || github.ref_name) }}
 
 on:
   push:

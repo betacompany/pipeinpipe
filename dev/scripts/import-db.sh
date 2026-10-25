@@ -18,8 +18,8 @@ GRANT ALL ON pipeinpipe.* TO 'pipeman'@'localhost', 'pipeman'@'%';
 GRANT ALL ON totalizator.* TO 'totalizator'@'localhost', 'totalizator'@'%';
 SQL
 
-# The prod views are owned by root@localhost and ortemij@%; drop DEFINER so
-# they belong to the importing user instead of a user that doesn't exist here.
+# The prod views name their owner (root@localhost on the server); drop DEFINER
+# so they belong to the importing user, whichever users the dump names.
 gunzip -c "$DUMP" \
 	| sed -E 's/DEFINER=`[^`]+`@`[^`]+`//g' \
 	| docker compose exec -T mariadb mariadb -uroot -pdev --default-character-set=utf8

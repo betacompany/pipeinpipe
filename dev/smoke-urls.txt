@@ -1,4 +1,5 @@
-# <host> <path> [auth], GET requests. "auth" signs in first (see scripts/smoke.sh).
+# <host> <path> [auth] [status], GET requests. "auth" signs in first (see
+# scripts/smoke.sh); status is the expected one when it isn't 200.
 # IDs exist in the 2026-10-24 prod copy. Only read-only requests: no stakes, no admin actions.
 
 # pipeinpipe.info
@@ -38,7 +39,7 @@ pipeinpipe.localhost /about
 pipeinpipe.localhost /search?q=pipe
 pipeinpipe.localhost /sign_up
 pipeinpipe.localhost /api.php
-pipeinpipe.localhost /does-not-exist
+pipeinpipe.localhost /does-not-exist 404
 pipeinpipe.localhost / auth
 pipeinpipe.localhost /profile auth
 pipeinpipe.localhost /profile/edit auth
@@ -58,13 +59,13 @@ m.pipeinpipe.localhost /forum_topic/2847
 
 # cupms.pipeinpipe.info
 cupms.pipeinpipe.localhost /
-cupms.pipeinpipe.localhost /main.php
+cupms.pipeinpipe.localhost /main.php 302
 cupms.pipeinpipe.localhost /main.php auth
 
 # total.pipeinpipe.info (everything but / needs a signed-in user)
 total.pipeinpipe.localhost /
-total.pipeinpipe.localhost /main.php
-total.pipeinpipe.localhost / auth
+total.pipeinpipe.localhost /main.php 302
+total.pipeinpipe.localhost / auth 302
 total.pipeinpipe.localhost /main.php auth
 total.pipeinpipe.localhost /rating.php auth
 total.pipeinpipe.localhost /rules.php auth
