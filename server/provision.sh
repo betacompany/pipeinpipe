@@ -81,7 +81,7 @@ retry() {
 echo "== Packages"
 apt-get update -q
 DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
-	nginx mariadb-server php8.5-fpm php8.5-cli php8.5-mysql php8.5-mbstring \
+	nginx mariadb-server php8.5-fpm php8.5-cli php8.5-mysql php8.5-mbstring php8.5-gd \
 	git rsync ufw unattended-upgrades cron logrotate
 
 echo "== Swap"

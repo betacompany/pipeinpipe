@@ -48,6 +48,8 @@ section describes the upgrade itself, when the code ran on both versions.
 | 14 | pipeinpipe | `PlayerComparator::getPlayer(int $which)`: `int` is a class name on PHP 5, so every call fails today | Type hint removed |
 | 15 | pipeinpipe | The page cache never worked on prod (`main/temp` not writable by PHP), and its keys were unsafe to enable: `api.php` would serve uncached-TTL methods (incl. writes) from cache forever, and the home page and closed forum topics were cached across users | `api.php` caches only methods with a TTL (none while `API_DEBUG_MODE` is on); home page and closed topics are cached per user. Prod got a `www-data`-owned `temp/cache` on 2026-10-24: `/sport/pipemen` went from 40 s to 0.24 s |
 | 16 | pipeinpipe | `Logger` with an unwritable `main/logs` (as on both servers): `fwrite(false)` is a `TypeError` since 8.0, which cut `/life` off mid-page | Skips the write when the file can't be opened |
+| 17 | pipeinpipe | Found on prod after the cutover: `max()` of an empty array is a `ValueError` (not an `Exception`, so the `catch` around it didn't help), which cut off the pages of players with no rating history (`/pm328`) | Returns 0 for them, as PHP 5's `false` did |
+| 18 | pipeinpipe | Found on prod after the cutover: a cup with one child cup has zero columns, and `%`/`/` by zero is a `DivisionByZeroError` (`/sport/league/1/competition/3`) | No division when there are no columns; nothing is drawn for them either way |
 
 ## MariaDB 11.8 instead of MySQL 5.5
 
@@ -77,6 +79,12 @@ nothing in either repo.
 - **`#[\ReturnTypeWillChange]`** on the `Iterator` methods of
   `MySQLResultIterator` and `BijectiveMap` is now real return types.
 
+Prod's error log turned up two pages the upgrade broke (fixes 17 and 18). A
+crawl of 1,955 pages on the stand then found no others. It covered every
+player, league, competition, forum topic, blog post and video, plus 300
+photos and 652 user profiles. The parser's output for all 15,280 stored
+comments and forum messages is identical on PHP 5.5 and 8.5.
+
 ## Requirements for the new server
 
 - **Start from PHP's production `php.ini`, as Ubuntu's `php8.5-fpm` package
@@ -86,9 +94,8 @@ nothing in either repo.
 - **Page cache directory:** `main/temp/cache` must be writable by PHP
   (`www-data`); `main/temp` itself stays read-only, as on prod, so the lock
   and per-user `temp/user_*` files keep behaving as they do today.
-- **Decide on GD (`php8.5-gd`):** with it, the photo background, avatar and
-  photo upload code would start working, but that code has not run on prod
-  for years.
+- **GD (`php8.5-gd`):** installed since 2026-10-25 for the photo backgrounds
+  and avatar miniatures.
 - **nginx `fastcgi_read_timeout 120s`:** a cold `/sport/pipemen` renders for
   about 60 s, nginx's default.
 
@@ -107,21 +114,34 @@ nothing in either repo.
 - **cupms player editor:** it now works. On 5.5 it runs out of the 128 MB
   memory limit (`players_view.php:113`), so it's broken on prod today.
 
-## Already broken on prod (not caused by the upgrade)
+## Broken before the upgrade
 
-- **`api.php?handler=photobg`:** every desktop page calls it, and it returns
-  500 because `proc_photobg.php` needs GD. Prod returns the same 500.
-- **`/forum/part1` (desktop):** the page stops after the first topic. User 1126
-  is in `common_user` but not in the `p_user` view, so `forum_view.php:298`
-  throws. Prod returns the identical page.
-- **Photo viewer:** `main/views/media_photo_viewer.php:33` calls a method on
-  null for some photos.
-- **`CommentDBClient::getByItemType()`:** builds `SELECT ... .* AS item_type`,
-  invalid on both MySQL and MariaDB.
+These failed the same way on the old server. Fixed on 2026-10-25:
+
+- **Photo backgrounds** (`api.php?handler=photobg`, called by every desktop
+  page) returned 500 without GD. GD is installed now.
+- **Avatars:** pages stopped at a missing avatar miniature (comments on
+  `/life/blog/1762` and `/1789`), since making one needs GD and a writable
+  `images/users`. `server/make-miniatures.php` made the 21 missing ones, and a
+  page shows the default avatar instead of stopping if one is still missing.
+- **Disabled users:** the forum list stopped at a topic by a disabled user
+  (`/forum/part1`; users 767 and 1126 aren't in the `p_user` view). It now
+  shows no author there, as `blocks.php` already did.
+- **Forum topics 211 and 351:** a stray closing tag in messages 5656 and 10163
+  made the parser give up (PHP 5: "Please remove tag </idle>"). It now drops
+  such a tag, as browsers do. Every other stored text parses as before.
+- **Deleted and missing content:** deleted photo albums and blog posts,
+  profiles of missing users, and empty albums or tags (the photo viewer's
+  `null`) rendered an empty or cut-off page with status 200. They're now a 404.
+- **Latest comments** (`/life/comments`): `CommentDBClient::getByItemType()`
+  built invalid SQL, so the page showed none.
+
+Still broken:
+
 - **Dead media:** album photos hosted on VK's old CDN no longer load, and the
   home page video is a Flash embed.
-- **Cron jobs:** the two jobs in `cron/` use `?` in the day-of-week field.
-  Neither shows up in the server's syslog or access logs.
+- **Photo and avatar uploads:** PHP can't write to the uploaded content on the
+  server, as on the old one.
 - **Unresolved static calls:** three calls to methods that don't exist:
   `UserDataDBClient::getUIDByFBId()`, `CompetitionDBClient::removeById()` in a
   test, and `Parser::parse()` in `junk/`.

@@ -10,9 +10,12 @@ require_once 'classes/cupms/Player.php';
 require_once 'classes/forum/Forum.php';
 
 require_once 'includes/log.php';
+require_once 'includes/error.php';
 
 require_once 'views/profile_view.php';
 
+// Buffered, so that a missing album, post or user can still get a clean 404
+ob_start();
 try {
 	include 'includes/authorize.php';
 	include 'views/header.php';
@@ -84,6 +87,9 @@ try {
 </div>
 <?
 	include 'views/footer.php';
+} catch (InvalidArgumentException $e) {
+	// A deleted or never existing album, post, user etc.
+	show_not_found();
 } catch (Exception $e) {
 	echo $e->getMessage();
 }

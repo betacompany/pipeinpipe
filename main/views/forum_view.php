@@ -295,7 +295,7 @@ function forum_show_topics($uid, ForumPart $part, $from = 0, $limit = 0) {
 		}
 ?>
 
-								<div class="author"><a href="/id<?=$topic->getUID()?>"><?=$topic->getUser()->getFullName()?></a></div>
+								<div class="author"><? if ($topic->getUser()): ?><a href="/id<?=$topic->getUID()?>"><?=$topic->getUser()->getFullName()?></a><? endif; ?></div>
 							</div>
 <?
 		if (!$topic->isClosed()) {

@@ -714,8 +714,10 @@ function sport_competition_show_structure(Cup $cup, $selectedCupId, $step = 1) {
 
         $columns = min(array($maxColumns, intval($count / $minColumnLength)));
         $maxOffset = $count - $minColumnLength;
-		$additional = $count % $columns;
-		$length = intval($count / $columns) + ($additional ? 1 : 0);
+		// One child cup gives no columns and nothing to loop over below; PHP 8
+		// throws on dividing by them where PHP 5 only warned
+		$additional = $columns ? $count % $columns : 0;
+		$length = $columns ? intval($count / $columns) + ($additional ? 1 : 0) : 0;
 
 		for ($offset = 0; $offset <= $maxOffset;) {
 ?>

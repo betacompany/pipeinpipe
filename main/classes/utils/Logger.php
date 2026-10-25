@@ -108,11 +108,11 @@ class Logger {
 
 	/**
 	 * Logs catched exception
-	 * @param Exception $e
+	 * @param Throwable $e
 	 * @param string $layer [optional] EXCEPTION default
 	 * @param string $message [optional] empty default
 	 */
-	public function exception(Exception $e, $layer = self::LAYER_EXCEPTION, $message = '') {
+	public function exception(Throwable $e, $layer = self::LAYER_EXCEPTION, $message = '') {
 		$this->log(
 			$layer,
 			empty ($message) ? $e->__toString() : $message . "\nCaused by " . $e->__toString()

@@ -30,7 +30,7 @@ pipeinpipe.localhost /media/video
 pipeinpipe.localhost /media/photo/album140
 pipeinpipe.localhost /media/photo/album140/2825
 pipeinpipe.localhost /media/video/album141
-pipeinpipe.localhost /media/photo/tag1
+pipeinpipe.localhost /media/photo/tag1 404
 pipeinpipe.localhost /media/download
 pipeinpipe.localhost /forum
 pipeinpipe.localhost /forum/part1
@@ -46,6 +46,14 @@ pipeinpipe.localhost /profile/edit auth
 pipeinpipe.localhost /id1 auth
 pipeinpipe.localhost /life/blog/new auth
 pipeinpipe.localhost /media/upload auth
+
+# Pages fixed after the cutover (2026-10-25)
+pipeinpipe.localhost /pm328
+pipeinpipe.localhost /sport/league/1/competition/3
+pipeinpipe.localhost /forum/part6/topic211
+pipeinpipe.localhost /life/blog/1762
+pipeinpipe.localhost /media/photo/album101 404
+pipeinpipe.localhost /id767 404
 
 # m.pipeinpipe.info
 m.pipeinpipe.localhost /

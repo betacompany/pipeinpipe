@@ -288,7 +288,6 @@ class User {
 
 		$am = OpenCVAvatarsMinifier::getInstance();
 		$dam = DummyAvatarsMinifier::getInstance();
-		global $LOG;
 
 		switch ($type) {
 			case self::IMAGE_NORMAL:
@@ -298,37 +297,46 @@ class User {
 				if (!file_exists($base_filename)) {
 					return false;
 				}
-				if (file_exists($square_filename)) {
-					return true;
+				if (!file_exists($square_filename)) {
+					self::makeMiniature($am, $base_filename, $square_filename, 100, 100);
 				}
-
-				@$LOG->info("new miniature SQ creation started");
-				$am->minify($base_filename, $square_filename, 100, 100);
-				@$LOG->info("new miniature SQ creation finished");
-
-				return true;
+				return file_exists($square_filename);
 
 			case self::IMAGE_SQUARE_SMALL:
 				if (!file_exists($base_filename)) {
 					return false;
 				}
-				if (file_exists($square_small_filename)) {
-					return true;
+				if (!file_exists($square_small_filename)) {
+					if (!file_exists($square_filename)) {
+						self::makeMiniature($am, $base_filename, $square_filename, 100, 100);
+					}
+					if (file_exists($square_filename)) {
+						self::makeMiniature($dam, $square_filename, $square_small_filename, 20, 20);
+					}
 				}
-				if (!file_exists($square_filename)) {
-					@$LOG->info("new miniature SQ creation started");
-					$am->minify($base_filename, $square_filename, 100, 100);
-					@$LOG->info("new miniature SQ creation finished");
-				}
-
-				@$LOG->info("new miniature SQ_SM creation started");
-				$dam->minify($square_filename, $square_small_filename, 20, 20);
-				@$LOG->info("new miniature SQ_SM creation finished");
-
-				return true;
+				return file_exists($square_small_filename);
 
 			default:
 				return false;
+		}
+	}
+
+	/**
+	 * Makes an avatar miniature if it can. On the server PHP can't write to
+	 * images/users (the miniatures are made ahead, see server/README.md), so
+	 * a missing one means the default avatar rather than a broken page.
+	 */
+	private static function makeMiniature(IAvatarsMinifier $minifier, $source, $destination, $width, $height) {
+		global $LOG;
+		if (!function_exists('imagecreatefromjpeg') || !is_writable(dirname($destination))) {
+			return;
+		}
+		try {
+			@$LOG->info("new miniature $destination creation started");
+			$minifier->minify($source, $destination, $width, $height);
+			@$LOG->info("new miniature $destination creation finished");
+		} catch (Throwable $e) {
+			@$LOG->exception($e);
 		}
 	}
 
