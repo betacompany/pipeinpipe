@@ -8,8 +8,6 @@ require_once dirname(__FILE__) . '/../../includes/mysql.php';
  *
  * @author ortemij
  */
-// #[\ReturnTypeWillChange] keeps PHP 8.1+ from asking for return types on the
-// Iterator methods; PHP 5 reads the line as a comment.
 class MySQLResultIterator implements DBResultIterator {
 	private $resource;
 	private $results = array();
@@ -21,31 +19,26 @@ class MySQLResultIterator implements DBResultIterator {
 		$this->count = $resource ? db_num_rows($this->resource) : 0;
 	}
 
-	#[\ReturnTypeWillChange]
-	public function current() {
+	public function current(): mixed {
 		if (isset($this->results[$this->index])) return $this->results[$this->index];
 
 		$this->results[$this->index] = db_fetch_assoc($this->resource);
 		return $this->results[$this->index];
 	}
 
-	#[\ReturnTypeWillChange]
-	public function key() {
+	public function key(): mixed {
 		return $this->index;
 	}
 
-	#[\ReturnTypeWillChange]
-	public function next() {
+	public function next(): void {
 		$this->index++;
 	}
 
-	#[\ReturnTypeWillChange]
-	public function rewind() {
+	public function rewind(): void {
 		$this->index = 0;
 	}
 
-	#[\ReturnTypeWillChange]
-	public function valid() {
+	public function valid(): bool {
 		return $this->index < $this->count;
 	}
 

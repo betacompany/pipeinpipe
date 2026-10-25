@@ -7,7 +7,9 @@ clicking through all four sites signed in, in a browser, on both ports.
 
 ## Status
 
-Both repos run on PHP 8.5 and still run on PHP 5.5.
+Since the cutover on 2026-10-25, the sites run on PHP 8.5 only, and the code
+no longer supports PHP 5.5 (see "Done after the cutover"). The rest of this
+section describes the upgrade itself, when the code ran on both versions.
 
 - **Smoke test:** all 68 checks return the same status on 5.5 and 8.5, with
   the same content apart from:
@@ -62,13 +64,18 @@ both engines found:
 - **Failed queries** are now logged (`db_qw: ...` in the PHP error log) in both
   repos, since the callers only see `false`.
 
-## Left for after the cutover
+## Done after the cutover
+
+Once the sites ran on the new server (2026-10-25), the code stopped supporting
+PHP 5.5, which made these possible. PHPCompatibility against 8.5 now finds
+nothing in either repo.
 
 - **Implicitly nullable parameters (`Type $x = null`):** 4 deprecations on
-  8.4+. The fix, `?Type`, is PHP 7.1+ syntax.
-- **`imagedestroy()`:** 16 calls, deprecated in 8.5 (no-op). It only runs in
-  image code that needs GD (avatars, photo backgrounds), which prod doesn't
-  have.
+  8.4+, now `?Type` (PHP 7.1+ syntax).
+- **`imagedestroy()`:** 16 calls, deprecated in 8.5 and a no-op since 8.0.
+  Removed.
+- **`#[\ReturnTypeWillChange]`** on the `Iterator` methods of
+  `MySQLResultIterator` and `BijectiveMap` is now real return types.
 
 ## Requirements for the new server
 

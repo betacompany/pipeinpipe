@@ -7,7 +7,7 @@ require_once dirname(__FILE__) . '/../classes/utils/Logger.php';
  * MySQL access through mysqli (ext/mysql is gone since PHP 7).
  * The db_* functions return what the ext/mysql functions they replaced did,
  * e.g. false rather than null, and accept a failed query's false instead of
- * throwing a TypeError on PHP 8. Must stay PHP 5.5 compatible until the cutover.
+ * throwing a TypeError on PHP 8.
  */
 
 if (MYSQL_DEBUG_MODE) {

@@ -48,7 +48,6 @@ while ($album = db_fetch_assoc($req)) {
 			echo "\tFile $pid2.jpg created";
 			$im = imagecreatefromjpeg($pfile_main);
 			$size = imagesx($im) . 'x' . imagesy($im);
-			imagedestroy($im);
 			$p->addUrl($size, "/content/photos/$pid2.jpg", false);
 			echo "\tURL /content/photos/$pid2.jpg added\n";
 			flush();
@@ -59,7 +58,6 @@ while ($album = db_fetch_assoc($req)) {
 				echo "\tFile $pid2"."_hq.jpg created";
 				$im = imagecreatefromjpeg($pfile_hq);
 				$size = imagesx($im) . 'x' . imagesy($im);
-				imagedestroy($im);
 				$p->addUrl($size, "/content/photos/$pid2"."_hq.jpg", false);
 				echo "\tURL /content/photos/$pid2"."_hq.jpg added\n";
 			} else {
@@ -73,7 +71,6 @@ while ($album = db_fetch_assoc($req)) {
 				echo "\tFile $pid2"."_micro.jpg created";
 				$im = imagecreatefromjpeg($pfile_micro);
 				$size = imagesx($im) . 'x' . imagesy($im);
-				imagedestroy($im);
 				$p->addUrl($size, "/content/photos/$pid2"."_micro.jpg", false);
 				echo "\tURL /content/photos/$pid2"."_micro.jpg added\n";
 			//} else {
@@ -87,7 +84,6 @@ while ($album = db_fetch_assoc($req)) {
 				echo "\tFile $pid2"."_mini.jpg created";
 				$im = imagecreatefromjpeg($pfile_mini);
 				$size = imagesx($im) . 'x' . imagesy($im);
-				imagedestroy($im);
 				$p->addUrl($size, "/content/photos/$pid2"."_mini.jpg", false);
 				echo "\tURL /content/photos/$pid2"."_mini.jpg added\n";
 			//} else {

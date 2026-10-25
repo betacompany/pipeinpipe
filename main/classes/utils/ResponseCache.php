@@ -145,9 +145,8 @@ class ResponseCache {
 	}
 
 	public function  __construct($key, $request = null) {
-		// Nothing calls session_start(), so $_SESSION is never set. On PHP 5 the
-		// array_merge() below then returned null and the request ended up empty:
-		// one cache file per key. PHP 8 throws instead, so that case is explicit.
+		// Nothing calls session_start(), so $_SESSION is never set and the request
+		// is empty: one cache file per key
 		if ($request == null) {
 			$request = !isset($_SESSION) ? array() : array_diff_key(
 						$_REQUEST,

@@ -14,7 +14,7 @@ function response_boolean($bool) {
 	));
 }
 	
-function response_success(array $data = null) {
+function response_success(?array $data = null) {
 	if($data == null) {
 		$response = array('status' => 'ok');
 	} else {

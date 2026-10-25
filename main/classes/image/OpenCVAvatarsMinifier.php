@@ -77,9 +77,6 @@ class OpenCVAvatarsMinifier implements IAvatarsMinifier {
 
 		@$LOG->info("Path: $pathToDestinationImage");
 		imagejpeg($dstImage, $pathToDestinationImage);
-
-		imagedestroy($srcImage);
-		imagedestroy($dstImage);
 	}
 
 	/**

@@ -274,7 +274,7 @@ class League implements IComparable {
 		return $count1 - $count2;
 	}
 	
-	public static function getTopLeagues(User $user = null, $forceAll = true, $forceIncludeWPR = true) {
+	public static function getTopLeagues(?User $user = null, $forceAll = true, $forceIncludeWPR = true) {
 		if ($user !== null)
 			return $user->getLeagues($forceAll, $forceIncludeWPR);
 

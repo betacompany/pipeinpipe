@@ -34,8 +34,8 @@ class Logger {
 	
 	private function writeln($line = '') {
 		$this->fp = fopen($this->filename, 'a+');
-		// No writable main/logs (as on the servers): PHP 5 only warned on the
-		// fwrite() below, PHP 8 throws and kills the request being logged
+		// Without a writable main/logs the fwrite() below would throw and kill
+		// the request being logged
 		if ($this->fp === false) return;
 		fwrite(
 			$this->fp,
