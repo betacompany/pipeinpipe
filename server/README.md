@@ -97,7 +97,14 @@ If the server's SSH host key changes, update `HOST_KEY` in the workflow.
 
 ## HTTPS
 
-Every site answers on both HTTP and HTTPS. Each instance has one Let's
+Every site is HTTPS. Plain HTTP redirects to it, except Let's Encrypt's
+challenges and totalizator's `api_proc.php` (`nginx/https-redirect.conf`), whose
+outside caller may not follow a redirect. HSTS tells browsers to stay on HTTPS
+for a day (raise `max-age` in `provision.sh` once that has run fine for a
+while), and the login cookies are HTTPS-only (`secure` in
+`templates/auth-local-properties.php` and `templates/my-properties.php`).
+
+Each instance has one Let's
 Encrypt certificate for all its names (`pipeinpipe-prod`: `pipeinpipe.info`,
 `www.`, `m.`, `cupms.`, `total.`; `pipeinpipe-dev`: the same under `dev.`).
 `provision.sh` gets a missing one with `certbot certonly --webroot`: Let's
