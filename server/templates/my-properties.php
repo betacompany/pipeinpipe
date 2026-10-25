@@ -12,5 +12,6 @@ $PROPERTIES['mobile_site_url'] = "m.@HOST@";
 $PROPERTIES['error_debug_mode'] = false;
 $PROPERTIES['mysql']['debug_mode'] = false;
 $PROPERTIES['closure_compiler_enabled'] = true;
-$PROPERTIES['version'] = 6;
+// The deployed commit (written by server/deploy.sh), for ?VERSION on CSS and JS links
+$PROPERTIES['version'] = trim((string) @file_get_contents('@DATA@/version'));
 $PROPERTIES['content']['social_photo_album_id'] = 138;

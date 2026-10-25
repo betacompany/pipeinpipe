@@ -163,6 +163,8 @@ for NAME in $INSTANCES; do
 	done
 	as_deploy ln -sfn "$DATA/temp" "$PIPE_ROOT/main/temp"
 	as_deploy ln -sfn "$DATA/logs" "$PIPE_ROOT/main/logs"
+	# ?VERSION on CSS and JS links; deploy.sh updates it
+	[ -s "$DATA/version" ] || as_deploy git -C "$PIPE_ROOT" rev-parse --short HEAD > "$DATA/version"
 
 	if [ "$NAME" = prod ]; then
 		echo "# prod: open to everyone" > "/etc/nginx/snippets/pipeinpipe-$NAME-access.conf"
@@ -193,6 +195,11 @@ ln -sfn /etc/nginx/sites-available/pipeinpipe-default.conf /etc/nginx/sites-enab
 rm -f /etc/nginx/sites-enabled/default
 nginx -t
 systemctl reload nginx
+
+echo "== Deploy scripts"
+# Copies, not the checkouts' files: GitHub Actions' deploy key runs them as root
+install -m 0755 "$HERE/deploy.sh" /usr/local/sbin/pipeinpipe-deploy
+install -m 0755 "$HERE/ci-deploy.sh" /usr/local/sbin/pipeinpipe-ci-deploy
 
 echo "== Firewall"
 ufw allow OpenSSH >/dev/null

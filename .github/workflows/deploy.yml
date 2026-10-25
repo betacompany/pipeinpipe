@@ -1,0 +1,82 @@
+# Builds main/css/all.css and main/js/all.js, which aren't in git, with the
+# compilers in main/css/yui and main/js/closure. Run by hand from the Actions
+# tab ("Run workflow"), it also deploys the branch it's run on to the server:
+# dev from any branch, prod only from master. Replaces the old deploy.sh.
+#
+# Deploying needs the DEPLOY_SSH_KEY secret, a key the server only lets run
+# server/ci-deploy.sh (see server/README.md).
+name: Deploy
+run-name: ${{ inputs.instance && format('Deploy {0} to {1}', github.ref_name, inputs.instance) || format('Build {0}', github.ref_name) }}
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      instance:
+        description: Where to deploy
+        type: choice
+        options: [dev, prod]
+        default: dev
+
+permissions:
+  contents: read
+
+env:
+  SERVER: 158.160.188.92
+  # Its SSH host key: ssh-keyscan -t ed25519 158.160.188.92
+  HOST_KEY: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB4hcU5q2LNZXS+G/sy9swuNVqJi+ltDMJu2DxT8Q+GW
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    concurrency: ${{ inputs.instance && format('deploy-{0}', inputs.instance) || github.run_id }}
+    steps:
+      - name: Check the branch
+        if: inputs.instance == 'prod' && github.ref_name != github.event.repository.default_branch
+        run: |
+          echo "::error::prod is deployed from ${{ github.event.repository.default_branch }} only"
+          exit 1
+
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Build all.css and all.js
+        run: |
+          (cd main/css/yui && sh -e compile.sh)
+          (cd main/js/closure && sh -e compile.sh)
+          for f in main/css/all.css main/js/all.js; do
+            size=$(stat -c %s "$f")
+            # A failed compile leaves an empty or stub file; the real ones are 18 and 38 KB
+            [ "$size" -gt 10000 ] || { echo "::error::$f is only $size bytes"; exit 1; }
+            echo "$f: $size bytes"
+          done
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: assets
+          retention-days: 30
+          path: |
+            main/css/all.css
+            main/js/all.js
+
+      - name: Deploy
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          INSTANCE: ${{ inputs.instance }}
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy
+          chmod 600 ~/.ssh/deploy
+          echo "$SERVER $HOST_KEY" > ~/.ssh/known_hosts
+          # The server runs server/ci-deploy.sh with these arguments, whatever is asked
+          tar -C main -cz css/all.css js/all.js \
+            | ssh -i ~/.ssh/deploy -o BatchMode=yes "ortemij@$SERVER" "$INSTANCE $BRANCH $GITHUB_SHA"

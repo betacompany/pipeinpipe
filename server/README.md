@@ -43,9 +43,9 @@ ssh OLD 'sudo mysqldump --defaults-file=/etc/mysql/debian.cnf --default-characte
     --quick --routines --triggers pipeinpipe | gzip' | ssh NEW 'sudo ./import-db.sh pipeinpipe'
 ```
 
-Uploaded content goes to `/srv/pipeinpipe/<instance>/content/` (rsync), and the
-prebuilt `main/css/all.css` and `main/js/all.js`, which aren't in git, into
-each pipeinpipe checkout.
+Uploaded content goes to `/srv/pipeinpipe/<instance>/content/` (rsync). The
+first deploy from GitHub Actions (below) installs `main/css/all.css` and
+`main/js/all.js`, which aren't in git.
 
 ## Moving the live sites here
 
@@ -53,9 +53,39 @@ See [CUTOVER.md](CUTOVER.md) and `cutover.sh`.
 
 ## Deploying
 
+From GitHub: **Actions → Deploy → Run workflow**, then pick the branch and the
+instance. dev takes any branch, prod only `master`. The workflow
+(`.github/workflows/deploy.yml`) builds `main/css/all.css` and `main/js/all.js`
+with the compilers in the repo, then runs `deploy.sh` on the server with them.
+It also builds them on every pull request, so a broken build shows up there.
+
+On the server, without rebuilding the CSS and JS:
+
 ```sh
 sudo ./deploy.sh prod      # or dev: git pull both checkouts, reload PHP
 ```
+
+Every deploy writes the pipeinpipe commit to `/srv/pipeinpipe/<instance>/version`.
+That is the `?VERSION` the pages put on CSS and JS links, so browsers fetch the
+new files.
+
+The workflow signs in as `ortemij` with a key whose line in
+`~ortemij/.ssh/authorized_keys` forces `ci-deploy.sh`, so the key can't run
+anything else:
+
+```
+restrict,command="/usr/local/sbin/pipeinpipe-ci-deploy" ssh-ed25519 AAAA... github-actions-deploy
+```
+
+Its private half is the repo's `DEPLOY_SSH_KEY` secret. To replace it:
+
+```sh
+ssh-keygen -t ed25519 -N '' -C github-actions-deploy -f deploy_key
+gh secret set DEPLOY_SSH_KEY --repo betacompany/pipeinpipe < deploy_key
+# swap deploy_key.pub into authorized_keys as above, then delete both files
+```
+
+If the server's SSH host key changes, update `HOST_KEY` in the workflow.
 
 ## Crons
 
