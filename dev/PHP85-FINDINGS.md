@@ -48,6 +48,8 @@ section describes the upgrade itself, when the code ran on both versions.
 | 14 | pipeinpipe | `PlayerComparator::getPlayer(int $which)`: `int` is a class name on PHP 5, so every call fails today | Type hint removed |
 | 15 | pipeinpipe | The page cache never worked on prod (`main/temp` not writable by PHP), and its keys were unsafe to enable: `api.php` would serve uncached-TTL methods (incl. writes) from cache forever, and the home page and closed forum topics were cached across users | `api.php` caches only methods with a TTL (none while `API_DEBUG_MODE` is on); home page and closed topics are cached per user. Prod got a `www-data`-owned `temp/cache` on 2026-10-24: `/sport/pipemen` went from 40 s to 0.24 s |
 | 16 | pipeinpipe | `Logger` with an unwritable `main/logs` (as on both servers): `fwrite(false)` is a `TypeError` since 8.0, which cut `/life` off mid-page | Skips the write when the file can't be opened |
+| 17 | pipeinpipe | Found on prod after the cutover: `max()` of an empty array is a `ValueError` (not an `Exception`, so the `catch` around it didn't help), which cut off the pages of players with no rating history (`/pm328`) | Returns 0 for them, as PHP 5's `false` did |
+| 18 | pipeinpipe | Found on prod after the cutover: a cup with one child cup has zero columns, and `%`/`/` by zero is a `DivisionByZeroError` (`/sport/league/1/competition/3`) | No division when there are no columns; nothing is drawn for them either way |
 
 ## MariaDB 11.8 instead of MySQL 5.5
 
@@ -76,6 +78,12 @@ nothing in either repo.
   Removed.
 - **`#[\ReturnTypeWillChange]`** on the `Iterator` methods of
   `MySQLResultIterator` and `BijectiveMap` is now real return types.
+
+Prod's error log turned up two pages the upgrade broke (fixes 17 and 18). A
+crawl of 1,955 pages on the stand then found no others. It covered every
+player, league, competition, forum topic, blog post and video, plus 300
+photos and 652 user profiles. The parser's output for all 15,280 stored
+comments and forum messages is identical on PHP 5.5 and 8.5.
 
 ## Requirements for the new server
 
@@ -116,6 +124,13 @@ nothing in either repo.
   throws. Prod returns the identical page.
 - **Photo viewer:** `main/views/media_photo_viewer.php:33` calls a method on
   null for some photos.
+- **Forum topics 211 and 351:** messages 5656 and 10163 have a stray closing
+  tag, and the parser gives up on them (PHP 5: "Please remove tag </idle>";
+  PHP 8 fails one step earlier). The topic page stops at that message.
+- **Avatars:** pages that need a missing avatar thumbnail (comments on
+  `/life/blog/1762` and `/1789`) stop there, since making one needs GD.
+- **Deleted content:** deleted photo albums and blog posts render an empty or
+  cut-off page.
 - **`CommentDBClient::getByItemType()`:** builds `SELECT ... .* AS item_type`,
   invalid on both MySQL and MariaDB.
 - **Dead media:** album photos hosted on VK's old CDN no longer load, and the
