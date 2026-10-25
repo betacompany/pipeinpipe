@@ -577,12 +577,8 @@ function count_max_places(Player $player) {
     foreach ($movement as $step) {
         $places[] = $step['place'];
     }
-    $res = 0;
-    try{
-        $res = max($places);
-    } catch(Exception $e) {}
-
-    return $res;
+    // No rating history: max() of an empty array throws since PHP 8
+    return $places ? max($places) : 0;
 }
 
 function profile_show_game_stats(Player $player) {

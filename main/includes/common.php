@@ -33,7 +33,9 @@ function array_appereances($values) {
 
 	$appereances = array();
 
-    for($i = 0; $i <= max($values); $i++)
+    // max() of an empty array throws since PHP 8; PHP 5 gave array(0) here
+    $max = $values ? max($values) : 0;
+    for($i = 0; $i <= $max; $i++)
         $appereances[] = 0;
 
     foreach ($values as $key => $val)
