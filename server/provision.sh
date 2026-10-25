@@ -20,6 +20,10 @@ TOTAL_BRANCH=${TOTAL_BRANCH:-develop}
 INSTANCES="prod dev"
 SECRETS=/etc/pipeinpipe/secrets.env
 PHP_SOCK=/run/php/php8.5-fpm.sock
+# Let's Encrypt sends expiry warnings here. CERTBOT_ARGS=--dry-run tries the
+# certificates against its staging servers without keeping them.
+LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL:-ortemij@gmail.com}
+CERTBOT_ARGS=${CERTBOT_ARGS:-}
 
 instance_vars() {
 	NAME=$1
@@ -67,6 +71,24 @@ put() {
 
 as_deploy() { sudo -u "$DEPLOY_USER" "$@"; }
 
+# HTTPS for the instance's sites (included by site.conf), once it has a
+# certificate from the HTTPS step below
+https_snippet() {
+	local cert=/etc/letsencrypt/live/pipeinpipe-$NAME
+	if [ -s "$cert/fullchain.pem" ]; then
+		cat <<-EOF
+			listen 443 ssl;
+			listen [::]:443 ssl;
+			http2 on;
+			ssl_certificate $cert/fullchain.pem;
+			ssl_certificate_key $cert/privkey.pem;
+			include /etc/nginx/snippets/pipeinpipe-tls.conf;
+		EOF
+	else
+		echo "# No certificate for $NAME yet: HTTP only"
+	fi > "/etc/nginx/snippets/pipeinpipe-$NAME-https.conf"
+}
+
 # Connections from Yandex Cloud to github.com fail now and then; retry them
 retry() {
 	local i
@@ -82,7 +104,7 @@ echo "== Packages"
 apt-get update -q
 DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
 	nginx mariadb-server php8.5-fpm php8.5-cli php8.5-mysql php8.5-mbstring php8.5-gd \
-	git rsync ufw unattended-upgrades cron logrotate
+	git rsync ufw unattended-upgrades cron logrotate certbot
 
 echo "== Swap"
 if ! swapon --show | grep -q /swapfile; then
@@ -178,6 +200,7 @@ for NAME in $INSTANCES; do
 			add_header X-Robots-Tag "noindex, nofollow" always;
 		EOF
 	fi
+	https_snippet
 	render "$HERE/nginx/site.conf" "/etc/nginx/sites-available/pipeinpipe-$NAME.conf" root:root 0644
 	ln -sfn "/etc/nginx/sites-available/pipeinpipe-$NAME.conf" "/etc/nginx/sites-enabled/pipeinpipe-$NAME.conf"
 
@@ -189,9 +212,30 @@ done
 put "$HERE/logrotate/pipeinpipe" /etc/logrotate.d/pipeinpipe || true
 
 put "$HERE/nginx/common.conf" /etc/nginx/snippets/pipeinpipe-common.conf || true
+put "$HERE/nginx/tls.conf" /etc/nginx/snippets/pipeinpipe-tls.conf || true
 put "$HERE/nginx/default.conf" /etc/nginx/sites-available/pipeinpipe-default.conf || true
 ln -sfn /etc/nginx/sites-available/pipeinpipe-default.conf /etc/nginx/sites-enabled/pipeinpipe-default.conf
 rm -f /etc/nginx/sites-enabled/default
+nginx -t
+systemctl reload nginx
+
+echo "== HTTPS"
+# certbot.timer renews the certificates; nginx has to reload to use them
+install -d /etc/letsencrypt/renewal-hooks/deploy
+printf '#!/bin/sh\nsystemctl reload nginx\n' > /etc/letsencrypt/renewal-hooks/deploy/reload-nginx
+chmod 0755 /etc/letsencrypt/renewal-hooks/deploy/reload-nginx
+for NAME in $INSTANCES; do
+	instance_vars "$NAME"
+	domains="$HOST,m.$HOST,cupms.$HOST,total.$HOST"
+	[ "$NAME" = prod ] && domains="$domains,www.$HOST"
+	if [ -n "$CERTBOT_ARGS" ] || [ ! -s "/etc/letsencrypt/live/pipeinpipe-$NAME/fullchain.pem" ]; then
+		# Let's Encrypt fetches a token over HTTP from /var/www/letsencrypt (common.conf)
+		certbot certonly --webroot -w /var/www/letsencrypt --cert-name "pipeinpipe-$NAME" -d "$domains" \
+			--email "$LETSENCRYPT_EMAIL" --agree-tos --no-eff-email --non-interactive $CERTBOT_ARGS \
+			|| echo "  no certificate for $NAME: do all of $domains point here?"
+	fi
+	https_snippet
+done
 nginx -t
 systemctl reload nginx
 
