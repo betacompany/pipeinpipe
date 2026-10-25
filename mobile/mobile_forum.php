@@ -120,7 +120,7 @@ case 'forum_topic':
 		if (!$topic->isClosed() && $user != null) {
 			mobile_show_textarea(
 				array(
-					'action' => 'http://' . MAIN_SITE_URL . '/procs/proc_forum.php',
+					'action' => '//' . MAIN_SITE_URL . '/procs/proc_forum.php',
 					'mobile' => '1',
 					'method' => 'add_message',
 					'topic_id' => $topic->getId()

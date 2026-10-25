@@ -95,6 +95,26 @@ gh secret set DEPLOY_SSH_KEY --repo betacompany/pipeinpipe < deploy_key
 
 If the server's SSH host key changes, update `HOST_KEY` in the workflow.
 
+## HTTPS
+
+Every site answers on both HTTP and HTTPS. Each instance has one Let's
+Encrypt certificate for all its names (`pipeinpipe-prod`: `pipeinpipe.info`,
+`www.`, `m.`, `cupms.`, `total.`; `pipeinpipe-dev`: the same under `dev.`).
+`provision.sh` gets a missing one with `certbot certonly --webroot`: Let's
+Encrypt fetches a token over HTTP from `/var/www/letsencrypt`, which every site
+serves at `/.well-known/acme-challenge/` (`nginx/common.conf`), dev without
+its password. Then it writes `/etc/nginx/snippets/pipeinpipe-<instance>-https.conf`,
+which adds the HTTPS listener to that instance's sites.
+
+```sh
+sudo env CERTBOT_ARGS=--dry-run ./provision.sh   # tries the certificates against the staging servers
+sudo certbot certificates                        # what there is and when it expires
+```
+
+`certbot.timer` renews them; `/etc/letsencrypt/renewal-hooks/deploy/reload-nginx`
+reloads nginx afterwards. Expiry warnings go to `LETSENCRYPT_EMAIL` in
+`provision.sh`. Unknown names on 443 get no certificate (`ssl_reject_handshake`).
+
 ## Crons
 
 `/etc/cron.d/pipeinpipe-<instance>`, from `cron/site.cron`, run as `www-data`:
@@ -115,7 +135,5 @@ rotated weekly by `/etc/logrotate.d/pipeinpipe`.
 - MariaDB runs without strict mode and with utf8mb3 tables, like the old MySQL
   5.5. Queries that relied on MySQL 5 specifics were rewritten; see
   `dev/PHP85-FINDINGS.md`.
-- HTTPS isn't set up yet. nginx already serves `/.well-known/acme-challenge/`
-  from `/var/www/letsencrypt` for `certbot certonly --webroot`.
 - Connections from Yandex Cloud to github.com fail now and then; the scripts
   retry them.
