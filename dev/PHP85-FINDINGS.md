@@ -94,9 +94,8 @@ comments and forum messages is identical on PHP 5.5 and 8.5.
 - **Page cache directory:** `main/temp/cache` must be writable by PHP
   (`www-data`); `main/temp` itself stays read-only, as on prod, so the lock
   and per-user `temp/user_*` files keep behaving as they do today.
-- **Decide on GD (`php8.5-gd`):** with it, the photo background, avatar and
-  photo upload code would start working, but that code has not run on prod
-  for years.
+- **GD (`php8.5-gd`):** installed since 2026-10-25 for the photo backgrounds
+  and avatar miniatures.
 - **nginx `fastcgi_read_timeout 120s`:** a cold `/sport/pipemen` renders for
   about 60 s, nginx's default.
 
@@ -115,28 +114,34 @@ comments and forum messages is identical on PHP 5.5 and 8.5.
 - **cupms player editor:** it now works. On 5.5 it runs out of the 128 MB
   memory limit (`players_view.php:113`), so it's broken on prod today.
 
-## Already broken on prod (not caused by the upgrade)
+## Broken before the upgrade
 
-- **`api.php?handler=photobg`:** every desktop page calls it, and it returns
-  500 because `proc_photobg.php` needs GD. Prod returns the same 500.
-- **`/forum/part1` (desktop):** the page stops after the first topic. User 1126
-  is in `common_user` but not in the `p_user` view, so `forum_view.php:298`
-  throws. Prod returns the identical page.
-- **Photo viewer:** `main/views/media_photo_viewer.php:33` calls a method on
-  null for some photos.
-- **Forum topics 211 and 351:** messages 5656 and 10163 have a stray closing
-  tag, and the parser gives up on them (PHP 5: "Please remove tag </idle>";
-  PHP 8 fails one step earlier). The topic page stops at that message.
-- **Avatars:** pages that need a missing avatar thumbnail (comments on
-  `/life/blog/1762` and `/1789`) stop there, since making one needs GD.
-- **Deleted content:** deleted photo albums and blog posts render an empty or
-  cut-off page.
-- **`CommentDBClient::getByItemType()`:** builds `SELECT ... .* AS item_type`,
-  invalid on both MySQL and MariaDB.
+These failed the same way on the old server. Fixed on 2026-10-25:
+
+- **Photo backgrounds** (`api.php?handler=photobg`, called by every desktop
+  page) returned 500 without GD. GD is installed now.
+- **Avatars:** pages stopped at a missing avatar miniature (comments on
+  `/life/blog/1762` and `/1789`), since making one needs GD and a writable
+  `images/users`. `server/make-miniatures.php` made the 21 missing ones, and a
+  page shows the default avatar instead of stopping if one is still missing.
+- **Disabled users:** the forum list stopped at a topic by a disabled user
+  (`/forum/part1`; users 767 and 1126 aren't in the `p_user` view). It now
+  shows no author there, as `blocks.php` already did.
+- **Forum topics 211 and 351:** a stray closing tag in messages 5656 and 10163
+  made the parser give up (PHP 5: "Please remove tag </idle>"). It now drops
+  such a tag, as browsers do. Every other stored text parses as before.
+- **Deleted and missing content:** deleted photo albums and blog posts,
+  profiles of missing users, and empty albums or tags (the photo viewer's
+  `null`) rendered an empty or cut-off page with status 200. They're now a 404.
+- **Latest comments** (`/life/comments`): `CommentDBClient::getByItemType()`
+  built invalid SQL, so the page showed none.
+
+Still broken:
+
 - **Dead media:** album photos hosted on VK's old CDN no longer load, and the
   home page video is a Flash embed.
-- **Cron jobs:** the two jobs in `cron/` use `?` in the day-of-week field.
-  Neither shows up in the server's syslog or access logs.
+- **Photo and avatar uploads:** PHP can't write to the uploaded content on the
+  server, as on the old one.
 - **Unresolved static calls:** three calls to methods that don't exist:
   `UserDataDBClient::getUIDByFBId()`, `CompetitionDBClient::removeById()` in a
   test, and `Parser::parse()` in `junk/`.
