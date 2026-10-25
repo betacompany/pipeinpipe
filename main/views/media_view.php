@@ -150,7 +150,7 @@ function media_show_photo($uid, Photo $photo) {
 				<div>
 					<img class="ph" src="<?=$photo->getUrl(Photo::SIZE_MIDDLE)?>" alt="<?=$photo->getTitle()?>" />
 					<div class="title"><?=$photo->getTitle()?></div>
-					<div class="author"><a href="/id<?=$photo->getUID()?>"><?=$photo->getUser()->getFullName()?></a></div>
+					<div class="author"><? if ($photo->getUser()): ?><a href="/id<?=$photo->getUID()?>"><?=$photo->getUser()->getFullName()?></a><? endif; ?></div>
 				</div>
 				<div class="tools">
 					<div class="zoom" style="display: block;" onclick="javascript: media.enableSlideShow(<?=$photo->getGroupId()?>, <?=$photo->getId()?>);"></div>

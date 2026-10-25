@@ -5,7 +5,10 @@ require_once 'classes/user/User.php';
 
 require_once 'includes/common.php';
 require_once 'includes/log.php';
+require_once 'includes/error.php';
 
+// Buffered, so that a missing album, post or user can still get a clean 404
+ob_start();
 try {
 	include 'includes/authorize.php';
 	include 'views/header.php';
@@ -73,6 +76,9 @@ try {
 </div>
 <?
 	include 'views/footer.php';
+} catch (InvalidArgumentException $e) {
+	// A deleted or never existing album, post, user etc.
+	show_not_found();
 } catch (Exception $e) {
 	global $LOG;
 	$LOG->exception($e);

@@ -131,7 +131,7 @@ class CommentDBClient {
 	}
 
 	public static function getByItemType($itemTypes, $from, $limit, $descendive) {
-		$request = 'SELECT `pv_content_comment`.* AS `item_type` FROM
+		$request = 'SELECT `pv_content_comment`.* FROM
 			`pv_content_comment`
 			LEFT JOIN
 			`pv_content_item`
@@ -156,7 +156,7 @@ class CommentDBClient {
 			}
 		}
 
-		$request .= 'ORDER BY `id` '.($descendive ? 'DESC ' : 'ASC ');
+		$request .= ' ORDER BY `pv_content_comment`.`id` '.($descendive ? 'DESC ' : 'ASC ');
 
 		if ($limit != 0) {
 			$request .= ' LIMIT '.intval($from).', '.intval($limit);

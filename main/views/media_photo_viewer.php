@@ -7,6 +7,11 @@ global $itemId;
 global $user;
 global $tag;
 
+if (empty($photos)) {
+	// No photos in the album or with the tag (media.php buffers the page)
+	show_not_found();
+}
+
 $index = 0;
 $photo = $photos[0];
 if ($itemId) {

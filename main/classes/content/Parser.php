@@ -262,7 +262,8 @@ class Parser {
 		$tagstart = -1;
 		$tagend = -1;
 
-		$st->push(new _Context(""));
+		$rootContext = new _Context("");
+		$st->push($rootContext);
 		$temp = $st->top();
 		$logger = new Logger('../../logs/test.log');
 		for($i = 0; $i < strlen($source); $i++) {
@@ -301,16 +302,21 @@ class Parser {
 
 						$first = $i + 1;
 						if($source[$tagstart] == '/') {
-							if($temp->tagName != substr($source, $tagstart + 1, $tagend - $tagstart)) {
-								//throw new Exception("Error occured at $i: tag unmatched");
-								//TODO just replace brackets at positions $openbr, $i with empty symbols except this throwing.
+							if($temp === $rootContext) {
+								// A closing tag with nothing open: browsers ignore it, so drop
+								// it. Closing the root would lose the rest of the message.
+							} else {
+								if($temp->tagName != substr($source, $tagstart + 1, $tagend - $tagstart)) {
+									//throw new Exception("Error occured at $i: tag unmatched");
+									//TODO just replace brackets at positions $openbr, $i with empty symbols except this throwing.
+								}
+								//$logger->info("Apply ".$temp->tagName." to ".$temp->str." with attr " . $temp->attr);
+								$str = $this->replacer->replace($temp->str,
+										$temp->tagName, $temp->attr);
+								$st->pop();
+								$temp = $st->top();
+								$temp->str .= $str;
 							}
-							//$logger->info("Apply ".$temp->tagName." to ".$temp->str." with attr " . $temp->attr);
-							$str = $this->replacer->replace($temp->str,
-									$temp->tagName, $temp->attr);
-							$st->pop();
-							$temp = $st->top();
-							$temp->str .= $str;
 
 						} else {
 							$attributes = $this->parseAttributes(substr($source, $tagend + 2, $i - $tagend - 2));
